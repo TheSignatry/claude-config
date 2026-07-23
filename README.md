@@ -31,6 +31,10 @@ directly — the compact file is generated output and will be overwritten.
   scripture usage, number/date/mechanics rules, structural and narrative patterns,
   and visual/brand references) whenever content is written, edited, reviewed, or
   proofread for The Signatry.
+- **`skills/sounding-board/`** — role-plays a panel of fictional, composite personas
+  reacting to an idea, message, decision, or proposal before it goes out. Covers
+  seven audiences (employee, donor, advisors, VIP family, board, shepherds/C-suite,
+  nonprofit partner), each with its own persona file in `references/`.
 
 ## License
 
