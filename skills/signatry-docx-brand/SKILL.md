@@ -9,6 +9,7 @@ This skill supplies the starting-point templates for Signatry `.docx` deliverabl
 
 ## Dependencies — read these first
 
+- **`signatry-brand-core` skill**: canonical colors, fonts, and logo files for The Signatry — including tints (80%/60%/40%/20%/5%) of every color, if a document needs a lighter variant. The two `.dotx` templates already carry the correct fonts/colors baked into their own `styles.xml` and embedded font files, so this skill doesn't need to separately bundle raw font files the way `signatry-pptx-brand` and `signatry-pdf-brand` do — but if a document ever needs a brand hex value directly (e.g., a manual accent run, or a tint), pull it from `signatry-brand-core`, not from memory or the older `signatry-style` table.
 - **`docx` skill**: build/edit mechanics (docx-js gotchas, unzip-edit-rezip workflow for existing files, tracked changes, comments, verification via soffice/pdftoppm). The "editing existing documents" workflow in that skill is exactly the mechanism this skill uses to build *from* a template.
 - **`signatry-style` skill**: voice, terminology, and faith-language rules for any donor-facing or narrative copy going into the document.
 
@@ -19,7 +20,7 @@ This skill supplies the starting-point templates for Signatry `.docx` deliverabl
 | The document is addressed to someone, has a salutation/sign-off, and reads as correspondence (thank-you letter, gift acknowledgment, cover letter, etc.) | **Letterhead** (`The_Signatry_Letterhead_2026.dotx`) |
 | Everything else — reports, memos, guides, policies, internal docs, board materials, proposals | **Brand Styles** (`2026_Brand_Styles.dotx`) |
 
-If ambiguous (e.g., a "letter to donors" that's really a multi-page report), ask the user rather than guessing — the two templates have different header/footer behavior and picking wrong means redoing the page setup.
+If ambiguous (e.g., a "letter to donors" that's really a multi-page report), ask Ben rather than guessing — the two templates have different header/footer behavior and picking wrong means redoing the page setup.
 
 ## Why start from the `.dotx`, not from docx-js scratch
 
@@ -52,7 +53,7 @@ Confirmed by direct inspection of `word/styles.xml` (July 2026):
 
 Page setup: US Letter (12240×15840 DXA), 1" margins all sides. Use Word's built-in style names (`Heading1`, `Title`, etc.) in `document.xml` — the styles are already defined, so headings just need the right `pStyle` reference, not manual font/color runs.
 
-This palette (Legacy `2b7a78`) matches the `signatry-pptx-brand` skill's confirmed color set. Note the pptx skill's Glacier/Ice/Midnight/Dusk accents are not defined as named styles here — if a doc needs an accent color, apply it as a direct run property using those same hex values rather than inventing new ones.
+This palette (Legacy `2b7a78`) matches the canonical set in `signatry-brand-core`. That skill's Glacier/Ice/Midnight/Dusk/Dawn accents are not defined as named Word styles here — if a doc needs an accent color, apply it as a direct run property using the hex values from `signatry-brand-core` rather than inventing new ones or pulling from the older `signatry-style` table.
 
 ## Letterhead template — what's in it
 
