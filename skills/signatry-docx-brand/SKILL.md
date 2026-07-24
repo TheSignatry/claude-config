@@ -20,7 +20,7 @@ This skill supplies the starting-point templates for Signatry `.docx` deliverabl
 | The document is addressed to someone, has a salutation/sign-off, and reads as correspondence (thank-you letter, gift acknowledgment, cover letter, etc.) | **Letterhead** (`The_Signatry_Letterhead_2026.dotx`) |
 | Everything else — reports, memos, guides, policies, internal docs, board materials, proposals | **Brand Styles** (`2026_Brand_Styles.dotx`) |
 
-If ambiguous (e.g., a "letter to donors" that's really a multi-page report), ask Ben rather than guessing — the two templates have different header/footer behavior and picking wrong means redoing the page setup.
+If ambiguous (e.g., a "letter to donors" that's really a multi-page report), ask the user rather than guessing — the two templates have different header/footer behavior and picking wrong means redoing the page setup.
 
 ## Why start from the `.dotx`, not from docx-js scratch
 
