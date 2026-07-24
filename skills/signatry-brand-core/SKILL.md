@@ -57,7 +57,7 @@ Use the Nonprofit/Advisor pairs only when the content's audience is specifically
 Canonical typefaces: **Mulish** (body/UI) and **Lora** (headlines).
 
 - **Mulish** — use for body copy, bullets, captions, and any non-headline text. Weights bundled: Regular, Medium, SemiBold, Bold, ExtraBold.
-- **Lora** — use for headlines/titles. Weights bundled: Regular, Medium, SemiBold, Bold. The standing rule confirmed for decks (July 2026) is **Lora Regular only — not bold — for headlines**; treat that as the default for other formats too unless a specific format's own skill says otherwise.
+- **Lora** — use for headlines/titles. Weights bundled: Regular, Medium, SemiBold, Bold. The standing rule confirmed for all documents (July 2026) is **Lora Regular only — not bold — for headlines**.
 
 Master font files live in `assets/fonts/Mulish/` and `assets/fonts/Lora/` in this skill. These are the source copies — format skills that need their own local copy for build scripts (e.g., `signatry-pptx-brand`'s embedding scripts, `signatry-pdf-brand`'s font registration) should mirror these files, not fork them. **If a font file needs updating (new weight, corrected file, license change), update it here first, then re-copy into any dependent skill.**
 
@@ -77,7 +77,7 @@ Usage rules (apply regardless of format):
 
 - Never alter, recolor, stretch, or rotate the logo or quill artwork.
 - "The Signatry" with no tagline is the preferred lockup — don't fabricate a tagline version.
-- No official clearspace/minimum-size values are on file — use generous whitespace (comparable to the mark's own height) and keep it legible at the format's typical viewing distance; confirm exact clearspace with Ben if a client/board-facing piece needs pixel-precise placement.
+- Clearspace: minimum clearspace on all sides of the logo is equal to the height of the letter "n" in the "Signatry" wordmark, measured from that same logo. Use this unit whenever the logo appears near other elements (text, images, edges of the page/slide) — the "n"-height gap is the floor, not a target; more is always fine.
 
 ## Tints
 
