@@ -216,3 +216,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Packaged skill artifacts (built by skills/package_skill.py)
+skills/*/*.zip
