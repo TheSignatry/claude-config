@@ -1,6 +1,8 @@
 ---
 name: sounding-board
 description: Use this skill whenever the user wants to sounding board, stress-test, pressure-test, "run this by" a panel, or "get reactions to" an idea, message, decision, proposal, email, policy, or announcement before it goes out — including questions phrased as "how would a donor react to this?", "what would our advisors say?", "how would employees take this?", "would a VIP family be okay with this?", "how would the board react to this?", "what would leadership/the C-suite/the shepherds say?", or "how would a nonprofit/grant recipient react to this?". Also trigger on requests to role-play multiple perspectives or simulate audience reactions to Signatry content. Do not wait for the user to name this skill explicitly — if they are asking to test something against how people will receive it, this skill applies.
+version: "0.5"
+release_date: "2026-07-26"
 ---
 
 # Sounding Board
