@@ -1,6 +1,8 @@
 ---
 name: signatry-brand-core
 description: "Canonical source of truth for The Signatry's brand colors, fonts, and logo/mark assets — independent of file format. Use this whenever a task needs the actual hex values, font files, or logo files for The Signatry, or when building/updating a format-specific brand skill (pptx, docx, pdf, xlsx, HTML/artifacts, Canva, etc.). Format-specific brand skills should depend on this one for values and assets rather than restating them; this skill has no build mechanics of its own."
+version: 1.0
+release_date: 2026-07-26
 ---
 
 # The Signatry Brand Core

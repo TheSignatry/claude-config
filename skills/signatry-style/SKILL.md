@@ -1,6 +1,8 @@
 ---
 name: signatry-style
 description: The Signatry's official writing and brand voice guide, covering audience, voice and tone, required terminology, faith-related capitalization and scripture usage, number/date/mechanics rules, structural and narrative patterns, and visual/brand references. Use this skill whenever writing, editing, reviewing, or proofreading ANY content for The Signatry — donor communications, emails, newsletters, social media, annual and quarterly reports, brochures, resource guides, presentations, web copy, or internal documents — regardless of whether the user explicitly mentions style, branding, or formatting.
+version: 1.1
+release_date: 2026-07-26
 ---
 
 # The Signatry Brand Voice & Style Guide

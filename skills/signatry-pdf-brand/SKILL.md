@@ -1,6 +1,8 @@
 ---
 name: signatry-pdf-brand
 description: "Signatry brand system for PDFs built with reportlab: font registration/embedding, color palette, and logo usage for The Signatry. Use whenever building, branding, or reviewing a PDF for The Signatry — reports, flyers, one-pagers, fund summaries, or any PDF deliverable — even if the user doesn't say 'brand' or 'Signatry' by name, as long as the deliverable is a Signatry PDF. Always pair with the general pdf skill (build/extraction mechanics) and, if there is donor-facing or narrative copy, the signatry-style skill (voice and terminology)."
+version: 1.0
+release_date: 2026-07-26
 ---
 
 # Signatry PDF Brand System
