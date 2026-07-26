@@ -46,6 +46,10 @@ directly — the compact file is generated output and will be overwritten.
 - **`skills/signatry-pdf-brand/`** — Signatry brand system for PDFs built with
   reportlab: font registration/embedding, color palette, and logo usage. Pair with a
   general pdf skill and, for donor-facing copy, `signatry-style`.
+- **`skills/sounding-board/`** — role-plays a panel of fictional, composite personas
+  reacting to an idea, message, decision, or proposal before it goes out. Covers
+  seven audiences (employee, donor, advisors, VIP family, board, shepherds/C-suite,
+  nonprofit partner), each with its own persona file in `references/`.
 
 ### Skill tooling
 
