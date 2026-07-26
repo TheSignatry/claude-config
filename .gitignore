@@ -219,3 +219,6 @@ __marimo__/
 
 # Packaged skill artifacts (built by skills/package_skill.py)
 skills/*/*.zip
+
+# macOS
+.DS_Store

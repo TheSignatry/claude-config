@@ -47,6 +47,40 @@ directly — the compact file is generated output and will be overwritten.
   reportlab: font registration/embedding, color palette, and logo usage. Pair with a
   general pdf skill and, for donor-facing copy, `signatry-style`.
 
+### Skill tooling
+
+- **`skills/lint_skills.py`** — validates every skill package under `skills/`:
+  SKILL.md frontmatter against `schemas/skill-schema.json` (required: `name`,
+  `description`, `version`, `release_date`), description trigger-language
+  quality, relative markdown link integrity, and an IT15 Restricted-data scan
+  (SSNs, payment card numbers, bank/account numbers, credentials/keys) across
+  every text file in the skill. Any Restricted-data finding hard-fails the
+  build; matched values are always masked in the output.
+- **`skills/package_skill.py`** — packages a single skill into an
+  upload-ready `{skill-slug}-{version}.zip` (SKILL.md at the zip root, no
+  wrapping folder), refusing to package if the skill fails
+  `lint_skills.py` with an ERROR or CRITICAL finding.
+
+Run both from the repo root:
+
+```bash
+# Lint every skill; add --strict to treat warnings as failures too
+python3 skills/lint_skills.py
+
+# Lint a skills/ directory in a different location, as text or JSON
+python3 skills/lint_skills.py --path path/to/skills --json
+
+# Package one skill after it passes lint (writes into that skill's own dir)
+python3 skills/package_skill.py signatry-style
+
+# Preview what would be packaged without writing the zip
+python3 skills/package_skill.py signatry-style --dry-run
+```
+
+If `lint_skills.py` reports a `CRITICAL` finding, do not distribute the
+skill — remove the offending data and report it to the Technology Team per
+IT14 Policy 10.
+
 ## License
 
 Released under CC0 1.0 Universal — see [LICENSE](LICENSE).
