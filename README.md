@@ -4,7 +4,7 @@ Configuration for using Claude at The Signatry — organization-wide instruction
 
 ## Contents
 
-### Organization instructions
+### Organization instructions (`org-instructions/`)
 
 - **`organization_instructions_readable.md`** — the source of truth. Written in an
   expanded, easy-to-edit format with one ALL-CAPS section heading and one paragraph
@@ -18,6 +18,7 @@ Configuration for using Claude at The Signatry — organization-wide instruction
 To regenerate `organization_instructions.md` after editing the readable version:
 
 ```bash
+cd org-instructions
 python3 shorten_oi.py
 ```
 
@@ -26,11 +27,25 @@ directly — the compact file is generated output and will be overwritten.
 
 ### Skills
 
-- **`skills/signatry-style/`** — applies The Signatry's brand voice and style guide
-  (audience and voice, required terminology, faith-related capitalization and
-  scripture usage, number/date/mechanics rules, structural and narrative patterns,
-  and visual/brand references) whenever content is written, edited, reviewed, or
-  proofread for The Signatry.
+- **`skills/signatry-style/`** — The Signatry's official writing and brand voice guide:
+  audience and voice, required terminology, faith-related capitalization and scripture
+  usage, number/date/mechanics rules, structural and narrative patterns, and
+  visual/brand references. Use whenever writing, editing, reviewing, or proofreading
+  any content for The Signatry.
+- **`skills/signatry-brand-core/`** — canonical source of truth for The Signatry's
+  brand colors, fonts, and logo/mark assets, independent of file format. Format-specific
+  brand skills (pptx, docx, pdf) depend on this one for values and assets rather than
+  restating them.
+- **`skills/signatry-pptx-brand/`** — Signatry brand system for PowerPoint decks: color
+  palette, fonts (Mulish, Lora), and logo/quill assets. Pair with a general pptx build
+  skill and, for donor-facing copy, `signatry-style`.
+- **`skills/signatry-docx-brand/`** — Signatry brand templates for Word documents:
+  which of the two bundled `.dotx` templates to start from (general brand-styles vs.
+  letterhead) and the mechanics of building from one. Pair with a general docx build
+  skill and, for donor-facing copy, `signatry-style`.
+- **`skills/signatry-pdf-brand/`** — Signatry brand system for PDFs built with
+  reportlab: font registration/embedding, color palette, and logo usage. Pair with a
+  general pdf skill and, for donor-facing copy, `signatry-style`.
 
 ## License
 
