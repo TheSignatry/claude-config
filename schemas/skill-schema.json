@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://claude-config.thesignatry.internal/schemas/skill-schema.json",
+  "title": "Signatry SKILL.md frontmatter",
+  "description": "Required and recognized YAML frontmatter fields for SKILL.md files in this repo. Loaded dynamically by skills/lint_skills.py so the field list can be edited here without touching the linter.",
+  "type": "object",
+  "required": ["name", "description", "version", "release_date"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "minLength": 3,
+      "description": "Kebab-case skill identifier. Should match the containing directory name."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 60,
+      "maxLength": 1024,
+      "description": "Must clearly signal WHEN Claude should invoke this skill, not just what it contains (Anthropic guidance)."
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+(\\.\\d+)?$",
+      "description": "Semantic version of this skill package, e.g. 1.0 or 1.2.3."
+    },
+    "release_date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "format": "date",
+      "description": "ISO 8601 date (YYYY-MM-DD) this version was released."
+    },
+    "when_to_use": { "type": "string" },
+    "argument-hint": { "type": "string" },
+    "arguments": { "type": ["array", "object"] },
+    "disable-model-invocation": { "type": "boolean" },
+    "user-invocable": { "type": "boolean" },
+    "allowed-tools": { "type": ["array", "string"] },
+    "disallowed-tools": { "type": ["array", "string"] },
+    "model": { "type": "string" },
+    "effort": { "type": "string" },
+    "context": { "type": "string" },
+    "agent": { "type": "string" },
+    "background": { "type": "boolean" },
+    "hooks": { "type": "object" },
+    "paths": { "type": ["array", "string"] },
+    "shell": { "type": "string" }
+  },
+  "additionalProperties": true
+}
