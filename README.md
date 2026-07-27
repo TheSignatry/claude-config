@@ -53,6 +53,10 @@ directly — the compact file is generated output and will be overwritten.
 
 ### Skill tooling
 
+- **`schemas/skill-schema.json`** — the JSON Schema every skill's SKILL.md
+  frontmatter is evaluated against (required: `name`, `description`,
+  `version`, `release_date`, plus field formats). This is the rubric
+  `lint_skills.py` enforces; edit it to change what counts as a valid skill.
 - **`skills/lint_skills.py`** — validates every skill package under `skills/`:
   SKILL.md frontmatter against `schemas/skill-schema.json` (required: `name`,
   `description`, `version`, `release_date`), description trigger-language
@@ -84,6 +88,62 @@ python3 skills/package_skill.py signatry-style --dry-run
 If `lint_skills.py` reports a `CRITICAL` finding, do not distribute the
 skill — remove the offending data and report it to the Technology Team per
 IT14 Policy 10.
+
+## How to Use
+
+This repo is the source-controlled copy of everything Claude is configured
+with at The Signatry. The files here aren't consumed directly by Claude —
+each piece has to be deployed to where Claude actually reads it.
+
+### Organization instructions
+
+`org-instructions/organization_instructions.md` (the compact, generated file)
+is what's pasted into the organization-level system instructions field in the
+Anthropic Console admin settings. That Console field is the only place it
+takes effect — editing the file in this repo alone changes nothing for
+end users until it's re-pasted there.
+
+### Skills
+
+- **Local development/testing** — symlink or copy an individual skill folder
+  (e.g. `skills/signatry-style/`) into your local `~/.claude/skills/` (or a
+  project's `.claude/skills/`) to try it out with Claude Code before
+  publishing it org-wide.
+- **Org-wide deployment** — package the skill with `package_skill.py` (see
+  below) and upload the resulting zip on the Claude.ai/Console admin Skills
+  page. That upload is what makes the skill available to all Signatry users
+  in Claude.ai; committing the skill to this repo does not by itself deploy
+  it.
+
+## How to Update
+
+### Organization instructions
+
+1. Edit `org-instructions/organization_instructions_readable.md` (never edit
+   `organization_instructions.md` by hand — it's generated).
+2. Regenerate the compact file:
+   ```bash
+   cd org-instructions
+   python3 shorten_oi.py
+   ```
+3. Copy the regenerated `organization_instructions.md` contents into the
+   organization-level system instructions field in the Anthropic Console
+   admin settings, and commit the updated files here so the repo stays the
+   source of truth.
+
+### Skills
+
+1. Edit the skill's files under `skills/{skill-slug}/`, bumping `version` and
+   `release_date` in its SKILL.md frontmatter.
+2. Lint it: `python3 skills/lint_skills.py` (fix any `ERROR` or `CRITICAL`
+   finding — CRITICAL findings are IT15 Restricted-data hits and must never
+   be distributed; see IT15 and report them per IT14 Policy 10).
+3. Package it: `python3 skills/package_skill.py {skill-slug}`, which refuses
+   to build a zip if the skill still fails lint.
+4. Upload the new `{skill-slug}-{version}.zip` on the Claude.ai/Console admin
+   Skills page, replacing the previous version.
+5. Commit the skill changes (the zip itself is gitignored) so this repo
+   reflects what was deployed.
 
 ## License
 
