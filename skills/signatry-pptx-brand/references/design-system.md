@@ -131,6 +131,11 @@ Switch per section, not per slide. A single-topic deck stays in one scheme (Lega
 
 ## QA checklist for generated decks
 
+Run all four. Steps 1–3 are mechanical; step 4 catches what the others miss.
+
 1. `validate.py` passes
-2. Render to images (fonts installed first — see SKILL.md) and inspect every slide for: text touching box edges, text in the tab zone, <0.3" gaps, wrapped kickers
-3. `markitdown` output matches intended copy, signatry-style terminology applied
+2. `scripts/layout_lint.py` passes — catches element intersections and tab-zone violations
+3. `markitdown` output matches intended copy, with signatry-style terminology applied
+4. **Render to images and look at every slide.** Fonts must be installed first (see SKILL.md), or the render shows substituted fonts and the check is meaningless. Inspect for: missing logo or corner tab, text touching box edges, text in the tab zone, gaps under 0.3", wrapped kickers, stretched photos.
+
+Do not report a deck as complete without step 4. If the user has not seen the rendered slides, no one has.
