@@ -9,6 +9,18 @@ release_date: 2026-07-26
 
 This skill supplies the visual brand layer for The Signatry's slide decks: colors, fonts, and logo usage. It does not duplicate deck-building mechanics or writing style — see **Dependencies** below.
 
+## Definition of done — check before delivering any deck
+
+A deck is not finished when the `.pptx` is written. It is finished when all five of these are true:
+
+1. **Assets loaded from disk.** `ls assets/logos/` was run, and the logo and tab PNGs were passed to `addImage` — not approximated with drawn shapes (see **Logo and mark** below).
+2. **Fonts installed** in the sandbox per the bash block under **Fonts**, before any rendering.
+3. **`scripts/layout_lint.py` passes** on the built file.
+4. **Slides rendered to images and visually inspected.** This is the step that catches missing logos, substituted fonts, and collisions. Do not describe a deck as complete without it.
+5. **`scripts/apply_font_fallbacks.py`, then `scripts/embed_fonts.py`** run as the final steps.
+
+Report the outcome of steps 3–5 when delivering the file. If a step was skipped, name which one and why rather than staying silent about it.
+
 ## Dependencies — read these first
 
 - **`signatry-brand-core` skill**: canonical colors, fonts, and logo files for The Signatry. This skill mirrors the specific values/files it needs locally and adds pptx-specific mechanics on top — if a color or font ever looks stale here, `signatry-brand-core` is the source of truth, not this file.
@@ -83,13 +95,33 @@ Bundled in `assets/logos/` (mirrored from `signatry-brand-core`, the canonical s
 | `logo_white_1C.png` | Full wordmark + quill, solid white, one color | Dark or colored backgrounds (Legacy, Midnight, photos) |
 | `quill_2color.svg` | Quill mark alone, two-color | Light backgrounds, as a standalone accent/mark |
 | `quill_white.svg` | Quill mark alone, white | Dark or colored backgrounds, as a standalone accent/mark |
-
+| `quill_tab_legacy.png` | Corner quill tab, teal | Interior slides on white/Ice backgrounds |
+| `quill_tab_midnight.png` | Corner quill tab, dark | Interior slides on photo or colored backgrounds needing contrast |
 Usage notes:
 
 - Never alter, recolor, stretch, or rotate the logo or quill artwork (per `signatry-style` skill: don't alter logo text or design).
 - "The Signatry" with no tagline is the preferred lockup — that's what's bundled here; don't fabricate a tagline version.
 - No official clearspace/minimum-size values are on file for slides — use generous whitespace around the mark (comparable to the mark's own height) and keep it legible at typical presentation viewing distance; confirm exact clearspace with Ben if a client/board-facing deck needs pixel-precise placement.
 - python-pptx's `add_picture` cannot read SVG (see `pptx` skill) — use the bundled PNG/rasterized logo for python-pptx workflows, or the SVGs only where the tool chain supports vector (e.g., Canva, HTML/web contexts).
+- **Never substitute a drawn shape for a bundled asset.** The corner tab is `quill_tab_legacy.png` or `quill_tab_midnight.png` placed with `addImage` — not a `RECTANGLE` filled with Legacy teal at the same coordinates. The same applies to the wordmark: there is no text-and-shape approximation of the logo. If an asset cannot be found on disk, stop and say so rather than drawing a stand-in.
+
+### Loading the assets into a build
+
+Copy the assets into the working directory before writing the generator script, so the paths in the script are stable and verifiably present:
+
+```bash
+mkdir -p ./assets
+cp <this-skill's-directory>/assets/logos/*.png ./assets/
+ls -la ./assets/    # confirm the files are there before referencing them
+```
+
+Then reference them in pptxgenjs:
+
+```javascript
+slide.addImage({ path: "./assets/quill_tab_legacy.png", x: 11.7, y: 6.36, w: 0.86, h: 1.15 });
+```
+
+`addImage` takes `path` for a local file or `data` for a base64 string; it does not fetch remote URLs.
 
 ## How to build a deck: from scratch, in the template style
 
