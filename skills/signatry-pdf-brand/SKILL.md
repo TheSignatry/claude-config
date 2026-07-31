@@ -1,7 +1,7 @@
 ---
 name: signatry-pdf-brand
 description: "Signatry brand system for PDFs built with reportlab: font registration/embedding, color palette, and logo usage for The Signatry. Use whenever building, branding, or reviewing a PDF for The Signatry — reports, flyers, one-pagers, fund summaries, or any PDF deliverable — even if the user doesn't say 'brand' or 'Signatry' by name, as long as the deliverable is a Signatry PDF. Always pair with the general pdf skill (build/extraction mechanics) and, if there is donor-facing or narrative copy, the signatry-style skill (voice and terminology)."
-version: 1.0
+version: 1.2
 release_date: 2026-07-26
 ---
 
@@ -14,6 +14,10 @@ This skill supplies the visual brand layer for The Signatry's reportlab-built PD
 - **`signatry-brand-core` skill**: canonical colors, fonts, and logo files. If a value here ever looks wrong or out of date, that skill wins — check it, don't guess.
 - **`pdf` skill**: general PDF build/extraction mechanics (reportlab basics, pypdf, pdfplumber, merging/splitting). This skill only adds Signatry-specific brand values on top of that workflow.
 - **`signatry-style` skill**: use whenever the PDF has donor-facing or narrative copy (headlines, body copy, CTAs, disclosures). Apply its terminology, faith-language, and voice rules to the text content.
+- **`signatry-facts` skill**: use whenever a PDF will state a factual value about The Signatry — contact info, entity/leadership names, history, figures, fund terms, or boilerplate/disclaimers. Load it on any build; don't supply these values from recall.
+- **`signatry-content-guardrails` skill**: content restriction rules (fabrication prohibition, donor photo/quote reuse, gift-amount confidentiality, board-only source restriction) — independent of format, load on any build.
+- **`signatry-icons` skill**: the 69-icon brand set. Use the `png_512` variants, or `svg` through `svglib` — see **Placing an icon** below. Search with that skill's `scripts/find_icons.py`; don't draw substitutes or pull outside icon sets.
+- **`signatry-photo-library` skill**: the 44-image catalog and `scripts/find_photos.py`. Search it before using a placeholder or outside stock.
 
 ## Why this skill exists
 
@@ -106,6 +110,33 @@ This guarantee is specific to reportlab's `TTFont`/`registerFont` path. If a Sig
 ### Subscripts/superscripts
 
 Per the general `pdf` skill: never use Unicode subscript/superscript characters with these fonts — use reportlab's `<sub>`/`<super>` markup in `Paragraph` text instead, or manually adjust font size/position for canvas-drawn text.
+
+## Placing an icon
+
+Two working paths, both verified July 31, 2026 against reportlab 4.4.10.
+
+**PNG (default).** Simplest and most predictable. Icons are 512x512 RGBA with transparency, square, so keep width and height equal:
+
+```python
+from reportlab.platypus import Image
+Image("<icons-skill>/assets/icons/png_512/glacier/SIG_Icon20_Stewardship_RGB.png",
+      width=48, height=48)          # points; 48pt is a comfortable inline mark
+```
+
+Use `png_128` only for marks under about 24pt. For `canvas.drawImage`, pass `mask="auto"` so transparency is honored rather than filled black.
+
+**SVG via `svglib` (vector).** Use when the icon is large enough that raster edges would show. `svglib` is a separate install, not part of reportlab:
+
+```python
+from svglib.svglib import svg2rlg
+d = svg2rlg("<icons-skill>/assets/icons/svg/SIG_Icon20_Stewardship_RGB.svg")
+scale = 48.0 / d.width                # svg2rlg does not size to a target
+d.width *= scale; d.height *= scale; d.scale(scale, scale)
+```
+
+The returned object is a `Drawing` flowable and goes straight into a story. Scaling is not automatic — set it explicitly or the icon renders at its natural 110pt.
+
+**Color.** Use `png_512/glacier/` or `svg/` on light backgrounds; `png_512/white/` on Legacy, Midnight, or photographs. The SVG set carries Glacier by default and recolors via its root `color` property — see `signatry-icons`. Only Glacier and white exist as PNG; if a PDF needs a tinted icon, take the SVG path and set the tint hex from `signatry-brand-core`, rather than lowering opacity.
 
 ## Logo and mark
 
