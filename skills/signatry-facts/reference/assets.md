@@ -64,30 +64,12 @@ Even then it is a donation to a 501(c)(3) nonprofit and **may be tax deductible.
 | "There are no costs to giving a business interest" | The stakeholder grant applies to every nonliquid gift and should be shown |
 | "The fee is 3%" | Avoid rate language. It invites comparison to an expense ratio, which is the wrong mental model in the near-term-sale case. |
 
-## Scale of the stakeholder grant
-
-Published tiers from `fees.md`, with the share of the gift each represents. **In the near-term-sale model these are shares of charitable dollars redirected, not donor expenses.**
-
-| Gift value to The Signatry | Minimum stakeholder grant | Share of gift |
-|---|---|---|
-| $1,000,000 (the floor) | $50,000 | 5.0% |
-| $2,000,000 | $50,000 | 2.5% |
-| $5,000,000 | $150,000 | 3.0% |
-| $10,000,000 | $175,000 | 1.75% |
-| $50,000,000 | $300,000 | 0.6% |
-
-The share is highest at the floor and falls as gift value rises. Gifts held beyond one year also carry the annualized management fee in `fees.md`, beginning in year two.
-
 ## Usage rules
 
 - **Never model a nonliquid gift without the stakeholder grant, and never mischaracterize it.** A July 2026 draft deck omitted it entirely from a $5 million scenario. A subsequent correction in this file overstated it as a $150,000 donor cost. Both were wrong. Show it, and show it as the section above describes.
 - **Qualify on the $1 million floor before building any nonliquid gift scenario**, including hypothetical ones. An illustrative example below the floor describes something The Signatry would decline.
 - **Label illustrative figures on the artifact**, not only in conversation.
 - Any external content here is financial content and carries the disclaimer in `../facts.md`.
-
-## Supporting statistic
-
-In 2025, nonliquid gifts were **34% of contributed dollars from 17 gifts** — $229,165,453. The strongest single data point for asset-giving audiences. Source `AR-2025`, detail in `figures.md`.
 
 ## Gaps
 
