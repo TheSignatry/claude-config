@@ -4,7 +4,7 @@
 **Review:** quarterly, on release of each impact report
 **Verified:** 2026-07-27
 
-Two canonical sources by figure type. `IR-2026Q1` (data as of May 2026) governs **cumulative since-2018 totals**. `AR-2025` governs **all CY2025 detail** — gift types, cause categories, investments, rates — which the impact reports do not restate. Where `AR-2025` and an impact report disagree on a 2025 count, `AR-2025` wins; audit completion revises upward.
+Two canonical sources by figure type. `IR-2026Q1` (data as of May 2026) governs **cumulative since-2018 totals**. `AR-2025` governs **all CY2025 detail** — gift types, cause categories, investments, rates — which the impact reports do not restate. Where `AR-2025` and an impact report disagree on a 2025 count, `IR-2026Q1` or any subsequent impact report wins; audit completion revises.
 
 **Do not take any figure from thesignatry.com.** See "Known-bad values" below.
 
@@ -47,7 +47,7 @@ Grants $148M. Contributions $38M — cash 69%, publicly traded securities 31%, n
 | Securities | 2,463 | $73,938,247 |
 | Nonliquid | 17 | $229,165,453 |
 
-**Nonliquid gifts were 34% of contributed dollars from 17 gifts.** The strongest single statistic for business owner and asset-giving audiences.
+**Nonliquid gifts were 34% of contributed dollars from 17 gifts.** 
 
 ### Generosity Activation Rate
 
@@ -107,4 +107,4 @@ The Board of Directors page figure of $3.9B is **correct** — it matches `IR-20
 
 ## Still unverified
 
-Assets under management — not in `AR-2025`; check FY2025 audited financials, noting the **fiscal year ends March 31**, so FY and CY figures cover different periods. Employee count — third-party sources say 86; not first-party.
+Assets under management — not in `AR-2025`; check FY2025 audited financials, noting the **fiscal year ends March 31**, so FY and CY figures cover different periods. CY and FY are synchronized to both on end Dec 31 starting in 2026. Employee count — third-party sources say 86; not first-party.
