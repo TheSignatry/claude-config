@@ -65,4 +65,4 @@ From `IR-2025Q4`:
 
 Aric Almirola (NASCAR driver; blog feature and 2025 Young Life / Joe Gibbs Racing sponsorship), Brandon Lake and Eddie Fordham Jr. (in the Joyner story).
 
-These are public figures and third parties rather than donor families. Signatry-held photographs of them fall under the standing clearance in Permissions above. What is *not* covered is anything implying endorsement, sponsorship, or a commercial tie — that rests on publicity and sponsorship rights, not a donor release. Use the imagery; check with Ben before framing any of them as endorsing The Signatry.
+These are public figures and third parties rather than donor families, with the exception of Aric Almirola, who is a donor to The Signatry. Signatry-held photographs of them fall under the standing clearance in Permissions above. What is *not* covered is anything implying endorsement, sponsorship, or a commercial tie — that rests on publicity and sponsorship rights, not a donor release. Use the imagery; check with Ben before framing any of them as endorsing The Signatry.
