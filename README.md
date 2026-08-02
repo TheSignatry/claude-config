@@ -27,29 +27,22 @@ directly — the compact file is generated output and will be overwritten.
 
 ### Skills
 
-- **`skills/signatry-style/`** — The Signatry's official writing and brand voice guide:
-  audience and voice, required terminology, faith-related capitalization and scripture
-  usage, number/date/mechanics rules, structural and narrative patterns, and
-  visual/brand references. Use whenever writing, editing, reviewing, or proofreading
-  any content for The Signatry.
-- **`skills/signatry-brand-core/`** — canonical source of truth for The Signatry's
-  brand colors, fonts, and logo/mark assets, independent of file format. Format-specific
-  brand skills (pptx, docx, pdf) depend on this one for values and assets rather than
-  restating them.
-- **`skills/signatry-pptx-brand/`** — Signatry brand system for PowerPoint decks: color
-  palette, fonts (Mulish, Lora), and logo/quill assets. Pair with a general pptx build
-  skill and, for donor-facing copy, `signatry-style`.
-- **`skills/signatry-docx-brand/`** — Signatry brand templates for Word documents:
-  which of the two bundled `.dotx` templates to start from (general brand-styles vs.
-  letterhead) and the mechanics of building from one. Pair with a general docx build
-  skill and, for donor-facing copy, `signatry-style`.
-- **`skills/signatry-pdf-brand/`** — Signatry brand system for PDFs built with
-  reportlab: font registration/embedding, color palette, and logo usage. Pair with a
-  general pdf skill and, for donor-facing copy, `signatry-style`.
-- **`skills/sounding-board/`** — role-plays a panel of fictional, composite personas
-  reacting to an idea, message, decision, or proposal before it goes out. Covers
-  seven audiences (employee, donor, advisors, VIP family, board, shepherds/C-suite,
-  nonprofit partner), each with its own persona file in `references/`.
+Version and release date come from each skill's own `SKILL.md` frontmatter — update
+this table whenever those change. `python3 skills/lint_skills.py` enforces that the
+frontmatter fields exist, but does not check that this table matches them.
+
+| Skill | Description | Version | Release date |
+|---|---|---|---|
+| [`signatry-style`](skills/signatry-style/) | The Signatry's official writing and brand voice guide: audience and voice, required terminology, faith-related capitalization and scripture usage, number/date/mechanics rules, structural and narrative patterns, and visual/brand references. Use whenever writing, editing, reviewing, or proofreading any content for The Signatry. | 1.1 | 2026-07-26 |
+| [`signatry-brand-core`](skills/signatry-brand-core/) | Canonical source of truth for The Signatry's brand colors, fonts, and logo/mark assets, independent of file format. Format-specific brand skills (pptx, docx, pdf) depend on this one for values and assets rather than restating them. | 1.1 | 2026-07-31 |
+| [`signatry-content-guardrails`](skills/signatry-content-guardrails/) | Content restriction rules for The Signatry — fabrication prohibition, donor photo/quote reuse, gift-amount confidentiality, and board-only source restriction — independent of format. Use on every Signatry deliverable, any format. | 2.1 | 2026-07-31 |
+| [`signatry-facts`](skills/signatry-facts/) | Canonical record of The Signatry's organizational facts: contact details, legal entity and leadership names, founding history, scale figures, fund terms, and approved boilerplate/disclaimer text. Use whenever content will state a specific factual value. | 1.1 | 2026-07-31 |
+| [`signatry-icons`](skills/signatry-icons/) | The Signatry's brand icon library — 69 single-color icons (SVG and PNG, Glacier) with a searchable catalog and search script. Use whenever a deliverable needs an icon, in any format. | 3.4 | 2026-07-31 |
+| [`signatry-photo-library`](skills/signatry-photo-library/) | The Signatry's curated image library — 44 photographs (donor families, stock lifestyle, landscape/nature) with a searchable catalog and search script. Use whenever a deliverable needs a photograph, in any format. | 2.1 | 2026-07-31 |
+| [`signatry-pptx-brand`](skills/signatry-pptx-brand/) | Signatry brand system for PowerPoint decks: color palette, fonts (Mulish, Lora), and logo/quill assets. Pair with a general pptx build skill and, for donor-facing copy, `signatry-style`. | 1.4 | 2026-07-31 |
+| [`signatry-docx-brand`](skills/signatry-docx-brand/) | Signatry brand templates for Word documents: which of the two bundled `.dotx` templates to start from (general brand-styles vs. letterhead) and the mechanics of building from one. Pair with a general docx build skill and, for donor-facing copy, `signatry-style`. | 1.5 | 2026-07-31 |
+| [`signatry-pdf-brand`](skills/signatry-pdf-brand/) | Signatry brand system for PDFs built with reportlab: font registration/embedding, color palette, and logo usage. Pair with a general pdf skill and, for donor-facing copy, `signatry-style`. | 1.2 | 2026-07-26 |
+| [`sounding-board`](skills/sounding-board/) | Role-plays a panel of fictional, composite personas reacting to an idea, message, decision, or proposal before it goes out. Covers seven audiences (employee, donor, advisors, VIP family, board, shepherds/C-suite, nonprofit partner), each with its own persona file in `references/`. | 0.5 | 2026-07-26 |
 
 ### Skill tooling
 
@@ -64,6 +57,15 @@ directly — the compact file is generated output and will be overwritten.
   (SSNs, payment card numbers, bank/account numbers, credentials/keys) across
   every text file in the skill. Any Restricted-data finding hard-fails the
   build; matched values are always masked in the output.
+- **`skills/lint_allowlist.json`** — marks specific `assets/`/`scripts/`
+  path mentions as expected even though they don't exist in that skill
+  (e.g. a path that belongs to a different skill/tool), keyed by skill
+  directory name. Each entry is `{"path": ..., "reason": ...}` — a
+  non-empty `reason` explaining *why* the path is expected is required;
+  `lint_skills.py` warns on entries missing one (or written as a bare
+  string) and separately warns if an entry no longer appears anywhere in
+  that skill's text, so the file can't be a rubber stamp or silently go
+  stale.
 - **`skills/package_skill.py`** — packages a single skill into an
   upload-ready `{skill-slug}-{version}.zip` (SKILL.md at the zip root, no
   wrapping folder), refusing to package if the skill fails
