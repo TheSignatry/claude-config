@@ -11,9 +11,9 @@ Fees and minimums for all three fund types are in `fees.md`. This file covers wh
 | | Donor advised fund | Designated fund | Charity fund |
 |---|---|---|---|
 | Who opens it | A donor or family | A donor | **A nonprofit** |
-| Grants to | Any vetted nonprofit, donor-recommended over time | **One charity only**, specified at opening | The nonprofit that owns the fund |
+| Grants to | Any vetted nonprofit, donor-recommended over time | **One charity only**, specified at opening | The nonprofit that advises the fund |
 | Can receive a QCD from an IRA? | **No** | **Yes** | **Yes** |
-| Can be invested | Yes — BRI pools, AMAs, alternatives | Not documented | Yes — BRI pools |
+| Can be invested | Yes — BRI pools, AMAs, alternatives | Yes | Yes — BRI pools |
 | Admin fee | None | None | None |
 | Minimum grant | $100 | $100 | $100 |
 
@@ -25,7 +25,7 @@ A donor establishes a DAF with a qualified 501(c)(3) sponsor like The Signatry a
 
 Accepts cash, publicly traded securities, real estate, business interests, cryptocurrency, and other nonliquid assets. Balances may be invested in biblically responsible investment pools, advisor managed accounts, or vetted alternative investments.
 
-The Signatry vets each recommended recipient for values alignment and good legal standing before sending the grant.
+The Signatry vets each recommended grant recipient for values alignment and good standing with the IRS before sending the grant.
 
 ## Designated fund
 
@@ -53,7 +53,7 @@ How it works, as published:
 
 Stated benefits: The Signatry handles receipting and paperwork for the donor; the donor takes the deduction in the year of the gift while the nonprofit may leave the gift invested; charity funds are approved to receive IRA charitable rollover gifts, unlike DAFs; free to open and requires no IRS paperwork.
 
-**Nonprofit contact for charity funds: 913-308-1999 · nonprofitsuccess@thesignatry.com.** Distinct from the main line.
+**Nonprofit contact for charity funds: nonprofitsuccess@thesignatry.com.**
 
 > The published sheet uses "charitable rollover" where other pages say "qualified charitable distribution." Same instrument, two names. Prefer QCD, spelled out on first use.
 
@@ -77,14 +77,12 @@ The Signatry is **not affiliated with any single church or denomination** and is
 - The Athanasian Creed, for the doctrine of the Trinity and the nature of Jesus Christ
 - The key documents of the Lausanne Movement — the Lausanne Covenant (1974), the Manila Manifesto (1989), the Cape Town Commitment (2010), and the Seoul Statement (2024)
 
-The Statement of Faith is the screen behind biblically responsible investment pool selection: BRI pools hold companies whose core business lines do not conflict with biblical principles and The Signatry's Statement of Faith.
+The Statement of Faith is the screen behind biblically responsible investment pool selection: BRI pools hold companies whose core business lines do not conflict with biblical principles and The Signatry's Statement of Faith. The Statement of Faith is also a component of the screening process for grant recipients.
 
 > Per `signatry-style`, "Church" is capitalized for the global Church, as above. Do not paraphrase the creeds; link to them.
 
 ## Gaps
 
-- Designated fund investability, opening process, and whether asset types beyond cash and securities are accepted
-- Charity fund eligibility — any 501(c)(3), or vetted subset
 - What The Signatry will not accept or will not grant to, concretely
 - Advisor managed account onboarding process
 - Whether "charitable rollover" or "QCD" is the preferred external term
