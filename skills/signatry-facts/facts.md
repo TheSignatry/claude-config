@@ -78,7 +78,7 @@ The primary 990 and reporting documents have historically been filed under Serva
 - **Never cite a bare EIN as "The Signatry's EIN."** 43-1890105 is Servant Foundation's. Name the entity or omit the number.
 - The Generosity Activation Rate and payout rate combine two entities' Form 990s — see `reference/figures.md` before restating either.
 
-## Leadership
+## Leadership, also known as "Executive Team" and "Shepherd Team"
 
 `VERIFIED` — Ben Martin, 2026-07-27. Review quarterly.
 
@@ -93,9 +93,7 @@ The primary 990 and reporting documents have historically been filed under Serva
 | Dane Frazier | Chief Legal Officer |
 | Trevor Bunch | Chief Information Officer |
 | Kristin Hammett | Vice President, Family Generosity Services |
-| Ben Martin | Vice President, Marketing |
 
-Bill High — founder; CEO 2000–2021.
 
 ## Board of Directors
 
@@ -110,7 +108,7 @@ Bill High — founder; CEO 2000–2021.
 | Gary Nagel | Board Member | Founder, Wealth Management Group of Kansas City |
 | Steve French | President and CEO | — |
 
-> Confirm before publishing anything naming both: the `WEB-BOARD` bio for Mark Hammett refers to "his wife Kristin." If that is the same Kristin Hammett listed above, it is a related-party relationship worth knowing about.
+> Mark Hammett's wife Kristin serves on the executive team.
 
 > Staff roster below the executive team is not on file. The public leadership page renders its team list in JavaScript and returns no names on fetch.
 
@@ -121,7 +119,7 @@ Bill High — founder; CEO 2000–2021.
 | Identity | The Signatry is a Christian ministry partnering with generous families to build the kingdom of God. | `AR-2025`, `signatry-style` §1 |
 | Mission | To inspire and facilitate revolutionary, biblical generosity across generations to solve the world's greatest problems. | `AR-2025` |
 | Vision | To write the last check to the last missionary to reach the last unreached people group so the last person can hear the gospel. | `AR-2025` |
-| Values | Family · Creativity & Innovation · Generosity · Integrity & Transparency · Collaboration | `CG-2023` |
+| Values | Family · Creativity & Innovation · Generosity · Collaboration · Integrity & Transparency | `CG-2023` |
 
 > Wording varies by source. The Charity Navigator filing adds "and bring the hope of the gospel to all" to the mission. `AR-2025` punctuates "revolutionary, biblical"; other sources omit the comma. `CG-2023` renders the vision as "to be sent out to the last unreached people group." Confirm canonical wording.
 
@@ -148,7 +146,7 @@ Reproduce exactly.
 |---|---|
 | External financial, donation, tax, or legal content | The Signatry does not provide legal, tax, financial, or other professional advice. You should consult professional advisors concerning the legal, tax, or financial consequences of your charitable activities. |
 | Internal financial, tax, legal, or compliance content | This is informational only and is not professional advice. Review by the appropriate internal team is required before use. |
-| "About" paragraph | Established in 2000, The Signatry is a ministry and donor advised fund sponsor that seeks to inspire and facilitate revolutionary biblical generosity across generations. |
+| "About" paragraph | The Signatry is a ministry and donor advised fund sponsor that seeks to inspire and facilitate revolutionary biblical generosity across generations. |
 
 ## Known-bad values — do not use
 
