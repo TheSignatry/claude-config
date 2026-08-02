@@ -1,0 +1,49 @@
+{
+  "_readme": "Marks specific assets/ or scripts/ path mentions that lint_skills.py's ASSETS_SCRIPTS_MENTION_RE check would otherwise flag as WARNING because the path doesn't exist inside that skill's own directory. Keyed by skill directory name; each entry is {\"path\": \"<exact string as it appears in the skill's text>\", \"reason\": \"<why this specific mention is expected, not a broken reference>\"}. A reason is required per entry — lint_skills.py warns on any entry missing one. Remove an entry once the path it covers is no longer mentioned anywhere in that skill — lint_skills.py flags stale entries automatically.",
+  "signatry-docx-brand": [
+    {
+      "path": "scripts/find_icons.py",
+      "reason": "This is not an orphaned script - it is a reference to the signatry-icons skill's icon-search script. SKILL.md names signatry-icons as a dependency (\"Search with that skill's scripts/find_icons.py\") — the script lives in that skill's directory, not this one."
+    },
+    {
+      "path": "scripts/find_photos.py",
+      "reason": "This is not an orphaned script - it is a reference to the signatry-photo-library skill's photo-search script. SKILL.md names signatry-photo-library as a dependency (\"the 44-image catalog and scripts/find_photos.py\") — the script lives in that skill's directory, not this one."
+    },
+    {
+      "path": "scripts/office/soffice.py",
+      "reason": "Belongs to the general docx build skill's verification step (\"Verify per the docx skill: convert to PDF with scripts/office/soffice.py\") — this brand skill only supplies colors/fonts/templates on top of that build skill and doesn't bundle its mechanics scripts."
+    }
+  ],
+  "signatry-pdf-brand": [
+    {
+      "path": "scripts/find_icons.py",
+      "reason": "This is not an orphaned script - it is a reference to the signatry-icons skill's icon-search script, named as a dependency in this skill's SKILL.md (\"Search with that skill's scripts/find_icons.py\")."
+    },
+    {
+      "path": "scripts/find_photos.py",
+      "reason": "This is not an orphaned script - it is a reference to the signatry-photo-library skill's photo-search script, named as a dependency in this skill's SKILL.md (\"the 44-image catalog and scripts/find_photos.py\")."
+    },
+    {
+      "path": "assets/icons/png_512/glacier/SIG_Icon20_Stewardship_RGB.png",
+      "reason": "Example code path shown in SKILL.md as \"<icons-skill>/assets/icons/png_512/glacier/SIG_Icon20_Stewardship_RGB.png\" — the <icons-skill>/ prefix means it lives under the signatry-icons skill's own bundled assets, not this skill's. The snippet illustrates the reportlab Image() call for loading an icon from there."
+    },
+    {
+      "path": "assets/icons/svg/SIG_Icon20_Stewardship_RGB.svg",
+      "reason": "Same as the png_512 entry above: example code path shown as \"<icons-skill>/assets/icons/svg/SIG_Icon20_Stewardship_RGB.svg\", under the signatry-icons skill's own assets, illustrating the svglib-based (svg2rlg) loading path."
+    }
+  ],
+  "signatry-pptx-brand": [
+    {
+      "path": "scripts/find_photos.py",
+      "reason": "This is not an orphaned script - it is a reference to script in a supporting skill within this bullet: signatry-photo-library's photo-search script, named as a dependency (\"the 44-image catalog and scripts/find_photos.py\") and referenced again in the Reference template files section and in references/design-system.md's photo-treatment guidance."
+    },
+    {
+      "path": "assets/quill_tab_legacy.png",
+      "reason": "That path is intentionally a working-directory reference (post-cp, which flattens the file into ./assets/), not the skill's bundled path (assets/logos/quill_tab_legacy.png), so it's a false positive, not a real broken link - consistent with the reverted state confirmed self-consistent on 2026-07-31. The bundled asset itself lives at skills/signatry-pptx-brand/assets/logos/quill_tab_legacy.png and is used correctly elsewhere (e.g. the Logo and mark table)."
+    },
+    {
+      "path": "scripts/office/validate.py",
+      "reason": "Belongs to the general pptx build skill's QA/validation step, named as a dependency in this skill's Dependencies section (\"pptx skill: use for all build mechanics ... chart gotchas, QA/validation\"). references/design-system.md's QA checklist says this explicitly: \"this one lives in the general pptx skill (scripts/office/validate.py), not in this skill\"."
+    }
+  ]
+}
