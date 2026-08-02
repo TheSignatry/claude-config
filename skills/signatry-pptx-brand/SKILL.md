@@ -1,8 +1,8 @@
 ---
 name: signatry-pptx-brand
 description: "Signatry brand system for PowerPoint decks: color palette, fonts (Mulish, Lora), and logo/quill assets for The Signatry. Use this skill whenever building, branding, restyling, or reviewing a .pptx presentation for The Signatry — donor-facing decks, internal/team decks, pitch decks, training decks, or any slide content — even if the user doesn't say 'brand' or 'Signatry' by name, as long as the deck is for Signatry. Always pair with the general pptx skill (build mechanics) and, if slide copy/text is being written, the signatry-style skill (voice and terminology)."
-version: 1.1
-release_date: 2026-07-27
+version: 1.4
+release_date: 2026-07-31
 ---
 
 # Signatry PowerPoint Brand System
@@ -21,11 +21,17 @@ A deck is not finished when the `.pptx` is written. It is finished when all five
 
 Report the outcome of steps 3–5 when delivering the file. If a step was skipped, name which one and why rather than staying silent about it.
 
+The four scripts referenced above ship in `scripts/` in this skill. `references/design-system.md` documents what each one does and how to invoke it.
+
 ## Dependencies — read these first
 
 - **`signatry-brand-core` skill**: canonical colors, fonts, and logo files for The Signatry. This skill mirrors the specific values/files it needs locally and adds pptx-specific mechanics on top — if a color or font ever looks stale here, `signatry-brand-core` is the source of truth, not this file.
 - **`pptx` skill**: use for all build mechanics (pptxgenjs script structure, chart gotchas, QA/validation, converting to images). This skill only adds Signatry-specific brand values on top of that workflow.
 - **`signatry-style` skill**: use whenever the deck has donor-facing or narrative copy (titles, body text, quotes, CTAs). Apply its terminology, faith-language, and voice rules to on-slide text. Skip it for internal/operational decks per that skill's own scope note.
+- **`signatry-facts` skill**: use whenever a slide will state a factual value about The Signatry — contact info, entity/leadership names, history, figures, fund terms, or boilerplate/disclaimers. Load it on any build; don't supply these values from recall.
+- **`signatry-content-guardrails` skill**: content restriction rules (fabrication prohibition, donor photo/quote reuse, gift-amount confidentiality, board-only source restriction) — independent of format, load on any build. See that skill rather than looking for these rules here.
+- **`signatry-photo-library` skill**: the 44-image catalog and `scripts/find_photos.py`. Search it for any deck photography before asking the user or using a placeholder. Reuse of donor-family images is gated by `signatry-content-guardrails`.
+- **`signatry-icons` skill**: the 60-icon brand set. Use it if a slide needs an icon — do not draw substitutes or pull outside icon sets.
 
 ## Color palette
 
@@ -79,7 +85,11 @@ fc-cache -f
 
 (`<this-skill's-directory>` is wherever this SKILL.md was loaded from — check its own path.)
 
-**Caveat on the final `.pptx` file itself:** pptxgenjs sets `fontFace` by name; it does not embed the font file into the package. The deck will render correctly in this sandbox (fonts installed above) and on any machine that already has Mulish/Lora installed, but will silently substitute a fallback font on a machine that doesn't. If the deck needs to look correct on an arbitrary recipient's machine, either (a) tell the recipient to install Mulish/Lora first, (b) deliver a PDF export alongside the `.pptx`, or (c) ask Ben if PowerPoint's native "embed fonts in file" step should be added — this skill does not currently automate font embedding.
+**Caveat on the final `.pptx` file itself:** pptxgenjs sets `fontFace` by name; it does not embed the font file into the package. Left at that, the deck renders correctly in this sandbox (fonts installed above) and on any machine that already has Mulish/Lora installed, but silently substitutes a fallback font on a machine that doesn't.
+
+**This skill automates the fix — it is step 5 of Definition of done, not optional.** Run `scripts/apply_font_fallbacks.py <deck.pptx>` and then `scripts/embed_fonts.py <deck.pptx>` as the final build steps; `embed_fonts.py` uses the same OOXML mechanism as PowerPoint's own "embed fonts in this file" option. See `references/design-system.md` step 10 for what each script does and its verification caveat (LibreOffice ignores PPTX embedded fonts, so embedding cannot be end-to-end verified in the sandbox).
+
+Residual risk after running both: if a delivered deck still shows wrong fonts in PowerPoint, fall back to telling the recipient to install Mulish/Lora (both free on Google Fonts) or delivering a PDF export alongside the `.pptx`.
 
 ## Keeping this skill in sync
 
@@ -97,11 +107,12 @@ Bundled in `assets/logos/` (mirrored from `signatry-brand-core`, the canonical s
 | `quill_white.svg` | Quill mark alone, white | Dark or colored backgrounds, as a standalone accent/mark |
 | `quill_tab_legacy.png` | Corner quill tab, teal | Interior slides on white/Ice backgrounds |
 | `quill_tab_midnight.png` | Corner quill tab, dark | Interior slides on photo or colored backgrounds needing contrast |
+
 Usage notes:
 
 - Never alter, recolor, stretch, or rotate the logo or quill artwork (per `signatry-style` skill: don't alter logo text or design).
 - "The Signatry" with no tagline is the preferred lockup — that's what's bundled here; don't fabricate a tagline version.
-- No official clearspace/minimum-size values are on file for slides — use generous whitespace around the mark (comparable to the mark's own height) and keep it legible at typical presentation viewing distance; confirm exact clearspace with Ben if a client/board-facing deck needs pixel-precise placement.
+- **Clearspace:** per `signatry-brand-core`, minimum clearspace on all sides of the logo equals the height of the letter "n" in the "Signatry" wordmark, measured from that same logo. This is the floor, not a target — more is always fine. Measure the n-height off the actual asset at the size you are placing it; do not assume a fixed inch value, since it scales with the logo. The corner tab is a bleed element and is exempt — it is designed to sit flush to the slide edge, and its reserved zone (11.5, 6.1)–(13.33, 7.5) is defined in `references/design-system.md` instead.
 - python-pptx's `add_picture` cannot read SVG (see `pptx` skill) — use the bundled PNG/rasterized logo for python-pptx workflows, or the SVGs only where the tool chain supports vector (e.g., Canva, HTML/web contexts).
 - **Never substitute a drawn shape for a bundled asset.** The corner tab is `quill_tab_legacy.png` or `quill_tab_midnight.png` placed with `addImage` — not a `RECTANGLE` filled with Legacy teal at the same coordinates. The same applies to the wordmark: there is no text-and-shape approximation of the logo. If an asset cannot be found on disk, stop and say so rather than drawing a stand-in.
 
@@ -137,17 +148,8 @@ Two ways to get their photography back for reuse, if needed:
 1. **Ask Ben to re-upload them in a conversation** — Claude can extract photos from `ppt/media/` on the spot and use them in the current build.
 2. **Re-attach them to the skill later** if the size constraint is resolved (e.g. a Team/Enterprise plan or a higher upload limit) — drop the four files into `assets/templates/` and repackage.
 
-Until then, decks built from this skill need photography supplied by the user per request (see the donor-content guardrail below — donor-specific photos/quotes are on hold pending Ben's team's decision either way).
+Photography for decks comes from the `signatry-photo-library` skill — search it with `scripts/find_photos.py` before asking the user. If the template files are re-uploaded, their `ppt/media/` photography becomes available too. Ask the user only when neither source has a fit.
 
-## Confidentiality guardrail
+## Content guardrails
 
-Do not source content for these decks from anything marked confidential, board-only, or privileged, or from board agendas/financials/succession planning — per organization policy, that content should not be processed here at all. If a deck's source material includes it, stop and flag it rather than continuing.
-
-## Donor content guardrail (photos and quotes)
-
-**Never fabricate a donor quote, testimonial, or named "donor" persona to fill a slide.** A quote attributed to a real name is a specific factual claim about what that person said — inventing one, or inventing a generic unnamed "donor" quote to sound authentic, is misrepresentation, not a stylistic shortcut. If no approved quote is available for a deck, use a scripture reference or a thematic pull-quote instead (see archetype F/I), never a synthetic testimonial.
-
-**Reuse of existing named donor photos/quotes (from the bundled templates or elsewhere) is on hold pending an internal decision from Ben's team** on donor consent scope — whether a donor's story/photo/quote approved for one piece may be reused in others. Until that's resolved:
-- Treat every donor-attributed photo and quote in the bundled templates as tied to its original slide/context only — don't repurpose Krista Roland's, Brian Roland's, or Michael Sollazzo's photos or quotes onto new, unrelated slides.
-- Generic, unnamed lifestyle/nature photography (no story or name attached) is fine to reuse freely.
-- If a deck needs a donor story and none is supplied, ask Ben rather than substituting a bundled one.
+Fabrication rules (never invent a fact or a donor quote), donor photo/quote reuse rules, gift-amount confidentiality, and the confidentiality/board-only source restriction have moved to a dedicated `signatry-content-guardrails` skill, shared across all format skills (pptx, docx, pdf) rather than duplicated in each. Load that skill on any build — see **Dependencies** above.

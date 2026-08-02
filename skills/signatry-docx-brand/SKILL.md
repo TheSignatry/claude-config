@@ -1,8 +1,8 @@
 ---
 name: signatry-docx-brand
 description: "Signatry brand templates for Word documents: which of the two bundled .dotx templates to base a new .docx on (general brand-styles template vs. letterhead template), and the exact mechanical steps to build from a .dotx starting point instead of from scratch. Use this whenever creating a Word document for The Signatry — always pair with the general docx skill (build/edit mechanics) and, if there is donor-facing or narrative copy, the signatry-style skill (voice and terminology). Trigger even if the user doesn't say 'template' or 'brand' by name, as long as the deliverable is a Signatry Word document."
-version: 1.0
-release_date: 2026-07-26
+version: 1.5
+release_date: 2026-07-31
 ---
 
 # Signatry Word Document Brand Templates
@@ -14,6 +14,10 @@ This skill supplies the starting-point templates for Signatry `.docx` deliverabl
 - **`signatry-brand-core` skill**: canonical colors, fonts, and logo files for The Signatry — including tints (80%/60%/40%/20%/5%) of every color, if a document needs a lighter variant. The two `.dotx` templates already carry the correct fonts/colors baked into their own `styles.xml` and embedded font files, so this skill doesn't need to separately bundle raw font files the way `signatry-pptx-brand` and `signatry-pdf-brand` do — but if a document ever needs a brand hex value directly (e.g., a manual accent run, or a tint), pull it from `signatry-brand-core`, not from memory or the older `signatry-style` table.
 - **`docx` skill**: build/edit mechanics (docx-js gotchas, unzip-edit-rezip workflow for existing files, tracked changes, comments, verification via soffice/pdftoppm). The "editing existing documents" workflow in that skill is exactly the mechanism this skill uses to build *from* a template.
 - **`signatry-style` skill**: voice, terminology, and faith-language rules for any donor-facing or narrative copy going into the document.
+- **`signatry-facts` skill**: use whenever a document will state a factual value about The Signatry — contact info, entity/leadership names, history, figures, fund terms, or boilerplate/disclaimers. Load it on any build; don't supply these values from recall.
+- **`signatry-content-guardrails` skill**: content restriction rules (fabrication prohibition, donor photo/quote reuse, gift-amount confidentiality, board-only source restriction) — independent of format, load on any build.
+- **`signatry-icons` skill**: the 69-icon brand set. Use the `png_512` variants for Word — see **Placing an icon** below. Search with that skill's `scripts/find_icons.py`; don't draw substitutes or pull outside icon sets.
+- **`signatry-photo-library` skill**: the 44-image catalog and `scripts/find_photos.py`. Search it before using a placeholder or outside stock.
 
 ## Which template to use
 
@@ -21,6 +25,8 @@ This skill supplies the starting-point templates for Signatry `.docx` deliverabl
 |---|---|
 | The document is addressed to someone, has a salutation/sign-off, and reads as correspondence (thank-you letter, gift acknowledgment, cover letter, etc.) | **Letterhead** (`The_Signatry_Letterhead_2026.dotx`) |
 | Everything else — reports, memos, guides, policies, internal docs, board materials, proposals | **Brand Styles** (`2026_Brand_Styles.dotx`) |
+
+Board materials are in scope here: a report or deck prepared *for* the board is ordinary work. The restriction in `signatry-content-guardrails` §4 is on *sourcing from* existing board-confidential material, and on generating the board-confidential artifacts themselves (agendas, minutes, resolutions, executive evaluations, succession planning). Read that section before starting anything board-adjacent.
 
 If ambiguous (e.g., a "letter to donors" that's really a multi-page report), ask the user rather than guessing — the two templates have different header/footer behavior and picking wrong means redoing the page setup.
 
@@ -60,10 +66,52 @@ This palette (Legacy `2b7a78`) matches the canonical set in `signatry-brand-core
 ## Letterhead template — what's in it
 
 - Logo + return address ("7171 W 95th St., Suite 501, Overland Park, KS 66212" + phone) sit in the **first-page header** (`header3.xml`, an embedded EMF logo image) — this is a first-page-different layout, so don't expect the same header on page 2+ of a multi-page letter.
+  - **Note the abbreviation.** The header artwork reads "95th St."; the canonical value in `signatry-facts` is "7171 W 95th **Street**, Suite 501, Overland Park, KS 66212". The quoted text above describes what the template actually contains — do not "correct" it to match `signatry-facts`, or this section will stop describing the file. The phone in the header, (913) 310-0279, does match the verified value. If body copy in a letter needs to state the address, use the `signatry-facts` form; the header keeps its own.
 - A thin teal rule sits near the bottom of the first page as a footer element.
 - 15 embedded font files (`word/fonts/*.odttf`) ship with the template — leave the `fontTable.xml` and `fonts/` folder untouched so the fonts stay embedded.
 - Body placeholder in `document.xml` (`April 2, 2018` / `To Whom It May Concern:` / `This is the body of the letter.` / `Sincerely,` / `The Sender`) shows the expected shape: date line, salutation, body paragraph(s), closing, signer name. Replace text content only; don't restructure the paragraph styles.
 - Same US Letter / 1" margins as the brand-styles template.
+
+## Placing an icon
+
+Use PNG from `signatry-icons` (`assets/icons/png_512/glacier/` — the only color it ships in). As of `signatry-icons` v3.4, PNG is the format that skill ships for Office use — EMF was dropped because at these placement sizes PNG holds print quality with no vector-format cross-platform risk (Mac Word, in particular, has documented EMF rendering bugs that PNG does not share).
+
+Every icon PNG is square, 512×512px, uniform across the whole set. At the 0.5 in placement size below that works out to roughly 1024 PPI on screen and well past any visible print threshold; do not stretch a placed icon past roughly 2.5–3 in without asking, since resolution starts to run out there.
+
+Four edits inside the unpacked package, on top of the steps above:
+
+1. **Register the extension** in `[Content_Types].xml`, once per document (Office templates often already register `png` for other embedded art — check before adding a duplicate):
+   ```xml
+   <Default Extension="png" ContentType="image/png"/>
+   ```
+2. **Copy the file** to `word/media/` (e.g. `icon1.png`).
+3. **Add a relationship** in `word/_rels/document.xml.rels`:
+   ```xml
+   <Relationship Id="rIcon1"
+     Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"
+     Target="media/icon1.png"/>
+   ```
+4. **Insert the drawing** in `document.xml`, sized in EMU (914400 per inch — 0.5 in is `457200`, and keep `cx` equal to `cy` since the artwork is square):
+   ```xml
+   <w:p><w:r><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0">
+     <wp:extent cx="457200" cy="457200"/>
+     <wp:docPr id="101" name="Stewardship icon" descr="Stewardship icon"/>
+     <a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+     <a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">
+     <pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">
+       <pic:nvPicPr><pic:cNvPr id="101" name="Stewardship icon"/><pic:cNvPicPr/></pic:nvPicPr>
+       <pic:blipFill><a:blip r:embed="rIcon1"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill>
+       <pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="457200" cy="457200"/></a:xfrm>
+       <a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr>
+     </pic:pic></a:graphicData></a:graphic>
+   </wp:inline></w:drawing></w:r></w:p>
+   ```
+
+Always fill `descr` with what the icon depicts — pull it from the `description` column of `icon_catalog.csv`. It is the alt text.
+
+**Verified July 31, 2026:** built from `2026_Brand_Styles.dotx` with a Glacier PNG (Stewardship, 512×512) at 0.5 in, rezipped, converted via `soffice`, and rendered as PDF — the icon appears sharp and correctly colored, no artifacts. Supersedes the prior EMF-based recipe now that `signatry-icons` v3.4 ships PNG as its Office format.
+
+**As of `signatry-icons` v3.2, there is no white or tinted PNG variant — only `glacier` exists on disk.** If a document needs a light-colored icon on a Legacy, Midnight, or photo background, don't place Glacier on a dark panel or fake a tint with transparency — ask, since Office can't recolor a baked PNG and there is no tinted export.
 
 ## Verified
 
