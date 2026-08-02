@@ -16,8 +16,7 @@ Status: `VERIFIED` means the name, styling, and current/retired state are all co
 | **Cause Champions** | Program and content series featuring families who organize their generosity around one or two core causes. Has a website section and quarterly features. | `VERIFIED` | `AR-2025`, website |
 | **Family Pathways** | Resource guide line named in `signatry-style` §3 as a distinct content type with its own tone. | `PARTIAL` — named, but what it is and whether it is current is unconfirmed | `signatry-style` |
 | **Generosity Activation Rate** | The Signatry's preferred payout measure. Always capitalized; never "payout rate." | `VERIFIED` | `signatry-style`, `AR-2025` |
-| **The Bottom Line and Beyond** | Newsletter. Signup at forms.thesignatry.com/the-bottom-line-and-beyond/ | `PARTIAL` — audience and cadence unconfirmed | website footer |
-| **Set Free** | Documentary or film released November 2025, premiere announced by press release; connected to the Artists in Prison work with Brandon Lake, Kirk Franklin, Tony Brown. | `PARTIAL` — format and current status unconfirmed | SharePoint PR files |
+| **The Bottom Line and Beyond** | Twice-monthly newsletter for entreprneurial business owners. "The Bottom Line & Beyond doesn’t separate business from faith, or success from purpose. It holds them together—because they were never meant to be apart." Signup at forms.thesignatry.com/the-bottom-line-and-beyond/ | | website footer |
 | **Clean Water Collective** | September 2026 fundraising event, Nashville/Franklin, with charity: water and neverthirst. | `PARTIAL` — from prior conversation; not verified against a document | prior conversation |
 | **Generosity Calculator** | Web tool estimating additional giving capacity from donating an asset rather than cash proceeds. | `VERIFIED` | website |
 
@@ -43,22 +42,7 @@ Status: `VERIFIED` means the name, styling, and current/retired state are all co
 
 > `CG-2023` is three years old. Treat all four as `CANDIDATE` for current practice; they are verified as of June 2023 only.
 
-## Advisory structure
-
-| Name | What it is | Status |
-|---|---|---|
-| **Middle Tennessee Advisory Board** | Regional volunteer advisory board, chaired by Keith Phillips (also board vice chairman) | `VERIFIED` — `WEB-BOARD` |
-| Other local advisory councils | `CG-2023` states The Signatry is represented by volunteer local advisory councils "in select geographic areas" | `PARTIAL` — **which regions is unknown** |
-
 ## Terminology already governed elsewhere
 
 Do not restate here. `signatry-style` §4 governs: donors not givers · nonprofits not charities · donor advised fund unhyphenated · noncash and nonliquid unhyphenated · nonliquid gifts not complex assets · biblically responsible investments and BRI, never ESG or faith-based investing · money market pool not account or fund · walk alongside not sell.
 
-## What I need to fill the gaps
-
-1. **Family Pathways** — current? What is it?
-2. **Set Free** — film, series, or campaign? Where does it live? Still promoted?
-3. **The Bottom Line and Beyond** — audience and cadence
-4. **Local advisory councils** — which regions
-5. **Clean Water Collective** — confirm name, dates, and partner list against a document
-6. **Anything I have not encountered** — retired program names still circulating in old collateral are exactly what this registry should catch, and I only know what I have stumbled across
