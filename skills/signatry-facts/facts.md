@@ -116,12 +116,12 @@ The primary 990 and reporting documents have historically been filed under Serva
 
 | Item | Text | Source |
 |---|---|---|
-| Identity | The Signatry is a Christian ministry partnering with generous families to build the kingdom of God. | `AR-2025`, `signatry-style` §1 |
-| Mission | To inspire and facilitate revolutionary, biblical generosity across generations to solve the world's greatest problems. | `AR-2025` |
-| Vision | To write the last check to the last missionary to reach the last unreached people group so the last person can hear the gospel. | `AR-2025` |
-| Values | Family · Creativity & Innovation · Generosity · Collaboration · Integrity & Transparency | `CG-2023` |
+| Identity | The Signatry is a Christian ministry partnering with generous families to build the kingdom of God. | `AR-2025`, `BVG-202608`, `signatry-style` §1 |
+| Mission | To inspire and facilitate revolutionary, biblical generosity across generations to solve the world's greatest problems. | `AR-2025`, `BVG-202608` |
+| Vision | To write the last check to the last missionary to reach the last unreached people group so the last person can hear the gospel. | `AR-2025`, `BVG-202608` |
+| Values | Family · Creativity & Innovation · Generosity · Collaboration · Integrity & Transparency | `BVG-202608`, `CG-2023` |
 
-> Wording varies by source. The Charity Navigator filing adds "and bring the hope of the gospel to all" to the mission. `AR-2025` punctuates "revolutionary, biblical"; other sources omit the comma. `CG-2023` renders the vision as "to be sent out to the last unreached people group." Confirm canonical wording.
+**Canonical wording confirmed 2026-08-04.** `BVG-202608` (Full Brand Voice Guide, updated 2026-08-04 — the Brand & Marketing team's current internal voice reference) states Identity, Mission, and Vision verbatim-matching `AR-2025`, and states Values matching `CG-2023`'s list and order. Two independent sources agreeing resolves the prior open flag on this row for those four items — treat as `VERIFIED`. Non-canonical variants, do not use: the Charity Navigator filing's mission adds "and bring the hope of the gospel to all"; `CG-2023`'s vision renders as "to be sent out to the last unreached people group." Per `signatry-style` §1, quote Identity/Mission/Vision/Values verbatim — never paraphrase, shorten, or reorder.
 
 ## Headline figures
 
