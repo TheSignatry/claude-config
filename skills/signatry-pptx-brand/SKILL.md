@@ -1,8 +1,8 @@
 ---
 name: signatry-pptx-brand
 description: "Signatry brand system for PowerPoint decks: color palette, fonts (Mulish, Lora), and logo/quill assets for The Signatry. Use this skill whenever building, branding, restyling, or reviewing a .pptx presentation for The Signatry — donor-facing decks, internal/team decks, pitch decks, training decks, or any slide content — even if the user doesn't say 'brand' or 'Signatry' by name, as long as the deck is for Signatry. Always pair with the general pptx skill (build mechanics) and, if slide copy/text is being written, the signatry-style skill (voice and terminology)."
-version: 1.4
-release_date: 2026-07-31
+version: 2.1
+release_date: 2026-08-05
 ---
 
 # Signatry PowerPoint Brand System
@@ -11,17 +11,20 @@ This skill supplies the visual brand layer for The Signatry's slide decks: color
 
 ## Definition of done — check before delivering any deck
 
-A deck is not finished when the `.pptx` is written. It is finished when all five of these are true:
+A deck is not finished when the `.pptx` is written. It is finished when all eight of these are true:
 
-1. **Assets loaded from disk.** `ls assets/logos/` was run, and the logo and tab PNGs were passed to `addImage` — not approximated with drawn shapes (see **Logo and mark** below).
-2. **Fonts installed** in the sandbox per the bash block under **Fonts**, before any rendering.
-3. **`scripts/layout_lint.py` passes** on the built file.
-4. **Slides rendered to images and visually inspected.** This is the step that catches missing logos, substituted fonts, and collisions. Do not describe a deck as complete without it.
-5. **`scripts/apply_font_fallbacks.py`, then `scripts/embed_fonts.py`** run as the final steps.
+1. **Title-slide photo checked before building slide 1.** If slide 1 uses archetype A, run `scripts/title_photo_check.py <candidate-photo>` on the chosen photo before placing it — not after the deck is built. On FAIL, either pick a different photo or switch that slide's overlay to Midnight (see design-system.md archetype A). This step exists because the check is easy to skip when a photo is chosen mid-conversation rather than at build time — do it at selection time regardless.
+2. **Every photo containing a person or clear subject was viewed before cropping, not blind-center-cropped.** Use `scripts/crop_photo.py` with `center_x`/`center_y` set to the subject's actual position (see design-system.md standard #4), then re-view the cropped output to confirm the subject isn't cut off at an edge. Reserve the script's default center for photos with no off-center subject.
+3. **Assets loaded from disk.** `ls assets/logos/` was run, and the logo and tab PNGs were passed to `addImage` — not approximated with drawn shapes (see **Logo and mark** below).
+4. **Fonts installed** in the sandbox per the bash block under **Fonts**, before any rendering.
+5. **`scripts/layout_lint.py` passes** on the built file.
+6. **`scripts/image_ratio_check.py` passes** on the built file — catches any placed image (logo, icon, or photo) whose w/h doesn't match its native pixel aspect ratio, i.e. anything distorted. Run this regardless of how confident the placement looked when it was built.
+7. **Slides rendered to images and visually inspected.** This is the step that catches missing logos, substituted fonts, clipped subjects, and collisions. Do not describe a deck as complete without it.
+8. **`scripts/apply_font_fallbacks.py`, then `scripts/embed_fonts.py`** run as the final steps.
 
-Report the outcome of steps 3–5 when delivering the file. If a step was skipped, name which one and why rather than staying silent about it.
+Report the outcome of steps 1, 2, 5, 6, and 8 when delivering the file. If a step was skipped, name which one and why rather than staying silent about it.
 
-The four scripts referenced above ship in `scripts/` in this skill. `references/design-system.md` documents what each one does and how to invoke it.
+The scripts referenced above ship in `scripts/` in this skill. `references/design-system.md` documents what each one does and how to invoke it.
 
 ## Dependencies — read these first
 
@@ -87,7 +90,7 @@ fc-cache -f
 
 **Caveat on the final `.pptx` file itself:** pptxgenjs sets `fontFace` by name; it does not embed the font file into the package. Left at that, the deck renders correctly in this sandbox (fonts installed above) and on any machine that already has Mulish/Lora installed, but silently substitutes a fallback font on a machine that doesn't.
 
-**This skill automates the fix — it is step 5 of Definition of done, not optional.** Run `scripts/apply_font_fallbacks.py <deck.pptx>` and then `scripts/embed_fonts.py <deck.pptx>` as the final build steps; `embed_fonts.py` uses the same OOXML mechanism as PowerPoint's own "embed fonts in this file" option. See `references/design-system.md` step 10 for what each script does and its verification caveat (LibreOffice ignores PPTX embedded fonts, so embedding cannot be end-to-end verified in the sandbox).
+**This skill automates the fix — it is step 8 of Definition of done, not optional.** Run `scripts/apply_font_fallbacks.py <deck.pptx>` and then `scripts/embed_fonts.py <deck.pptx>` as the final build steps; `embed_fonts.py` uses the same OOXML mechanism as PowerPoint's own "embed fonts in this file" option. See `references/design-system.md` step 11 for what each script does and its verification caveat (LibreOffice ignores PPTX embedded fonts, so embedding cannot be end-to-end verified in the sandbox).
 
 Residual risk after running both: if a delivered deck still shows wrong fonts in PowerPoint, fall back to telling the recipient to install Mulish/Lora (both free on Google Fonts) or delivering a PDF export alongside the `.pptx`.
 
@@ -140,15 +143,13 @@ slide.addImage({ path: "./assets/quill_tab_legacy.png", x: 11.7, y: 6.36, w: 0.8
 
 **Build new decks from scratch with pptxgenjs following that design system. Do NOT duplicate-and-edit slides from the bundled template files.** The templates carry stale PowerPoint autofit scale factors (`<a:normAutofit fontScale=.../>`) computed for their original Arial text; with the current fonts or any new copy, those cause text overflow and element collisions. Building fresh with explicit font sizes avoids that entire failure class.
 
-## Reference template files (not bundled — size constraint)
+Every deck's first and last slides are fixed, not content slides: slide 1 is archetype A (full-bleed photo + overlay + logo, no text of any kind — watch for green-dominant photos compounding with the teal overlay), slide 2 is the Title/Closing archetype (archetype B-title) carrying the deck title and related info, content runs from slide 3 through the second-to-last slide, and the deck's final slide is archetype B-title again — a "Thank You" close, not just an option to add on request. This holds regardless of overall deck length unless the user states an explicit slide-count constraint that can't fit it (see "Opening/Closing sequence" in `references/design-system.md` for how to handle that case).
 
-The four original 2026 template files (`Signatry_PPT_2026_Legacy/Midnight/Dawn/Master.pptx`) are **not included in this skill package** — at ~34–60MB each (~185MB total, mostly embedded photography) they pushed the package over Claude.ai's upload/download limits. Everything in `references/design-system.md` (the archetypes, geometry, type scale) was captured directly from those files, so the skill still fully reflects their visual language without needing them present.
+## Reference template files
 
-Two ways to get their photography back for reuse, if needed:
-1. **Ask Ben to re-upload them in a conversation** — Claude can extract photos from `ppt/media/` on the spot and use them in the current build.
-2. **Re-attach them to the skill later** if the size constraint is resolved (e.g. a Team/Enterprise plan or a higher upload limit) — drop the four files into `assets/templates/` and repackage.
+`TheSignatry2026.pptx` is bundled at `assets/templates/` (Aug 2026, ~6.5MB), replacing the earlier `.potx` version of the same deck and, before that, `Signatry_PPT_2026_Master_optimized.pptx`. It's a 27-slide deck built entirely with placeholder (lorem ipsum) copy — unlike the original Master file, which mixed real donor-story content into the reference slides — organized as four repeating demo sections (Legacy, Midnight, Dawn-orange, and a fourth), each opening with a Title slide and closing with a "Thank You" slide around a run of content-layout examples. Treat it as a **style reference and photo library**, not a build base — the "Opening/Closing sequence" and title/closing archetype in design-system.md were captured from it, and its own slides carry the same stale-autofit caveat as any template (see design-system.md's opening note). Its `ppt/media/` photography is available for reuse via the same extraction approach as any template file.
 
-Photography for decks comes from the `signatry-photo-library` skill — search it with `scripts/find_photos.py` before asking the user. If the template files are re-uploaded, their `ppt/media/` photography becomes available too. Ask the user only when neither source has a fit.
+Photography for decks comes from the `signatry-photo-library` skill — search it with `scripts/find_photos.py` before asking the user. If this template's photography is needed instead, extract from its `ppt/media/`. Ask the user only when neither source has a fit.
 
 ## Content guardrails
 
