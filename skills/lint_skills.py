@@ -12,7 +12,15 @@ For every immediate subdirectory of skills/ (each a skill package), checks:
      Vague descriptions are flagged as warnings for human review, not
      hard failures.
   3. Markdown link integrity: relative [text](path) links must resolve,
-     and any references/<file> path named in SKILL.md must exist.
+     and any references/<file> path named in SKILL.md must exist. A
+     mentioned assets/ or scripts/ path that doesn't exist in the skill is
+     an informational warning (it may belong to a different skill/tool) —
+     to mark a specific one as expected/acceptable, add an entry
+     {"path": ..., "reason": ...} to lint_allowlist.json under that skill's
+     name. A non-empty reason is required per entry (explain *why* the
+     path is expected, not just that it is) — entries missing one, and
+     entries that no longer appear anywhere in the skill's text (stale),
+     are both flagged.
   4. A Restricted-data scan (per IT15) of every text file in the skill:
      SSNs, payment card numbers, bank/account/routing numbers, and
      credentials/keys/private-key blocks. Any hit hard-fails the build.
@@ -210,7 +218,7 @@ def check_description_quality(description):
     return warnings
 
 
-def check_markdown_links(md_path, text, skill_dir):
+def check_markdown_links(md_path, text, skill_dir, allowed_refs=frozenset()):
     issues = []
     for match in MD_LINK_RE.finditer(text):
         target = match.group(1)
@@ -229,20 +237,65 @@ def check_markdown_links(md_path, text, skill_dir):
             )
     for match in ASSETS_SCRIPTS_MENTION_RE.finditer(text):
         ref = match.group()
+        if ref in allowed_refs:
+            continue
         resolved = (skill_dir / ref).resolve()
         if not resolved.exists():
             issues.append(
                 (
                     SEVERITY_WARNING,
                     f"{md_path.relative_to(skill_dir.parent)}: mentions '{ref}' not found in this skill "
-                    "(informational — path may belong to a different skill/tool)",
+                    "(informational — path may belong to a different skill/tool; "
+                    "add it to lint_allowlist.json to mark it as expected)",
                 )
             )
     return issues
 
 
-def lint_skill(skill_dir, schema):
+def parse_allowlist_entries(raw_entries, skill_name):
+    """Returns (allowed_refs set, issues list) for one skill's allowlist entries.
+
+    Each entry must be {"path": "...", "reason": "..."} with a non-empty
+    reason — a bare path string, or one with a blank reason, is flagged
+    rather than silently honored, so every suppression stays documented."""
+    allowed_refs = set()
+    issues = []
+    for entry in raw_entries:
+        if isinstance(entry, str):
+            allowed_refs.add(entry)
+            issues.append(
+                (
+                    SEVERITY_WARNING,
+                    f"lint_allowlist.json: entry '{entry}' for '{skill_name}' is a bare string — "
+                    "convert to {\"path\": ..., \"reason\": ...} with a non-empty reason",
+                )
+            )
+            continue
+        path = entry.get("path") if isinstance(entry, dict) else None
+        if not path:
+            issues.append(
+                (SEVERITY_WARNING, f"lint_allowlist.json: an entry for '{skill_name}' is missing a 'path'")
+            )
+            continue
+        allowed_refs.add(path)
+        reason = entry.get("reason")
+        if not reason or not str(reason).strip():
+            issues.append(
+                (
+                    SEVERITY_WARNING,
+                    f"lint_allowlist.json: entry '{path}' for '{skill_name}' has no reason — "
+                    "a reason explaining why this path is expected is required",
+                )
+            )
+    return allowed_refs, issues
+
+
+def lint_skill(skill_dir, schema, allowlist=None):
     issues = []  # list of (severity, message)
+    allowed_refs, allowlist_issues = parse_allowlist_entries(
+        (allowlist or {}).get(skill_dir.name, []), skill_dir.name
+    )
+    issues.extend(allowlist_issues)
 
     skill_md = skill_dir / "SKILL.md"
     if not skill_md.exists():
@@ -275,10 +328,25 @@ def lint_skill(skill_dir, schema):
             for warning in check_description_quality(description):
                 issues.append((SEVERITY_WARNING, f"{skill_md}: {warning}"))
 
-    issues.extend(check_markdown_links(skill_md, text, skill_dir))
+    all_texts = [text]
+    issues.extend(check_markdown_links(skill_md, text, skill_dir, allowed_refs))
     for ref_md in skill_dir.glob("references/*.md"):
         ref_text = ref_md.read_text(encoding="utf-8", errors="replace")
-        issues.extend(check_markdown_links(ref_md, ref_text, skill_dir))
+        issues.extend(check_markdown_links(ref_md, ref_text, skill_dir, allowed_refs))
+        all_texts.append(ref_text)
+
+    if allowed_refs:
+        mentioned = {
+            m.group() for t in all_texts for m in ASSETS_SCRIPTS_MENTION_RE.finditer(t)
+        }
+        for stale_ref in sorted(allowed_refs - mentioned):
+            issues.append(
+                (
+                    SEVERITY_WARNING,
+                    f"lint_allowlist.json: entry '{stale_ref}' for '{skill_dir.name}' is not mentioned "
+                    "anywhere in this skill anymore — remove it",
+                )
+            )
 
     for file_path in sorted(skill_dir.rglob("*")):
         if not file_path.is_file() or file_path.suffix.lower() not in TEXT_EXTS:
@@ -304,13 +372,19 @@ def main():
     schema_path = Path(__file__).parent.parent / "schemas" / "skill-schema.json"
     schema = json.loads(schema_path.read_text(encoding="utf-8"))
 
+    allowlist_path = Path(__file__).parent / "lint_allowlist.json"
+    allowlist = {}
+    if allowlist_path.exists():
+        raw_allowlist = json.loads(allowlist_path.read_text(encoding="utf-8"))
+        allowlist = {k: v for k, v in raw_allowlist.items() if not k.startswith("_")}
+
     skill_dirs = sorted(d for d in root.iterdir() if d.is_dir() and not d.name.startswith("."))
 
     report = {}
     has_error = False
     has_warning = False
     for skill_dir in skill_dirs:
-        issues = lint_skill(skill_dir, schema)
+        issues = lint_skill(skill_dir, schema, allowlist)
         report[skill_dir.name] = issues
         for severity, _ in issues:
             if severity in (SEVERITY_ERROR, SEVERITY_CRITICAL):

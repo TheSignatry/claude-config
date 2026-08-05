@@ -35,7 +35,7 @@ All coordinates below are inches on a 13.33" × 7.5" canvas (`pres.layout = "LAY
 
 **Full-bleed title slide** — edge-to-edge photo, `logo_white_1C.png` centered or lower-left (w≈2.2, keep aspect 1201:406). No headline text required; the logo is the slide.
 
-**Photo treatment** — photos are large and structural (half-slide columns, full-bleed, or big card blocks), never small clip-art. If the user supplies a template file mid-conversation, unzip it and pull photography from `ppt/media/` (large images are content photography; small PNGs are logos/tabs). Otherwise, ask the user for photos per the donor-content guardrail in SKILL.md — no generic bundled photo library is included by default.
+**Photo treatment** — photos are large and structural (half-slide columns, full-bleed, or big card blocks), never small clip-art. Search the `signatry-photo-library` skill first (44 catalogued images; use its `scripts/find_photos.py`) rather than using placeholder boxes or outside stock. Reuse of any donor-family image is governed by the `signatry-content-guardrails` skill — check it before placing a named-family photo. If the user supplies a template file mid-conversation, photography can also be pulled from `ppt/media/` (large images are content photography; small PNGs are logos/tabs). Ask the user only when neither source has a fit.
 
 ## Slide archetypes
 
@@ -133,7 +133,7 @@ Switch per section, not per slide. A single-topic deck stays in one scheme (Lega
 
 Run all four. Steps 1–3 are mechanical; step 4 catches what the others miss.
 
-1. `validate.py` passes
+1. `validate.py` passes — this one lives in the general `pptx` skill (`scripts/office/validate.py`), not in this skill
 2. `scripts/layout_lint.py` passes — catches element intersections and tab-zone violations
 3. `markitdown` output matches intended copy, with signatry-style terminology applied
 4. **Render to images and look at every slide.** Fonts must be installed first (see SKILL.md), or the render shows substituted fonts and the check is meaningless. Inspect for: missing logo or corner tab, text touching box edges, text in the tab zone, gaps under 0.3", wrapped kickers, stretched photos.

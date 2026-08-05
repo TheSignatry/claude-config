@@ -1,8 +1,8 @@
 ---
 name: signatry-brand-core
-description: "Canonical source of truth for The Signatry's brand colors, fonts, and logo/mark assets — independent of file format. Use this whenever a task needs the actual hex values, font files, or logo files for The Signatry, or when building/updating a format-specific brand skill (pptx, docx, pdf, xlsx, HTML/artifacts, Canva, etc.). Format-specific brand skills should depend on this one for values and assets rather than restating them; this skill has no build mechanics of its own."
-version: 1.0
-release_date: 2026-07-26
+description: "Canonical source of truth for The Signatry's brand colors, fonts, and logo/mark assets — independent of file format. Use this whenever a task needs the actual hex values, font files, or logo files for The Signatry, or when building/updating a format-specific brand skill (pptx, docx, pdf, xlsx, HTML/artifacts, Canva, etc.). Format-specific brand skills should depend on this one for values and assets rather than restating them; this skill has no build mechanics of its own. For icon assets, see the separate `signatry-icons` skill."
+version: 1.1
+release_date: 2026-07-31
 ---
 
 # The Signatry Brand Core
@@ -81,6 +81,10 @@ Usage rules (apply regardless of format):
 - "The Signatry" with no tagline is the preferred lockup — don't fabricate a tagline version.
 - Clearspace: minimum clearspace on all sides of the logo is equal to the height of the letter "n" in the "Signatry" wordmark, measured from that same logo. Use this unit whenever the logo appears near other elements (text, images, edges of the page/slide) — the "n"-height gap is the floor, not a target; more is always fine.
 
+## Icons
+
+Icon assets have been moved to a dedicated `signatry-icons` skill (split out July 2026, since the icon file set is large and separate from core color/font/logo work). See that skill for the icon files, variant/color structure, and correction history. `signatry-icons` depends on this skill for the underlying color values (Glacier, Midnight, Dawn, Mist, Arctic) referenced in its icon-to-color mapping.
+
 ## Tints
 
 Confirmed with Ben (July 2026): every color above may be used at a tint — 80%, 60%, 40%, 20%, or 5% — as needed, matching usage visible on thesignatry.com. (This formula wasn't reverse-engineered from the site's own CSS — I didn't have a way to pull that directly — so it's the standard tint convention below; flag to Ben if a specific piece needs to match a pixel-sampled site color exactly rather than this formula.)
@@ -123,7 +127,9 @@ Format-specific skills that should depend on this one for values/assets rather t
 
 Any new format skill (xlsx charts, HTML/artifact work, Canva) should follow the same pattern: pull colors/fonts/logos from here, add only the format-specific mechanics of applying them (embedding, registration, style definitions, QA rendering).
 
+Icon assets live in the separate `signatry-icons` skill, which itself depends on this skill for color values. Format skills needing icons should depend on `signatry-icons`, not look for icon files here.
+
 ## What's still known to be out of scope here
 
 - Voice, tone, and terminology (donors not givers, DAF capitalization, scripture format, etc.) — see `signatry-style`. That skill's Section 9 (visual/formatting references) now defers to this skill for colors and fonts; it still owns the logo-text and book-link rules that aren't duplicated here.
-- Confidentiality/donor-content guardrails for specific deliverables (e.g., deck donor photo reuse) — those live in the format skill that produced the original guardrail (currently `signatry-pptx-brand`), since they're tied to specific bundled source material, not to brand values.
+- Confidentiality and donor-content guardrails — see `signatry-content-guardrails`, which owns all content restriction rules independent of format. (These previously lived inside `signatry-pptx-brand`; they were factored out in July 2026 so docx and pdf deliverables get the same rules.)
