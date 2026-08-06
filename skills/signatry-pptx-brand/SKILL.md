@@ -1,8 +1,8 @@
 ---
 name: signatry-pptx-brand
 description: "Signatry brand system for PowerPoint decks: color palette, fonts (Mulish, Lora), and logo/quill assets for The Signatry. Use this skill whenever building, branding, restyling, or reviewing a .pptx presentation for The Signatry — donor-facing decks, internal/team decks, pitch decks, training decks, or any slide content — even if the user doesn't say 'brand' or 'Signatry' by name, as long as the deck is for Signatry. Always pair with the general pptx skill (build mechanics) and, if slide copy/text is being written, the signatry-style skill (voice and terminology)."
-version: 2.1
-release_date: 2026-08-05
+version: 2.3
+release_date: 2026-08-06
 ---
 
 # Signatry PowerPoint Brand System
@@ -34,7 +34,7 @@ The scripts referenced above ship in `scripts/` in this skill. `references/desig
 - **`signatry-facts` skill**: use whenever a slide will state a factual value about The Signatry — contact info, entity/leadership names, history, figures, fund terms, or boilerplate/disclaimers. Load it on any build; don't supply these values from recall.
 - **`signatry-content-guardrails` skill**: content restriction rules (fabrication prohibition, donor photo/quote reuse, gift-amount confidentiality, board-only source restriction) — independent of format, load on any build. See that skill rather than looking for these rules here.
 - **`signatry-photo-library` skill**: the 44-image catalog and `scripts/find_photos.py`. Search it for any deck photography before asking the user or using a placeholder. Reuse of donor-family images is gated by `signatry-content-guardrails`.
-- **`signatry-icons` skill**: the 60-icon brand set. Use it if a slide needs an icon — do not draw substitutes or pull outside icon sets.
+- **`signatry-icons` skill**: the 69-icon brand set. Use it if a slide needs an icon — do not draw substitutes or pull outside icon sets.
 
 ## Color palette
 
@@ -139,7 +139,7 @@ slide.addImage({ path: "./assets/quill_tab_legacy.png", x: 11.7, y: 6.36, w: 0.8
 
 ## How to build a deck: from scratch, in the template style
 
-**Required reading before building any deck: `references/design-system.md`** in this skill. It codifies the visual language of the 2026 Signatry templates — slide archetypes with explicit geometry, the type scale (kicker/headline/body), corner-tab placement, color-scheme variants — plus universal text-placement and spacing standards.
+**Required reading before building any deck: `references/design-system.md`** in this skill. It codifies the visual language of the 2026 Signatry templates — the universal (every-deck) archetypes A and B-title, the type scale (kicker/headline/body), corner-tab placement, color-scheme variants — plus universal text-placement and spacing standards. **For interior content slides, also load `references/archetype-library.md`** and pick only the archetype(s) a given slide's content actually needs (narrative + photo, numbered steps, a quote, a stat block, and more) rather than reading the full library start to finish.
 
 **Build new decks from scratch with pptxgenjs following that design system. Do NOT duplicate-and-edit slides from the bundled template files.** The templates carry stale PowerPoint autofit scale factors (`<a:normAutofit fontScale=.../>`) computed for their original Arial text; with the current fonts or any new copy, those cause text overflow and element collisions. Building fresh with explicit font sizes avoids that entire failure class.
 
@@ -154,3 +154,9 @@ Photography for decks comes from the `signatry-photo-library` skill — search i
 ## Content guardrails
 
 Fabrication rules (never invent a fact or a donor quote), donor photo/quote reuse rules, gift-amount confidentiality, and the confidentiality/board-only source restriction have moved to a dedicated `signatry-content-guardrails` skill, shared across all format skills (pptx, docx, pdf) rather than duplicated in each. Load that skill on any build — see **Dependencies** above.
+
+## Changelog
+
+**2.3 — 2026-08-06** — Token-efficiency pass, no design changes. Split `references/design-system.md`: archetypes C through L (the 11 interior-content layouts) moved to new `references/archetype-library.md`, loaded only once a slide's content need is known. `design-system.md` keeps the universal-standards material and the two every-deck archetypes (A, B-title). Was ~4,700 tokens required reading for every build regardless of which archetypes a deck actually used; now ~3,850, with the archetype variety loaded separately and selectively.
+
+**2.2 — 2026-08-06** — `scripts/embed_fonts.py` extended to embed Lora/Mulish Italic and the two distinct type-scale typefaces (`Mulish-SemiBold`, `Mulish-ExtraBold`) that were previously left unembedded; stale "60-icon" and template-filename references corrected. See `signatry-brand-core`'s changelog for the italic font sourcing.

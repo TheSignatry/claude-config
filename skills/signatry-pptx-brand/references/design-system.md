@@ -42,7 +42,7 @@ All coordinates below are inches on a 13.33" × 7.5" canvas (`pres.layout = "LAY
 
 ## Slide archetypes
 
-Positions are starting points; adjust for content while honoring the universal standards.
+Positions are starting points; adjust for content while honoring the universal standards. Archetypes A and B-title are covered here because every deck uses them (see Opening/Closing sequence below). **For interior content slides, load `reference/archetype-library.md`** and pick only the archetype(s) that fit what a given slide needs to show (narrative + photo, a list of steps, a quote, a stat block, and eleven more) — it's a variety library, not a checklist to read start to finish.
 
 ### A. Title (full-bleed photo with brand overlay)
 - Photo: x=0, y=0, w=13.33, h=7.5 (pre-cropped to 16:9)
@@ -52,17 +52,10 @@ Positions are starting points; adjust for content while honoring the universal s
 - Layer order matters: photo → overlay → logo
 - **No text of any kind on this slide** — no headline, deck title, subtitle, presenter, or date, and no topic/subject line either. The logo is the entire slide content. This holds even though "The Signatry" logo alone doesn't identify the deck's topic — that's intentional, not a gap: topic and title are deferred to slide 2 by design (see **Opening/Closing sequence** below), not omitted by oversight. Wanting to make the subject clear sooner is not grounds to add text here; if a specific deck seems to need an exception, ask Ben rather than deviating and offering to revert if asked.
 
-### B. Content slide, light (Ice or white bg)
-- Background: Ice `def2f1` or white
-- Kicker: x=1.2, y=0.9, w=8, h=0.35
-- Headline: x=1.2, y=1.3, w=8, h=1.3 (36pt Lora Regular; drop to 32pt if >2 lines)
-- Body: x=1.2, y=2.9, w=6.2 (leave right side for photo) or w=10.5 (no photo), 14–16pt
-- Optional photo right: x=8.0, y=1.6, w=4.4, h=4.6
-- Corner tab: legacy variant
-- **Not for slide 2 or the closing slide** — those use the distinct Title/Closing archetype below, whose kicker/headline sit lower and closer to vertical-center. Reusing B's near-top position for a title or closing slide is a mismatch, not a style choice.
+(Archetype B, "Content slide, light," and all other interior-content archetypes are in `reference/archetype-library.md`.)
 
 ### B-title. Title slide & Closing ("Thank You") — shared layout
-Both the deck's opening title (slide 2) and its final "Thank You" slide use this same geometry — they're distinguished by copy only, not layout. Confirmed against `TheSignatry2026.potx`, which uses it identically at both ends of the deck (and again at each internal section break in that reference file — see **Opening/Closing sequence** below for how that applies to normal decks).
+Both the deck's opening title (slide 2) and its final "Thank You" slide use this same geometry — they're distinguished by copy only, not layout. Confirmed against `TheSignatry2026.pptx`, which uses it identically at both ends of the deck (and again at each internal section break in that reference file — see **Opening/Closing sequence** below for how that applies to normal decks).
 - Background: Ice `def2f1` (default) — see closing accent-band variant below for an alternate treatment
 - Kicker: x=1.81, y=2.78, w=7.64, h=0.44 — Mulish Bold, uppercase, accent color (kicker color follows the section's color scheme; see **Color scheme variants**)
 - Headline: x=1.81, y=3.22, w=9.72, h=1.53 — Lora Regular, large size (deck title on slide 2; literally "Thank You" on the closing slide)
@@ -70,6 +63,8 @@ Both the deck's opening title (slide 2) and its final "Thank You" slide use this
 - On a Midnight-background instance, kicker and headline both go white and the tab inverts to a white square with a dark feather (matches archetype D's tab guidance)
 
 **Closing slide — accent-band variant.** An alternate closing treatment seen in the reference file: white background instead of Ice, with a bottom band (rect x=0, y=5.62, w=13.33, h=1.88, fill = the section's accent color) sitting behind the corner tab. Kicker/headline keep the same x/y as the base layout above. Optional decorative upgrade for a closing slide — not required.
+
+(Archetype H, "Closing / CTA," is a distinct alternate closing treatment on a solid Legacy/Midnight background rather than this Ice-card style — see `reference/archetype-library.md` if a deck calls for that version instead.)
 
 ## Opening/Closing sequence (every deck)
 
@@ -81,77 +76,13 @@ Every deck opens and closes with the Title/Closing archetype, not archetype B:
 
 **Only exception:** the user states an explicit space constraint the sequence can't fit inside — e.g. "make a three-slide presentation," "keep it to 5 slides total." When that happens, say which slides you're collapsing (e.g. "combining logo and title onto slide 1 to fit your 3-slide limit," or "dropping the closing slide since the limit doesn't leave room for one") rather than silently dropping part of the sequence or silently keeping all of it anyway. Absent a stated constraint, build the full sequence regardless of overall deck length.
 
-### C. Split slide (photo half)
-- Photo: x=0, y=0, w=5.2, h=7.5 (or mirrored on the right)
-- Text column starts x=5.9, w=6.5: kicker y=1.4, headline y=1.85, body y=3.4
-- Corner tab: choose variant by what's behind it (photo → midnight tab or omit)
-
-### D. Dark slide (Midnight bg)
-- Background: Midnight `17242a`
-- Kicker: Dawn, same geometry as B
-- Headline + body: white; body may use Ice for secondary lines
-- Corner tab: midnight variant reads as tone-on-tone; on pure Midnight use the white quill (`quill_white.svg` rasterized) or omit
-
-### E. Numbered process ("How it works")
-- Kicker + headline top-left (as B)
-- Numbered list right column: x=6.3, y=2.5, w=5.0, 14pt, `paraSpaceAfter: 10`
-- Optional photo left under headline: x=1.2, y=2.5, w=4.4, h=4.4
-- Max 5 steps per slide; 6+ steps → split across two slides
-
-### F. Quote / donor story
-- Photo left (as C) or top-right card
-- Quote: Mulish italic 15pt, x=5.9, y=1.8, w=6.3
-- Attribution directly below quote, 12pt bold, gap 0.25"
-- Reflective question as headline (Lora 30–32pt) below attribution when the slide doubles as a CTA
-
-### G. Stat slide
-- Kicker + headline (as B)
-- Up to three stat cards: rounded rects (`rectRadius: 0.08`), fill Ice, w=3.6, h=2.2, y=2.6, x=1.2 / 5.05 / 8.9
-- Stat number: Mulish ExtraBold 40pt — one card may use Dawn or Dusk for the standout figure, others Legacy/Glacier
-- Label under number: Mulish 14pt Midnight
-- Cite sources at 9–10pt bottom-left, ≥0.3" below cards, never in the tab zone
-
-### H. Closing / CTA
-- Background: Legacy `2b7a78` or Midnight
-- Centered reflective question: Lora Regular 30–34pt white, x=1.7, y=2.8, w=9.9 (keeps clear of tab zone)
-- Logo lower-left as on title slide
-- Per signatry-style: invitation or question, never a command
-
-### I. Accent-corner portrait quote (from Legacy slide 3)
-- Dawn-gold accent block peeking from top-left corner: rect x=0, y=0, w=2.0, h=3.0, fill Dawn `f2a65a`
-- Tall portrait photo overlapping it: x=0.55, y=0.49, w=4.8, h=6.5 (pre-crop to ~0.74 aspect)
-- Quote right: x=5.9, y=1.73, w=6.0, h=2.2, Mulish italic 15pt; attribution below
-- Reflective headline: x=5.9, y=4.24, w=6.0, h=1.25, Lora Regular 30–32pt
-- Corner tab: legacy variant
-
-### J. Section divider with white card (from Legacy slide 7)
-- Full-bleed photo background (pre-cropped 16:9)
-- White card right of center: x=7.09, y=2.53, w=6.24, h=3.17, fill white
-- Headline inside card: x=7.38, y=2.6, w=5.55, Lora Regular 28–30pt Midnight
-- Support line below headline: x=7.38, w=5.55, Mulish 13–14pt
-- Ice edge strip on the card's right edge: rect x=12.93, y=2.53, w=0.40, h=3.17, fill Ice
-- Corner tab: variant with contrast against the photo
-
-### K. Photo collage split (from Dawn slide 2)
-- Tall photo left: x=0, y=0.65, w=3.92, h=5.85
-- Two stacked square photos: x=4.13, w=2.83, h=2.84, at y=0.65 and y=3.66
-- Color panel right: x=7.17, y=0.65, w=6.16, h=5.85 — fill Legacy (white text) or Ice (Midnight text)
-- Inside panel: kicker x=7.67, y=1.5; headline x=7.67, y=1.9, w=5.0, Lora Regular 28–32pt; body x=7.67, y=3.66, w=5.0
-- All three photos pre-cropped to their exact aspect (0.67 / 1.0 / 1.0); 0.21" gutters between photos
-- Corner tab sits on the panel — use a variant that contrasts with the panel fill
-
-### L. Scripture / impact split (from Midnight slide 3)
-- Square photo top-left: x=0, y=0, w=4.85, h=4.85 (pre-crop 1:1)
-- Color block under it completing the column: x=0, y=4.85, w=4.85, h=2.65, fill Legacy or Dawn
-- Scripture inside the block: x=0.28, y=5.4, w=4.28, h=1.55 — verse in Mulish italic 13pt, reference on its own line in Mulish Bold 12pt ("1 Chronicles 29:12, 14" style, NIV per signatry-style)
-- Right column on the slide background (Midnight or white): kicker x=5.38, y=2.11; headline x=5.38, y=2.4, w=6.0; body x=5.38, y=3.4, w=6.0
-- Corner tab: white-on-dark variant for Midnight background
+(Archetypes C through L — split slide, dark slide, numbered process, quote/donor story, stat slide, closing/CTA, and four more specialized layouts — are in `reference/archetype-library.md`. Load it once you know what an interior slide needs to show, and pick only the fitting archetype(s).)
 
 ## Color scheme variants (Legacy / Midnight / Dawn sections)
 
 For a longer deck covering distinct topics, switch section treatments the way the Master template does:
-- **Legacy sections** (default): light slides (B) with Ice backgrounds, teal accents
-- **Midnight sections**: dark slides (D) predominate; photos with dark overlays
+- **Legacy sections** (default): light slides (archetype B, in `reference/archetype-library.md`) with Ice backgrounds, teal accents
+- **Midnight sections**: dark slides (archetype D) predominate; photos with dark overlays
 - **Dawn sections**: light slides with heavier use of Dawn-gold accent blocks/photo-corner accents
 Switch per section, not per slide. A single-topic deck stays in one scheme (Legacy unless asked).
 
