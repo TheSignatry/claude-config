@@ -2,8 +2,8 @@
 name: signatry-style
 description: The Signatry's official writing and brand voice guide, covering identity, mission/vision/values, audience, voice and tone, required terminology, faith-related capitalization and scripture usage, number/date/mechanics rules, headings, writing mechanics, and visual/brand references. Use this skill whenever writing, editing, reviewing, or proofreading ANY content for The Signatry — donor communications, emails, newsletters, social media, annual and quarterly reports, brochures, resource guides, presentations, web copy, or internal documents — regardless of whether the user explicitly mentions style, branding, or formatting.
 metadata:
-  version: "2.1"
-  release_date: "2026-08-04"
+  version: "2.2"
+  release_date: "2026-08-06"
   source: "Full Brand Voice Guide (updated August 4, 2026) — authoritative. Brand and Style Quick Guide (Version 202607) — authoritative over this skill, but itself subject to the Full Brand Voice Guide where the two differ."
 ---
 
@@ -14,6 +14,15 @@ Apply every rule below to all content produced for The Signatry. When editing ex
 **Authority note:** This skill is derived from two source documents in the "11. Brand Guidelines" SharePoint folder: the **Full Brand Voice Guide** (authoritative) and the **Brand and Style Quick Guide** (authoritative over this skill, but subordinate to the Full Brand Voice Guide). Where this skill and either source document conflict, defer to the source documents — flag the discrepancy to Ben rather than silently guessing.
 
 **Scope by content type:** For internal operational writing (status updates, IT documentation, project notes, tickets, internal memos), apply only the terminology, capitalization, and mechanics rules (sections 5, 6, 7, and 9). The voice, narrative, and CTA guidance (sections 2, 3, 4, and 10) is for donor-facing and public content only — do not give internal operational writing a story-led or invitational tone.
+
+**Reference files (load only when the content actually calls for them):**
+
+| File | Load it when... |
+|---|---|
+| `reference/scripture-usage.md` | The piece quotes or cites a Bible verse (§6 points here) |
+| `reference/narrative-patterns.md` | The piece is extended donor narrative — an Annual/Quarterly Report story, feature story, or similar donor-story-arc content (§10 points here) |
+
+Everything else below applies whenever this skill triggers; these two are the only sections narrow enough to defer.
 
 ## 1. Identity, Mission, Vision, and Values
 
@@ -150,11 +159,7 @@ DAFs are tools for generosity, not the answer for everyone — they are the righ
 
 ### Scripture citations and integration
 
-- Preferred translation: NIV.
-- Citation format: "Book Chapter:Verse, NIV" (for example, "Romans 8:28, NIV").
-- In web content, hyperlink the verse citation to the specific verse(s) and translation on bible.com (e.g., `https://www.bible.com/bible/111/2CO.9.7.NIV`).
-- Do not assume biblical literacy: briefly explain stories or references, and define or avoid insider religious terms (for example, "Great Commission," "sanctification," "redemption") so content is clear to readers with limited church exposure.
-- Integrate scripture as framing in section openers or narrative transitions. Never place scripture at the end of a piece — only at the beginning or in the middle.
+**If this piece actually quotes or cites a Bible verse, load `reference/scripture-usage.md`** for translation, citation format, hyperlinking, biblical-literacy, and placement rules. Not needed for content that only touches faith/ministry themes without citing scripture — the capitalization rules above cover that case.
 
 ## 7. Numbers, Dates, Time, and Mechanics
 
@@ -205,37 +210,7 @@ DAFs are tools for generosity, not the answer for everyone — they are the righ
 
 ## 10. Structural and Narrative Patterns
 
-### Donor story arc (Quarterly Reports and feature stories)
-
-Each donor story should follow a consistent arc:
-
-1. Invitation into the person or family: a hook that reveals character, values, or a defining question or tension.
-2. The generosity journey: how they came to give or how their giving deepened; emphasize obedience, discovery, and relationship, not strategy or tax benefits first.
-3. The tool or mechanism: where the donor advised fund, nonliquid gifts, or other tools enter naturally as means to a mission end, not as the lead.
-4. The impact: what their generosity made possible, ideally with named nonprofits and concrete outcomes.
-5. Closing invitation to the reader: an open-ended, reflective question inviting the reader into a similar journey, not a directive to open a fund.
-
-Preserve donor quotes as given — do not over-edit them.
-
-### "We" usage
-
-"We" may refer to:
-
-- The Signatry as an organization ("We continue to be amazed and grateful…").
-- The Signatry plus the donor community ("Together, our impact reverberates around the world.").
-- God's people broadly ("When God's people live open-handedly…").
-
-Preserve this inclusive pattern and make sure the scope is clear in context.
-
-### Rhetorical questions as CTAs
-
-- Favor open-ended, reflective questions that connect the featured story to the reader's potential journey.
-- Example patterns: "If you could solve one problem in the world, what would it be?" / "What legacy are you building with what God has entrusted to you?"
-
-### Avoid tax-first or transactional framing
-
-- Correct order: calling → tool → benefit.
-- Tax advantages and mechanics support generosity; they do not lead it (see section 5 for the products/customers terminology rule).
+**For extended donor-facing narrative content** — Annual/Quarterly Impact Report stories, feature stories, and similar long-form pieces built around a donor's story or closing with a reflective CTA — **load `reference/narrative-patterns.md`** for the donor story arc, "we" usage, rhetorical-CTA patterns, and the tax-first-framing rule. Per the scope note above, none of this applies to internal operational writing, and most short donor-facing pieces (a fact sheet, a transactional email, a single social post) won't need it either.
 
 ## 11. Writing Mechanics and Best Practices
 
@@ -274,8 +249,14 @@ Before completing any draft for The Signatry, scan each item below — the full 
 
 - **Identity (§1):** quoted verbatim, never paraphrased, if included at all.
 - **Terminology (§5):** correct required terms used; deprecated/off-brand terms avoided; DAF ownership language precise (no "your fund/DAF").
-- **Faith capitalization and scripture (§6):** pronoun/kingdom/gospel/Church/scripture/Bible capitalization correct; scripture cited in NIV format and never placed at the end of a piece.
+- **Faith capitalization (§6):** pronoun/kingdom/gospel/Church/scripture/Bible capitalization correct. If scripture is actually quoted or cited, also check it against `reference/scripture-usage.md` (NIV format, not placed at the end of a piece).
 - **Voice and tone (§2–3):** faithful, relational, story-led, invitational, collegial; donor is the hero; no tax-first or multigenerational-legacy framing; no "products"/"customers" framing.
 - **Numbers, dates, mechanics (§7–8):** Oxford comma; em dashes unspaced; time has a space before am/pm; ellipses/exclamation points/quotation-mark rules followed; no emojis.
 - **Headings (§9):** H1s and titles are title case; everything else (H2+, buttons, blog titles, newsletter subject lines) is sentence case.
-- **Structure and CTAs (§10, narrative content only):** donor story arc followed; donor quotes preserved without over-editing; closes with an invitation, not a directive.
+- **Structure and CTAs (§10, extended narrative content only):** if this piece follows the donor story arc, check it against `reference/narrative-patterns.md` — donor quotes preserved without over-editing; closes with an invitation, not a directive.
+
+## Changelog
+
+**2.2 — 2026-08-06** — Token-efficiency pass, no rule changes. §6's scripture-citation subsection moved to `reference/scripture-usage.md`; all of §10 moved to `reference/narrative-patterns.md`. Both only matter for a narrower slice of content than the rest of this file (see the routing table above). Section numbers unchanged.
+
+**2.1 and earlier** — no changelog kept prior to 2.2; see `metadata.source` for governing document versions.
