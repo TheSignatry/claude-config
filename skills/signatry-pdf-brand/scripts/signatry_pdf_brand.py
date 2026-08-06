@@ -77,18 +77,23 @@ def register_signatry_fonts():
     pdfmetrics.registerFont(TTFont("Mulish-SemiBold", os.path.join(_MULISH_DIR, "Mulish-SemiBold.ttf")))
     pdfmetrics.registerFont(TTFont("Mulish-Bold", os.path.join(_MULISH_DIR, "Mulish-Bold.ttf")))
     pdfmetrics.registerFont(TTFont("Mulish-ExtraBold", os.path.join(_MULISH_DIR, "Mulish-ExtraBold.ttf")))
+    pdfmetrics.registerFont(TTFont("Mulish-Italic", os.path.join(_MULISH_DIR, "Mulish-Italic.ttf")))
 
     pdfmetrics.registerFont(TTFont("Lora", os.path.join(_LORA_DIR, "Lora-Regular.ttf")))
     pdfmetrics.registerFont(TTFont("Lora-Medium", os.path.join(_LORA_DIR, "Lora-Medium.ttf")))
     pdfmetrics.registerFont(TTFont("Lora-SemiBold", os.path.join(_LORA_DIR, "Lora-SemiBold.ttf")))
     pdfmetrics.registerFont(TTFont("Lora-Bold", os.path.join(_LORA_DIR, "Lora-Bold.ttf")))
+    pdfmetrics.registerFont(TTFont("Lora-Italic", os.path.join(_LORA_DIR, "Lora-Italic.ttf")))
 
-    # Family mapping so <b>/<i> tags inside Paragraph text resolve to real bold
-    # weights instead of reportlab faking a slant/weight on the regular glyphs.
+    # Family mapping so <b>/<i> tags inside Paragraph text resolve to real
+    # italic/bold weights instead of reportlab silently rendering the upright
+    # regular glyphs with no warning (the same failure mode this skill exists
+    # to prevent, previously left open for italic specifically — there was no
+    # true italic face registered, only an alias back to the regular weight).
     pdfmetrics.registerFontFamily(
-        "Mulish", normal="Mulish", bold="Mulish-Bold", italic="Mulish", boldItalic="Mulish-Bold"
+        "Mulish", normal="Mulish", bold="Mulish-Bold", italic="Mulish-Italic", boldItalic="Mulish-Bold"
     )
     pdfmetrics.registerFontFamily(
-        "Lora", normal="Lora", bold="Lora-Bold", italic="Lora", boldItalic="Lora-Bold"
+        "Lora", normal="Lora", bold="Lora-Bold", italic="Lora-Italic", boldItalic="Lora-Bold"
     )
     _registered = True
