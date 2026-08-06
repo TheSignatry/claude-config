@@ -2,7 +2,7 @@
 name: signatry-style
 description: The Signatry's official writing and brand voice guide, covering identity, mission/vision/values, audience, voice and tone, required terminology, faith-related capitalization and scripture usage, number/date/mechanics rules, headings, writing mechanics, and visual/brand references. Use this skill whenever writing, editing, reviewing, or proofreading ANY content for The Signatry — donor communications, emails, newsletters, social media, annual and quarterly reports, brochures, resource guides, presentations, web copy, or internal documents — regardless of whether the user explicitly mentions style, branding, or formatting.
 metadata:
-  version: "2.0"
+  version: "2.1"
   release_date: "2026-08-04"
   source: "Full Brand Voice Guide (updated August 4, 2026) — authoritative. Brand and Style Quick Guide (Version 202607) — authoritative over this skill, but itself subject to the Full Brand Voice Guide where the two differ."
 ---
@@ -66,7 +66,7 @@ Balancing inspiration and equipping never sacrifices clarity. The most inspirati
 
 ### Faith-based without the jargon
 
-Biblical language, orthodox Christian teaching, and references to personal, active faith are central. But do not assume readers know particular Christian subcultures or denominations — minimize "Christianese" and any metaphor or euphemism that isn't self-explanatory or a direct scripture reference.
+Biblical language, orthodox Christian teaching, and references to personal, active faith are central — but minimize "Christianese" and metaphors that aren't self-explanatory. See section 6 for the specific insider-term and biblical-literacy rules.
 
 ## 3. Core Voice Attributes
 
@@ -74,16 +74,16 @@ Biblical language, orthodox Christian teaching, and references to personal, acti
 - **Relational, not transactional** — The Signatry walks alongside families. DAFs and tools serve the calling; they are not products being sold, and The Signatry is not a financial services vendor.
 - **Story-led, not data-led** — Lead with families, causes, and impact stories. Statistics exist to give scale to a personal story, not to be the headline.
 - **Aspirational invitation, not directive** — Calls to action are gentle invitations into a calling, not commands or urgency-driven pressure ("act now," "don't miss this," etc.).
-- **Theologically confident, not exclusive** — Faith language and scripture are natural and clear, assuming a shared faith foundation but not high biblical literacy. Avoid preachiness or insider-only theological jargon.
+- **Theologically confident, not exclusive** — Faith language and scripture are natural and clear, not preachy or insider-only (see section 6).
 - **Current parent-child relationships, not multi-multi-generational legacy** — The Signatry previously emphasized building legacies across multiple generations ("to the third and fourth generation"). Current messaging narrows this to the present parent-child relationship: strengthening the donor's family now, growing their near/medium-term impact, and preparing their children to steward wealth as adults. Avoid broad multi-generational legacy framing — see also the "Out-of-Date Branding" section below.
 
 ### Additional voice notes
 
 - Use of the word "we" is always intentional — see "We usage" in section 10.
-- Donor quotes are never over-edited; preserve their voice and phrasing.
+- Donor quotes are never over-edited (see section 10).
 - "Ministries" is context-dependent (see terminology below).
 - "Cause Champion" is the preferred term for an engaged donor type — use it where that concept applies.
-- Scripture references are not decorative: they never appear at the end of a piece, only at the beginning or in the middle.
+- Scripture placement rule — see section 6 ("never at the end of a piece").
 
 ## 4. Tone by Content Type
 
@@ -137,10 +137,6 @@ Use language that highlights the donor's advisory role instead:
 
 DAFs are tools for generosity, not the answer for everyone — they are the right fit for some situations and goals, not all.
 
-### Insider and church terms
-
-- Define or avoid insider religious terms (for example, "Great Commission," "sanctification," "redemption") so content is clear to readers with limited church exposure.
-
 ## 6. Faith-Related Capitalization and Scripture Usage
 
 - Pronouns for God are lowercase: he, him, his, you, your.
@@ -157,9 +153,8 @@ DAFs are tools for generosity, not the answer for everyone — they are the righ
 - Preferred translation: NIV.
 - Citation format: "Book Chapter:Verse, NIV" (for example, "Romans 8:28, NIV").
 - In web content, hyperlink the verse citation to the specific verse(s) and translation on bible.com (e.g., `https://www.bible.com/bible/111/2CO.9.7.NIV`).
-- Do not assume biblical literacy: briefly explain stories or references so they are clear to those with little church background.
+- Do not assume biblical literacy: briefly explain stories or references, and define or avoid insider religious terms (for example, "Great Commission," "sanctification," "redemption") so content is clear to readers with limited church exposure.
 - Integrate scripture as framing in section openers or narrative transitions. Never place scripture at the end of a piece — only at the beginning or in the middle.
-- Avoid unexplained insider phrases; either define them briefly or use plain, accessible language.
 
 ## 7. Numbers, Dates, Time, and Mechanics
 
@@ -184,7 +179,7 @@ DAFs are tools for generosity, not the answer for everyone — they are the righ
 
 - Always use the Oxford comma ("give, grow, and grant").
 - Em dashes: use sparingly, no spaces on either side — write them like this.
-- **Exclamation points:** avoid in formal content; use wisely in informal content (social media, blog posts, material attributed to a named individual).
+- **Exclamation points:** see section 8 for the formal/informal rule.
 - **Ellipses:** not permitted, except to shorten a direct quote — use a space on either side (example: "Any time you can place your capital where you're mission aligned ... you get exposed to ideas you wouldn't have elsewhere.").
 - **Quotation marks:** place periods inside quotation marks (Do: `Matilda added, "I love to tithe."` / Do: `Matilda told us she "loves to tithe."` / Don't: `Matilda told us she "loves to tithe".`). Exception: a parenthetical citation at the end of a quote goes outside the closing period (Do: `We know that "God loves a cheerful giver" (2 Corinthians 9:7, NIV).` / Don't: put the period before the citation).
 
@@ -193,7 +188,7 @@ DAFs are tools for generosity, not the answer for everyone — they are the righ
 - Capitalize the first word of each list item.
 - Do not end list items with periods unless items are full sentences.
 
-## 8. Contractions and Emojis
+## 8. Contractions, Exclamation Points, and Emojis
 
 - **Formal content** (annual reports, official letters, white papers, legal/financial disclosures): avoid contractions and exclamation points. Maintain a reverent, precise tone.
 - **Informal content** (social media, blog posts, and any material attributed to a named individual — a CEO letter, a flyer quote from staff or a donor): contractions and exclamation points may be used wisely.
@@ -240,8 +235,7 @@ Preserve this inclusive pattern and make sure the scope is clear in context.
 ### Avoid tax-first or transactional framing
 
 - Correct order: calling → tool → benefit.
-- Tax advantages and mechanics support generosity; they do not lead it.
-- Do not present DAFs as products or donors as customers.
+- Tax advantages and mechanics support generosity; they do not lead it (see section 5 for the products/customers terminology rule).
 
 ## 11. Writing Mechanics and Best Practices
 
@@ -276,50 +270,12 @@ Do not use:
 
 ## 14. Self-Check Before Returning Any Content
 
-Before completing any draft for The Signatry, silently verify:
+Before completing any draft for The Signatry, scan each item below — the full rule for each lives in the referenced section, not restated here:
 
-### Identity
-
-- Mission, vision, and values are quoted verbatim if included at all — never paraphrased, shortened, or reordered.
-
-### Terminology
-
-- Uses donors, nonprofits, donor advised fund (no hyphen), DAF, nonliquid gifts, noncash, biblically responsible investments (BRI), Generosity Activation Rate, money market pool, and "The Signatry" correctly.
-- Avoids charities (as generic label), complex assets, products, customers, account holders, "payout rate" (donor-facing content only — internal metric documentation may cite it when reconciling against Form 990 language, per `signatry-facts`), "money market account," "money market fund," and similar off-brand or deprecated terms.
-- DAF ownership language is precise: no "your fund/DAF" implying donor ownership; uses "the fund," "the DAF," or "your family DAF" instead.
-
-### Faith language and capitalization
-
-- God's pronouns are lowercase (he, him, his, you, your).
-- "kingdom of God" and "kingdom of Heaven" are lowercase in all contexts.
-- "gospel" is lowercase unless referring to one of the four Gospels.
-- "Church" is capitalized when referring to the global Church.
-- "scripture" and "biblical" are lowercase in all contexts.
-- "Bible" is capitalized.
-- Scripture is cited using the NIV with the "Book Chapter:Verse, NIV" format, never placed at the end of a piece, and explained clearly enough for readers with limited church background.
-
-### Voice and tone
-
-- Content feels faithful, relational, story-led, invitational, and collegial.
-- It avoids transactional, motivational, pressure-driven, or tax-first framing, and avoids broad multi-multi-generational legacy language.
-- DAFs and other tools appear as servants of the calling, not as products; The Signatry is not framed as a financial services vendor.
-- The donor is the hero; The Signatry is the supporting cast.
-
-### Numbers, dates, and mechanics
-
-- Oxford comma is used.
-- Em dashes have no surrounding spaces.
-- Time includes a space before am/pm (e.g., "8:15 am CT"), never "standard" or "daylight."
-- Ellipses are avoided except to shorten quotes (with spaces on either side); exclamation points follow the formal/informal rule.
-- Periods sit inside quotation marks except before a trailing parenthetical citation.
-- Numbers, percentages, dates, and large figures follow the rules above.
-- Lists are formatted with capitalized first words and no terminal periods unless the item is a full sentence.
-
-### Headings and formatting
-
-- H1s and titles are title case; H2+ headings, buttons, blog titles, and newsletter subject lines are sentence case.
-- Contractions are avoided in formal documents and used appropriately in informal ones. No emojis are used.
-
-### Structure and CTAs (for narrative content)
-
-- Donor stories follow the core arc, preserve donor quotes without over-editing, and close with reflective questions or invitations rather than direct commands to open accounts or maximize tax strategies.
+- **Identity (§1):** quoted verbatim, never paraphrased, if included at all.
+- **Terminology (§5):** correct required terms used; deprecated/off-brand terms avoided; DAF ownership language precise (no "your fund/DAF").
+- **Faith capitalization and scripture (§6):** pronoun/kingdom/gospel/Church/scripture/Bible capitalization correct; scripture cited in NIV format and never placed at the end of a piece.
+- **Voice and tone (§2–3):** faithful, relational, story-led, invitational, collegial; donor is the hero; no tax-first or multigenerational-legacy framing; no "products"/"customers" framing.
+- **Numbers, dates, mechanics (§7–8):** Oxford comma; em dashes unspaced; time has a space before am/pm; ellipses/exclamation points/quotation-mark rules followed; no emojis.
+- **Headings (§9):** H1s and titles are title case; everything else (H2+, buttons, blog titles, newsletter subject lines) is sentence case.
+- **Structure and CTAs (§10, narrative content only):** donor story arc followed; donor quotes preserved without over-editing; closes with an invitation, not a directive.
