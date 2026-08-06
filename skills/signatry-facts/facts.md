@@ -4,14 +4,7 @@
 **Review:** quarterly
 **Last update:** 2026-07-27
 
-Status vocabulary and usage rules are in `SKILL.md`. Only `VERIFIED` values may appear in output. This file holds what is needed on almost any task; bulkier detail is in `reference/`.
-
-| Need | Load |
-|---|---|
-| Fees, minimums, investments, any modelled gift | `reference/fees.md` |
-| Scale figures, cause categories, activation rates | `reference/figures.md` |
-| Founding story, timeline, founders | `reference/history.md` |
-| Donor stories, quotes, clearance policy | `reference/stories.md` |
+Status vocabulary and usage rules are in `SKILL.md`. Only `VERIFIED` values may appear in output. This file holds what is needed on almost any task; bulkier detail is in `reference/` — see the File map in `SKILL.md` for which file covers what.
 
 ## Sources
 

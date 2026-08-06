@@ -6,6 +6,14 @@ Format: date · file · what changed · why it matters.
 
 ---
 
+## 2026-08-06 — token-optimization pass; duplicate routing table removed
+
+`facts.md` updated — token-efficiency review, no factual changes.
+
+`facts.md` carried its own "Need → Load" table (4 rows: fees, figures, history, stories) that duplicated a subset of the fuller "File map" table already in `SKILL.md` (8 rows, with descriptions). Since `SKILL.md` and `facts.md` load together by default on every task naming a fact, that routing information was being paid for twice on every trigger. Removed the smaller, incomplete table from `facts.md`; it now points to `SKILL.md`'s File map instead. Nothing was lost — the removed table was a strict subset of the one that remains.
+
+**Why it matters:** this is the only meaningful duplication found in the skill — `facts.md`'s tables are otherwise dense, unique data (contact fields, leadership names, sources, known-bad values) with per-row source citations that are load-bearing, not padding. The fix is small in absolute size (~250 characters) but was pure waste.
+
 ## 2026-08-04 — Mission/Vision/Values canonical wording confirmed
 
 `facts.md` updated — following a `signatry-style` update (v2.0) sourced from the Full Brand Voice Guide, updated 2026-08-04 (`BVG-202608`).
