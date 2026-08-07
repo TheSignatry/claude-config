@@ -1,8 +1,8 @@
 ---
 name: signatry-docx-brand
-description: "Signatry brand templates for Word documents: which of the two bundled .dotx templates to base a new .docx on (general brand-styles template vs. letterhead template), and the exact mechanical steps to build from a .dotx starting point instead of from scratch. Use this whenever creating a Word document for The Signatry — always pair with the general docx skill (build/edit mechanics) and, if there is donor-facing or narrative copy, the signatry-style skill (voice and terminology). Trigger even if the user doesn't say 'template' or 'brand' by name, as long as the deliverable is a Signatry Word document."
-version: 1.5
-release_date: 2026-07-31
+description: "Signatry brand templates for Word documents: which of the two bundled .dotx templates to base a new .docx on (general brand-styles template vs. letterhead template), and the exact mechanical steps to build from a .dotx starting point instead of from scratch. Use this for ANY request to create, draft, build, or edit a .docx Word document in this organization — including plain, generic phrasing with no mention of 'template,' 'brand,' or 'Signatry,' such as 'write a memo,' 'draft a letter,' 'create a report,' or 'make a Word doc about X.' This skill is deployed org-wide for The Signatry; every document built in this environment (Claude.ai, Claude Code, or the Claude for Word add-in) is a Signatry document by default unless the user explicitly says otherwise. Do not wait for brand-specific language before applying this skill. Always pair with the general docx skill (build/edit mechanics) and, if there is donor-facing or narrative copy, the signatry-style skill (voice and terminology)."
+version: 1.6
+release_date: 2026-08-07
 ---
 
 # Signatry Word Document Brand Templates
