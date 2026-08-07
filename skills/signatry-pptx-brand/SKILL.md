@@ -1,8 +1,8 @@
 ---
 name: signatry-pptx-brand
-description: "Signatry brand system for PowerPoint decks: color palette, fonts (Mulish, Lora), and logo/quill assets for The Signatry. Use this skill whenever building, branding, restyling, or reviewing a .pptx presentation for The Signatry — donor-facing decks, internal/team decks, pitch decks, training decks, or any slide content — even if the user doesn't say 'brand' or 'Signatry' by name, as long as the deck is for Signatry. Always pair with the general pptx skill (build mechanics) and, if slide copy/text is being written, the signatry-style skill (voice and terminology)."
-version: 2.3
-release_date: 2026-08-06
+description: "Signatry brand system for PowerPoint decks: color palette, fonts (Mulish, Lora), and logo/quill assets for The Signatry. Use this skill for ANY request to create, build, generate, edit, restyle, or review a .pptx presentation or slide deck in this organization — including plain, generic phrasing with no mention of 'brand,' 'Signatry,' colors, or a template, such as 'create a presentation,' 'make me a deck,' 'build a PowerPoint about X,' or 'add a slide.' This skill is deployed org-wide for The Signatry; every deck built in this environment (Claude.ai, Claude Code, or the Claude for PowerPoint add-in) is a Signatry deck by default unless the user explicitly says otherwise (e.g., a competitor mockup or an intentionally unbranded draft). Do not wait for brand-specific language before applying this skill. Always pair with the general pptx skill (build mechanics) and, if slide copy/text is being written, the signatry-style skill (voice and terminology)."
+version: 2.4
+release_date: 2026-08-07
 ---
 
 # Signatry PowerPoint Brand System
@@ -156,6 +156,8 @@ Photography for decks comes from the `signatry-photo-library` skill — search i
 Fabrication rules (never invent a fact or a donor quote), donor photo/quote reuse rules, gift-amount confidentiality, and the confidentiality/board-only source restriction have moved to a dedicated `signatry-content-guardrails` skill, shared across all format skills (pptx, docx, pdf) rather than duplicated in each. Load that skill on any build — see **Dependencies** above.
 
 ## Changelog
+
+**2.4 — 2026-08-07** — Trigger wording only, no content changes. Description previously required "building, branding, restyling, or reviewing a .pptx presentation" language to fire; generic phrasing with no format/brand keyword (e.g. "add a slide," "make me a deck") could miss it, including inside the Claude for PowerPoint add-in where a request may reference the open file rather than naming a format. Replaced with explicit org-wide-default wording naming the add-in directly, matching wording already in use on the separately-versioned copy at `/mnt/skills/user/signatry-pptx-brand` (v1.5) — that copy predates the pass-1/pass-2 audit fixes below, so its content was not merged, only its trigger phrasing.
 
 **2.3 — 2026-08-06** — Token-efficiency pass, no design changes. Split `references/design-system.md`: archetypes C through L (the 11 interior-content layouts) moved to new `references/archetype-library.md`, loaded only once a slide's content need is known. `design-system.md` keeps the universal-standards material and the two every-deck archetypes (A, B-title). Was ~4,700 tokens required reading for every build regardless of which archetypes a deck actually used; now ~3,850, with the archetype variety loaded separately and selectively.
 
