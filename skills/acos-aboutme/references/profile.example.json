@@ -1,0 +1,27 @@
+{
+  "_comment": "Template for state/profile.json. Copy this file to ../state/profile.json during first-run enrollment (see SKILL.md) and fill it in. This is the one shared identity/org-chart file the whole acos family (cos, acos-email-sort, and future acos skills) reads from — keep it here, not duplicated per skill.",
+  "version": 1,
+
+  "owner": {
+    "first_name": "Trevor",
+    "full_name": "Trevor Bunch",
+    "email": "tbunch@thesignatry.com",
+    "signoff": "Trevor"
+  },
+
+  "staff": [
+    {"name": "Example Assistant", "email": "assistant@example.org", "role": "Executive Assistant"}
+  ],
+
+  "vip_senders": [
+    {"name": "Example Executive", "email": "exec@example.org", "domain": null, "title": "President & CEO"}
+  ],
+
+  "partner_vendors": [
+    {"name": "Example Partner Co", "domain": "examplepartner.com"}
+  ],
+
+  "protected_senders": [
+    {"name": "Example Contact", "email": "person@example.org", "reason": "ongoing personal/business relationship — never auto-decline or auto-file without a human look"}
+  ]
+}

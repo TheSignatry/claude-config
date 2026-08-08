@@ -1,0 +1,55 @@
+{
+  "_comment": "Template for state/config.json. Copy this file to ../state/config.json and fill it in during first-run enrollment (see SKILL.md). This file holds only acos-email-sort's own operational settings — folders, thresholds, delegate keywords. Identity/org-chart data (VIP list, signoff, partner vendors, protected contacts) now lives in the shared acos-aboutme skill; the fields below with the same names are a local fallback only, used when acos-aboutme isn't installed or a given list is empty there.",
+  "version": 1,
+  "home_timezone": "America/Chicago",
+
+  "aboutme_profile_path": "../acos-aboutme/state/profile.json",
+
+  "signature_first_name_note": "Local fallback only — superseded by acos-aboutme's owner.signoff whenever that profile exists and has one set.",
+  "signature_first_name": "",
+
+  "vip_senders_note": "Local fallback only — superseded by acos-aboutme's vip_senders whenever that profile exists and is non-empty.",
+  "vip_senders": [],
+
+  "partner_vendors_note": "Local fallback only — superseded by acos-aboutme's partner_vendors whenever that profile exists and is non-empty. A message from one of these domains is never auto-declined, even if it matches a template.",
+  "partner_vendors": [],
+
+  "protected_senders_note": "Local fallback only — superseded by acos-aboutme's protected_senders whenever that profile exists and is non-empty. A message from one of these addresses is never auto-declined, even if it matches a template.",
+  "protected_senders": [],
+
+  "always_flag_senders": [],
+
+  "delegate_keywords_placeholder_note": "PLACEHOLDER — Trevor has not yet specified the real criteria for delegate-worthy mail. These are a reasonable starting guess (scheduling/logistics, travel coordination, expense-receipt chasing) and must be confirmed or replaced before this list is trusted.",
+  "delegate_keywords": [
+    "schedule a time",
+    "reschedule",
+    "calendar invite",
+    "book (a|the) flight",
+    "travel itinerary",
+    "hotel reservation",
+    "expense report",
+    "receipt",
+    "reimbursement",
+    "coordinate a time",
+    "logistics for"
+  ],
+
+  "decline_threshold": 3,
+
+  "urgent_keyword_patterns": null,
+  "sensitive_keyword_patterns": null,
+
+  "templates_file": "references/rejection_templates.yaml",
+  "ledger_file": "state/ledger.json",
+
+  "folder_names": {
+    "root": "_claude",
+    "priority": "1_priority",
+    "review": "2_review",
+    "delegate": "3_delegate",
+    "autorespond": "4_autorespond",
+    "drafts_review": "5_draftsToReview",
+    "to_be_filed": "6_toBeFiled"
+  },
+  "folder_naming_note": "The live mailbox's fourth folder is named '4_autorespond' (not '4_autoresponse' as first drafted in the build spec) — this config reflects what actually exists. Rename either side if you want them to match; the skill works fine with either as long as this config's folder_names.autorespond value matches the real folder."
+}

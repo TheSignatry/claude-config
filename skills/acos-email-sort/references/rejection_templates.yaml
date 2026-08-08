@@ -1,0 +1,117 @@
+# Vendor-decline template library for acos-email-sort.
+#
+# Shape mirrors the old src/cos/config/rejection_templates.yaml from the
+# retired MCP-server project: each entry is a topic name, deterministic
+# match patterns (subject/body regexes plus optional sender domains), and an
+# HTML body with {first_name} and {signoff} placeholders. scripts/triage.py
+# matches messages against these in file order — first match wins — and
+# fills both placeholders at draft time. {first_name} is the VENDOR's own
+# first name and falls back to "there" when the sender's display name
+# doesn't look like a person's name (e.g. a company or "Newsletter Team").
+# {signoff} is the mailbox owner's own name — pulled from acos-aboutme's
+# profile when that skill is installed and enrolled, or this skill's own
+# local `signature_first_name` fallback otherwise — so no person's name is
+# hardcoded here; that's what makes this template file reusable by anyone
+# who adopts this skill, not just Trevor.
+#
+# The four templates below are Trevor's own real decline drafts (the sign-
+# off name swapped for {signoff}), pulled from _watch/Vendors/8_Ashleigh to
+# Respond/Not Interested/{CyberSec, List, Staffing, SW_Dev} on 2026-08-02 —
+# not invented copy. Match patterns were built from the real vendor emails
+# filed alongside each draft in that same mailbox structure. This content is
+# still swappable data, not skill logic: Marketing should review it as part
+# of this skill's review process before it's trusted to draft declines,
+# especially the regex coverage, which is a first pass over a small sample.
+#
+# Nothing here is sent automatically — every draft this produces waits in
+# 5_draftsToReview for a human to send, and the disclosure_footer below is
+# appended to every rendered draft regardless of which template matched.
+
+disclosure_footer: |
+  <p style="font-size:12px;color:#666666;margin-top:16px"><em>This email was drafted with AI assistance so that every valid email receives a response (we wouldn't want to be ghosted, so this is how I'm keeping up with the volume of emails I receive). I do also want to reassure you that a human has reviewed each and every email and response before it was sent.</em></p>
+
+templates:
+  - topic: cybersec_msp_pitch
+    sender_domains: []
+    subject_patterns:
+      - "\\bmanaged (it )?(&|and)?\\s*cybersecurity\\b"
+      - "\\bmanaged security\\b"
+      - "\\bsecurity coordination\\b"
+      - "\\battack surface\\b"
+      - "\\bphishing (risk|resilience)\\b"
+      - "\\bcompliance without the chaos\\b"
+    body_patterns:
+      - "\\bmanaged (it|security) services?\\b"
+      - "\\b(SIEM|SOC|CMMC)\\b"
+      - "\\bvulnerabilit(y|ies)\\b"
+      - "\\bremediation\\b"
+      - "\\baudit readiness\\b"
+      - "\\brecompete\\b"
+      - "\\bmanaged security service provider\\b"
+      - "\\bcyber\\s*security\\b"
+    subject_prefix: "Re: "
+    html_body: |
+      <p>Dear {first_name},</p>
+      <p>Thank you for reaching out. We are engaged in a multi-year engagement with a Managed Security Service Provider and do not anticipate re-evaluating the agreement until the summer of 2027. Given that we are not a good prospect for your services at this time, I'm declining the meeting invitation.</p>
+      <p>If something changes or I'm looking for a new service - I'll typically post something on LinkedIn and you are welcome to follow me there (<a href="https://www.linkedin.com/in/trevordbunch/">https://www.linkedin.com/in/trevordbunch/</a>).</p>
+      <p>- {signoff}</p>
+
+  - topic: contact_list_data_pitch
+    sender_domains: []
+    subject_patterns:
+      - "\\bcontact list\\b"
+      - "\\bemail list\\b"
+      - "\\bemails? for outreach\\b"
+      - "\\bleads? list\\b"
+    body_patterns:
+      - "\\bverified list\\b"
+      - "\\bvalidated (email )?list\\b"
+      - "\\bcomplete contact details\\b"
+      - "\\bmarketing outreach\\b"
+      - "\\bprospect list\\b"
+      - "\\b(excel|csv) file format\\b"
+    subject_prefix: "Re: "
+    html_body: |
+      <p>Dear {first_name},</p>
+      <p>I sincerely appreciate your offer; however, we operate in a niche market and do not procure marketing lists. In fact we have a fairly strict OPT-IN only policy for our marketing practices.</p>
+      <p>Please remove us from your prospect list.</p>
+      <p>Thanks,<br>{signoff}</p>
+
+  - topic: staffing_recruiting_pitch
+    sender_domains: []
+    subject_patterns:
+      - "\\bstaffing (solutions|partner|services)\\b"
+      - "\\brecruit(ing|ment) (services|partner)\\b"
+      - "\\bconsultants? (ready|available)\\b"
+    body_patterns:
+      - "\\bready for their next project\\b"
+      - "\\bexploratory conversation\\b"
+      - "\\badditional skillsets?\\b"
+      - "\\bcontingency (fee|search)\\b"
+      - "\\b(bench|available) consultants?\\b"
+      - "\\bplace (a )?candidate\\b"
+    subject_prefix: "Re: "
+    html_body: |
+      <p>Dear {first_name},</p>
+      <p>Thank you for reaching out. I am not currently interested in your services. We have a very strong referral network and operate in a niche market, so we do not leverage any staffing or recruiting services in our standard practices.</p>
+      <p>Any open positions are typically advertised on our <a href="https://ats.rippling.com/the-signatry/jobs">Careers Page</a> and on <a href="https://www.linkedin.com/company/the-signatry/">LinkedIn</a>. You are welcome to follow any changes there and reach out to our Talent department if you feel that you have a strong candidate.</p>
+      <p>{signoff}</p>
+
+  - topic: software_dev_partnership_pitch
+    sender_domains: []
+    subject_patterns:
+      - "\\bdevelopment partner(ship)?\\b"
+      - "\\bstaff augmentation\\b"
+      - "\\breduce .*development costs\\b"
+    body_patterns:
+      - "\\bdedicated development team\\b"
+      - "\\badd(ing)? (developers|players) to (your|the) (team|network)\\b"
+      - "\\boutsourc(e|ed|ing) (software )?development\\b"
+      - "\\b(nearshore|offshore) develop"
+      - "\\bin-house vs\\.? agency vs\\.? hybrid\\b"
+    subject_prefix: "Re: "
+    html_body: |
+      <p>Dear {first_name},</p>
+      <p>Thank you for reaching out. I have some great development partnerships in place. Right now, I do not have projects that require adding additional players to the network.</p>
+      <p>If something changes - I'll typically post something on LinkedIn and you are welcome to follow me there (<a href="https://www.linkedin.com/in/trevordbunch/">https://www.linkedin.com/in/trevordbunch/</a>).</p>
+      <p>- {signoff}</p>
