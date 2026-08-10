@@ -23,5 +23,13 @@
 
   "protected_senders": [
     {"name": "Example Contact", "email": "person@example.org", "reason": "ongoing personal/business relationship — never auto-decline or auto-file without a human look"}
-  ]
+  ],
+
+  "jira_workspaces": {
+    "_comment": "Workspace groups for acos-jira-analysis (and future acos skills). Each group is a list of one or more Jira project keys — don't assume one project per group. upcoming_window_days is the shared 'next N days' window every consuming skill should read from here rather than hardcoding.",
+    "product": ["TRM"],
+    "support": ["SUP"],
+    "work": ["TT", "IL", "HSER", "GE", "DVR"],
+    "upcoming_window_days": 14
+  }
 }
