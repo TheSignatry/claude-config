@@ -14,14 +14,30 @@
 # hardcoded here; that's what makes this template file reusable by anyone
 # who adopts this skill, not just Trevor.
 #
-# The four templates below are Trevor's own real decline drafts (the sign-
-# off name swapped for {signoff}), pulled from _watch/Vendors/8_Ashleigh to
-# Respond/Not Interested/{CyberSec, List, Staffing, SW_Dev} on 2026-08-02 —
-# not invented copy. Match patterns were built from the real vendor emails
-# filed alongside each draft in that same mailbox structure. This content is
-# still swappable data, not skill logic: Marketing should review it as part
-# of this skill's review process before it's trusted to draft declines,
-# especially the regex coverage, which is a first pass over a small sample.
+# The first four templates below (cybersec_msp_pitch, contact_list_data_pitch,
+# staffing_recruiting_pitch, software_dev_partnership_pitch) are Trevor's own
+# real decline drafts (the sign-off name swapped for {signoff}), pulled from
+# _watch/Vendors/8_Ashleigh to Respond/Not Interested/{CyberSec, List,
+# Staffing, SW_Dev} on 2026-08-02 — not invented copy. Match patterns were
+# built from the real vendor emails filed alongside each draft in that same
+# mailbox structure.
+#
+# nonprofit_outreach_pitch (added 2026-08-10) is DIFFERENT: it is drafted,
+# invented copy, not a real historical decline Trevor sent — added after
+# spotting a recurring "for your nonprofit" cold-outreach pattern across
+# several unrelated vendor pitches (supplier partnerships, succession
+# planning, AI/Salesforce upsell) with no single real prior reply to source
+# from. Its match patterns deliberately avoid a bare "nonprofit" keyword,
+# since that word is core Signatry vocabulary and appears constantly in
+# legitimate donor/grant/internal mail — matching only the outward-facing
+# "for/prepare your nonprofit" phrasing a cold vendor uses, which genuine
+# Signatry correspondence never does.
+#
+# This content is still swappable data, not skill logic: Marketing should
+# review it as part of this skill's review process before it's trusted to
+# draft declines, especially the regex coverage, which is a first pass over
+# a small sample — nonprofit_outreach_pitch most of all, since it's unproven
+# invented copy rather than a real draft Trevor already stood behind.
 #
 # Nothing here is sent automatically — every draft this produces waits in
 # 5_draftsToReview for a human to send, and the disclosure_footer below is
@@ -112,6 +128,23 @@ templates:
     subject_prefix: "Re: "
     html_body: |
       <p>Dear {first_name},</p>
-      <p>Thank you for reaching out. I have some great development partnerships in place. Right now, I do not have projects that require adding additional players to the network.</p>
+      <p>Thank you for reaching out. I have some great development partnerships in place. Right now, I do not have projects that require adding players to our network.</p>
       <p>If something changes - I'll typically post something on LinkedIn and you are welcome to follow me there (<a href="https://www.linkedin.com/in/trevordbunch/">https://www.linkedin.com/in/trevordbunch/</a>).</p>
+      <p>- {signoff}</p>
+
+  - topic: nonprofit_outreach_pitch
+    sender_domains: []
+    subject_patterns:
+      - "\\bfor your nonprofit\\b"
+      - "\\bfellow .{0,20}nonprofit\\b"
+      - "\\bnonprofit disaster aid\\b"
+    body_patterns:
+      - "\\bfor your nonprofit\\b"
+      - "\\bprepare your nonprofit\\b"
+      - "\\bnonprofits? face (these|this)\\b"
+    subject_prefix: "Re: "
+    html_body: |
+      <p>Dear {first_name},</p>
+      <p>Thank you for reaching out. We evaluate new vendor relationships internally rather than through cold outreach, and don't have a current need in this area.</p>
+      <p>If something changes, I'll typically post something on LinkedIn and you're welcome to follow me there (<a href="https://www.linkedin.com/in/trevordbunch/">https://www.linkedin.com/in/trevordbunch/</a>).</p>
       <p>- {signoff}</p>

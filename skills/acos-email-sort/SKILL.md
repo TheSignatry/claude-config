@@ -1,6 +1,6 @@
 ---
 name: acos-email-sort
-description: "Sorts Trevor's Microsoft 365 inbox into the _claude/* Outlook folder taxonomy every morning, drafts polite vendor declines for human review, and never sends anything. Use when: run my morning email sort, sort my inbox, triage my email, process my inbox, run acos-email-sort, morning mail run, file my email, what's in 4_autorespond or 5_draftsToReview."
+description: "Sorts Trevor's Microsoft 365 inbox into the _claude/* Outlook folder taxonomy every morning, drafts polite vendor declines for human review, and never sends anything. Use when: run my morning email sort, sort my inbox, triage my email, process my inbox, run acos-email-sort, morning mail run, file my email, what's in 4_autorespond, 5_draftsToReview, or 6_bulkToReview."
 version: "0.1"
 release_date: "2026-08-02"
 ---
@@ -27,11 +27,11 @@ Separately, check for `state/config.json`. If it doesn't exist:
 
 `state/config.json` and `state/ledger.json` remain this skill's own runtime data — only the identity fields above are shared, and only by reading `acos-aboutme`'s file, never by writing to it.
 
-**Delegate criteria are a placeholder.** `config.example.json`'s `delegate_keywords` (scheduling/logistics, travel coordination, expense-receipt chasing) are a reasonable guess, not Trevor's confirmed criteria — say so plainly the first time a message actually gets routed to 3_delegate on this basis, so it stays visible that this needs his real input.
+**Delegate criteria (confirmed by Trevor, 2026-08-10).** Ashleigh (the EA) handles scheduling/calendar coordination and all travel logistics — flights, hotels, itineraries, and travel-related receipts/reimbursement — per `config.json`'s `delegate_keywords`. Invoices and receipts that aren't travel-related (e.g., a software subscription invoice) are Trevor's own to review, upload, and code for accounting, and general invoice/AP payment-request emails are also his to handle personally — neither goes to `3_delegate`. See the **Judgment calls** section below for how this plays out for `undetermined` mail, and `config.json`'s `invoice_review_note` for the `accounts_payable@thesignatry.com` detail.
 
 ## Folder-existence gate (every run, before touching anything)
 
-The six folders (`1_priority`, `2_review`, `3_delegate`, `4_autorespond`, `5_draftsToReview`, `6_toBeFiled`) live under a top-level `_claude` folder in Trevor's mailbox. This skill never creates a folder — folder creation is Trevor's manual, one-time setup, approved by him, not something done through any indirect mechanism (a rule, a label, or otherwise).
+The seven folders (`1_priority`, `2_review`, `3_delegate`, `4_autorespond`, `5_draftsToReview`, `6_bulkToReview`, `7_toBeFiled`) live under a top-level `_claude` folder in Trevor's mailbox. This skill never creates a folder — folder creation is Trevor's manual, one-time setup, approved by him, not something done through any indirect mechanism (a rule, a label, or otherwise). `6_bulkToReview` and the `7_toBeFiled` rename (from the old `6_toBeFiled`) were added 2026-08-10 — until Trevor has made both changes in the live mailbox, this gate will report `6_bulkToReview` and `7_toBeFiled` as missing and the run will stop at step 4 below.
 
 Each run:
 
@@ -54,8 +54,9 @@ Serialize the fetched messages to a JSON file (id, subject, bodyPreview, sender,
 Run `scripts/triage.py classify --config state/config.json --aboutme <path or omit> --templates references/rejection_templates.yaml --ledger state/ledger.json --messages <file>`. Pass `--aboutme` pointing at `acos-aboutme/state/profile.json` when that file exists; omit it otherwise and the script falls back to this skill's own local config fields. Each result comes back with a `bucket_hint`:
 
 - **`priority`** — deterministic (VIP/executive sender, high-importance flag, or a deadline/approval keyword). Move straight to `1_priority`. This overrides everything else, including a decline-template match — an executive forwarding a vendor pitch for Trevor's opinion is priority mail, not an auto-decline.
-- **`decline`** — matched a template in `rejection_templates.yaml` deterministically, and is not flagged sensitive or a protected contact. Follow the **Decline flow** below.
-- **`undetermined`** — nothing scriptable matched, or a match was deliberately suppressed. This is where judgment happens, see below. If `sensitive: true` is set here, it means an HR/personnel-adjacent keyword hit (salary, termination, medical, disability, harassment, investigation, board-confidential, and similar) — apply conservative handling: never file this into an auto-decline flow, and lean toward `2_review` rather than confidently filing it anywhere else, so a human looks at it. If `protected_contact: true` is set instead, the sender matched a known partner vendor domain or a specifically protected contact from `acos-aboutme` (or this skill's local fallback) — the message read like a decline candidate, but that source says never auto-decline this sender; route to `2_review` so a human decides, never straight to `6_toBeFiled` or a decline draft.
+- **`bulk_review`** — deterministic: the sender address or body preview matches `is_bulk_or_newsletter`'s bulk-send signature (a `newsletter`/`no-reply`/`marketing`-style address, or the invisible preheader-padding characters bulk-send platforms like Marketo/Mailchimp/SFMC use). Move straight to `6_bulkToReview` — no LLM judgment needed, same as `priority` and `decline`. This is a resting folder, not a transient one: this skill files new bulk mail into it each run and never touches what's already there — Trevor (or Ashleigh) does a quick manual pass to screen it before it moves on to `7_toBeFiled`, and that onward move is a human action, not something this skill automates on a later run. If the `reasons` also mention a matched decline-template topic, that's just an audit note — replying to a bulk sender is pointless (often nobody reads it), so no decline draft is attempted regardless.
+- **`decline`** — matched a template in `rejection_templates.yaml` deterministically, is not flagged sensitive or a protected contact, and isn't bulk/newsletter mail (that's checked first — see `bulk_review` above). Follow the **Decline flow** below.
+- **`undetermined`** — nothing scriptable matched, or a match was deliberately suppressed. This is where judgment happens, see below. If `sensitive: true` is set here, it means an HR/personnel-adjacent keyword hit (salary, termination, medical, disability, harassment, investigation, board-confidential, and similar) — apply conservative handling: never file this into an auto-decline flow, and lean toward `2_review` rather than confidently filing it anywhere else, so a human looks at it. If `protected_contact: true` is set instead, the sender matched a known partner vendor domain or a specifically protected contact from `acos-aboutme` (or this skill's local fallback) — the message read like a decline candidate, but that source says never auto-decline this sender; route to `2_review` so a human decides, never straight to `7_toBeFiled` or a decline draft.
 
 ## Judgment calls the script can't make
 
@@ -63,8 +64,9 @@ For every `undetermined` result, decide by reading the message itself:
 
 - **Is `protected_contact: true`?** → `2_review`, always. A known partner vendor or protected contact reaching out with pitch-like language is still worth a real look, not a form decline or a silent file — don't second-guess this one with judgment, just route it.
 - **Is it genuinely ambiguous** — a human would need to look at it to know where it really belongs, or its content just doesn't map cleanly onto anything else? → `2_review`. This is the one bucket meant to be a human decision point, not a place to dump uncertainty.
-- **Is it delegate-worthy** — coordination work Ashleigh (the EA) handles: scheduling/logistics, travel coordination, expense-receipt chasing, per the placeholder list in config (flag as placeholder-based, see Enrollment)? → `3_delegate`.
-- **Is it routine mail with no ambiguity and nothing further for this skill to do** — not urgent, not a decline candidate, not delegate work, just something to file later? → `6_toBeFiled`. Do not attempt to subfolder or route it toward its eventual project/vendor home — that's a separate, future filing skill's job. `6_toBeFiled` is a flat pile.
+- **Is it delegate-worthy** — coordination work Ashleigh (the EA) handles: scheduling/calendar coordination, or travel logistics (flights, hotels, itineraries, travel-related receipts/reimbursement), per the confirmed `delegate_keywords` list in config? → `3_delegate`.
+- **Is it an invoice, a general AP payment request, or a non-travel receipt** (e.g., a software invoice Trevor needs to review, upload, and code for accounting)? → `2_review`, not `3_delegate` — these are Trevor's to handle personally, never Ashleigh's, regardless of how routine the invoice itself looks. If `accounts_payable@thesignatry.com` is already a recipient/cc, note that in the run-summary line for this message — it means AP is already in the loop, so this is likely a quick review-then-file pass rather than one needing Trevor to take a payment action himself.
+- **Is it routine mail with no ambiguity and nothing further for this skill to do** — not urgent, not a decline candidate, not delegate work, just something to file later? → `7_toBeFiled`. Do not attempt to subfolder or route it toward its eventual project/vendor home — that's a separate, future filing skill's job. `7_toBeFiled` is a flat pile.
 - **Still not confident even after judgment?** → take no folder action. Leave it in the Inbox. Don't default to `2_review` just because you're unsure — that folder is for content that's inherently ambiguous, not for cases where the classifier (script or human judgment) simply couldn't decide. Report it as unclassified in the run summary instead.
 
 Move messages in batches of up to 5 via `outlook_batch_modify_labels` with `moveToFolderId` set to the resolved destination id. Pace and retry through rate-limit responses per that tool's own guidance rather than firing an unthrottled loop.
@@ -83,7 +85,7 @@ For each `decline` result:
 
 Write a per-run summary Trevor and `acos-orchestration` (a future skill; don't build it here) can both use — keep it simple:
 
-- Counts per bucket (`1_priority`, `2_review`, `3_delegate`, `5_draftsToReview`, `6_toBeFiled`, and anything left unclassified in the Inbox).
+- Counts per bucket (`1_priority`, `2_review`, `3_delegate`, `5_draftsToReview`, `6_bulkToReview`, `7_toBeFiled`, and anything left unclassified in the Inbox).
 - Any repeat-decline rule recommendations from this run.
 - Any processing errors, called out clearly if anything is still sitting in `4_autorespond`.
 - One line per moved-or-drafted message (what moved where and why, in a sentence) — this is the traceability log; a misclassification should be easy to find and explain later.
@@ -107,6 +109,7 @@ A simple, legible pair is enough — don't over-build this:
 
 - No automatic sending, ever.
 - No automatic Outlook-rule creation, ever.
-- No subfoldering or final filing of `6_toBeFiled` contents — a separate, future skill's job.
+- No subfoldering or final filing of `7_toBeFiled` contents — a separate, future skill's job.
+- No automatically advancing mail from `6_bulkToReview` onward to `7_toBeFiled` — that screening pass is Trevor's/Ashleigh's manual action, not something this skill does on a later run.
 - No writing to `acos-aboutme`'s profile from this skill — only reading it. Corrections go through `acos-aboutme`'s own update flow.
 - No changes to `skills/cos/`.

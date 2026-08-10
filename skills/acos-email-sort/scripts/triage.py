@@ -33,6 +33,7 @@ import argparse
 import json
 import re
 import sys
+import unicodedata
 from pathlib import Path
 
 DEFAULT_URGENT_KEYWORD_PATTERNS = [
@@ -71,6 +72,63 @@ DEFAULT_SENSITIVE_KEYWORD_PATTERNS = [
     r"\bsuccession plan\b",
 ]
 
+BULK_SENDER_ADDRESS_PATTERNS = [
+    r"newsletter", r"no-?reply", r"do-?not-?reply", r"marketing", r"campaign",
+    r"\bnews\b", r"digest", r"bulletin", r"webinars?", r"publications",
+    r"substack",
+]
+
+# Unicode categories used by bulk-send platforms (Marketo, Mailchimp,
+# Salesforce Marketing Cloud, Iterable, HubSpot, Substack) to pad the
+# preheader with invisible characters and control inbox preview-text
+# length: Cf = format characters (zero-width space/joiner, word joiner,
+# soft hyphen, etc.), Mn = nonspacing marks. See _has_esp_padding_signature.
+_ESP_PADDING_CATEGORIES = {"Cf", "Mn"}
+
+
+def _has_esp_padding_signature(text, min_invisible=6):
+    """True if `text` contains many invisible/format characters (Cf/Mn)
+    that are isolated by plain whitespace rather than attached to a
+    letter. Real prose essentially never does this -- a combining mark
+    or soft hyphen in genuine text sits directly against a letter (e.g.
+    a word-wrap hint inside "diffi-cult"), never floating between spaces.
+    ESP padding scatters these between spaces to control inbox preview
+    length, but different platforms vary how many plain spaces separate
+    each invisible character (Substack uses several, others use one), so
+    this counts total isolated occurrences rather than requiring them to
+    sit immediately adjacent to each other."""
+    count = 0
+    for i, ch in enumerate(text):
+        if unicodedata.category(ch) not in _ESP_PADDING_CATEGORIES:
+            continue
+        prev = text[i - 1] if i > 0 else " "
+        if prev == " " or unicodedata.category(prev) in _ESP_PADDING_CATEGORIES:
+            count += 1
+            if count >= min_invisible:
+                return True
+    return False
+
+
+def is_bulk_or_newsletter(message):
+    """Returns (True, reason) if this message looks like a bulk send
+    (newsletter/marketing blast) rather than a direct, one-to-one
+    solicitation -- used to suppress the decline flow, since drafting a
+    personalized decline reply to a bulk sender is pointless (often nobody
+    reads it) and this pattern was observed to false-positive on generic
+    keyword overlap with newsletter copy (e.g. a CIO newsletter that just
+    happens to mention "cybersecurity")."""
+    address = ((message.get("sender") or {}).get("address") or message.get("senderAddress") or "").lower()
+    for pattern in BULK_SENDER_ADDRESS_PATTERNS:
+        if re.search(pattern, address):
+            return True, f"sender address matches bulk-mail pattern /{pattern}/"
+
+    haystack = f"{message.get('subject', '')}\n{message.get('bodyPreview', '')}"
+    if _has_esp_padding_signature(haystack):
+        return True, "body preview contains ESP preheader-padding characters (bulk-send signature)"
+
+    return False, None
+
+
 GENERIC_SENDER_NAME_TOKENS = {
     "the", "team", "support", "sales", "marketing", "newsletter", "newsletters",
     "notifications", "noreply", "no-reply", "info", "hello", "admin", "updates",
@@ -78,7 +136,7 @@ GENERIC_SENDER_NAME_TOKENS = {
 }
 
 REQUIRED_FOLDER_KEYS = [
-    "priority", "review", "delegate", "autorespond", "drafts_review", "to_be_filed",
+    "priority", "review", "delegate", "autorespond", "drafts_review", "bulk_review", "to_be_filed",
 ]
 
 
@@ -422,6 +480,23 @@ def classify_message(message, config, templates, ledger):
             "reasons": [f"{protected_reason} — decline suppressed, needs human judgment"],
         }
 
+    is_bulk, bulk_reason = is_bulk_or_newsletter(message)
+    if is_bulk:
+        reasons = [f"{bulk_reason} — routed to bulk_review for a quick manual screen before final filing"]
+        decline_match = match_decline_template(message, templates)
+        if decline_match:
+            reasons.append(
+                f"note: also matched decline template '{decline_match['topic']}' on {decline_match['matched_on']} "
+                f"pattern /{decline_match['pattern']}/, but no decline draft was attempted since this looks like "
+                "bulk/newsletter mail, not a direct solicitation"
+            )
+        return {
+            "id": message.get("id"),
+            "bucket_hint": "bulk_review",
+            "sensitive": False,
+            "reasons": reasons,
+        }
+
     decline_match = match_decline_template(message, templates)
     if decline_match:
         address = ((message.get("sender") or {}).get("address") or message.get("senderAddress") or "").lower()
@@ -440,7 +515,7 @@ def classify_message(message, config, templates, ledger):
         "id": message.get("id"),
         "bucket_hint": "undetermined",
         "sensitive": False,
-        "reasons": ["no deterministic match — needs LLM judgment (2_review / 3_delegate / 6_toBeFiled) or leave in Inbox if still not confident"],
+        "reasons": ["no deterministic match — needs LLM judgment (2_review / 3_delegate / 7_toBeFiled) or leave in Inbox if still not confident"],
     }
 
 

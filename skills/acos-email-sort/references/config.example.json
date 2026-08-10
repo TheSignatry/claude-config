@@ -49,7 +49,9 @@
     "delegate": "3_delegate",
     "autorespond": "4_autorespond",
     "drafts_review": "5_draftsToReview",
-    "to_be_filed": "6_toBeFiled"
+    "bulk_review": "6_bulkToReview",
+    "to_be_filed": "7_toBeFiled"
   },
-  "folder_naming_note": "The live mailbox's fourth folder is named '4_autorespond' (not '4_autoresponse' as first drafted in the build spec) — this config reflects what actually exists. Rename either side if you want them to match; the skill works fine with either as long as this config's folder_names.autorespond value matches the real folder."
+  "folder_naming_note": "The live mailbox's fourth folder is named '4_autorespond' (not '4_autoresponse' as first drafted in the build spec) — this config reflects what actually exists. Rename either side if you want them to match; the skill works fine with either as long as this config's folder_names.autorespond value matches the real folder.",
+  "folder_restructure_note": "'6_bulkToReview' is a screening lane for newsletter/bulk-send mail (see scripts/triage.py's is_bulk_or_newsletter) that sits ahead of the flat '7_toBeFiled' pile, giving a quick manual pass before final filing. Adjust the folder_names values here to whatever your own mailbox actually uses; this skill never creates folders itself."
 }
