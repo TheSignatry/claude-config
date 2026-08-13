@@ -33,18 +33,40 @@
 # "for/prepare your nonprofit" phrasing a cold vendor uses, which genuine
 # Signatry correspondence never does.
 #
+# email_verification_probe and generic_vendor_demo_pitch (both added
+# 2026-08-12, Theme C of state/stage2_accuracy_report.md) are also invented
+# copy, not real historical declines. They exist to close a real coverage
+# gap the Stage 2 real-mailbox test found: 8 cold pitches Trevor hand-filed
+# as declines (a Data & AI platform pitch, a nonprofit-data-platform pitch,
+# a Salesforce "free sessions" upsell, a network-monitoring MSP pitch, an
+# HR/ATS demo ask, an email-verification spam probe, a travel-experience
+# pitch, and a GRC-platform content pitch) matched no existing template and
+# fell through to `undetermined` instead. generic_vendor_demo_pitch is
+# deliberately the broadest, most generic template in this file and is kept
+# LAST in file order on purpose (see the file-order note above — first
+# match wins, so anything more specific should still win first). It is also
+# the designated `fallback_decline_topic` in config.json, used by
+# `triage.py match-declines` for anything Trevor drops straight into
+# `4_autorespond` that doesn't match any template's keywords at all — see
+# SKILL.md's "Sweep 4_autorespond" section.
+#
 # This content is still swappable data, not skill logic: Marketing should
 # review it as part of this skill's review process before it's trusted to
 # draft declines, especially the regex coverage, which is a first pass over
-# a small sample — nonprofit_outreach_pitch most of all, since it's unproven
-# invented copy rather than a real draft Trevor already stood behind.
+# a small sample — nonprofit_outreach_pitch, email_verification_probe, and
+# generic_vendor_demo_pitch most of all, since they're unproven invented
+# copy rather than a real draft Trevor already stood behind.
 #
 # Nothing here is sent automatically — every draft this produces waits in
 # 5_draftsToReview for a human to send, and the disclosure_footer below is
 # appended to every rendered draft regardless of which template matched.
+# Plain <p>/<em> only, no style attribute — the live connector's outbound
+# HTML sanitizer rejects style=/class=/id= on any tag outright (whole draft
+# creation fails, not just the attribute stripped), found 2026-08-12 on the
+# first real live run.
 
 disclosure_footer: |
-  <p style="font-size:12px;color:#666666;margin-top:16px"><em>This email was drafted with AI assistance so that every valid email receives a response (we wouldn't want to be ghosted, so this is how I'm keeping up with the volume of emails I receive). I do also want to reassure you that a human has reviewed each and every email and response before it was sent.</em></p>
+  <p><em>This email was drafted with AI assistance so that every valid email receives a response (we wouldn't want to be ghosted, so this is how I'm keeping up with the volume of emails I receive). I do also want to reassure you that a human has reviewed each and every email and response before it was sent.</em></p>
 
 templates:
   - topic: cybersec_msp_pitch
@@ -56,6 +78,7 @@ templates:
       - "\\battack surface\\b"
       - "\\bphishing (risk|resilience)\\b"
       - "\\bcompliance without the chaos\\b"
+      - "\\bnetwork monitoring\\b"
     body_patterns:
       - "\\bmanaged (it|security) services?\\b"
       - "\\b(SIEM|SOC|CMMC)\\b"
@@ -138,6 +161,7 @@ templates:
       - "\\bfor your nonprofit\\b"
       - "\\bfellow .{0,20}nonprofit\\b"
       - "\\bnonprofit disaster aid\\b"
+      - "\\bbuilt for nonprofits?\\b"
     body_patterns:
       - "\\bfor your nonprofit\\b"
       - "\\bprepare your nonprofit\\b"
@@ -146,5 +170,41 @@ templates:
     html_body: |
       <p>Dear {first_name},</p>
       <p>Thank you for reaching out. We evaluate new vendor relationships internally rather than through cold outreach, and don't have a current need in this area.</p>
+      <p>If something changes, I'll typically post something on LinkedIn and you're welcome to follow me there (<a href="https://www.linkedin.com/in/trevordbunch/">https://www.linkedin.com/in/trevordbunch/</a>).</p>
+      <p>- {signoff}</p>
+
+  - topic: email_verification_probe
+    sender_domains: []
+    subject_patterns:
+      - "\\bquick check\\b"
+    body_patterns:
+      - "\\bmaking sure i have the correct email\\b"
+      - "\\bconfirm this is the best way to reach you\\b"
+      - "\\bcorrect email address for you\\b"
+      - "\\bbest way to reach you\\b"
+    subject_prefix: "Re: "
+    html_body: |
+      <p>Dear {first_name},</p>
+      <p>Thanks for reaching out, but I don't confirm contact details for unsolicited outreach. Please remove this address from your list.</p>
+      <p>{signoff}</p>
+
+  - topic: generic_vendor_demo_pitch
+    sender_domains: []
+    subject_patterns:
+      - "\\bdemo review\\b"
+      - "\\bfree sessions?\\b"
+      - "\\bwhy teams choose\\b"
+    body_patterns:
+      - "\\bquick (walk-?through|demo)\\b"
+      - "\\bjust reply (yes|y)\\b"
+      - "\\bexploring where it (could|might) support\\b"
+      - "\\bsee what'?s possible\\b"
+      - "\\bbook a (time|call|demo)\\b"
+      - "\\bschedule a (demo|call)\\b"
+      - "\\b(15|20|30)[- ]minute call\\b"
+    subject_prefix: "Re: "
+    html_body: |
+      <p>Dear {first_name},</p>
+      <p>Thank you for reaching out. We evaluate new vendor relationships internally rather than through cold outreach and don't have a need for this right now.</p>
       <p>If something changes, I'll typically post something on LinkedIn and you're welcome to follow me there (<a href="https://www.linkedin.com/in/trevordbunch/">https://www.linkedin.com/in/trevordbunch/</a>).</p>
       <p>- {signoff}</p>

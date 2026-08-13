@@ -17,27 +17,115 @@
   "protected_senders_note": "Local fallback only — superseded by acos-aboutme's protected_senders whenever that profile exists and is non-empty. A message from one of these addresses is never auto-declined, even if it matches a template.",
   "protected_senders": [],
 
+  "internal_domain_note": "Local fallback only — superseded by acos-aboutme's owner.email domain whenever that profile exists. Any sender on this domain always routes to 2_review (see find_internal_or_operational_alert in triage.py), skipping the bulk-mail and decline checks entirely. Also skips calendar/OOO artifacts (see calendar_ooo_note below) -- an internal sender's calendar accept/decline notice shouldn't be forced into 2_review with nothing to actually review.",
+  "internal_domain": "",
+
+  "ea_note": "Local fallback only for ea_name/ea_email — superseded by acos-aboutme's staff entry whose role contains 'Executive Assistant' whenever that profile exists. ea_scheduling_keywords has no acos-aboutme equivalent and is always sourced from here. A message that mentions the EA by name (or the generic 'Executive Assistant' title) AND separately contains scheduling language routes straight to 3_delegate (see find_ea_scheduling_delegate in triage.py), skipping protected_contact/bulk/decline entirely. Every other delegate-worthy judgment stays an LLM call per delegate_keywords below.",
+  "ea_name": "",
+  "ea_email": "",
+  "ea_scheduling_keywords": [
+    "\\bschedul\\w*\\b",
+    "\\breschedul\\w*\\b",
+    "\\bcoordinat\\w* a time\\b",
+    "\\bcalendar invite\\b",
+    "\\bbook(ing)? a (time|call|meeting)\\b",
+    "\\bset(ting)? up a (call|meeting|time)\\b"
+  ],
+
+  "operational_alert_senders_note": "Exact sender-address matches for automated security/service-level alerts about your own systems (e.g. Microsoft Entra/PIM role-assignment notices, SharePoint storage warnings) that should always land in 2_review rather than being swept into 6_bulkToReview by the generic no-reply/ESP-padding bulk signature. Exact-address match only, not domain-wide, so a broad microsoft.com/google.com match doesn't sweep in unrelated marketing. Add entries as they turn up.",
+  "operational_alert_senders": [],
+
   "always_flag_senders": [],
 
-  "delegate_keywords_placeholder_note": "PLACEHOLDER — Trevor has not yet specified the real criteria for delegate-worthy mail. These are a reasonable starting guess (scheduling/logistics, travel coordination, expense-receipt chasing) and must be confirmed or replaced before this list is trusted.",
+  "delegate_keywords_note": "Confirm the real delegate-vs-review boundary with your EA before trusting this list. In this config's real-world example, the EA handles scheduling/calendar coordination and all travel logistics (including travel-related receipts/reimbursement), so those route to 3_delegate — but non-travel invoices/receipts (e.g. a software subscription) and general invoice/AP payment-request emails are the owner's own to handle, so they deliberately route elsewhere instead. Keep travel-specific phrasing (e.g. 'travel receipt') rather than bare 'receipt' or 'expense report' if your own delegate boundary is similarly travel-only — a bare 'receipt'/'reimbursement' keyword would delegate every invoice regardless of type.",
   "delegate_keywords": [
     "schedule a time",
     "reschedule",
     "calendar invite",
+    "coordinate a time",
+    "logistics for",
     "book (a|the) flight",
     "travel itinerary",
     "hotel reservation",
-    "expense report",
-    "receipt",
-    "reimbursement",
-    "coordinate a time",
-    "logistics for"
+    "travel receipt",
+    "travel reimbursement",
+    "mileage reimbursement"
   ],
+
+  "priority_keyword_signals_note": "Sender-independent positive priority signals, checked in score_priority alongside the existing VIP-sender/high-importance/urgent-keyword checks -- a genuine invoice, active deal document, or HR-lifecycle notice escalates to 1_priority even from a sender who isn't a VIP. All three are suppressed entirely for calendar/OOO subject artifacts, same as high-importance and urgent-keyword -- see calendar_ooo_note below (the VIP-sender signal itself is NOT suppressed for calendar/OOO artifacts).",
+  "accounts_payable_address_note": "Not read by any deterministic check in triage.py -- this is reference data for the LLM's own judgment call during a live run (see SKILL.md's 'invoice, general AP payment request, or non-travel receipt' bullet under Judgment calls). When this address is already a recipient/cc on a message that financial_document_keyword_patterns escalates to 1_priority, the run-summary line for that message should note that AP is already in the loop -- a sign this is likely a quick review-then-file pass rather than one needing a payment action from the owner personally. Leave empty if there's no dedicated AP inbox to check for.",
+  "accounts_payable_address": "",
+  "financial_document_excluded_senders_note": "A small allowlist of known auto-pay-confirmation senders whose recurring, fully-automated 'invoice' notices need no review -- e.g. a subscription/spend-management service's automatic replenishment receipt, which is a record that a payment already happened, not a bill needing action. Only excludes the financial_document_keyword_patterns check for that sender, not deal_document or hr_lifecycle.",
+  "financial_document_excluded_senders": [],
+  "financial_document_keyword_patterns": [
+    "\\binvoice\\b",
+    "\\bpayment due\\b",
+    "\\bINV-\\d+\\b"
+  ],
+  "deal_document_keyword_patterns": [
+    "\\bsigned copy of\\b",
+    "\\b(?-i:SOW)\\b",
+    "\\b(?-i:MSA)\\b",
+    "\\bdebrief\\b",
+    "\\bdocuments for (the )?(offering|engagement)\\b"
+  ],
+  "hr_lifecycle_keyword_patterns": [
+    "\\btermination\\b",
+    "\\bterminat(ed|ing)\\b",
+    "\\blast day of work\\b"
+  ],
+
+  "urgent_keyword_excluded_senders_note": "Mirrors financial_document_excluded_senders -- a small allowlist for senders whose automated report titles reuse a status word (e.g. '...Approved') that reads as an approval keyword out of context but is just a trailing label, not a request. Scoped to only the urgent_keyword_patterns loop.",
+  "urgent_keyword_excluded_senders": [],
+
+  "personal_action_request_keyword_patterns_note": "A direct, personal ask that names you specifically and needs a reply only you can give -- keep these narrow and specific (a letter-of-recommendation request, a GitHub mention blocking a merge), not a broad category.",
+  "personal_action_request_keyword_patterns": [
+    "\\bhas requested that you\\b",
+    "\\bletter of recommendation\\b",
+    "\\bunsigned commits\\b",
+    "\\bstopping (a |the )?merge\\b"
+  ],
+
+  "vendor_onboarding_keyword_patterns_note": "Paired with a known partner_vendors name match in score_priority (not a standalone list) -- catches a vendor's own account-setup/invitation notice even when it arrives via an unrelated third-party platform. Deliberately requires BOTH the vendor name AND this onboarding language; a bare vendor-name mention alone (e.g. in a signature block) is not priority-worthy.",
+  "vendor_onboarding_keyword_patterns": [
+    "\\byou'?ve been invited to join\\b",
+    "\\bsign up for an account\\b",
+    "\\bactivate your account\\b",
+    "\\bcreate your account\\b"
+  ],
+
+  "calendar_ooo_note": "A subject starting with Automatic reply:, Accepted:, Declined:, Tentative:, or Canceled:/Cancelled: is an Outlook-generated calendar/OOO artifact, never a judgment call the sender made -- score_priority (see is_calendar_or_ooo_artifact in triage.py) suppresses the high-importance flag, the urgent-keyword scan, and the financial/deal/HR-lifecycle keyword scans for these. The VIP-sender signal is exempted from this suppression, but ONLY for genuine Automatic reply: messages (see is_calendar_rsvp_artifact) -- a VIP's pure calendar RSVP (Accepted:/Declined:/Tentative:/Canceled:) is still fully suppressed, since an RSVP is pure attendance metadata with no content, unlike an Automatic reply which can carry real content.",
+
+  "farewell_note_keyword_patterns_note": "A one-time personal farewell/thank-you note from someone leaving shouldn't be escalated all the way to 1_priority the way the HR-lifecycle keywords above do, but it also shouldn't fall silently into 2_review with no distinguishing flag. Deliberately narrow phrasing -- a bare 'thank you' is far too common in ordinary business mail to use alone.",
+  "farewell_note_keyword_patterns": [
+    "\\baccount (gets|will be|is) turned off\\b",
+    "\\bmy last day (at|with)\\b",
+    "\\bas i (leave|depart)\\b"
+  ],
+
+  "routine_notification_note": "Two deliberately narrow, content-based (not sender-based) categories that route straight to 7_toBeFiled, ahead of find_protected_match: (1) meeting_reminder_keyword_patterns -- any meeting reminder is safe to file, no need to compare the referenced meeting time against the message's own received time; (2) routine_payroll_notification_keyword_patterns -- recurring payroll/task-tracking pings from a vendor like Rippling specifically, not a blanket sender rule. Keep these narrow enough that a notification actually asking you to do something (a missing-receipt request, a required-info request) still falls through to its normal path toward 2_review.",
+  "meeting_reminder_keyword_patterns": [
+    "\\ba reminder for (our|your) (upcoming )?meeting\\b",
+    "\\byour meeting .+ is about to start\\b"
+  ],
+  "routine_payroll_notification_keyword_patterns": [],
 
   "decline_threshold": 3,
 
+  "filed_without_action_threshold_note": "Tracks a sender-behavior signal separate from decline_threshold above: a sender whose mail keeps reaching the 'routine, file it' judgment call and landing in 7_toBeFiled with no action taken. At this count in a run, add a run-summary recommendation to consider unsubscribing or creating a rule -- never anything more automatic than that note.",
+  "filed_without_action_threshold": 3,
+
+  "fallback_decline_topic_note": "4_autorespond doubles as a manual 'this is a decline' landing zone -- scripts/triage.py match-declines uses this topic for anything found there that doesn't match any template's own keywords. Must name a topic that actually exists in templates_file.",
+  "fallback_decline_topic": "generic_vendor_demo_pitch",
+
   "urgent_keyword_patterns": null,
   "sensitive_keyword_patterns": null,
+
+  "personnel_content_keyword_patterns_note": "Checked in score_sensitive as an ADDITION to sensitive_keyword_patterns above, not a replacement -- catches personnel-adjacent content a general employee announces in plain language (a colleague's departure, a staff opening) regardless of sender domain, where sensitive_keyword_patterns only fires on messages that already sound like an HR-system notice. 'last day at <org>' should be edited to name your own organization. Avoid a bare 'accepted an invitation' style phrase here -- it collides with unrelated access-grant/invitation-acceptance notices (e.g. a third-party service confirming someone accepted a shared-account invite), which are a security signal, not a personnel one.",
+  "personnel_content_keyword_patterns": [
+    "\\bbittersweet\\b",
+    "\\bnotice of staff open position\\b"
+  ],
 
   "templates_file": "references/rejection_templates.yaml",
   "ledger_file": "state/ledger.json",
