@@ -55,5 +55,5 @@ The script has no way to tell these apart on its own; the judgment call is alway
 ## Non-goals
 
 - No calendar event creation, modification, cancellation, or response, ever.
-- No scheduling logic here — this runs on demand only; a future `acos-orchestration` skill triggering it for morning/weekly/monthly plans should be able to call this same entry point unmodified.
+- No scheduling logic here — this runs on demand only; `acos-main` triggers it for morning/week/month plans by calling this same entry point unmodified.
 - No LLM judgment anywhere except the narrow Step 3.5c fallback for genuinely unresolved internal multi-person meetings. If a future need seems to require Claude to "decide" something else about an event, that belongs in `scripts/calendar_report.py` as an explicit deterministic rule, not per-run reasoning here.

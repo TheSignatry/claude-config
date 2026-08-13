@@ -10,7 +10,7 @@ raw results back in here. No LLM reasoning ever touches the filtering,
 counting, or markdown formatting.
 
 Two-stage pipeline, each stage its own subcommand so the pieces stay
-separately callable (e.g. by a future acos-orchestration skill importing
+separately callable (acos-main's week-plan/month-retro perspectives import
 build_report()/render_markdown() directly instead of parsing markdown):
 
   plan     Reads jira_workspaces out of acos-aboutme's profile.json and
@@ -34,9 +34,14 @@ Field mapping (confirmed against signatry1.atlassian.net 2026-08-10):
       equivalent (standard duedate is not populated on these issues).
     customfield_10156 "Product Area" — multi-select; rendered as a
       comma-joined list of each entry's `value`.
-  customfield_10139 "Roadmap" is used only in the product-detail JQL filter
-    (`"Roadmap" NOT IN ("Done", "Parking Lot")`) — not fetched or rendered,
-    since the filtering already happens server-side in JQL.
+    customfield_10139 "Roadmap" — single-select ({"value": "Now"/"Next"/
+      "Won't do", ...}, not a list like Product Area) — used both in the
+      product-detail JQL filter (`"Roadmap" NOT IN ("Done", "Parking Lot")`)
+      and, added 2026-08-14, rendered directly as product_detail's "Roadmap"
+      column in place of workflow status. The two can genuinely disagree —
+      an issue's status can read "In Progress" while its Roadmap value is
+      "Won't do" — so don't treat status as a stand-in for this field or
+      vice versa.
 
 Known wrinkle: TRM has a workflow *status* literally named "Parking lot",
 distinct from the Roadmap *custom field*'s "Parking Lot" value. The JQL
@@ -59,6 +64,20 @@ Unverified, flagged rather than assumed:
 No subcommand here ever calls a Jira MCP tool, creates/edits/transitions an
 issue, or writes anything back to acos-aboutme's profile — this script only
 ever reads its input files/arguments and prints JSON or markdown to stdout.
+
+Resolved-in-range (added 2026-08-13, for acos-main's month-retro): an
+optional pair of extra queries, included only when `plan` is given both
+`--since` and `--until` -- omit either and `plan`'s output is byte-identical
+to before this existed. `support_resolved` measures team-wide throughput
+(deliberately NOT assignee-scoped, same reasoning as `product_detail`) using
+Jira's built-in `resolutiondate` field, which is populated on resolution
+regardless of the specific status name a project uses -- more robust than
+enumerating "Done"/"Resolved"/"Closed" per project. `product_delivered` uses
+the Roadmap custom field's "Done" value instead (Jira Product Discovery
+issues like TRM's don't reliably populate `resolutiondate` the way a
+standard workflow does), then range-filters in Python against the same
+Project-target end date `_parse_project_target_end` already parses -- JQL
+can't filter inside that field's JSON string directly.
 """
 import argparse
 import json
@@ -111,15 +130,21 @@ def _quote_jql_list(keys):
     return ", ".join(keys)
 
 
-def build_plan(aboutme_path, cloud_id):
+def build_plan(aboutme_path, cloud_id, since=None, until=None):
     """Deterministic query builder: given jira_workspaces config, return the
     exact JQL + fields Claude must fetch via searchJiraIssuesUsingJql. Builds
     no more than one query per group, except product, which needs a second,
     differently-scoped query for its team-wide detail list (see mission:
-    output 2 is deliberately not assignee-scoped, unlike every other output)."""
+    output 2 is deliberately not assignee-scoped, unlike every other output).
+
+    `since`/`until` (both required together, both optional) add two more
+    queries -- `support_resolved` and `product_delivered` -- for month-retro's
+    ticket-performance/delivered-products sections. Omit both and this
+    function's output is identical to before they existed."""
     workspaces = load_jira_workspaces(aboutme_path)
     window_days = workspaces.get("upcoming_window_days", DEFAULT_WINDOW_DAYS)
     groups = {g: workspaces.get(g) or [] for g in GROUP_ORDER}
+    date_range = bool(since and until)
 
     queries = []
 
@@ -142,10 +167,24 @@ def build_plan(aboutme_path, cloud_id):
                 f'project in ({keys}) AND statusCategory != Done '
                 'AND "Roadmap" NOT IN ("Done", "Parking Lot") ORDER BY key ASC'
             ),
-            "fields": ["summary", "customfield_10149", "customfield_10156", "assignee", "status"],
+            "fields": ["summary", "customfield_10149", "customfield_10156", "customfield_10139", "assignee"],
             "used_for": ["product_detail"],
             "description": "Product group, whole team (deliberately NOT assignee-scoped) — feeds the Product detail list.",
         })
+        if date_range:
+            queries.append({
+                "id": "product_delivered",
+                "group": "product",
+                "scope": "team",
+                "jql": f'project in ({keys}) AND "Roadmap" = "Done" ORDER BY key ASC',
+                "fields": ["summary", "customfield_10149", "customfield_10156", "assignee", "status"],
+                "used_for": ["delivered_in_range"],
+                "description": (
+                    "Product group, Roadmap marked Done — feeds month-retro's delivered-products "
+                    "summary. Range-filtered in build_report() against each issue's Project-target "
+                    "end date, not in JQL (that date lives inside a custom-field JSON string)."
+                ),
+            })
 
     if groups["support"]:
         keys = _quote_jql_list(groups["support"])
@@ -158,6 +197,20 @@ def build_plan(aboutme_path, cloud_id):
             "used_for": ["summary", "support_detail"],
             "description": "Support group, current user's own assignments — feeds both the Summary row and the Support detail list.",
         })
+        if date_range:
+            queries.append({
+                "id": "support_resolved",
+                "group": "support",
+                "scope": "team",
+                "jql": f'project in ({keys}) AND resolutiondate >= "{since}" AND resolutiondate <= "{until}" ORDER BY resolutiondate ASC',
+                "fields": ["summary", "status", "priority", "resolutiondate", "created"],
+                "used_for": ["resolved_in_range"],
+                "description": (
+                    "Support group, resolved within [since, until] — feeds month-retro's "
+                    "support-ticket-performance summary. Deliberately NOT assignee-scoped — "
+                    "team throughput, not just Trevor's own resolved count."
+                ),
+            })
 
     if groups["work"]:
         keys = _quote_jql_list(groups["work"])
@@ -174,6 +227,8 @@ def build_plan(aboutme_path, cloud_id):
     return {
         "cloud_id": cloud_id,
         "window_days": window_days,
+        "since": since,
+        "until": until,
         "groups": groups,
         "queries": queries,
     }
@@ -191,6 +246,16 @@ def _parse_project_target_end(raw):
     except (json.JSONDecodeError, TypeError):
         return None
     return parsed.get("end")
+
+
+def _parse_resolution_date(raw):
+    """`resolutiondate` comes back as a full timestamp
+    ("2026-08-10T14:23:45.123-0500"), not a bare date — take just the
+    YYYY-MM-DD prefix for date-range comparison. Returns None for absent or
+    unexpectedly short values rather than raising."""
+    if not raw or len(raw) < 10:
+        return None
+    return raw[:10]
 
 
 def _bucket(due_date_str, today, window_end):
@@ -220,13 +285,24 @@ def _product_area_str(product_area_field):
     return ", ".join(entry.get("value", "") for entry in product_area_field if entry.get("value"))
 
 
+def _roadmap_str(roadmap_field):
+    """Roadmap (customfield_10139) is a single-select field -- {"value": "Now"/"Next"/"Won't do", ...},
+    not a list like Product Area. Added 2026-08-14: this is the field Trevor actually wants
+    surfaced for product_detail (Now/Next/Won't do), which can disagree meaningfully with the
+    workflow status name -- e.g. an issue can read status "In Progress" while its Roadmap value
+    is "Won't do"; don't conflate the two or assume one implies the other."""
+    if not roadmap_field:
+        return ""
+    return roadmap_field.get("value", "") or ""
+
+
 def _group_label(group, keys):
     return f"{GROUP_LABELS[group]} ({', '.join(keys)})"
 
 
 def build_report(plan, raw, today=None):
-    """Structured, JSON-serializable result — the intermediate step a future
-    acos-orchestration skill can consume directly without parsing markdown.
+    """Structured, JSON-serializable result — the intermediate step acos-main
+    consumes directly without parsing markdown.
     `raw` maps each plan query id to the list of issue nodes Claude fetched
     for it (each node the same shape searchJiraIssuesUsingJql returns:
     key, webUrl, fields)."""
@@ -234,11 +310,15 @@ def build_report(plan, raw, today=None):
     window_days = plan["window_days"]
     window_end = today + timedelta(days=window_days)
     groups = plan["groups"]
+    since, until = plan.get("since"), plan.get("until")
+    date_range = bool(since and until)
 
     summary = []
     product_detail = []
     support_detail = []
     work_detail = []
+    delivered_in_range = []
+    resolved_in_range = {}
 
     if groups.get("product"):
         overdue = upcoming = 0
@@ -264,10 +344,26 @@ def build_report(plan, raw, today=None):
                 "product_area": _product_area_str(fields.get("customfield_10156")),
                 "assignee": _display_name(fields.get("assignee")),
                 "target_end": due,
-                "status": (fields.get("status") or {}).get("name", ""),
+                "roadmap": _roadmap_str(fields.get("customfield_10139")),
                 "bucket": bucket,
             })
         product_detail.sort(key=lambda r: r["target_end"])
+
+        if date_range:
+            for issue in raw.get("product_delivered", []):
+                fields = issue.get("fields", {})
+                target_end = _parse_project_target_end(fields.get("customfield_10149"))
+                if not target_end or not (since <= target_end <= until):
+                    continue
+                delivered_in_range.append({
+                    "key": issue["key"],
+                    "url": issue.get("webUrl", ""),
+                    "summary": fields.get("summary", ""),
+                    "product_area": _product_area_str(fields.get("customfield_10156")),
+                    "assignee": _display_name(fields.get("assignee")),
+                    "target_end": target_end,
+                })
+            delivered_in_range.sort(key=lambda r: r["target_end"])
 
     if groups.get("support"):
         overdue = upcoming = 0
@@ -292,6 +388,28 @@ def build_report(plan, raw, today=None):
         summary.append({"group": "support", "label": _group_label("support", groups["support"]), "overdue": overdue, "upcoming": upcoming})
         support_detail.sort(key=lambda r: r["due"])
 
+        if date_range:
+            resolved_rows = []
+            for issue in raw.get("support_resolved", []):
+                fields = issue.get("fields", {})
+                resolved = _parse_resolution_date(fields.get("resolutiondate"))
+                if not resolved:
+                    continue
+                resolved_rows.append({
+                    "key": issue["key"],
+                    "url": issue.get("webUrl", ""),
+                    "summary": fields.get("summary", ""),
+                    "status": (fields.get("status") or {}).get("name", ""),
+                    "priority": (fields.get("priority") or {}).get("name", ""),
+                    "resolved": resolved,
+                })
+            resolved_rows.sort(key=lambda r: r["resolved"])
+            resolved_in_range["support"] = {
+                "since": since, "until": until,
+                "count": len(resolved_rows),
+                "detail": resolved_rows,
+            }
+
     if groups.get("work"):
         overdue = upcoming = 0
         for issue in raw.get("work", []):
@@ -315,7 +433,7 @@ def build_report(plan, raw, today=None):
         summary.append({"group": "work", "label": _group_label("work", groups["work"]), "overdue": overdue, "upcoming": upcoming})
         work_detail.sort(key=lambda r: r["due"])
 
-    return {
+    report = {
         "generated_date": today.isoformat(),
         "window_days": window_days,
         "summary": summary,
@@ -323,6 +441,10 @@ def build_report(plan, raw, today=None):
         "support_detail": support_detail,
         "work_detail": work_detail,
     }
+    if date_range:
+        report["delivered_in_range"] = {"since": since, "until": until, "items": delivered_in_range}
+        report["resolved_in_range"] = resolved_in_range
+    return report
 
 
 def _md_table(headers, rows):
@@ -364,10 +486,10 @@ def render_markdown(report):
         parts.append(_render_detail_section(
             "Product Roadmap — whole team",
             report["product_detail"],
-            ["Key", "Summary", "Product Area", "Assignee", "Target End", "Status"],
+            ["Key", "Summary", "Product Area", "Assignee", "Target End", "Roadmap"],
             lambda r: [
                 f"[{r['key']}]({r['url']})", _escape(r["summary"]), _escape(r["product_area"]),
-                _escape(r["assignee"]), r["target_end"], _escape(r["status"]),
+                _escape(r["assignee"]), r["target_end"], _escape(r["roadmap"]),
             ],
         ))
 
@@ -395,11 +517,32 @@ def render_markdown(report):
             ],
         ))
 
+    if "delivered_in_range" in report:
+        dr = report["delivered_in_range"]
+        parts.append(f"\n## Delivered products — {dr['since']} to {dr['until']}\n")
+        parts.append(_md_table(
+            ["Key", "Summary", "Product Area", "Assignee", "Target End"],
+            [[f"[{i['key']}]({i['url']})", _escape(i["summary"]), _escape(i["product_area"]),
+              _escape(i["assignee"]), i["target_end"]] for i in dr["items"]],
+        ))
+
+    if "resolved_in_range" in report and report["resolved_in_range"].get("support"):
+        sr = report["resolved_in_range"]["support"]
+        parts.append(f"\n## Support ticket performance — {sr['since']} to {sr['until']}\n")
+        parts.append(f"\n**Resolved**: {sr['count']}\n\n")
+        parts.append(_md_table(
+            ["Key", "Summary", "Status", "Priority", "Resolved"],
+            [[f"[{i['key']}]({i['url']})", _escape(i["summary"]), _escape(i["status"]),
+              _escape(i["priority"]), i["resolved"]] for i in sr["detail"]],
+        ))
+
     return "\n".join(parts) + "\n"
 
 
 def cmd_plan(args):
-    plan = build_plan(args.aboutme, args.cloud_id)
+    if bool(args.since) != bool(args.until):
+        _fail("--since and --until must be given together, or not at all.")
+    plan = build_plan(args.aboutme, args.cloud_id, since=args.since, until=args.until)
     print(json.dumps(plan, indent=2))
 
 
@@ -421,6 +564,8 @@ def main():
     p_plan = sub.add_parser("plan", help="Emit the JQL + fields Claude must fetch via searchJiraIssuesUsingJql.")
     p_plan.add_argument("--aboutme", default=DEFAULT_ABOUTME_PATH, help="Path to acos-aboutme's state/profile.json")
     p_plan.add_argument("--cloud-id", default=DEFAULT_CLOUD_ID)
+    p_plan.add_argument("--since", default=None, help="Start date YYYY-MM-DD for the optional resolved/delivered-in-range queries (month-retro). Omit both --since and --until to get output identical to before this flag existed.")
+    p_plan.add_argument("--until", default=None, help="End date YYYY-MM-DD, paired with --since.")
     p_plan.set_defaults(func=cmd_plan)
 
     p_report = sub.add_parser("report", help="Compute the structured report from fetched issues and render it.")

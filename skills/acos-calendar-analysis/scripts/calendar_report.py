@@ -1202,6 +1202,71 @@ def compute_time_allocation(events_with_category, period_start_date, period_end_
     }
 
 
+def compute_daily_time_allocation(events_with_category, period_start_date, period_end_date, working_hours):
+    """Same per-day interval sweep as compute_time_allocation -- reuses its
+    exact priority-ordering and overlap-resolution logic via
+    _accumulate_category_seconds -- but returns one entry per day instead of
+    only a period-wide total. Added 2026-08-14 for acos-main's week-plan,
+    whose segmented/time-axis day chart needs real day-by-day category
+    hours; naively summing each event's own duration per day (what acos-main
+    tried first) double-counts exactly the overlaps
+    _accumulate_category_seconds exists to resolve -- a Working Block fully
+    containing a real meeting, or two real meetings double-booked against
+    each other. Don't re-derive day totals from raw event durations
+    anywhere else either; always compute them here."""
+    days_out = []
+    day = period_start_date
+    while day <= period_end_date:
+        weekday = WEEKDAY_NAMES[day.weekday()]
+        win_start_t, win_end_t = _working_window_for_day(working_hours, weekday)
+        win_start = datetime.combine(day, win_start_t)
+        win_end = datetime.combine(day, win_end_t)
+
+        category_seconds = defaultdict(float)
+        free_seconds = 0.0
+
+        if win_end > win_start:
+            cap_intervals = []
+            for e, c in events_with_category:
+                if c != "Capacity unavailable" or e.get("isCancelled") or not _has_concrete_time(e):
+                    continue
+                s, en = _event_times(e)
+                if en <= win_start or s >= win_end:
+                    continue
+                cap_intervals.append((max(s, win_start), min(en, win_end)))
+            cap_intervals = _merge_intervals(cap_intervals)
+            cap_overlap_seconds = sum((b - a).total_seconds() for a, b in cap_intervals)
+            available_seconds = (win_end - win_start).total_seconds() - cap_overlap_seconds
+
+            occupied_intervals = []
+            for e, c in events_with_category:
+                if c == "Capacity unavailable" or e.get("isCancelled") or e.get("isAllDay") or not _has_concrete_time(e):
+                    continue
+                s, en = _event_times(e)
+                if en <= win_start or s >= win_end:
+                    continue
+                clip_s, clip_e = max(s, win_start), min(en, win_end)
+                if clip_e <= clip_s:
+                    continue
+                for piece_s, piece_e in _subtract_intervals(clip_s, clip_e, cap_intervals):
+                    occupied_intervals.append((piece_s, piece_e, c or "Unresolved"))
+
+            _accumulate_category_seconds(occupied_intervals, category_seconds)
+            merged_occupied = _merge_intervals([(s, e) for s, e, _c in occupied_intervals])
+            occupied_seconds = sum((b - a).total_seconds() for a, b in merged_occupied)
+            free_seconds = max(0.0, available_seconds - occupied_seconds)
+
+        days_out.append({
+            "date": day.isoformat(),
+            "weekday": weekday.capitalize(),
+            "categories": {cat: round(sec / 3600.0, 2) for cat, sec in category_seconds.items() if cat != "Unresolved"},
+            "unresolved_hours": round(category_seconds.get("Unresolved", 0.0) / 3600.0, 2),
+            "free_hours": round(free_seconds / 3600.0, 2),
+        })
+        day += timedelta(days=1)
+    return days_out
+
+
 MARGIN_FLEX_CATEGORY = "Margin / Flex capacity"
 
 
@@ -1577,6 +1642,7 @@ def cmd_report(args):
         time_allocation = compute_time_allocation(events_with_category, period_start, period_end, lookups["working_hours"])
         report["time_allocation"] = time_allocation
         report["benchmark"] = compute_benchmark(time_allocation, lookups)
+        report["daily_time_allocation"] = compute_daily_time_allocation(events_with_category, period_start, period_end, lookups["working_hours"])
 
     if args.format == "markdown":
         print(render_markdown(report))

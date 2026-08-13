@@ -128,7 +128,7 @@ Confirmed by Trevor 2026-08-12 (Theme A rec 2 of `state/stage2_accuracy_report.m
 
 ## Run summary
 
-Write a per-run summary Trevor and `acos-orchestration` (a future skill; don't build it here) can both use — keep it simple:
+Write a per-run summary Trevor and `acos-main` (the orchestrating skill that runs this as its morning-plan first step) can both use — keep it simple:
 
 - Counts per bucket (`1_priority`, `2_review`, `3_delegate`, `5_draftsToReview`, `6_bulkToReview`, `7_toBeFiled`, and anything left unclassified in the Inbox).
 - Any `farewell_note: true` messages, called out by name/sender distinctly from the rest of the `2_review` count — see the Judgment calls bullet above.
@@ -143,6 +143,8 @@ A simple, legible pair is enough — don't over-build this:
 
 - `state/last_run_summary.json` — `{ "run_date": "...", "counts": {...}, "unclassified_in_inbox": [...], "farewell_notes": [...], "autorespond_sweep": {"found": N, "drafted": [...], "fallback_used": [...], "failed": [...]}, "bulk_review_status": {"currently_in_bulk_review": N, "oldest_item_age_days": D, "moved_out_since_last_run": M, "added_since_last_run": A, "first_run": bool}, "filed_without_action_recommendations": [...], "repeat_decline_recommendations": [...], "processing_errors": [...] }`
 - A short plain-text or Markdown recap in the same response, for Trevor to read directly.
+
+After writing `last_run_summary.json`, also run `scripts/triage.py record-run --history state/run_history.jsonl --date <today, YYYY-MM-DD> --counts '<the same counts object as last_run_summary.json>' --declines <N> --filed-without-action <N>` (added 2026-08-13, for `acos-main`'s month-retro). Unlike `last_run_summary.json`, this file is never overwritten — one compact line appended per run — since it's the only place email-volume history survives across runs at all.
 
 ## Ground rules
 

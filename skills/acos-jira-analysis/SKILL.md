@@ -9,7 +9,7 @@ release_date: "2026-08-10"
 
 This is the deterministic-reporting sibling of the acos family — the sibling of `acos-email-sort` (which does content judgment on ambiguous mail) and `cos` (which reads a calendar/inbox). This skill has no content judgment anywhere in it: which JQL to run, what counts as overdue vs. upcoming, and how each row is formatted are all fixed rules in `scripts/jira_report.py`, not per-run reasoning. Claude's only job here is to run the exact tool calls the script hands back and present its markdown output as-is.
 
-This skill is fully standalone — it doesn't depend on `acos-orchestration` (a future skill; don't build it here) to run. It's built so that skill could later call `build_report()`/`render_markdown()` directly for structured data instead of parsing markdown, but that's a design note for later, not something to wire up now.
+This skill is fully standalone — it doesn't depend on `acos-main` (the orchestrating skill) to run. `acos-main`'s week-plan/month-retro perspectives call `build_report()` directly for structured data instead of parsing markdown, exactly as anticipated here.
 
 ## Config (read from acos-aboutme)
 
@@ -19,11 +19,11 @@ Never write to `acos-aboutme`'s profile from here — only read it. A correction
 
 ## Run
 
-1. **Plan.** Run `scripts/jira_report.py plan --aboutme ../acos-aboutme/state/profile.json`. This prints the resolved workspace groups and the exact JQL + field list for each fetch — up to four: `product` (assignee-scoped, feeds the Summary row only), `product_detail` (team-wide, deliberately *not* assignee-scoped, feeds the Product detail list), `support` and `work` (assignee-scoped, each feeds both its Summary row and its own detail list). A group with no configured project keys is simply omitted from `queries` — don't invent a query for it.
+1. **Plan.** Run `scripts/jira_report.py plan --aboutme ../acos-aboutme/state/profile.json`. This prints the resolved workspace groups and the exact JQL + field list for each fetch — up to four: `product` (assignee-scoped, feeds the Summary row only), `product_detail` (team-wide, deliberately *not* assignee-scoped, feeds the Product detail list), `support` and `work` (assignee-scoped, each feeds both its Summary row and its own detail list). A group with no configured project keys is simply omitted from `queries` — don't invent a query for it. Pass `--since YYYY-MM-DD --until YYYY-MM-DD` together (added 2026-08-13, for `acos-main`'s month-retro) to add two more queries — `product_delivered` (Roadmap field marked Done, range-filtered on Project-target end date) and `support_resolved` (Jira's own `resolutiondate`, team-wide) — omit both flags for output identical to before they existed.
 
 2. **Fetch.** For each entry in `queries`, call `searchJiraIssuesUsingJql` with that exact `jql`, `fields`, and `cloudId` (the plan's `cloud_id`, `signatry1.atlassian.net` — confirmed to work directly as `cloudId` on this site as of 2026-08-10; only fall back to `getAccessibleAtlassianResources` if the site hostname is ever rejected). Use `maxResults: 100` and follow `nextPageToken` until `hasNextPage` is false, concatenating every page's `issues.nodes` into one array per query `id`. Don't filter, reshape, or judge anything about the returned issues here — just collect the raw nodes (each already has `key`, `webUrl`, and `fields`) into `{"<query id>": [...nodes], ...}` and write that to a JSON file. This is pure data plumbing, not a step that needs reasoning.
 
-3. **Report.** Run `scripts/jira_report.py report --plan <plan.json> --raw <raw.json>` (no `--today` — that flag exists only for the script's own tests; a live run always uses the real current date) and present its markdown output to Trevor as-is. Use `--format json` only if a caller needs the structured intermediate result instead of markdown (e.g. a future `acos-orchestration` integration) — the default `report` call already renders markdown ready to hand back.
+3. **Report.** Run `scripts/jira_report.py report --plan <plan.json> --raw <raw.json>` (no `--today` — that flag exists only for the script's own tests; a live run always uses the real current date) and present its markdown output to Trevor as-is. Use `--format json` only if a caller needs the structured intermediate result instead of markdown (e.g. `acos-main`'s week-plan/month-retro) — the default `report` call already renders markdown ready to hand back.
 
 ## Ground rules
 
@@ -38,5 +38,5 @@ Never write to `acos-aboutme`'s profile from here — only read it. A correction
 ## Non-goals
 
 - No issue creation, editing, transitioning, or commenting, ever.
-- No scheduling logic here — this runs on demand only; a future `acos-orchestration` skill triggering it on a schedule should be able to do so by calling this same entry point unmodified.
+- No scheduling logic here — this runs on demand only; `acos-main` triggers it for morning/week/month plans by calling this same entry point unmodified.
 - No LLM judgment on classification, filtering, or formatting — if a future change seems to need Claude to "decide" something about an issue, that belongs in `scripts/jira_report.py` as an explicit rule instead.

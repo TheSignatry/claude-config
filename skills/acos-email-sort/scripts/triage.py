@@ -1015,6 +1015,34 @@ def cmd_record_filed(args):
     }, indent=2, sort_keys=True))
 
 
+def cmd_record_run(args):
+    """Append-only per-run digest for acos-main's month-retro email-volume
+    trend -- added 2026-08-13. Deliberately separate from
+    state/last_run_summary.json, which stays a single overwritten snapshot
+    per this skill's own "a simple, legible pair is enough" philosophy (see
+    SKILL.md's Run summary section) -- this file is the only place run-over-
+    run history survives at all. One compact line per run (JSON Lines, not
+    pretty-printed) so appending never requires re-parsing the whole file."""
+    try:
+        counts = json.loads(args.counts)
+    except json.JSONDecodeError as e:
+        print(json.dumps({"error": f"--counts is not valid JSON: {e}"}), file=sys.stderr)
+        sys.exit(1)
+
+    entry = {
+        "date": args.date,
+        "counts": counts,
+        "declines": args.declines,
+        "filed_without_action": args.filed_without_action,
+    }
+    path = Path(args.history)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as f:
+        f.write(json.dumps(entry, sort_keys=True) + "\n")
+
+    print(json.dumps({"recorded": True, "date": args.date, "history_file": str(path)}, indent=2, sort_keys=True))
+
+
 def cmd_bulk_review_status(args):
     """Confirmed by Trevor 2026-08-12 (Theme A rec 2 of
     state/stage2_accuracy_report.md): 6_bulkToReview stays a distinct
@@ -1140,6 +1168,14 @@ def main():
     p_filed.add_argument("--sender", required=True)
     p_filed.add_argument("--date", required=True, help="ISO date (YYYY-MM-DD), supplied by the caller")
     p_filed.set_defaults(func=cmd_record_filed)
+
+    p_run = sub.add_parser("record-run", help="Append a compact per-run digest to state/run_history.jsonl (for acos-main's month-retro)")
+    p_run.add_argument("--history", required=True, help="Path to state/run_history.jsonl (created if missing)")
+    p_run.add_argument("--date", required=True, help="ISO date (YYYY-MM-DD) of this run")
+    p_run.add_argument("--counts", required=True, help='JSON object string, same shape as last_run_summary.json\'s "counts" field: {"1_priority":N,"2_review":N,"3_delegate":N,"5_draftsToReview":N,"6_bulkToReview":N,"7_toBeFiled":N,"unclassified_in_inbox":N}')
+    p_run.add_argument("--declines", type=int, default=0, help="Number of decline drafts created this run (sweep + Gather combined)")
+    p_run.add_argument("--filed-without-action", type=int, default=0, dest="filed_without_action", help="Number of record-filed calls made this run")
+    p_run.set_defaults(func=cmd_record_run)
 
     p_bulk = sub.add_parser("bulk-review-status", help="Diff current 6_bulkToReview contents against the last run's snapshot and report monitoring stats")
     p_bulk.add_argument("--snapshot", required=True, help="Path to the persisted snapshot file (read, then overwritten)")
