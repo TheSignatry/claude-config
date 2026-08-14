@@ -1,8 +1,8 @@
 ---
 name: signatry-pdf-brand
 description: "Signatry brand system for PDFs built with reportlab: font registration/embedding, color palette, and logo usage for The Signatry. Use whenever building, branding, or reviewing a PDF for The Signatry — reports, flyers, one-pagers, fund summaries, or any PDF deliverable — even if the user doesn't say 'brand' or 'Signatry' by name, as long as the deliverable is a Signatry PDF. Always pair with the general pdf skill (build/extraction mechanics) and, if there is donor-facing or narrative copy, the signatry-style skill (voice and terminology)."
-version: 1.2
-release_date: 2026-07-26
+version: 1.3
+release_date: 2026-08-06
 ---
 
 # Signatry PDF Brand System
@@ -136,7 +136,7 @@ d.width *= scale; d.height *= scale; d.scale(scale, scale)
 
 The returned object is a `Drawing` flowable and goes straight into a story. Scaling is not automatic — set it explicitly or the icon renders at its natural 110pt.
 
-**Color.** Use `png_512/glacier/` or `svg/` on light backgrounds; `png_512/white/` on Legacy, Midnight, or photographs. The SVG set carries Glacier by default and recolors via its root `color` property — see `signatry-icons`. Only Glacier and white exist as PNG; if a PDF needs a tinted icon, take the SVG path and set the tint hex from `signatry-brand-core`, rather than lowering opacity.
+**Color.** Use `png_512/glacier/` or `svg/` on light backgrounds. **As of `signatry-icons` v3.2, there is no white or tinted PNG variant — only `glacier` exists on disk.** The SVG set carries Glacier by default and recolors via its root `color` property — see `signatry-icons`. If a PDF needs a light-colored icon on a Legacy, Midnight, or photo background, take the SVG path via `svglib` and set the tint hex (including white) from `signatry-brand-core` before placing it — don't place Glacier on a dark panel or fake a tint with opacity.
 
 ## Logo and mark
 

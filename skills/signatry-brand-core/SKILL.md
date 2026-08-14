@@ -1,15 +1,22 @@
 ---
 name: signatry-brand-core
-description: "Canonical source of truth for The Signatry's brand colors, fonts, and logo/mark assets — independent of file format. Use this whenever a task needs the actual hex values, font files, or logo files for The Signatry, or when building/updating a format-specific brand skill (pptx, docx, pdf, xlsx, HTML/artifacts, Canva, etc.). Format-specific brand skills should depend on this one for values and assets rather than restating them; this skill has no build mechanics of its own. For icon assets, see the separate `signatry-icons` skill."
+description: "Canonical source of truth for The Signatry's brand colors, fonts, and logo/mark assets — independent of file format. Use this whenever a task needs the actual hex values, font files, or logo files for The Signatry, or when building/updating a format-specific brand skill (pptx, docx, pdf, xlsx, HTML/artifacts, Canva, etc.). Format-specific brand skills should depend on this one for values and assets rather than restating them; this skill has no build mechanics of its own. For icon assets, see the separate `signatry-icons` skill; for donor/stock photography, see `signatry-photo-library`; for factual claims about The Signatry (contact info, entity/leadership names, history, figures, fund terms, boilerplate), see `signatry-facts`."
 version: 1.1
 release_date: 2026-07-31
 ---
 
 # The Signatry Brand Core
 
-This skill is the single canonical record of The Signatry's visual brand: colors, fonts, and logo/mark files. It intentionally contains no format-specific build mechanics — those live in per-format skills (`signatry-pptx-brand`, `signatry-docx-brand`, `signatry-pdf-brand`, and any future format skill) that depend on this one.
+This skill is the single canonical record of The Signatry's visual brand: colors, fonts, and logo/mark files. It intentionally contains no format-specific build mechanics — those live in per-format skills (`signatry-pptx-brand`, `signatry-docx-brand`, `signatry-pdf-brand`, and any future format skill) that depend on this one. See `CHANGELOG.md` for why this skill exists and its revision history.
 
-**Why this skill exists:** before it, colors and fonts were independently restated inside `signatry-pptx-brand`, `signatry-docx-brand`, and `signatry-style`. They had already drifted — `signatry-pptx-brand` had wrongly recorded Jubilee/Heartfelt as a retired theme pair (with an incorrect hex for Heartfelt), while `signatry-style` still carried an older table that predated the July 2026 confirmations. Centralizing here gives one place to update when the brand changes, instead of hunting down every skill that copied the numbers.
+**Not in this skill — redirect here first if that's what you need:**
+- **Icons** → `signatry-icons` (separate skill; split out since the file set is large)
+- **Donor/stock photography** → `signatry-photo-library` (owns its own usage/consent rules)
+- **Factual claims about The Signatry** (contact info, entity/leadership names, history, figures, fund terms, boilerplate) → `signatry-facts`
+- **Content restriction rules** (fabrication, donor-content, confidentiality) → `signatry-content-guardrails`
+- **Voice/tone/terminology** → `signatry-style`
+
+If none of those match, this skill (colors, fonts, logo/mark files) is the right one — read on.
 
 ## Color palette
 
@@ -33,7 +40,7 @@ Hex values are given without a leading `#` to match the format most build tools 
 | Jubilee | `8a1e41` | Additional accent — use sparingly, any context |
 | Heartfelt | `fd4a5c` | Additional accent — use sparingly, any context |
 
-Note: an earlier draft of `signatry-pptx-brand` referred to this pair as an unused `8A1E41`/`FD495C` combination from a retired theme. `FD495C` was a stale/incorrect value — Ben has confirmed `fd4a5c` is the correct hex for Heartfelt.
+Note: Heartfelt's hex is `fd4a5c` — a prior stale value (`fd495c`) is documented as corrected in `CHANGELOG.md`; don't reintroduce it.
 
 ## Audience-specific accent colors
 
@@ -81,13 +88,9 @@ Usage rules (apply regardless of format):
 - "The Signatry" with no tagline is the preferred lockup — don't fabricate a tagline version.
 - Clearspace: minimum clearspace on all sides of the logo is equal to the height of the letter "n" in the "Signatry" wordmark, measured from that same logo. Use this unit whenever the logo appears near other elements (text, images, edges of the page/slide) — the "n"-height gap is the floor, not a target; more is always fine.
 
-## Icons
-
-Icon assets have been moved to a dedicated `signatry-icons` skill (split out July 2026, since the icon file set is large and separate from core color/font/logo work). See that skill for the icon files, variant/color structure, and correction history. `signatry-icons` depends on this skill for the underlying color values (Glacier, Midnight, Dawn, Mist, Arctic) referenced in its icon-to-color mapping.
-
 ## Tints
 
-Confirmed with Ben (July 2026): every color above may be used at a tint — 80%, 60%, 40%, 20%, or 5% — as needed, matching usage visible on thesignatry.com. (This formula wasn't reverse-engineered from the site's own CSS — I didn't have a way to pull that directly — so it's the standard tint convention below; flag to Ben if a specific piece needs to match a pixel-sampled site color exactly rather than this formula.)
+Confirmed with Ben (July 2026): every color above may be used at a tint — 80%, 60%, 40%, 20%, or 5% — as needed, matching usage visible on thesignatry.com. (This formula wasn't reverse-engineered from the site's own CSS; it's the standard tint convention below — flag to Ben if a piece needs to match a pixel-sampled site color exactly rather than this formula.)
 
 **Definition:** a tint is the base color mixed with white. The percentage is how much of the base color survives — 100% is the full color, 0% is pure white. Formula per channel (R, G, or B, 0–255):
 
@@ -95,27 +98,9 @@ Confirmed with Ben (July 2026): every color above may be used at a tint — 80%,
 tinted_channel = round(255 + (base_channel - 255) * (percent / 100))
 ```
 
-**Reference table** (all values lowercase hex, no `#`, generated with the formula above and spot-checked against `pypdf`/reportlab rendering):
+**Full precomputed table** (all 12 colors × 6 percentages) is in `reference/tints.md` — load that file only when a specific tint value is actually needed; don't load it for a basic hex/font/logo lookup.
 
-| Color | 100% (base) | 80% | 60% | 40% | 20% | 5% |
-|---|---|---|---|---|---|---|
-| Legacy | `2b7a78` | `559593` | `80afae` | `aacac9` | `d5e4e4` | `f4f8f8` |
-| Glacier | `37a49f` | `5fb6b2` | `87c8c5` | `afdbd9` | `d7edec` | `f5fafa` |
-| Ice | `def2f1` | `e5f5f4` | `ebf7f7` | `f2faf9` | `f8fcfc` | `fdfefe` |
-| Midnight | `17242a` | `455055` | `747c7f` | `a2a7aa` | `d1d3d4` | `f3f4f4` |
-| Dusk | `d77900` | `df9433` | `e7af66` | `efc999` | `f7e4cc` | `fdf8f2` |
-| Dawn | `f2a65a` | `f5b87b` | `f7ca9c` | `fadbbd` | `fcedde` | `fefbf7` |
-| Jubilee | `8a1e41` | `a14b67` | `b9788d` | `d0a5b3` | `e8d2d9` | `f9f4f6` |
-| Heartfelt | `fd4a5c` | `fd6e7d` | `fe929d` | `feb7be` | `ffdbde` | `fff6f7` |
-| Passage | `595378` | `7a7593` | `9b98ae` | `bdbac9` | `dedde4` | `f7f6f8` |
-| Mist | `8c88a3` | `a3a0b5` | `bab8c8` | `d1cfda` | `e8e7ed` | `f9f9fa` |
-| Soar | `68a269` | `86b587` | `a4c7a5` | `c3dac3` | `e1ece1` | `f7faf8` |
-| Arctic | `8cb7c9` | `a3c5d4` | `bad4df` | `d1e2e9` | `e8f1f4` | `f9fbfc` |
-
-Notes:
-- Ice is already very light, so its tints converge on near-white quickly — expected, not an error.
-- Recompute rather than eyeball if a color or its base hex ever changes here; the table above is a snapshot, not itself the source of truth (the formula + base hex table above it are).
-- Format skills (`signatry-pptx-brand`, `signatry-pdf-brand`, `signatry-docx-brand`) should apply tints as literal computed hex values, not as an opacity/alpha effect — a tint is a lighter *opaque* color, not a transparent one. Don't confuse the two: alpha transparency lets whatever is behind a shape show through and shifts appearance depending on background; a tint is a fixed, computed color that looks the same on any background.
+Application rule: format skills (`signatry-pptx-brand`, `signatry-pdf-brand`, `signatry-docx-brand`) should apply tints as literal computed hex values, not as an opacity/alpha effect — a tint is a lighter *opaque* color, not a transparent one. Alpha transparency lets whatever is behind a shape show through and shifts appearance depending on background; a tint is a fixed, computed color that looks the same on any background.
 
 ## Consumers of this skill
 
@@ -129,7 +114,11 @@ Any new format skill (xlsx charts, HTML/artifact work, Canva) should follow the 
 
 Icon assets live in the separate `signatry-icons` skill, which itself depends on this skill for color values. Format skills needing icons should depend on `signatry-icons`, not look for icon files here.
 
+Donor family and stock photos live in the separate `signatry-photo-library` skill. It does not depend on this skill for anything (photo usage rules are independent of brand color/font/logo values) — it's referenced here only so anyone starting from `signatry-brand-core` knows it exists.
+
+Organizational facts (contact info, entity/leadership names, history, figures, fund terms, boilerplate) live in the separate `signatry-facts` skill. Like the photo library, it doesn't depend on this skill — it's referenced here only for discoverability. Format skills that both apply brand values and state factual content should declare both `signatry-brand-core` and `signatry-facts` as dependencies.
+
 ## What's still known to be out of scope here
 
 - Voice, tone, and terminology (donors not givers, DAF capitalization, scripture format, etc.) — see `signatry-style`. That skill's Section 9 (visual/formatting references) now defers to this skill for colors and fonts; it still owns the logo-text and book-link rules that aren't duplicated here.
-- Confidentiality and donor-content guardrails — see `signatry-content-guardrails`, which owns all content restriction rules independent of format. (These previously lived inside `signatry-pptx-brand`; they were factored out in July 2026 so docx and pdf deliverables get the same rules.)
+- Confidentiality and donor-content guardrails — see `signatry-content-guardrails`, which owns all content restriction rules independent of format.
