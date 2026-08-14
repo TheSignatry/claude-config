@@ -77,7 +77,12 @@ the Roadmap custom field's "Done" value instead (Jira Product Discovery
 issues like TRM's don't reliably populate `resolutiondate` the way a
 standard workflow does), then range-filters in Python against the same
 Project-target end date `_parse_project_target_end` already parses -- JQL
-can't filter inside that field's JSON string directly.
+can't filter inside that field's JSON string directly. Since JQL can't bound
+`product_delivered` by that date, it's instead bounded by `updated >= since -
+PRODUCT_DELIVERED_LOOKBACK_DAYS` (added 2026-08-15) purely to cap fetch
+volume -- without it, this query re-fetches every Roadmap=Done TRM issue
+ever, every month, forever. See PRODUCT_DELIVERED_LOOKBACK_DAYS's use-site
+for why this bound is safe.
 """
 import argparse
 import json
@@ -88,6 +93,7 @@ from pathlib import Path
 DEFAULT_ABOUTME_PATH = "../acos-aboutme/state/profile.json"
 DEFAULT_CLOUD_ID = "signatry1.atlassian.net"
 DEFAULT_WINDOW_DAYS = 14
+PRODUCT_DELIVERED_LOOKBACK_DAYS = 180
 
 GROUP_ORDER = ["product", "support", "work"]
 GROUP_LABELS = {"product": "Product", "support": "Support", "work": "Work/Tasks"}
@@ -172,17 +178,29 @@ def build_plan(aboutme_path, cloud_id, since=None, until=None):
             "description": "Product group, whole team (deliberately NOT assignee-scoped) — feeds the Product detail list.",
         })
         if date_range:
+            lookback = (date.fromisoformat(since) - timedelta(days=PRODUCT_DELIVERED_LOOKBACK_DAYS)).isoformat()
             queries.append({
                 "id": "product_delivered",
                 "group": "product",
                 "scope": "team",
-                "jql": f'project in ({keys}) AND "Roadmap" = "Done" ORDER BY key ASC',
+                "jql": (
+                    f'project in ({keys}) AND "Roadmap" = "Done" '
+                    f'AND updated >= "{lookback}" ORDER BY key ASC'
+                ),
                 "fields": ["summary", "customfield_10149", "customfield_10156", "assignee", "status"],
                 "used_for": ["delivered_in_range"],
                 "description": (
                     "Product group, Roadmap marked Done — feeds month-retro's delivered-products "
                     "summary. Range-filtered in build_report() against each issue's Project-target "
-                    "end date, not in JQL (that date lives inside a custom-field JSON string)."
+                    "end date, not in JQL (that date lives inside a custom-field JSON string). The "
+                    f"`updated >=` bound (since minus {PRODUCT_DELIVERED_LOOKBACK_DAYS} days) is a "
+                    "fetch-volume guard, not a correctness filter -- without it this query re-fetches "
+                    "every TRM issue ever marked Done, every month, forever (248 issues for a single "
+                    "month-retro run in Aug 2026, and growing). It's safe because an issue can't be "
+                    "marked Roadmap=Done without its `updated` timestamp moving to that moment, so any "
+                    "issue delivered at or after `since` is always updated at or after `since` -- the "
+                    f"{PRODUCT_DELIVERED_LOOKBACK_DAYS}-day lookback is slack for the (expected-rare) "
+                    "case where an issue's target-end date lags the date it was actually marked Done."
                 ),
             })
 

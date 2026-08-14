@@ -12,8 +12,15 @@ Two-stage pipeline, mirroring acos-jira-analysis's plan/report split:
              classification (Step 3, 1-5b), tags (Step 4), conflicts,
              schedule health, meetings-needing-prep, and -- for week/month
              periods only -- the free-time gap-found time-allocation
-             breakdown and benchmark comparison. Prints JSON (default) or
-             renders markdown.
+             breakdown and benchmark comparison, plus (added 2026-08-14)
+             `daily_time_allocation` -- the same category-hours breakdown
+             split per day instead of period-wide, for acos-main's week-plan
+             day chart. `daily_time_allocation` is JSON-only: it has no
+             markdown rendering in this skill's own `--format markdown`
+             output (see `compute_daily_time_allocation`'s own docstring for
+             why a naive per-event-duration sum isn't good enough here and
+             what it reuses instead) -- acos-main is its only consumer.
+             Prints JSON (default) or renders markdown.
 
 Ported from agentic-cos/src/cos/workflows/weekly_preview.py, adjusted for
 this connector's actual data shape (confirmed empirically 2026-08-10 against
