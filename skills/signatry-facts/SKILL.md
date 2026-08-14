@@ -1,9 +1,8 @@
 ---
 name: signatry-facts
 description: "Canonical record of The Signatry's organizational facts — contact details, legal entity and leadership names, founding history, scale figures, fund terms, and approved boilerplate/disclaimer text. Use this skill whenever content for The Signatry will contain a specific factual value a reader could act on: a phone number, email address, URL, mailing address, person's name or title, date, dollar figure, statistic, or fund term. Applies to every format and every audience — decks, letters, PDFs, emails, web and social copy, and internal documents. Pair with `signatry-style` for voice and terminology, and `signatry-brand-core` for colors, fonts, and logo files."
-metadata:
-  version: "1.3"
-  release_date: "2026-08-06"
+version: 1.3
+release_date: 2026-08-06
 ---
 
 # The Signatry Facts

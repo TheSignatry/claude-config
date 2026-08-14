@@ -1,11 +1,11 @@
 ---
 name: signatry-resource-library
 description: The Signatry's authoritative Fact Sheets and Guides on DAF mechanics, complex asset giving, family generosity, and nonprofit vetting/fundraising. Use this whenever recommending an existing donor resource, answering a product/feature question about The Signatry, or drafting new donor-facing or nonprofit-facing content that should be grounded in these documents. Pair with signatry-facts for atomic figures and signatry-style for voice.
-metadata:
-  version: 1.0.1
-  last_synced: 2026-08-03
-  source_folder: "AllTeam SharePoint > Shared Documents > Department-Shared > Brand & Marketing > 02. Fact Sheets and Guides"
-  driveId: "b!So80IAsvh0eUdTDmtQzFGmdeT92dGu9Mu9V8IjhA8t4EDgW1hU37QLxlKISLVR2I"
+version: 1.0.1
+release_date: 2026-08-06
+last_synced: 2026-08-03
+source_folder: "AllTeam SharePoint > Shared Documents > Department-Shared > Brand & Marketing > 02. Fact Sheets and Guides"
+driveId: "b!So80IAsvh0eUdTDmtQzFGmdeT92dGu9Mu9V8IjhA8t4EDgW1hU37QLxlKISLVR2I"
 ---
 
 # Signatry Resource Library
@@ -134,30 +134,4 @@ a donor question.
 happens to be running a scheduled maintenance task. Refresh mechanics are a Brand
 Team concern, not something the average staff member using this skill should see.
 
-## Changelog
-
-**1.0.0 — 2026-08-03**
-Initial build. Cataloged all 32 documents in the SharePoint "02. Fact Sheets and
-Guides" folder (Fact Sheets + Guides subfolders, plus one root-level file) and all
-13 thesignatry.com webpages covering DAF fundamentals, asset giving, BRI/alternative
-investments, advisor-managed accounts, and the generosity calculator. Marked 2
-documents `superseded` (Family Pathways_0226.pdf → digital_202604; The Signatry
-Charity Fund.pdf → Charity-Fund_How-It-Works_202411) and 2 `needs-review`
-(Designated Funds_TheSignatry.pdf — outdated QCD age; Who-We-Serve_2024.pdf — 2023
-stats). Established the >30-day staleness check, auto-edit rules for routine drift,
-human-confirmation flagging for supersession/contradicted-figure cases, and
-#wg_marketing as the sole notification channel.
-
-**1.0.1 — 2026-08-06**
-Token-efficiency pass — no factual changes. Moved the full staleness-check
-procedure, auto-edit rules, and versioning convention out of this file into
-`reference/maintenance.md`, and added `scripts/find_resources.py` so a lookup
-searches the catalog without reading `catalog.csv` (40KB, 45 rows) into context.
-Previously, "run automatically on every use of this skill" meant every ordinary
-donor-question lookup carried the risk of a SharePoint call, 13 webpage fetches,
-and a Slack post if the 30-day staleness window had lapsed — a real, non-trivial
-cost this skill's own text already suggested moving to a scheduled task (see prior
-"can run inline... or via a Claude Cowork scheduled task" note) without making that
-the default. It is now the only supported path; nothing about the maintenance
-logic itself changed. See `reference/maintenance.md`'s own history for anything
-that changes there going forward.
+See `_exclude/CHANGELOG.md` for this skill's revision history.

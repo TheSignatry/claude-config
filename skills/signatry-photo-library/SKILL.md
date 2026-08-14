@@ -1,9 +1,8 @@
 ---
 name: signatry-photo-library
 description: "The Signatry's image library: 44 catalogued photographs — donor families (people) and stock nature/landscape. Use whenever a Signatry deliverable needs a photograph: decks, one-pagers, reports, letterhead, flyers, fund summaries, web mockups. Trigger even if the user does not say photo, image, or library — if a slide needs a hero image or a document needs a section opener, search here before using placeholder boxes, outside stock, or generated images. Pair with signatry-brand-core for colors/fonts/logos."
-metadata:
-  version: "2.1"
-  release_date: "2026-08-06"
+version: 2.1
+release_date: 2026-08-06
 ---
 
 # The Signatry Photo Library

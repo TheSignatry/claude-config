@@ -1,10 +1,9 @@
 ---
 name: signatry-style
 description: The Signatry's official writing and brand voice guide, covering identity, mission/vision/values, audience, voice and tone, required terminology, faith-related capitalization and scripture usage, number/date/mechanics rules, headings, writing mechanics, and visual/brand references. Use this skill whenever writing, editing, reviewing, or proofreading ANY content for The Signatry — donor communications, emails, newsletters, social media, annual and quarterly reports, brochures, resource guides, presentations, web copy, or internal documents — regardless of whether the user explicitly mentions style, branding, or formatting.
-metadata:
-  version: "2.2"
-  release_date: "2026-08-06"
-  source: "Full Brand Voice Guide (updated August 4, 2026) — authoritative. Brand and Style Quick Guide (Version 202607) — authoritative over this skill, but itself subject to the Full Brand Voice Guide where the two differ."
+version: 2.2
+release_date: 2026-08-06
+source: "Full Brand Voice Guide (updated August 4, 2026) — authoritative. Brand and Style Quick Guide (Version 202607) — authoritative over this skill, but itself subject to the Full Brand Voice Guide where the two differ."
 ---
 
 # The Signatry Brand Voice & Style Guide
@@ -255,8 +254,4 @@ Before completing any draft for The Signatry, scan each item below — the full 
 - **Headings (§9):** H1s and titles are title case; everything else (H2+, buttons, blog titles, newsletter subject lines) is sentence case.
 - **Structure and CTAs (§10, extended narrative content only):** if this piece follows the donor story arc, check it against `reference/narrative-patterns.md` — donor quotes preserved without over-editing; closes with an invitation, not a directive.
 
-## Changelog
-
-**2.2 — 2026-08-06** — Token-efficiency pass, no rule changes. §6's scripture-citation subsection moved to `reference/scripture-usage.md`; all of §10 moved to `reference/narrative-patterns.md`. Both only matter for a narrower slice of content than the rest of this file (see the routing table above). Section numbers unchanged.
-
-**2.1 and earlier** — no changelog kept prior to 2.2; see `metadata.source` for governing document versions.
+See `_exclude/CHANGELOG.md` for this skill's revision history.
