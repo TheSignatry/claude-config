@@ -1,8 +1,8 @@
 ---
 name: signatry-brand-core
 description: "Canonical source of truth for The Signatry's brand colors, fonts, and logo/mark assets — independent of file format. Use this whenever a task needs the actual hex values, font files, or logo files for The Signatry, or when building/updating a format-specific brand skill (pptx, docx, pdf, xlsx, HTML/artifacts, Canva, etc.). Format-specific brand skills should depend on this one for values and assets rather than restating them; this skill has no build mechanics of its own. For icon assets, see the separate `signatry-icons` skill; for donor/stock photography, see `signatry-photo-library`; for factual claims about The Signatry (contact info, entity/leadership names, history, figures, fund terms, boilerplate), see `signatry-facts`."
-version: 1.1
-release_date: 2026-07-31
+version: 1.2
+release_date: 2026-08-06
 ---
 
 # The Signatry Brand Core
@@ -65,8 +65,10 @@ Use the Nonprofit/Advisor pairs only when the content's audience is specifically
 
 Canonical typefaces: **Mulish** (body/UI) and **Lora** (headlines).
 
-- **Mulish** — use for body copy, bullets, captions, and any non-headline text. Weights bundled: Regular, Medium, SemiBold, Bold, ExtraBold.
-- **Lora** — use for headlines/titles. Weights bundled: Regular, Medium, SemiBold, Bold. The standing rule confirmed for all documents (July 2026) is **Lora Regular only — not bold — for headlines**.
+- **Mulish** — use for body copy, bullets, captions, and any non-headline text. Weights bundled: Regular, Medium, SemiBold, Bold, ExtraBold, Italic.
+- **Lora** — use for headlines/titles. Weights bundled: Regular, Medium, SemiBold, Bold, Italic. The standing rule confirmed for all documents (July 2026) is **Lora Regular only — not bold — for headlines**.
+
+Both fonts' Italic weight (added 2026-08-06) is reconstructed from Google's own Fontsource distribution (Latin, Latin Extended, Cyrillic, Cyrillic Extended, and Vietnamese subsets merged into one file; Lora also includes Math and Symbols) rather than downloaded as a single pre-merged file, since a direct fonts.google.com fetch wasn't reachable from this environment. Glyph coverage is verified equal to the other bundled weights for Latin text, including accented characters; a small number of symbol/misc glyphs present in the Regular weight's original multi-script build (see CHANGELOG.md) are not present in Italic. No bold-italic face is bundled for either font.
 
 Master font files live in `assets/fonts/Mulish/` and `assets/fonts/Lora/` in this skill. These are the source copies — format skills that need their own local copy for build scripts (e.g., `signatry-pptx-brand`'s embedding scripts, `signatry-pdf-brand`'s font registration) should mirror these files, not fork them. **If a font file needs updating (new weight, corrected file, license change), update it here first, then re-copy into any dependent skill.**
 
