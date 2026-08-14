@@ -5,24 +5,24 @@
 | Skill Section | Lines | Tokens | Notes |
 |---|---|---|---|
 | Description (frontmatter) | 1 | 240 | Always loaded, every skill, every turn (FYI — length/quality governed by lint) |
-| Body (`SKILL.md`) | 152 | 4,026 | Loaded whenever this skill triggers |
+| Body (`SKILL.md`) | 152 | 4,001 | Loaded whenever this skill triggers |
 | Deferred (`reference/`, `scripts/`, `assets/`) | 949 | 20,108 | Loaded only if `SKILL.md` points Claude to it (12 files) |
-| **Total** | **1,102** | **24,374** | Worst case if everything is read |
+| **Total** | **1,102** | **24,349** | Worst case if everything is read |
 
 ## Comparison
 
 **Deferred usage:** `deferred-full-use` — scripts/ are sequential steps in this skill's own 'Definition of done' checklist and run on every build; the bundled logo assets and design-system.md are required reading/assets for any deck, not just some.
 
-`signatry-pptx-brand`'s typical-call footprint is 6.29x the Signatry median (24,374 vs 3,877 tokens across 11 skills) **[OUTLIER]**.
+`signatry-pptx-brand`'s typical-call footprint is 6.28x the Signatry median (24,349 vs 3,877 tokens across 11 skills) **[OUTLIER]**.
 
 | | Skill Typical Call | Skill Worst Case | Signatry Median | Benchmark |
 |---|---|---|---|---|
 | Lines | 1,102 | 1,102 | 219 | 501 |
-| Tokens | 24,374 | 24,374 | 3,877 | 8,100 |
+| Tokens | 24,349 | 24,349 | 3,877 | 8,100 |
 
 ## Version Delta
 
-No version change since the last recorded snapshot (v2.4, recorded 2026-08-14).
+No version change since the last recorded snapshot (v2.5, recorded 2026-08-14).
 
 ## Findings
 

@@ -238,6 +238,30 @@
             "tokens": 24374
           }
         }
+      },
+      {
+        "version": "2.5",
+        "release_date": "2026-08-14",
+        "recorded_at": "2026-08-14",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 240
+          },
+          "body": {
+            "lines": 152,
+            "tokens": 4001
+          },
+          "deferred": {
+            "lines": 949,
+            "tokens": 20108,
+            "file_count": 12
+          },
+          "total": {
+            "lines": 1102,
+            "tokens": 24349
+          }
+        }
       }
     ],
     "signatry-resource-library": [

@@ -1,8 +1,8 @@
 ---
 name: signatry-pptx-brand
 description: "Signatry brand system for PowerPoint decks: color palette, fonts (Mulish, Lora), and logo/quill assets for The Signatry. Use this skill for ANY request to create, build, generate, edit, restyle, or review a .pptx presentation or slide deck in this organization — including plain, generic phrasing with no mention of 'brand,' 'Signatry,' colors, or a template, such as 'create a presentation,' 'make me a deck,' 'build a PowerPoint about X,' or 'add a slide.' This skill is deployed org-wide for The Signatry; every deck built in this environment (Claude.ai, Claude Code, or the Claude for PowerPoint add-in) is a Signatry deck by default unless the user explicitly says otherwise (e.g., a competitor mockup or an intentionally unbranded draft). Do not wait for brand-specific language before applying this skill. Always pair with the general pptx skill (build mechanics) and, if slide copy/text is being written, the signatry-style skill (voice and terminology)."
-version: 2.4
-release_date: 2026-08-07
+version: 2.5
+release_date: 2026-08-14
 ---
 
 # Signatry PowerPoint Brand System
@@ -49,7 +49,7 @@ Mirrored from `signatry-brand-core` (confirmed with Ben, July 2026) — see that
 | Dusk | `d77900` | Accent/highlight — use sparingly (call-outs, single data series, key stat). Also the donor-audience pair with Dawn (see below). |
 | Dawn | `f2a65a` | Gold/amber accent — used specifically for small caps "kicker" labels (eyebrow text above a headline, e.g. "FLEXIBLE GIVING TOOLS"). Distinct from Dusk — don't substitute one for the other. |
 
-Confirmed with Ben (July 2026): **Jubilee** (`8a1e41`) and **Heartfelt** (`fd4a5c`) are additional accent colors, usable sparingly in any context — including decks. (An earlier version of this table called this pair unused/retired from a prior theme and cited a stale hex for Heartfelt, `fd495c` — Ben has confirmed `fd4a5c` is correct.) Note this is a statement about the brand palette generally, not about the 2026 template files specifically: within those four files (see **Reference template files** below — not bundled, for size reasons), the slots that carried this pair in the prior theme were remapped to Glacier/Dusk during the July 2026 migration, so don't expect to find Jubilee/Heartfelt already present if inspecting them — add them deliberately if a deck needs them.
+**Jubilee** (`8a1e41`) and **Heartfelt** (`fd4a5c`) are additional accent colors, usable sparingly in any context — including decks (see `signatry-brand-core`'s changelog for the correction history behind this pair's current hex values). Note this is a statement about the brand palette generally, not about the 2026 template files specifically: within those four files (see **Reference template files** below — not bundled, for size reasons), the slots that carried this pair in the prior theme were remapped to Glacier/Dusk during the July 2026 migration, so don't expect to find Jubilee/Heartfelt already present if inspecting them — add them deliberately if a deck needs them.
 
 Hex values above are lowercase to match pptxgenjs's expected format (no `#`, no 8-digit alpha — see `pptx` skill gotchas). If this table and `signatry-brand-core`'s ever disagree, treat that as drift to fix, not a choice to make — sync them and flag it to Ben.
 
