@@ -1,6 +1,6 @@
 {
   "corpus": {
-    "recorded_at": "2026-08-14",
+    "recorded_at": "2026-08-15",
     "sibling_count": 11,
     "median_typical_lines": 219,
     "median_typical_tokens": 3877
@@ -10,7 +10,7 @@
       {
         "version": "2.2",
         "release_date": "2026-08-06",
-        "recorded_at": "2026-08-14",
+        "recorded_at": "2026-08-15",
         "composition": {
           "description": {
             "lines": 1,
@@ -36,7 +36,7 @@
       {
         "version": "3.4",
         "release_date": "2026-07-31",
-        "recorded_at": "2026-08-14",
+        "recorded_at": "2026-08-15",
         "composition": {
           "description": {
             "lines": 1,
@@ -82,13 +82,37 @@
             "tokens": 11865
           }
         }
+      },
+      {
+        "version": "1.2",
+        "release_date": "2026-08-06",
+        "recorded_at": "2026-08-15",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 184
+          },
+          "body": {
+            "lines": 120,
+            "tokens": 2494
+          },
+          "deferred": {
+            "lines": 211,
+            "tokens": 9359,
+            "file_count": 4
+          },
+          "total": {
+            "lines": 332,
+            "tokens": 12037
+          }
+        }
       }
     ],
     "signatry-content-guardrails": [
       {
         "version": "2.1",
         "release_date": "2026-07-31",
-        "recorded_at": "2026-08-14",
+        "recorded_at": "2026-08-15",
         "composition": {
           "description": {
             "lines": 1,
@@ -114,7 +138,7 @@
       {
         "version": "1.6",
         "release_date": "2026-08-07",
-        "recorded_at": "2026-08-14",
+        "recorded_at": "2026-08-15",
         "composition": {
           "description": {
             "lines": 1,
@@ -140,7 +164,7 @@
       {
         "version": "1.3",
         "release_date": "2026-08-06",
-        "recorded_at": "2026-08-14",
+        "recorded_at": "2026-08-15",
         "composition": {
           "description": {
             "lines": 1,
@@ -166,7 +190,7 @@
       {
         "version": "1.3",
         "release_date": "2026-08-06",
-        "recorded_at": "2026-08-14",
+        "recorded_at": "2026-08-15",
         "composition": {
           "description": {
             "lines": 1,
@@ -192,7 +216,7 @@
       {
         "version": "2.1",
         "release_date": "2026-08-06",
-        "recorded_at": "2026-08-14",
+        "recorded_at": "2026-08-15",
         "composition": {
           "description": {
             "lines": 1,
@@ -242,7 +266,7 @@
       {
         "version": "2.5",
         "release_date": "2026-08-14",
-        "recorded_at": "2026-08-14",
+        "recorded_at": "2026-08-15",
         "composition": {
           "description": {
             "lines": 1,
@@ -268,7 +292,7 @@
       {
         "version": "1.0.1",
         "release_date": "2026-08-06",
-        "recorded_at": "2026-08-14",
+        "recorded_at": "2026-08-15",
         "composition": {
           "description": {
             "lines": 1,
@@ -294,7 +318,7 @@
       {
         "version": "0.5",
         "release_date": "2026-07-26",
-        "recorded_at": "2026-08-14",
+        "recorded_at": "2026-08-15",
         "composition": {
           "description": {
             "lines": 1,
