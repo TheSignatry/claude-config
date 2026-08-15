@@ -23,7 +23,7 @@ from pathlib import Path
 
 from lint_skills import SEVERITY_CRITICAL, SEVERITY_ERROR, lint_skill, parse_frontmatter
 
-EXCLUDE_DIR_NAMES = {"__pycache__", ".git"}
+EXCLUDE_DIR_NAMES = {"__pycache__", ".git", "_exclude"}
 EXCLUDE_FILE_NAMES = {".DS_Store"}
 EXCLUDE_SUFFIXES = {".zip", ".pyc"}
 

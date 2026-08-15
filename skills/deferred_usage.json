@@ -1,0 +1,35 @@
+{
+  "_readme": "Classifies each skill's deferred content (reference(s)/scripts/assets) for skill_budget_audit.py's Typical Call estimate. 'deferred-alternatives' = a menu of mutually-exclusive options where a normal call loads roughly one (Typical Call = largest single deferred file). 'deferred-full-use' = cumulative/sequential content that normally all loads together, e.g. a build-script checklist (Typical Call = Worst Case). Skills not listed here default to deferred-full-use until reviewed -- add an entry with a reason to reclassify.",
+  "sounding-board": {
+    "classification": "deferred-alternatives",
+    "reason": "Each references/*.md is a distinct audience persona; a prompt typically engages one audience, occasionally a few more for an explicit 'panel' request, but never realistically all seven at once."
+  },
+  "signatry-icons": {
+    "classification": "deferred-alternatives",
+    "reason": "assets/icons/svg/ is a 69-file library searched via scripts/find_icons.py; a normal task needs one or a small handful of icons, not the whole set."
+  },
+  "signatry-facts": {
+    "classification": "deferred-alternatives",
+    "reason": "reference/*.md files are topic-gated (fees, figures, history, stories, products, assets, named-things); most content tasks need one or two topics, not all seven."
+  },
+  "signatry-brand-core": {
+    "classification": "deferred-alternatives",
+    "reason": "Logo files are use-case-specific (light vs. dark background, full wordmark vs. quill-only) -- a build needs the one matching its context, not all of them; reference/tints.md is loaded only when a specific tint value is actually needed."
+  },
+  "signatry-style": {
+    "classification": "deferred-alternatives",
+    "reason": "Both reference files are narrow-trigger (scripture citation, extended donor narrative) -- most pieces need zero or one, not both."
+  },
+  "signatry-photo-library": {
+    "classification": "deferred-alternatives",
+    "reason": "references/placement-rules.md is only needed when actually placing an image, not when searching or shortlisting -- a search-only task doesn't load it at all."
+  },
+  "signatry-resource-library": {
+    "classification": "deferred-alternatives",
+    "reason": "reference/maintenance.md documents a scheduled maintenance cycle explicitly described as not part of ordinary use -- a normal donor-resource lookup doesn't load it."
+  },
+  "signatry-pptx-brand": {
+    "classification": "deferred-full-use",
+    "reason": "scripts/ are sequential steps in this skill's own 'Definition of done' checklist and run on every build; the bundled logo assets and design-system.md are required reading/assets for any deck, not just some."
+  }
+}
