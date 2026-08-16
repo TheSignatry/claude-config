@@ -12,7 +12,7 @@
 # profile when that skill is installed and enrolled, or this skill's own
 # local `signature_first_name` fallback otherwise — so no person's name is
 # hardcoded here; that's what makes this template file reusable by anyone
-# who adopts this skill, not just Trevor.
+# who adopts this skill.
 #
 # The first four templates below (cybersec_msp_pitch, contact_list_data_pitch,
 # staffing_recruiting_pitch, software_dev_partnership_pitch) are Trevor's own
@@ -34,7 +34,7 @@
 # Signatry correspondence never does.
 #
 # email_verification_probe and generic_vendor_demo_pitch (both added
-# 2026-08-12, Theme C of state/stage2_accuracy_report.md) are also invented
+# 2026-08-12, Theme C of _exclude/stage2_accuracy_report.md) are also invented
 # copy, not real historical declines. They exist to close a real coverage
 # gap the Stage 2 real-mailbox test found: 8 cold pitches Trevor hand-filed
 # as declines (a Data & AI platform pitch, a nonprofit-data-platform pitch,
@@ -92,7 +92,7 @@ templates:
     html_body: |
       <p>Dear {first_name},</p>
       <p>Thank you for reaching out. We are engaged in a multi-year engagement with a Managed Security Service Provider and do not anticipate re-evaluating the agreement until the summer of 2027. Given that we are not a good prospect for your services at this time, I'm declining the meeting invitation.</p>
-      <p>If something changes or I'm looking for a new service - I'll typically post something on LinkedIn and you are welcome to follow me there (<a href="https://www.linkedin.com/in/trevordbunch/">https://www.linkedin.com/in/trevordbunch/</a>).</p>
+      <p>If something changes or I'm looking for a new service - I'll typically post something on LinkedIn and you are welcome to follow me there (<a href="{personal_linkedin_url}">{personal_linkedin_url}</a>).</p>
       <p>- {signoff}</p>
 
   - topic: contact_list_data_pitch
@@ -133,7 +133,7 @@ templates:
     html_body: |
       <p>Dear {first_name},</p>
       <p>Thank you for reaching out. I am not currently interested in your services. We have a very strong referral network and operate in a niche market, so we do not leverage any staffing or recruiting services in our standard practices.</p>
-      <p>Any open positions are typically advertised on our <a href="https://ats.rippling.com/the-signatry/jobs">Careers Page</a> and on <a href="https://www.linkedin.com/company/the-signatry/">LinkedIn</a>. You are welcome to follow any changes there and reach out to our Talent department if you feel that you have a strong candidate.</p>
+      <p>Any open positions are typically advertised on our <a href="{careers_url}">Careers Page</a> and on <a href="{company_linkedin_url}">LinkedIn</a>. You are welcome to follow any changes there and reach out to our Talent department if you feel that you have a strong candidate.</p>
       <p>{signoff}</p>
 
   - topic: software_dev_partnership_pitch
@@ -152,7 +152,7 @@ templates:
     html_body: |
       <p>Dear {first_name},</p>
       <p>Thank you for reaching out. I have some great development partnerships in place. Right now, I do not have projects that require adding players to our network.</p>
-      <p>If something changes - I'll typically post something on LinkedIn and you are welcome to follow me there (<a href="https://www.linkedin.com/in/trevordbunch/">https://www.linkedin.com/in/trevordbunch/</a>).</p>
+      <p>If something changes - I'll typically post something on LinkedIn and you are welcome to follow me there (<a href="{personal_linkedin_url}">{personal_linkedin_url}</a>).</p>
       <p>- {signoff}</p>
 
   - topic: nonprofit_outreach_pitch
@@ -170,7 +170,7 @@ templates:
     html_body: |
       <p>Dear {first_name},</p>
       <p>Thank you for reaching out. We evaluate new vendor relationships internally rather than through cold outreach, and don't have a current need in this area.</p>
-      <p>If something changes, I'll typically post something on LinkedIn and you're welcome to follow me there (<a href="https://www.linkedin.com/in/trevordbunch/">https://www.linkedin.com/in/trevordbunch/</a>).</p>
+      <p>If something changes, I'll typically post something on LinkedIn and you're welcome to follow me there (<a href="{personal_linkedin_url}">{personal_linkedin_url}</a>).</p>
       <p>- {signoff}</p>
 
   - topic: email_verification_probe
@@ -206,5 +206,5 @@ templates:
     html_body: |
       <p>Dear {first_name},</p>
       <p>Thank you for reaching out. We evaluate new vendor relationships internally rather than through cold outreach and don't have a need for this right now.</p>
-      <p>If something changes, I'll typically post something on LinkedIn and you're welcome to follow me there (<a href="https://www.linkedin.com/in/trevordbunch/">https://www.linkedin.com/in/trevordbunch/</a>).</p>
+      <p>If something changes, I'll typically post something on LinkedIn and you're welcome to follow me there (<a href="{personal_linkedin_url}">{personal_linkedin_url}</a>).</p>
       <p>- {signoff}</p>

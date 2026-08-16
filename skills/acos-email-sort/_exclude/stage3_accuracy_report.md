@@ -3,7 +3,7 @@
 **Date:** 2026-08-12 (updated multiple times same day: a follow-up round fixing 3 of the 6 original regressions, a correction after that round's own side effect was found, then a targeted round fixing Groups D/F/G from the high-severity review)
 **Method:** Every fix from Themes A–J (excluding I) is now live in `triage.py`/`config.json`/`rejection_templates.yaml`. This stage re-runs the **current** `classify_message` against the original 281 Stage 1 messages (`stage1_messages.json` — full subject/sender/body/importance data, reused as-is, no new O365 fetches) and compares the result against Stage 2's real ground truth (`actual_folder` in `stage2_comparison.json`). This is a **simulation, not a live run** — see the Methodology section for exactly how "planned folder" was derived from each classify result, including the cases a genuinely fresh judgment call was required rather than mechanically reused.
 
-Full per-message data: `state/stage3_comparison.json`.
+Full per-message data: `_exclude/stage3_comparison.json`.
 
 ## Headline
 

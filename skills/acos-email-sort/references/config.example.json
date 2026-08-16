@@ -1,12 +1,20 @@
 {
   "_comment": "Template for state/config.json. Copy this file to ../state/config.json and fill it in during first-run enrollment (see SKILL.md). This file holds only acos-email-sort's own operational settings — folders, thresholds, delegate keywords. Identity/org-chart data (VIP list, signoff, partner vendors, protected contacts) now lives in the shared acos-aboutme skill; the fields below with the same names are a local fallback only, used when acos-aboutme isn't installed or a given list is empty there.",
   "version": 1,
-  "home_timezone": "America/Chicago",
 
   "aboutme_profile_path": "../acos-aboutme/state/profile.json",
 
   "signature_first_name_note": "Local fallback only — superseded by acos-aboutme's owner.signoff whenever that profile exists and has one set.",
   "signature_first_name": "",
+
+  "personal_linkedin_url_note": "Local fallback only — superseded by acos-aboutme's owner.linkedin_url whenever that profile exists and has one set. Used to fill the {personal_linkedin_url} placeholder some decline templates offer as a way to stay in touch.",
+  "personal_linkedin_url": "",
+
+  "careers_url_note": "No acos-aboutme equivalent — this is specific to how this skill's decline templates handle recruiting/staffing pitches, not general org-chart data. Fills the {careers_url} placeholder in staffing_recruiting_pitch. Leave empty to omit that sentence's link (the template still renders, just without a working href).",
+  "careers_url": "",
+
+  "company_linkedin_url_note": "Same as careers_url above — local only, fills {company_linkedin_url} in staffing_recruiting_pitch.",
+  "company_linkedin_url": "",
 
   "vip_senders_note": "Local fallback only — superseded by acos-aboutme's vip_senders whenever that profile exists and is non-empty.",
   "vip_senders": [],

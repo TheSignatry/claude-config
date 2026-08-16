@@ -7,12 +7,13 @@
     "full_name": "Trevor Bunch",
     "email": "tbunch@thesignatry.com",
     "signoff": "Trevor",
-    "staff_position_type": "c_suite_executive"
+    "staff_position_type": "c_suite_executive",
+    "linkedin_url": ""
   },
 
   "staff": [
-    {"_comment": "LEGACY field, not read by acos-calendar-analysis — other acos skills (e.g. acos-email-sort) already read this as 'my core team' for their own purposes. Kept as-is; use `reports`/`team` below for acos-calendar-analysis."},
-    {"name": "Example Assistant", "email": "assistant@example.org", "role": "Executive Assistant"}
+    {"_comment": "LEGACY field, not read by acos-calendar-analysis — other acos skills (e.g. acos-email-sort) already read this as 'my core team' for their own purposes. Kept as-is; use `reports`/`team` below for acos-calendar-analysis. `is_executive_assistant: true` on exactly one entry is how acos-email-sort resolves `ea_name`/`ea_email` — a deliberate explicit flag rather than matching on `role` text, since role phrasing varies too much to match reliably."},
+    {"name": "Example Assistant", "email": "assistant@example.org", "role": "Executive Assistant", "is_executive_assistant": true}
   ],
 
   "reports": [
@@ -54,11 +55,12 @@
   ],
 
   "jira_workspaces": {
-    "_comment": "Workspace groups for acos-jira-analysis (and future acos skills). Each group is a list of one or more Jira project keys — don't assume one project per group. upcoming_window_days is the shared 'next N days' window every consuming skill should read from here rather than hardcoding.",
+    "_comment": "Workspace groups for acos-jira-analysis (and future acos skills). Each group is a list of one or more Jira project keys — don't assume one project per group. upcoming_window_days is the shared 'next N days' window every consuming skill should read from here rather than hardcoding. cloud_id is the Jira Cloud site hostname acos-jira-analysis passes to searchJiraIssuesUsingJql — required, no built-in default; acos-jira-analysis's `plan` step fails with a clear error if this is missing rather than guessing a site.",
     "product": ["TRM"],
     "support": ["SUP"],
     "work": ["TT", "IL", "HSER", "GE", "DVR"],
-    "upcoming_window_days": 14
+    "upcoming_window_days": 14,
+    "cloud_id": "your-site.atlassian.net"
   },
 
   "calendar_analysis": {
@@ -76,6 +78,28 @@
 
     "_ignored_addresses_comment": "Personal/family addresses that show up as attendees on a company-wide culture event (a staff member's spouse cc'd on a devotional or celebration call) but aren't a real external attendee or business relationship -- filtered out at the earliest point so category classification, the Audience tag, the Functional Area tag, and prep-flag attendee/external counts all treat these as if they were never on the invite.",
     "ignored_addresses": [],
+
+    "_functional_area_keyword_patterns_comment": "One regex string per Functional Area category (Step 4.3's subject-keyword fallback, checked after the attendee-directory and partner-domain signals). These ship pre-filled with the values this profile's own organization tuned them to — Security/Data/Finance/HR/Legal/Compliance/Engineering are reasonably generic business vocabulary as-is, but Revenue/Systems/Operations carry nonprofit-specific terms (donor/DAF/moves-management language, named vendor products) that should be reviewed and re-tuned for a different organization rather than assumed to transfer as-is.",
+    "functional_area_keyword_patterns": {
+      "Security": "\\bsecurity\\b|\\bmfa\\b|\\bphishing\\b|\\bsoc\\b|\\bpenetration test\\b|\\bvulnerabilit(y|ies)\\b",
+      "Data": "\\bdata\\b|\\banalytics\\b|\\bbi\\b|\\breporting pipeline\\b|\\betl\\b|\\bdashboard\\b",
+      "Finance": "\\bbudget\\b|\\bforecast\\b|\\binvoice\\b|\\bap\\b|\\bar\\b|\\bfinancial audit\\b",
+      "HR": "\\bhiring\\b|\\bonboarding\\b|\\bperformance review\\b|\\bbenefits\\b|\\bcompensation\\b|\\btalent\\b",
+      "Legal": "\\bcontract\\b|\\bdue diligence\\b|\\bgovernance\\b|\\bterm sheet\\b|\\bnda\\b",
+      "Compliance": "\\bcompliance\\b|\\bpolicy\\b|\\btax\\b|\\bregulat(ion|ory)\\b",
+      "Revenue": "\\bdonor\\b|\\bgift\\b|\\bdaf\\b|\\bgrant\\b|\\bcampaign\\b|\\bstewardship\\b|\\bmoves management\\b|\\bnonliquid gift\\b|\\bpipeline\\b|\\brev.it.up\\b",
+      "Engineering": "\\bdev team\\b|\\bengineering\\b|\\bsprint\\b|\\bcode\\b|\\bdeploy\\b|\\bbacklog\\b|\\baws\\b|\\bgcp\\b|\\binfrastructure\\b|\\bserver\\b|\\bnetwork\\b",
+      "Systems": "\\bhubspot\\b|\\bcrm\\b|\\bgive interactive\\b|\\bjira\\b|\\btalentlms\\b|\\brippling\\b",
+      "Operations": "\\bdonor care\\b|\\badvisor\\b|\\bfamily generosity services\\b|\\bnonprofit success\\b"
+    },
+
+    "_functional_area_disambiguation_comment": "Auxiliary patterns the Legal/Revenue/Systems special cases in compute_functional_area_tags need beyond their plain keyword pattern above (see calendar_report.py -- the branch structure itself is fixed code, only these regex strings are configurable). ai_data_governance_pattern excludes an 'AI/data governance' mention from crediting Legal (a subject-matter false positive on the bare word 'governance'); legal_non_governance_pattern is the Legal keyword set minus 'governance' itself, used once governance is excluded; revenue_non_pipeline_pattern is the Revenue keyword set minus the bare word 'pipeline' (too generic on its own); bare_pipeline_pattern is that excluded bare word, credited to Revenue only when Data hasn't already claimed the event. Like the patterns above, review and re-tune for a different organization's own vocabulary.",
+    "functional_area_disambiguation": {
+      "ai_data_governance_pattern": "\\b(ai|artificial intelligence|data|model|algorithm)\\s+governance\\b",
+      "legal_non_governance_pattern": "\\bcontract\\b|\\bdue diligence\\b|\\bterm sheet\\b|\\bnda\\b",
+      "revenue_non_pipeline_pattern": "\\bdonor\\b|\\bgift\\b|\\bdaf\\b|\\bgrant\\b|\\bcampaign\\b|\\bstewardship\\b|\\bmoves management\\b|\\bnonliquid gift\\b|\\brev.it.up\\b",
+      "bare_pipeline_pattern": "\\bpipeline\\b"
+    },
 
     "known_meeting_series": [
       {"_comment": "The primary mechanism for classifying recurring meetings consistently. match_patterns are lowercase substrings checked against the event subject (case-insensitive) — list more than one to support simple aliases. category is one of the seven primary categories. tags is optional and may pre-set any of the Step 4 tags. Corrections on a recurring series write back here automatically."},

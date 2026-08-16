@@ -91,7 +91,6 @@ from datetime import date, datetime, timedelta
 from pathlib import Path
 
 DEFAULT_ABOUTME_PATH = "../acos-aboutme/state/profile.json"
-DEFAULT_CLOUD_ID = "signatry1.atlassian.net"
 DEFAULT_WINDOW_DAYS = 14
 PRODUCT_DELIVERED_LOOKBACK_DAYS = 180
 
@@ -146,8 +145,22 @@ def build_plan(aboutme_path, cloud_id, since=None, until=None):
     `since`/`until` (both required together, both optional) add two more
     queries -- `support_resolved` and `product_delivered` -- for month-retro's
     ticket-performance/delivered-products sections. Omit both and this
-    function's output is identical to before they existed."""
+    function's output is identical to before they existed.
+
+    `cloud_id` has no built-in default -- if the caller didn't pass an
+    explicit `--cloud-id` override, it must come from jira_workspaces.cloud_id
+    in the aboutme profile; this skill has no meaningful Jira site to guess,
+    the same reasoning load_jira_workspaces already applies to project keys."""
     workspaces = load_jira_workspaces(aboutme_path)
+    if not cloud_id:
+        cloud_id = workspaces.get("cloud_id")
+    if not cloud_id:
+        _fail(
+            f"acos-aboutme profile at {aboutme_path} has no jira_workspaces.cloud_id "
+            "set. This skill has no default Jira site to fall back on -- add "
+            "cloud_id to that profile's jira_workspaces block, or pass --cloud-id "
+            "explicitly for a one-off run."
+        )
     window_days = workspaces.get("upcoming_window_days", DEFAULT_WINDOW_DAYS)
     groups = {g: workspaces.get(g) or [] for g in GROUP_ORDER}
     date_range = bool(since and until)
@@ -581,7 +594,7 @@ def main():
 
     p_plan = sub.add_parser("plan", help="Emit the JQL + fields Claude must fetch via searchJiraIssuesUsingJql.")
     p_plan.add_argument("--aboutme", default=DEFAULT_ABOUTME_PATH, help="Path to acos-aboutme's state/profile.json")
-    p_plan.add_argument("--cloud-id", default=DEFAULT_CLOUD_ID)
+    p_plan.add_argument("--cloud-id", default=None, help="Override the Jira Cloud site hostname; omit to read jira_workspaces.cloud_id from the aboutme profile")
     p_plan.add_argument("--since", default=None, help="Start date YYYY-MM-DD for the optional resolved/delivered-in-range queries (month-retro). Omit both --since and --until to get output identical to before this flag existed.")
     p_plan.add_argument("--until", default=None, help="End date YYYY-MM-DD, paired with --since.")
     p_plan.set_defaults(func=cmd_plan)

@@ -62,9 +62,9 @@ copied verbatim from the spec):
   - Step 3.5b lists its three audience-default rules as Shepherd, then
     spans-multiple-areas, then Team/Reports-only, in that textual order.
     Implemented here as Shepherd, then Team/Reports-only, THEN
-    spans-multiple-areas -- because Trevor's own `reports`/`team` already
+    spans-multiple-areas -- because the owner's own `reports`/`team` already
     spans multiple functional areas internally (Security + Systems +
-    Engineering + Data), so his own "Hump Day Huddle" (entirely
+    Engineering + Data), so their own "Hump Day Huddle" (entirely
     reports/team) would otherwise misclassify as Stakeholder partnership
     before ever reaching the Operating-rhythm check. The narrower rule
     (a subset match) is checked before the broader one.
@@ -173,7 +173,7 @@ CAPACITY_UNAVAILABLE_KEYWORDS = re.compile(
 )
 # Zero-attendee-only: these are far too generic to trust unconditionally --
 # found via real data that "Dr. B Mid month zoom meeting" is a genuine work
-# meeting (Ben Clarke, Aril Brizendine, and an external security consultant
+# meeting (two internal staffers and an external security consultant
 # nicknamed "Dr. B") that would misclassify as a personal doctor's
 # appointment if this fired regardless of attendees. Scoped exactly to what
 # was actually asked for: a signal for a *personal appointment*, which by
@@ -299,32 +299,15 @@ OUTCOME_RULES = [
     ("relationship", re.compile(r"\brelationship\b|\bcheck[- ]?in\b|\bcatch up\b|\brapport\b", re.IGNORECASE)),
 ]
 
-# Functional-area subject-keyword rules, IN ORDER (Step 4.3). Legal and
-# Revenue get special-cased inline in compute_functional_area_tags for the
-# governance/pipeline disambiguation the spec calls for; Systems also checks
-# attendee domains, not just keywords.
-FUNCTIONAL_AREA_KEYWORD_RULES = [
-    ("Security", re.compile(r"\bsecurity\b|\bmfa\b|\bphishing\b|\bsoc\b|\bpenetration test\b|\bvulnerabilit(y|ies)\b", re.IGNORECASE)),
-    ("Data", re.compile(r"\bdata\b|\banalytics\b|\bbi\b|\breporting pipeline\b|\betl\b|\bdashboard\b", re.IGNORECASE)),
-    ("Finance", re.compile(r"\bbudget\b|\bforecast\b|\binvoice\b|\bap\b|\bar\b|\bfinancial audit\b", re.IGNORECASE)),
-    ("HR", re.compile(r"\bhiring\b|\bonboarding\b|\bperformance review\b|\bbenefits\b|\bcompensation\b|\btalent\b", re.IGNORECASE)),
-    ("Legal", re.compile(r"\bcontract\b|\bdue diligence\b|\bgovernance\b|\bterm sheet\b|\bnda\b", re.IGNORECASE)),
-    ("Compliance", re.compile(r"\bcompliance\b|\bpolicy\b|\btax\b|\bregulat(ion|ory)\b", re.IGNORECASE)),
-    ("Revenue", re.compile(
-        r"\bdonor\b|\bgift\b|\bdaf\b|\bgrant\b|\bcampaign\b|\bstewardship\b|\bmoves management\b|"
-        r"\bnonliquid gift\b|\bpipeline\b|\brev.it.up\b", re.IGNORECASE)),
-    ("Engineering", re.compile(
-        r"\bdev team\b|\bengineering\b|\bsprint\b|\bcode\b|\bdeploy\b|\bbacklog\b|\baws\b|\bgcp\b|"
-        r"\binfrastructure\b|\bserver\b|\bnetwork\b", re.IGNORECASE)),
-    ("Systems", re.compile(r"\bhubspot\b|\bcrm\b|\bgive interactive\b|\bjira\b|\btalentlms\b|\brippling\b", re.IGNORECASE)),
-    ("Operations", re.compile(r"\bdonor care\b|\badvisor\b|\bfamily generosity services\b|\bnonprofit success\b", re.IGNORECASE)),
-]
-AI_DATA_GOVERNANCE_PATTERN = re.compile(r"\b(ai|artificial intelligence|data|model|algorithm)\s+governance\b", re.IGNORECASE)
-LEGAL_NON_GOVERNANCE_PATTERN = re.compile(r"\bcontract\b|\bdue diligence\b|\bterm sheet\b|\bnda\b", re.IGNORECASE)
-REVENUE_NON_PIPELINE_PATTERN = re.compile(
-    r"\bdonor\b|\bgift\b|\bdaf\b|\bgrant\b|\bcampaign\b|\bstewardship\b|\bmoves management\b|"
-    r"\bnonliquid gift\b|\brev.it.up\b", re.IGNORECASE)
-BARE_PIPELINE_PATTERN = re.compile(r"\bpipeline\b", re.IGNORECASE)
+# Functional-area subject-keyword rules, IN ORDER (Step 4.3), and the
+# auxiliary Legal/Revenue disambiguation patterns, are config-driven --
+# see acos-aboutme's calendar_analysis.functional_area_keyword_patterns /
+# .functional_area_disambiguation, compiled once in build_lookups() into
+# lookups["functional_area_rules"] / lookups["functional_area_disambiguation"].
+# Legal and Revenue are special-cased inline in compute_functional_area_tags
+# for the governance/pipeline disambiguation the spec calls for; Systems also
+# checks attendee domains, not just keywords -- that branch structure itself
+# is fixed code, only the regex vocabulary is configurable.
 
 
 # --- Small helpers ----------------------------------------------------------
@@ -538,7 +521,7 @@ def _participants(event, owner_email, ignored_addresses=frozenset()):
       `...@resource.calendar.google.com`) -- these are the calendar system's
       own plumbing for an event synced from a personal Google Calendar or a
       room-resource booking, not a real attendee. Found via real data: a
-      genuine personal doctor's appointment ("Trevor - Eye dr appointment")
+      genuine personal doctor's appointment ("Jane - Eye dr appointment")
       is organized by one of these and would otherwise register as a real
       external participant, misclassifying a personal appointment as
       External ecosystem. Unlike `ignored_addresses`, this is a structural
@@ -602,6 +585,16 @@ def build_lookups(profile):
     time_allocation_target_overrides = cal.get("time_allocation_target_overrides") or {}
     ignored_addresses = {a.lower() for a in cal.get("ignored_addresses", [])}
 
+    functional_area_rules = [
+        (area, re.compile(pattern, re.IGNORECASE))
+        for area, pattern in (cal.get("functional_area_keyword_patterns") or {}).items()
+    ]
+    disambig = cal.get("functional_area_disambiguation") or {}
+    functional_area_disambiguation = {
+        key: re.compile(pattern, re.IGNORECASE) if pattern else None
+        for key, pattern in disambig.items()
+    }
+
     return {
         "owner_email": owner_email,
         "owner_domain": owner_domain,
@@ -618,6 +611,8 @@ def build_lookups(profile):
         "time_allocation_targets": time_allocation_targets,
         "time_allocation_target_overrides": time_allocation_target_overrides,
         "ignored_addresses": ignored_addresses,
+        "functional_area_rules": functional_area_rules,
+        "functional_area_disambiguation": functional_area_disambiguation,
     }
 
 
@@ -818,8 +813,8 @@ def compute_functional_area_tags(subject, other_participants, category, ext_doma
     """For External-ecosystem events, the partner's own domain-tag is
     checked BEFORE the internal-attendee directory -- reversed from a literal
     reading of the spec's step order. Found via real data: an internal
-    staffer who routinely sits in on vendor calls (e.g. Aril Brizendine, who
-    owns most vendor relationships and is tagged Systems/Operations herself)
+    staffer who routinely sits in on vendor calls (e.g. an internal Systems
+    lead who owns most vendor relationships and is tagged Systems/Operations)
     would otherwise crowd out the vendor's own tag on every single one of
     those calls purely by attending -- a Rippling meeting tagged
     "Systems, Operations" instead of Rippling's own "HR", a Leet meeting
@@ -847,20 +842,25 @@ def compute_functional_area_tags(subject, other_participants, category, ext_doma
         if add(area):
             return found[:2]
 
-    for area, pattern in FUNCTIONAL_AREA_KEYWORD_RULES:
+    disambig = lookups.get("functional_area_disambiguation") or {}
+    for area, pattern in lookups.get("functional_area_rules") or []:
         if area == "Legal":
             has_governance = bool(re.search(r"\bgovernance\b", subject, re.IGNORECASE))
-            credit_governance = has_governance and not AI_DATA_GOVERNANCE_PATTERN.search(subject)
-            if credit_governance or LEGAL_NON_GOVERNANCE_PATTERN.search(subject):
+            ai_data_governance = disambig.get("ai_data_governance_pattern")
+            credit_governance = has_governance and not (ai_data_governance and ai_data_governance.search(subject))
+            legal_non_governance = disambig.get("legal_non_governance_pattern")
+            if credit_governance or (legal_non_governance and legal_non_governance.search(subject)):
                 if add("Legal"):
                     return found[:2]
             continue
         if area == "Revenue":
-            if REVENUE_NON_PIPELINE_PATTERN.search(subject):
+            revenue_non_pipeline = disambig.get("revenue_non_pipeline_pattern")
+            if revenue_non_pipeline and revenue_non_pipeline.search(subject):
                 if add("Revenue"):
                     return found[:2]
                 continue
-            if BARE_PIPELINE_PATTERN.search(subject) and "Data" not in found:
+            bare_pipeline = disambig.get("bare_pipeline_pattern")
+            if bare_pipeline and bare_pipeline.search(subject) and "Data" not in found:
                 if add("Revenue"):
                     return found[:2]
             continue

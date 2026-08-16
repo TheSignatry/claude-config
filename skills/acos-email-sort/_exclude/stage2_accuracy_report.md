@@ -126,4 +126,4 @@ Ranked by how much they explain (largest bucket of mismatches first).
 
 ## 3. Full per-message mismatch data
 
-The complete 281-row comparison (`id`, `subject`, `sender`, `script_bucket_hint`, `planned_target_folder`, `actual_folder`, `status`, `stage1_reason`) is saved alongside this report at `state/stage2_comparison.json` for reference or further filtering.
+The complete 281-row comparison (`id`, `subject`, `sender`, `script_bucket_hint`, `planned_target_folder`, `actual_folder`, `status`, `stage1_reason`) is saved alongside this report at `_exclude/stage2_comparison.json` for reference or further filtering.

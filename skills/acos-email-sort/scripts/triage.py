@@ -229,12 +229,13 @@ def merge_aboutme(config, aboutme):
             merged[key] = aboutme[key]
     owner = aboutme.get("owner") or {}
     merged["signoff"] = owner.get("signoff") or config.get("signature_first_name") or ""
+    merged["personal_linkedin_url"] = owner.get("linkedin_url") or config.get("personal_linkedin_url") or ""
     owner_email = owner.get("email") or ""
     if "@" in owner_email:
         merged["internal_domain"] = owner_email.split("@", 1)[1].lower()
 
     staff = aboutme.get("staff") or []
-    ea = next((s for s in staff if "executive assistant" in (s.get("role") or "").lower()), None)
+    ea = next((s for s in staff if s.get("is_executive_assistant")), None)
     if ea:
         full_name = (ea.get("name") or "").strip()
         merged["ea_name"] = full_name.split()[0] if full_name else merged.get("ea_name", "")
@@ -442,7 +443,7 @@ def is_calendar_or_ooo_artifact(message):
     out-of-office autoreply, never a judgment call the sender made, so they
     should never trigger priority regardless of who sent them or what
     keyword happens to appear in the boilerplate body text. Added
-    2026-08-12 (Theme D of state/stage2_accuracy_report.md) after finding a
+    2026-08-12 (Theme D of _exclude/stage2_accuracy_report.md) after finding a
     VIP's meeting-cancellation notice (flagged via the high-importance flag)
     and an out-of-office autoreply that happened to contain the word
     'urgent' in its own boilerplate (flagged via the urgent-keyword scan)
@@ -456,7 +457,7 @@ def is_calendar_rsvp_artifact(message):
     """True only for the pure calendar-RSVP subset of is_calendar_or_ooo_
     artifact -- Accepted:/Declined:/Tentative:/Canceled:/Cancelled:, NOT
     Automatic reply:. Added 2026-08-12 (Stage 3 regression, follow-up round
-    2 of state/stage3_accuracy_report.md) after score_priority's VIP-sender
+    2 of _exclude/stage3_accuracy_report.md) after score_priority's VIP-sender
     exemption from calendar/OOO suppression (added the same day to fix
     VIP executives' Automatic-reply messages tied to a live initiative)
     turned out to be too broad: it also let a VIP's calendar-accept
@@ -492,7 +493,7 @@ def score_priority(message, config):
 
     if is_calendar_or_ooo_artifact(message):
         # Narrowed 2026-08-12 (Stage 3 regression #3 of
-        # state/stage3_accuracy_report.md): this used to suppress every
+        # _exclude/stage3_accuracy_report.md): this used to suppress every
         # priority signal unconditionally, including the VIP-sender one
         # above. Real data showed that was too broad -- three separate
         # executives' auto-replies tied to a live internal initiative
@@ -594,7 +595,7 @@ def score_priority(message, config):
 
 def score_sensitive(message, config):
     """personnel_content_keyword_patterns (added 2026-08-12, Theme E of
-    state/stage2_accuracy_report.md) is checked as an addition to, not a
+    _exclude/stage2_accuracy_report.md) is checked as an addition to, not a
     replacement for, sensitive_keyword_patterns -- it exists because the
     generic HR-jargon list above only fires on messages that already sound
     like an HR-system notice (termination, FMLA, PIP, etc.), and misses
@@ -646,7 +647,7 @@ def find_internal_or_operational_alert(message, config):
     sender for one of our own systems -- both cases should always land in
     2_review for a human glance, never get swept into bulk_review's
     marketing-screen lane or filed sight-unseen. Added 2026-08-12 after the
-    Stage 2 real-mailbox accuracy test (see state/stage2_accuracy_report.md,
+    Stage 2 real-mailbox accuracy test (see _exclude/stage2_accuracy_report.md,
     Theme B) showed MSSecurity-noreply@microsoft.com PIM alerts, SharePoint
     storage warnings, and internal @thesignatry.com sends all getting caught
     by is_bulk_or_newsletter's no-reply/ESP-padding signature and swept
@@ -654,7 +655,7 @@ def find_internal_or_operational_alert(message, config):
     every one of them into 2_review by hand instead.
 
     Skips calendar/OOO artifacts (2026-08-12, Stage 3 regression #2 of
-    state/stage3_accuracy_report.md) -- a calendar accept/decline notice
+    _exclude/stage3_accuracy_report.md) -- a calendar accept/decline notice
     from an internal sender (e.g. "Accepted: FirstRate - Dev Kickoff") was
     being forced into 2_review by this check even though is_calendar_or_ooo_
     artifact already establishes these are system artifacts, not judgment
@@ -670,7 +671,7 @@ def find_internal_or_operational_alert(message, config):
 
     internal_domain = (config.get("internal_domain") or "").lower()
     if internal_domain and domain == internal_domain:
-        return f"sender domain {domain} is Trevor's own internal domain — always routed to 2_review, never bulk-screened or filed automatically"
+        return f"sender domain {domain} is the mailbox owner's own internal domain — always routed to 2_review, never bulk-screened or filed automatically"
 
     alert_senders = {s.lower() for s in config.get("operational_alert_senders", []) if s}
     if address in alert_senders:
@@ -684,7 +685,7 @@ def find_farewell_note(message, config):
     personally-addressed farewell/thank-you note from someone leaving The
     Signatry. A distinct, lighter-touch signal than the HR-lifecycle
     priority keywords in score_priority above (Theme D rec #3 of
-    state/stage2_accuracy_report.md): escalating every goodbye note straight
+    _exclude/stage2_accuracy_report.md): escalating every goodbye note straight
     to 1_priority would be overkill for what's usually a one-time personal
     moment, not an action item, but letting it fall silently into 2_review
     alongside routine review mail with no distinguishing flag risks it being
@@ -703,7 +704,7 @@ def find_routine_notification(message, config):
     automated notification pattern Trevor has confirmed isn't worth a
     review pass: a meeting reminder, or one of Rippling's routine payroll/
     task-tracking pings. Confirmed by Trevor 2026-08-12 (Theme F of
-    state/stage2_accuracy_report.md) -- accepting the report's meeting-
+    _exclude/stage2_accuracy_report.md) -- accepting the report's meeting-
     reminder recommendation in its simpler form (any meeting reminder is
     safe to file, no need to compare the reminder's referenced meeting time
     against the message's own received time). Deliberately narrow content
@@ -723,7 +724,7 @@ def find_routine_notification(message, config):
 
     for pattern in _compile_all(config.get("routine_payroll_notification_keyword_patterns", [])):
         if pattern.search(haystack):
-            return f"routine Rippling payroll/task-notification pattern match: /{pattern.pattern}/ — not helpful, file without review"
+            return f"routine payroll/task-notification pattern match: /{pattern.pattern}/ — not helpful, file without review"
 
     return None
 
@@ -731,7 +732,7 @@ def find_routine_notification(message, config):
 def find_ea_scheduling_delegate(message, config):
     """Returns a reason string if the message explicitly asks Trevor's
     Executive Assistant to handle scheduling. Confirmed by Trevor
-    (2026-08-12, Theme J of state/stage2_accuracy_report.md) as the one
+    (2026-08-12, Theme J of _exclude/stage2_accuracy_report.md) as the one
     delegation signal clear enough to be deterministic -- every other
     delegate-worthy judgment (travel logistics, general coordination) stays
     an LLM call, see SKILL.md's Judgment calls section. Requires BOTH an EA
@@ -986,7 +987,7 @@ def cmd_record_decline(args):
 
 def cmd_record_filed(args):
     """Confirmed by Trevor 2026-08-12 (Theme A rec 4 of
-    state/stage2_accuracy_report.md). Mirrors cmd_record_decline's shape
+    _exclude/stage2_accuracy_report.md). Mirrors cmd_record_decline's shape
     exactly, but tracks a different, softer signal in a separate ledger
     section (filed_senders, not senders): a sender whose mail keeps reaching
     the 'routine, no ambiguity, file it' judgment call and landing in
@@ -1045,7 +1046,7 @@ def cmd_record_run(args):
 
 def cmd_bulk_review_status(args):
     """Confirmed by Trevor 2026-08-12 (Theme A rec 2 of
-    state/stage2_accuracy_report.md): 6_bulkToReview stays a distinct
+    _exclude/stage2_accuracy_report.md): 6_bulkToReview stays a distinct
     folder, monitored over time rather than assumed to be earning its keep.
     This never moves or reads full message content -- just id +
     receivedDateTime for a lightweight headcount/age check -- and never
@@ -1109,9 +1110,19 @@ def cmd_render_template(args):
     config = load_config(args.config)
     config = merge_aboutme(config, load_aboutme(args.aboutme))
     signoff = config.get("signoff") or ""
+    personal_linkedin_url = config.get("personal_linkedin_url") or ""
+    careers_url = config.get("careers_url") or ""
+    company_linkedin_url = config.get("company_linkedin_url") or ""
 
     first_name = _extract_first_name(args.sender_name)
-    html_body = template["html_body"].replace("{first_name}", first_name).replace("{signoff}", signoff)
+    html_body = (
+        template["html_body"]
+        .replace("{first_name}", first_name)
+        .replace("{signoff}", signoff)
+        .replace("{personal_linkedin_url}", personal_linkedin_url)
+        .replace("{careers_url}", careers_url)
+        .replace("{company_linkedin_url}", company_linkedin_url)
+    )
     footer = parsed["disclosure_footer"]
     if footer:
         html_body = html_body.rstrip("\n") + "\n<br>\n" + footer

@@ -1,9 +1,9 @@
 {
   "corpus": {
-    "recorded_at": "2026-08-15",
-    "sibling_count": 11,
-    "median_typical_lines": 219,
-    "median_typical_tokens": 3877
+    "recorded_at": "2026-08-16",
+    "sibling_count": 16,
+    "median_typical_lines": 252.0,
+    "median_typical_tokens": 5737.5
   },
   "skills": {
     "signatry-style": [
@@ -336,6 +336,256 @@
           "total": {
             "lines": 726,
             "tokens": 17613
+          }
+        }
+      }
+    ],
+    "acos-aboutme": [
+      {
+        "version": "0.3",
+        "release_date": "2026-08-15",
+        "recorded_at": "2026-08-15",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 248
+          },
+          "body": {
+            "lines": 76,
+            "tokens": 3717
+          },
+          "deferred": {
+            "lines": 120,
+            "tokens": 2417,
+            "file_count": 1
+          },
+          "total": {
+            "lines": 197,
+            "tokens": 6382
+          }
+        }
+      },
+      {
+        "version": "0.4",
+        "release_date": "2026-08-16",
+        "recorded_at": "2026-08-16",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 248
+          },
+          "body": {
+            "lines": 78,
+            "tokens": 4153
+          },
+          "deferred": {
+            "lines": 144,
+            "tokens": 3368,
+            "file_count": 1
+          },
+          "total": {
+            "lines": 223,
+            "tokens": 7769
+          }
+        }
+      }
+    ],
+    "acos-calendar-analysis": [
+      {
+        "version": "0.2",
+        "release_date": "2026-08-15",
+        "recorded_at": "2026-08-15",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 247
+          },
+          "body": {
+            "lines": 53,
+            "tokens": 2368
+          },
+          "deferred": {
+            "lines": 1774,
+            "tokens": 22145,
+            "file_count": 1
+          },
+          "total": {
+            "lines": 1828,
+            "tokens": 24760
+          }
+        }
+      },
+      {
+        "version": "0.3",
+        "release_date": "2026-08-16",
+        "recorded_at": "2026-08-16",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 250
+          },
+          "body": {
+            "lines": 53,
+            "tokens": 2390
+          },
+          "deferred": {
+            "lines": 1774,
+            "tokens": 22006,
+            "file_count": 1
+          },
+          "total": {
+            "lines": 1828,
+            "tokens": 24646
+          }
+        }
+      }
+    ],
+    "acos-jira-analysis": [
+      {
+        "version": "0.2",
+        "release_date": "2026-08-15",
+        "recorded_at": "2026-08-15",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 107
+          },
+          "body": {
+            "lines": 36,
+            "tokens": 1810
+          },
+          "deferred": {
+            "lines": 601,
+            "tokens": 6929,
+            "file_count": 1
+          },
+          "total": {
+            "lines": 638,
+            "tokens": 8846
+          }
+        }
+      },
+      {
+        "version": "0.3",
+        "release_date": "2026-08-16",
+        "recorded_at": "2026-08-16",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 110
+          },
+          "body": {
+            "lines": 36,
+            "tokens": 1848
+          },
+          "deferred": {
+            "lines": 614,
+            "tokens": 7120,
+            "file_count": 1
+          },
+          "total": {
+            "lines": 651,
+            "tokens": 9078
+          }
+        }
+      }
+    ],
+    "acos-email-sort": [
+      {
+        "version": "0.2",
+        "release_date": "2026-08-15",
+        "recorded_at": "2026-08-15",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 92
+          },
+          "body": {
+            "lines": 160,
+            "tokens": 10316
+          },
+          "deferred": {
+            "lines": 1555,
+            "tokens": 20034,
+            "file_count": 3
+          },
+          "total": {
+            "lines": 1716,
+            "tokens": 30442
+          }
+        }
+      },
+      {
+        "version": "0.3",
+        "release_date": "2026-08-16",
+        "recorded_at": "2026-08-16",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 93
+          },
+          "body": {
+            "lines": 160,
+            "tokens": 10429
+          },
+          "deferred": {
+            "lines": 1574,
+            "tokens": 20299,
+            "file_count": 3
+          },
+          "total": {
+            "lines": 1735,
+            "tokens": 30821
+          }
+        }
+      }
+    ],
+    "acos-main": [
+      {
+        "version": "0.2",
+        "release_date": "2026-08-15",
+        "recorded_at": "2026-08-15",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 181
+          },
+          "body": {
+            "lines": 63,
+            "tokens": 3166
+          },
+          "deferred": {
+            "lines": 614,
+            "tokens": 10489,
+            "file_count": 2
+          },
+          "total": {
+            "lines": 678,
+            "tokens": 13836
+          }
+        }
+      },
+      {
+        "version": "0.3",
+        "release_date": "2026-08-16",
+        "recorded_at": "2026-08-16",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 181
+          },
+          "body": {
+            "lines": 63,
+            "tokens": 3181
+          },
+          "deferred": {
+            "lines": 614,
+            "tokens": 10489,
+            "file_count": 2
+          },
+          "total": {
+            "lines": 678,
+            "tokens": 13851
           }
         }
       }
