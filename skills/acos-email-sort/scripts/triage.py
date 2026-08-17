@@ -1115,8 +1115,17 @@ def cmd_render_template(args):
     company_linkedin_url = config.get("company_linkedin_url") or ""
 
     first_name = _extract_first_name(args.sender_name)
+    html_body_template = template["html_body"]
+    if not personal_linkedin_url:
+        # The "follow me on LinkedIn" sentence links the URL as its own visible
+        # text -- substituting an empty string would leave a blank, hrefless
+        # <a> tag rather than degrading to plain text, so drop the whole
+        # parenthetical instead of rendering something visibly broken.
+        html_body_template = html_body_template.replace(
+            ' (<a href="{personal_linkedin_url}">{personal_linkedin_url}</a>)', ""
+        )
     html_body = (
-        template["html_body"]
+        html_body_template
         .replace("{first_name}", first_name)
         .replace("{signoff}", signoff)
         .replace("{personal_linkedin_url}", personal_linkedin_url)

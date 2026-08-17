@@ -50,12 +50,22 @@
 # `4_autorespond` that doesn't match any template's keywords at all — see
 # SKILL.md's "Sweep 4_autorespond" section.
 #
+# conference_event_meetup_pitch (added 2026-08-17) is also invented copy, not
+# a real historical decline — added for a distinct pitch shape the existing
+# templates don't cover: a vendor checking whether the owner is attending a
+# named conference/event, then asking to meet up there or stop by a booth.
+# Deliberately doesn't try to match a specific conference name (that varies
+# every time) — only the surrounding "will you be there / let's meet up"
+# framing, kept before generic_vendor_demo_pitch in file order since it's
+# more specific.
+#
 # This content is still swappable data, not skill logic: Marketing should
 # review it as part of this skill's review process before it's trusted to
 # draft declines, especially the regex coverage, which is a first pass over
-# a small sample — nonprofit_outreach_pitch, email_verification_probe, and
-# generic_vendor_demo_pitch most of all, since they're unproven invented
-# copy rather than a real draft Trevor already stood behind.
+# a small sample — nonprofit_outreach_pitch, email_verification_probe,
+# conference_event_meetup_pitch, and generic_vendor_demo_pitch most of all,
+# since they're unproven invented copy rather than a real draft Trevor
+# already stood behind.
 #
 # Nothing here is sent automatically — every draft this produces waits in
 # 5_draftsToReview for a human to send, and the disclosure_footer below is
@@ -187,6 +197,28 @@ templates:
       <p>Dear {first_name},</p>
       <p>Thanks for reaching out, but I don't confirm contact details for unsolicited outreach. Please remove this address from your list.</p>
       <p>{signoff}</p>
+
+  - topic: conference_event_meetup_pitch
+    sender_domains: []
+    subject_patterns:
+      - "\\bwill you be at\\b"
+      - "\\bare you attending\\b"
+      - "\\bmeet(ing)? up at\\b"
+      - "\\bsee you at\\b"
+    body_patterns:
+      - "\\bare you (planning on |going to be )?attending\\b"
+      - "\\bwill you be (at|attending)\\b"
+      - "\\bstop by (our|my) booth\\b"
+      - "\\bswing by (our|my) booth\\b"
+      - "\\bmeet up (at|during) (the )?(conference|summit|event|expo|show)\\b"
+      - "\\bconnect in person at (the )?(conference|summit|event|expo|show)\\b"
+      - "\\bsee you (there|at (the )?(conference|summit|event|expo|show))\\b"
+    subject_prefix: "Re: "
+    html_body: |
+      <p>Dear {first_name},</p>
+      <p>Thank you for the invite — I appreciate you thinking of me, but I won't be attending and won't be able to meet up.</p>
+      <p>If something changes, I'll typically post something on LinkedIn and you're welcome to follow me there (<a href="{personal_linkedin_url}">{personal_linkedin_url}</a>).</p>
+      <p>- {signoff}</p>
 
   - topic: generic_vendor_demo_pitch
     sender_domains: []

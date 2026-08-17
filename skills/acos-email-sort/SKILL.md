@@ -1,8 +1,8 @@
 ---
 name: acos-email-sort
 description: "Sorts the owner's Microsoft 365 inbox into the _claude/* Outlook folder taxonomy every morning, drafts polite vendor declines for human review, and never sends anything. Use when: run my morning email sort, sort my inbox, triage my email, process my inbox, run acos-email-sort, morning mail run, file my email, what's in 4_autorespond, 5_draftsToReview, or 6_bulkToReview."
-version: "0.3"
-release_date: "2026-08-16"
+version: "0.5"
+release_date: "2026-08-17"
 ---
 
 ## Context
