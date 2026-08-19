@@ -252,6 +252,53 @@ def check_markdown_links(md_path, text, skill_dir, allowed_refs=frozenset()):
     return issues
 
 
+def check_no_nested_metadata(frontmatter, skill_md):
+    """Frontmatter version/release_date/custom fields must be flat top-level
+    keys, never nested under a 'metadata:' block. A nested block relies on
+    this module's hand-rolled fallback parser accidentally flattening it
+    (see parse_frontmatter) -- it would silently break if PyYAML were ever
+    installed. "metadata" ends up a dict key either way (nested dict under
+    real YAML, or an empty-string value under the fallback parser), so a
+    simple key-presence check catches it regardless of which parser ran."""
+    if isinstance(frontmatter, dict) and "metadata" in frontmatter:
+        return [
+            (
+                SEVERITY_ERROR,
+                f"{skill_md}: frontmatter has a nested 'metadata:' block — version/release_date "
+                "and any custom fields must be flat top-level keys (see signatry-brand-core).",
+            )
+        ]
+    return []
+
+
+INLINE_CHANGELOG_HEADING_RE = re.compile(
+    r"(?im)^#{1,6}\s+(?:change\s?log|revision\s+history|version\s+history|release\s+notes)\b"
+)
+
+
+def check_no_inline_changelog(md_path, text, skill_dir):
+    issues = []
+    for match in INLINE_CHANGELOG_HEADING_RE.finditer(text):
+        lineno = text.count("\n", 0, match.start()) + 1
+        issues.append(
+            (
+                SEVERITY_ERROR,
+                f"{md_path.relative_to(skill_dir.parent)}:{lineno}: inline changelog/revision-history "
+                "heading in SKILL.md body — move this content to _exclude/CHANGELOG.md.",
+            )
+        )
+    return issues
+
+
+def check_changelog_exists(skill_dir):
+    changelog = skill_dir / "_exclude" / "CHANGELOG.md"
+    if not changelog.exists():
+        return [(SEVERITY_ERROR, f"{skill_dir}: missing required _exclude/CHANGELOG.md")]
+    if changelog.stat().st_size == 0:
+        return [(SEVERITY_ERROR, f"{changelog}: exists but is empty")]
+    return []
+
+
 def parse_allowlist_entries(raw_entries, skill_name):
     """Returns (allowed_refs set, issues list) for one skill's allowlist entries.
 
@@ -296,6 +343,7 @@ def lint_skill(skill_dir, schema, allowlist=None):
         (allowlist or {}).get(skill_dir.name, []), skill_dir.name
     )
     issues.extend(allowlist_issues)
+    issues.extend(check_changelog_exists(skill_dir))
 
     skill_md = skill_dir / "SKILL.md"
     if not skill_md.exists():
@@ -316,6 +364,7 @@ def lint_skill(skill_dir, schema, allowlist=None):
     if frontmatter is not None:
         for err in validate_schema(frontmatter, schema):
             issues.append((SEVERITY_ERROR, f"{skill_md}: {err}"))
+        issues.extend(check_no_nested_metadata(frontmatter, skill_md))
 
         name = frontmatter.get("name")
         if isinstance(name, str) and name != skill_dir.name:
@@ -330,6 +379,7 @@ def lint_skill(skill_dir, schema, allowlist=None):
 
     all_texts = [text]
     issues.extend(check_markdown_links(skill_md, text, skill_dir, allowed_refs))
+    issues.extend(check_no_inline_changelog(skill_md, text, skill_dir))
     for ref_md in skill_dir.glob("references/*.md"):
         ref_text = ref_md.read_text(encoding="utf-8", errors="replace")
         issues.extend(check_markdown_links(ref_md, ref_text, skill_dir, allowed_refs))

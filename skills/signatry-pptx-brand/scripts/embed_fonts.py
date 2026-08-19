@@ -8,6 +8,16 @@ renders in the correct fonts on machines where Lora/Mulish are not installed.
 
 Both fonts are SIL Open Font License — embedding is permitted.
 
+Note on OOXML's four style slots: <p:embeddedFontLst> only has room for
+regular/bold/italic/boldItalic per typeface — there is no slot for a distinct
+weight like SemiBold or ExtraBold. The design system's type scale (see
+design-system.md) uses Mulish SemiBold (Subhead) and Mulish ExtraBold (Stat
+number), which the build scripts apply as their own fontFace strings —
+"Mulish-SemiBold" and "Mulish-ExtraBold" (see fit_check.py) — not as a bold
+variant of "Mulish". Each therefore needs its own regular-slot embed under
+that exact typeface name, or PowerPoint won't match the embedded font to the
+font actually referenced in the slide XML.
+
 Usage: python3 embed_fonts.py deck.pptx   (modifies in place)
 """
 import sys, os, zipfile, shutil
@@ -23,8 +33,14 @@ _HERE = os.path.dirname(os.path.abspath(__file__))
 FONTS = [
     # (typeface, style-element, ttf path relative to skill)
     ('Lora',   'regular', '../assets/fonts/Lora/Lora-Regular.ttf'),
+    ('Lora',   'italic',  '../assets/fonts/Lora/Lora-Italic.ttf'),
     ('Mulish', 'regular', '../assets/fonts/Mulish/Mulish-Regular.ttf'),
     ('Mulish', 'bold',    '../assets/fonts/Mulish/Mulish-Bold.ttf'),
+    ('Mulish', 'italic',  '../assets/fonts/Mulish/Mulish-Italic.ttf'),
+    # Distinct fontFace strings used by the build scripts (see fit_check.py) —
+    # each is its own registered typeface, not a style variant of "Mulish".
+    ('Mulish-SemiBold', 'regular', '../assets/fonts/Mulish/Mulish-SemiBold.ttf'),
+    ('Mulish-ExtraBold', 'regular', '../assets/fonts/Mulish/Mulish-ExtraBold.ttf'),
 ]
 # insertion order constraint: embeddedFontLst must follow notesSz in CT_Presentation
 AFTER = ['notesSz', 'sldSz', 'sldIdLst', 'handoutMasterIdLst', 'notesMasterIdLst', 'sldMasterIdLst']

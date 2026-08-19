@@ -6,6 +6,22 @@ Format: date · file · what changed · why it matters.
 
 ---
 
+## 2026-08-06 — token-optimization pass; duplicate routing table removed
+
+`facts.md` updated — token-efficiency review, no factual changes.
+
+`facts.md` carried its own "Need → Load" table (4 rows: fees, figures, history, stories) that duplicated a subset of the fuller "File map" table already in `SKILL.md` (8 rows, with descriptions). Since `SKILL.md` and `facts.md` load together by default on every task naming a fact, that routing information was being paid for twice on every trigger. Removed the smaller, incomplete table from `facts.md`; it now points to `SKILL.md`'s File map instead. Nothing was lost — the removed table was a strict subset of the one that remains.
+
+**Why it matters:** this is the only meaningful duplication found in the skill — `facts.md`'s tables are otherwise dense, unique data (contact fields, leadership names, sources, known-bad values) with per-row source citations that are load-bearing, not padding. The fix is small in absolute size (~250 characters) but was pure waste.
+
+## 2026-08-04 — Mission/Vision/Values canonical wording confirmed
+
+`facts.md` updated — following a `signatry-style` update (v2.0) sourced from the Full Brand Voice Guide, updated 2026-08-04 (`BVG-202608`).
+
+The prior open flag on the Mission/Vision/Values row ("wording varies by source... confirm canonical wording") is resolved for Identity, Mission, and Vision: `BVG-202608` states them verbatim-matching `AR-2025`, and two independent authoritative sources agreeing settles it. Values now cites `BVG-202608` alongside `CG-2023`, since the current internal brand guide corroborates the same list and order. Non-canonical variants (Charity Navigator's mission addition, `CG-2023`'s vision wording) are named explicitly so they aren't mistaken for live alternatives.
+
+**Why it matters:** this had been sitting as an unresolved discrepancy since the skill was built; content needing these statements had to route around it or ask Ben each time. It's now a settled `VERIFIED` value with two-source corroboration.
+
 ## 2026-07-31 — donor clearance is a standing policy; release tracking removed
 
 `reference/stories.md` and `SKILL.md` updated — Ben Martin.
