@@ -207,6 +207,19 @@ CONFIRMATION_NUMBER_PATTERN = re.compile(
 # alongside zero real attendees, which every real example of this shape in
 # practice has none of.
 AIRPORT_CODE_PAIR_PATTERN = re.compile(r"\b[A-Z]{3}\b\s*(?:to|-)\s*\b[A-Z]{3}\b")
+# A subject naming a flight and its flight number ("Delta Air Lines flight
+# 4065 to Detroit") -- the airport-code-pair pattern above only catches the
+# IATA-shorthand phrasing ("DL30001: BNA to ATL"); a readable city-name
+# phrasing has no 3-letter-code pair to match at all, and previously fell
+# through this whole function into Focused production's generic "no real
+# attendees" branch -- a materially different category for the same kind of
+# solo travel block (confirmed live: two same-week Delta flights, one
+# phrased each way, landed in different categories). Requires the digit(s)
+# to follow "flight" directly (optionally through "#"/"no."/"number") so
+# this doesn't fire on an unrelated subject that merely contains the word
+# "flight" nowhere near a number (e.g. "Flight risk assessment, Q3 2026").
+# Zero-attendee-only, same reasoning as the other solo-block signals above.
+FLIGHT_NUMBER_PATTERN = re.compile(r"\bflight\b\s*(?:#|no\.?|number)?\s*\d+", re.IGNORECASE)
 TRAVEL_SIGNAL_PATTERN = re.compile(r"\b(flight|transit|airport)\b|\btravel to\b", re.IGNORECASE)
 
 PEOPLE_MANAGEMENT_KEYWORDS = re.compile(
@@ -691,6 +704,9 @@ def _is_capacity_unavailable(event, other_participants):
         m = AIRPORT_CODE_PAIR_PATTERN.search(subject)
         if m:
             return True, f"subject airport-code pair (solo block): {m.group(0)!r}"
+        m = FLIGHT_NUMBER_PATTERN.search(subject)
+        if m:
+            return True, f"subject flight-number match (solo block): {m.group(0)!r}"
         body = event.get("summary") or ""
         m = CONFIRMATION_NUMBER_PATTERN.search(f"{subject}\n{body}")
         if m:

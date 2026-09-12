@@ -1,8 +1,8 @@
 ---
 name: acos-calendar-analysis
 description: "Analyzes the owner's Microsoft 365 calendar via the connected O365 connector for a day, week, or month: a purpose-based time classification (People leadership, Operating rhythm, Strategy and transformation, Stakeholder partnership, External ecosystem, Focused production, Capacity unavailable — not who's in the room), conflict/overlap detection, a schedule-health section (deep-work infringements, after-hours work, PTO interruptions, travel burden), meetings-needing-prep flags, and — for week/month periods — a time-allocation breakdown benchmarked against target ranges for the owner's staff position type. Read-only, always. Use when: how's my week looking, run my calendar analysis, morning calendar check, what's on my plate today, any conflicts this week, what's my schedule health, time allocation this month, benchmark my calendar, meetings needing prep, what needs prep this week, how am I spending my time, run acos calendar analysis, monthly time allocation review, weekly time breakdown."
-version: "0.3"
-release_date: "2026-08-16"
+version: "0.4"
+release_date: "2026-08-30"
 ---
 
 ## Context
