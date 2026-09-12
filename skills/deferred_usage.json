@@ -31,5 +31,9 @@
   "signatry-pptx-brand": {
     "classification": "deferred-full-use",
     "reason": "scripts/ are sequential steps in this skill's own 'Definition of done' checklist and run on every build; the bundled logo assets and design-system.md are required reading/assets for any deck, not just some."
+  },
+  "contact-research": {
+    "classification": "deferred-full-use",
+    "reason": "scripts/ and references/ are sequential pipeline steps (init -> pull -> derive -> research -> merge -> render) that all run in a normal complete run, not a menu of alternatives. Two branch points exist -- hubspot_pull.py vs. references/hubspot_extraction.md for the API/connector HubSpot pull, and batch.py+playwright_fetch.py vs. api_batch_runner.py+references/research_prompt.md for interactive vs. unattended research -- but each still touches most of the deferred set, so full-use is the more honest default than alternatives."
   }
 }

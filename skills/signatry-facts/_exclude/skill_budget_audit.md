@@ -13,16 +13,16 @@
 
 **Deferred usage:** `deferred-alternatives` — reference/*.md files are topic-gated (fees, figures, history, stories, products, assets, named-things); most content tasks need one or two topics, not all seven.
 
-`signatry-facts`'s typical-call footprint is 0.92x the Signatry median (3,553 vs 3,877 tokens across 11 skills).
+`signatry-facts`'s typical-call footprint is 0.81x the Signatry median (3,553 vs 4,394 tokens across 12 skills).
 
 | | Skill Typical Call | Skill Worst Case | Signatry Median | Benchmark |
 |---|---|---|---|---|
-| Lines | 213 | 686 | 219 | 501 |
-| Tokens | 3,553 | 11,071 | 3,877 | 8,100 |
+| Lines | 213 | 686 | 236 | 501 |
+| Tokens | 3,553 | 11,071 | 4,394 | 8,100 |
 
 ## Version Delta
 
-No version change since the last recorded snapshot (v1.3, recorded 2026-08-15).
+No version change since the last recorded snapshot (v1.3, recorded 2026-09-12).
 
 ## Findings
 

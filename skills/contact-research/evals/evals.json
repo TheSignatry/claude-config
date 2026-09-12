@@ -1,0 +1,43 @@
+{
+  "skill_name": "contact_research",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Run contact_research on this one contact: HubSpot ID 239596421482, Paul Brown, pabrown54@gmail.com. Use naming convention 2 for the PDF.",
+      "expected_output": "State folder with a contacts/239596421482.json file progressing through hubspot \u2192 derived \u2192 research; an xlsx with HS:/Research: column separation and Upload Prep sheets; one PDF named Brown_Paul_239596421482_profile.pdf with a 'Candidate only' badge; research fields prefixed 'Candidate only:'.",
+      "files": [
+        "evals/fixtures/sample_input.csv"
+      ],
+      "expectations": [
+        "init_run.py was used and the manifest records naming_convention 2",
+        "Young Life or any referral-only association does not appear in company/role columns",
+        "Low-confidence values are prefixed 'Candidate only:'",
+        "PDF filename follows convention 2",
+        "Workbook contains 'Upload Prep \u2013 Contacts' with Paul Brown's research columns left blank"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Here is a CSV of 25 RM-assigned contacts (Record ID, First Name, Last Name, Email). Enrich them all \u2013 spouse check, LinkedIn, company, role, revenue, ownership \u2013 and give me the spreadsheet plus a PDF per person. Batches of 10 please.",
+      "expected_output": "Run initialized with batch_size 10; batch.py used to work through batches; scripts reused rather than rewritten; both outputs rendered from state; user asked for PDF naming convention before rendering.",
+      "files": [],
+      "expectations": [
+        "User was asked to choose a naming convention (1/2/3)",
+        "Contacts were processed in batches with batch.py status/advance",
+        "No fabricated facts; every non-null research value has a source",
+        "Rows missing a second data point were rejected with a reason in rejected.csv"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Re-render the profile PDFs from last week's contact research run in state/ using the owner-prefixed filename format, and only for the contacts in batch 2.",
+      "expected_output": "build_profiles.py invoked with --naming 3 --batch 2 against the existing state folder; no research repeated; files named {Owner}_{Last}_{First}_{Id}_profile.pdf.",
+      "files": [],
+      "expectations": [
+        "No HubSpot or web calls were made",
+        "Only batch 2 contacts rendered",
+        "Naming convention 3 applied"
+      ]
+    }
+  ]
+}

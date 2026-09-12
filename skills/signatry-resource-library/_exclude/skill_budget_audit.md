@@ -13,16 +13,16 @@
 
 **Deferred usage:** `deferred-alternatives` — reference/maintenance.md documents a scheduled maintenance cycle explicitly described as not part of ordinary use -- a normal donor-resource lookup doesn't load it.
 
-`signatry-resource-library`'s typical-call footprint is 0.82x the Signatry median (3,164 vs 3,877 tokens across 11 skills).
+`signatry-resource-library`'s typical-call footprint is 0.72x the Signatry median (3,164 vs 4,394 tokens across 12 skills).
 
 | | Skill Typical Call | Skill Worst Case | Signatry Median | Benchmark |
 |---|---|---|---|---|
-| Lines | 219 | 326 | 219 | 501 |
-| Tokens | 3,164 | 4,283 | 3,877 | 8,100 |
+| Lines | 219 | 326 | 236 | 501 |
+| Tokens | 3,164 | 4,283 | 4,394 | 8,100 |
 
 ## Version Delta
 
-No version change since the last recorded snapshot (v1.0.1, recorded 2026-08-15).
+No version change since the last recorded snapshot (v1.0.1, recorded 2026-09-12).
 
 ## Findings
 

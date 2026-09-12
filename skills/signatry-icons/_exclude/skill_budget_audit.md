@@ -13,16 +13,16 @@
 
 **Deferred usage:** `deferred-alternatives` — assets/icons/svg/ is a 69-file library searched via scripts/find_icons.py; a normal task needs one or a small handful of icons, not the whole set.
 
-`signatry-icons`'s typical-call footprint is 1.55x the Signatry median (5,995 vs 3,877 tokens across 11 skills).
+`signatry-icons`'s typical-call footprint is 1.36x the Signatry median (5,995 vs 4,394 tokens across 12 skills).
 
 | | Skill Typical Call | Skill Worst Case | Signatry Median | Benchmark |
 |---|---|---|---|---|
-| Lines | 132 | 1,633 | 219 | 501 |
-| Tokens | 5,995 | 149,524 | 3,877 | 8,100 |
+| Lines | 132 | 1,633 | 236 | 501 |
+| Tokens | 5,995 | 149,524 | 4,394 | 8,100 |
 
 ## Version Delta
 
-No version change since the last recorded snapshot (v3.4, recorded 2026-08-15).
+No version change since the last recorded snapshot (v3.4, recorded 2026-09-12).
 
 ## Findings
 
