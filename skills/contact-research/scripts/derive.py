@@ -14,6 +14,8 @@ Derivations:
     current batch and any associated contacts that carry a createdate
   spouse_in_hubspot: association label (Path A only) > shared "Family"-type company with exactly one other
     distinct person > household_pair_candidate, in that priority order
+  duplicate_candidates: other HubSpot records with the same first + last name, gathered from the surname search,
+    contact associations, and household-company members (so a duplicate is caught even when one source is empty)
   data_quality_flags: ZIP/state mismatch heuristics, placeholder names, duplicate-name records, referral-as-company
 """
 import argparse, os, sys, re, datetime
@@ -159,8 +161,35 @@ def derive_one(ct, all_contacts):
     assoc["spouse_in_hubspot"] = sp
     ct["associations"] = assoc
 
+    # ---- possible duplicate records: same first + last name under a different HubSpot ID, from any source Step 2 pulled
+    me = f"{first} {last}".strip().lower()
+    dups, seen_dup = [], {}
+
+    def _dup(rec_id, name, email, email_domain, city, state, via):
+        rec_id = str(rec_id) if rec_id is not None else None
+        if not me or not rec_id or rec_id == ct["hs_object_id"] or (name or "").strip().lower() != me:
+            return
+        if rec_id in seen_dup:
+            if via not in seen_dup[rec_id]["seen_in"]:
+                seen_dup[rec_id]["seen_in"].append(via)
+            return
+        seen_dup[rec_id] = {"id": rec_id, "name": name, "email": email, "email_domain": email_domain,
+                            "city": city, "state": state, "seen_in": [via]}
+        dups.append(seen_dup[rec_id])
+
+    for m in assoc.get("surname_matches") or []:
+        _dup(m.get("id"), f"{m.get('firstname') or ''} {last}".strip(), None, m.get("email_domain"), m.get("city"), m.get("state"), "surname search")
+    for c in assoc.get("contacts") or []:
+        _dup(c.get("id"), c.get("name"), c.get("email"), None, c.get("city"), c.get("state"), "contact association")
+    for m in hh_members:
+        _dup(m.get("id"), m.get("name"), m.get("email"), None, None, None, "household company")
+    d["duplicate_candidates"] = dups
+
     # ---- flags
     flags = []
+    missing = [k for k in ("contacts", "surname_matches", "companies") if k not in assoc]
+    if missing:
+        flags.append(f"Step 2 incomplete – associations block is missing {', '.join(missing)}; finish the connector pull (hubspot_extraction.md Path B steps 2–5) before research")
     if tier == "placeholder":
         flags.append(f"Placeholder first name '{first}' – replace with the real name")
     st, zp = (props.get("state") or "").upper(), str(props.get("zip") or "")
@@ -168,9 +197,8 @@ def derive_one(ct, all_contacts):
         flags.append(f"ZIP {zp} is not typical for state {st} – verify address")
     if refs:
         flags.append("Referral-only nonprofit association was stored as the associated company – removed from company/role columns")
-    dup = [m for m in (assoc.get("surname_matches") or []) if (m.get("firstname") or "").lower() == first.lower() and m.get("id") != ct["hs_object_id"]]
-    if dup:
-        flags.append(f"{len(dup)} other HubSpot record(s) named {first} {last} with different emails (IDs {', '.join(m['id'] for m in dup)}) – review for duplicates")
+    if dups:
+        flags.append(f"{len(dups)} other HubSpot record(s) named {first} {last} (IDs {', '.join(x['id'] for x in dups)}) – review for duplicates")
     if pair.get("id"):
         flags.append(f"Probable household pair with {pair['name']} (ID {pair['id']}, created {pair['seconds_apart']} s apart) – no association recorded")
     if d.get("household_company") and len(distinct_others) > 1:

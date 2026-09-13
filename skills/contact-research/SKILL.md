@@ -1,7 +1,7 @@
 ---
 name: contact-research
 description: "Research and enrich HubSpot contacts for The Signatry's relationship managers, one at a time or in batches. Given a HubSpot Contact ID, a name, and at least one other data point (email, phone, or address), the skill pulls the full HubSpot record, checks associations and activity for spouse and company links, researches the person on the public web (LinkedIn URL, company, role, revenue, business ownership), and produces two outputs from a JSON state folder: an enrichment spreadsheet that separates HubSpot data from inferred web data and includes HubSpot upload-prep sheets, and one branded PDF profile per contact with a user-chosen file-naming convention. Use this skill whenever someone asks to enrich, research, profile, dossier, look up, or 'fill in the gaps' on HubSpot contacts, donors, or prospects; asks who a contact's spouse or company is; asks for a contact profile PDF; or asks to run RM contact research in bulk — even if they don't say 'contact_research' or 'HubSpot' by name."
-version: 1.1
+version: 1.4
 release_date: 2026-09-13
 ---
 
@@ -16,6 +16,10 @@ Research is the expensive, rate-limited part; rendering is cheap. Keeping every 
 ## Governance (read before the first run)
 
 This skill handles **Confidential** donor data (IT15). Names, contact info, and giving relationships are fine to process. **Restricted** data is never pulled, searched for, or recorded: government IDs, account numbers, card data, health/medical/hardship details, credentials, privileged or Board Confidential material. If any appears in a HubSpot note or search result, drop it, flag the record, and remind the user to report it (IT14 Policy 10). Every output is AI-assisted and needs human review before use (IT14 Policy 1); the renderers stamp this automatically. Never invent a fact, never characterize personality or "how to approach" a person, and never reproduce a third-party report's AI-generated behavioral sections. `references/governance.md` has the full list.
+
+## Model
+
+Policy, from a September 2026 comparison of three models on identical HubSpot state: **Fable 5.1 by default**, **Opus 5** acceptable and the escalation choice when Fable returns `None` on a standard-tier contact, **Haiku 4.5** only for `thin`/`placeholder` tiers, and **Sonnet 5 not for household or spouse work** (it promoted a same-name wedding page to a confirmed spouse). The batch runner (`scripts/api_batch_runner.py`) applies this routing itself. In an interactive run the skill cannot change the session's model, so at the start of Step 3 check your own model ID: if it is off-policy, tell the user before researching and offer to stop so they can switch (`/model` in Claude Code); if they continue, proceed — `merge_state.py` adds an off-policy flag to every research fragment so the reviewer sees it on the PDF and in the workbook. Advisory only; nothing blocks.
 
 ## Workflow
 
@@ -62,15 +66,16 @@ This computes the email handle, identifiability tier (`placeholder` / `thin` / `
 Work through `python scripts/batch.py --run-dir state/ next` which lists the next unresearched contacts in the current batch. For each, read `references/research_playbook.md` and:
 
 - Skip web research entirely for `placeholder` tier (e.g., first name "Husband").
-- Spend at most two searches on `thin` tier; up to six searches plus four page fetches on `standard`.
+- Spend at most two searches on `thin` tier; up to six searches plus four page fetches on `standard`. Run the searches in the fixed order given in `references/research_playbook.md` §2 (the search recipe) and stop only on a High match or when the recipe is exhausted — never write `None` for a contact before the recipe's household step has run.
+- If HubSpot or research names a spouse or household member (`associations.spouse_in_hubspot`, `household_pair_candidate`, or a public source) and the contact herself is Low/None, research **that person's** employer, role, and ownership as household context into `research.household.spouse_company` — never into the contact's own `company` block. `merge_state.py` refuses a fragment that skips this.
 - Use **Playwright** for page navigation when the environment allows it: `python scripts/playwright_fetch.py --url <url> [--search "<query>"]`. The script fails fast with a clear reason (no browser binaries, blocked network) — when it does, fall back to the `web_search` / `web_fetch` tools and record `"navigation": "web_tools_fallback"` in state so the reviewer knows. Do not attempt to log in to LinkedIn or any site; use only what is publicly indexed.
-- Apply the match standard: **High** needs two independent signals; **Moderate** is one strong match on an uncommon name; **Low** is circumstantial; **None** leaves research fields null. Prefix every Low/None candidate detail with `Candidate only:`.
+- Score two things separately, each with the same scale: `match_confidence` for the **contact's own** public identification and `household_confidence` for the **spouse/household** identification (`None` when no household member is known). **High** needs two independent signals; **Moderate** is one strong match on an uncommon name; **Low** is circumstantial; **None** leaves the corresponding fields null. Prefix every Low/None candidate detail with `Candidate only:`. Sources used for household context are real sources — list them. A public page naming a spouse supports household **High** only when it matches a HubSpot fact (address, city, employer/email domain, phone, age band) — record which in `household.spouse_corroboration`; a same-name couple that matches nothing is Moderate at most.
 - Research the company once per email domain / company name and reuse it for colleagues (`--company-prior`).
 - Write the result:
   ```bash
   python scripts/merge_state.py --run-dir state/ --id <id> --stage research --file research_<id>.json
   ```
-  The fragment must match the `research` block in `references/state_schema.md`; `merge_state.py` validates it and rejects fabricated-looking values (non-null research fields with no source).
+  The fragment must match the `research` block in `references/state_schema.md`, including `model` set to your exact model ID (it prints in the PDF footer); `merge_state.py` validates it and rejects fabricated-looking values (non-null research fields with no source).
 
 Mark the batch and move on: `python scripts/batch.py --run-dir state/ advance`.
 

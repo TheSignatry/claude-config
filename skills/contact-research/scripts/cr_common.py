@@ -13,11 +13,30 @@ RESTRICTED_PATTERNS = [
     (re.compile(r"\b\d{3}-\d{2}-\d{4}\b"), "ssn"),
     (re.compile(r"\b(?:\d[ -]?){13,19}\b"), "card_or_account_number"),
     (re.compile(r"\b(?:acct|account|routing|aba)\b[^\n]{0,30}\b\d{6,}\b", re.I), "account_number"),
+    (re.compile(r"\b(?:password|passcode|passwd|pwd|pass\s*word)\b\s*(?:is|was|[:=])\s*\S+", re.I), "credential_password"),
+    (re.compile(r"\b(?:username|user\s*name|user\s*id|login|log-in)\b\s*[:=]\s*\S+", re.I), "credential_login"),
 ]
 HEALTH_HARDSHIP_LEXICON = [
     "cancer", "diagnos", "hospice", "surgery", "chemo", "dementia", "alzheimer", "depression", "rehab",
     "addiction", "bankrupt", "foreclos", "divorce", "terminal", "illness", "disability", "medical",
 ]
+
+# Model policy (September 2026 five-contact comparison): Fable 5.x default, Opus 5 acceptable / escalation,
+# Haiku 4.5 only for thin or placeholder tiers, Sonnet 5 not for household work. Advisory – it flags, never blocks.
+MODEL_POLICY_STANDARD = ("claude-fable-5", "claude-opus-5")
+MODEL_POLICY_THIN = MODEL_POLICY_STANDARD + ("claude-haiku-4-5",)
+
+
+def model_policy_flag(model_id, tier):
+    """Return a data-quality flag string when model_id is off-policy for the tier, else None."""
+    mid = (model_id or "").strip().lower()
+    allowed = MODEL_POLICY_THIN if tier in ("thin", "placeholder") else MODEL_POLICY_STANDARD
+    if any(mid.startswith(p) for p in allowed):
+        return None
+    return (f"Researched by an off-policy model ({model_id or 'unknown'}) – the skill's model policy is Fable 5.x by default, "
+            f"Opus 5 for escalation{', Haiku 4.5 for thin/placeholder tiers' if tier in ('thin', 'placeholder') else ''}; "
+            "review spouse and household conclusions with extra care (see SKILL.md, Model)")
+
 
 ROLE_LABELS = {"employee", "board member", "officer", "founder", "owner", "staff", "volunteer leader",
                "director", "trustee", "executive"}
@@ -105,17 +124,25 @@ def recount(run_dir):
 
 
 # ------------------------------------------------------------------ redaction
-def screen_text(text):
-    """Return (clean_text, hit_reason or None)."""
+def screen_text(text, lexicon=True):
+    """Return (clean_text, hit_reason or None).
+
+    The pattern screen (SSN, card, account, credential) always runs. The health/hardship lexicon is meant for
+    engagement bodies, where a note may record a donor's personal circumstances; pass lexicon=False for research
+    prose, where 'medical' is a company's sector and 'Terminal' is a street name, not Restricted data about a person.
+    Lexicon entries are stems matched at a word start, so 'diagnos' catches 'diagnosed' but 'rehab' does not fire
+    inside 'prehabilitation'.
+    """
     if not text:
         return text, None
     for pat, reason in RESTRICTED_PATTERNS:
         if pat.search(text):
             return "[redacted – possible Restricted content]", reason
-    low = text.lower()
-    for w in HEALTH_HARDSHIP_LEXICON:
-        if w in low:
-            return "[redacted – possible Restricted content]", f"lexicon:{w}"
+    if lexicon:
+        low = text.lower()
+        for w in HEALTH_HARDSHIP_LEXICON:
+            if re.search(r"\b" + re.escape(w), low):
+                return "[redacted – possible Restricted content]", f"lexicon:{w}"
     return text, None
 
 

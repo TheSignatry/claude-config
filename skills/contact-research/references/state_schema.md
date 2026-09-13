@@ -82,6 +82,7 @@ Stages are written in order: `init` → `hubspot` → `associations`/`activity` 
     "notes":    [{"id": "…", "timestamp": "…", "owner": "…", "body": "…"}],
     "emails":   [{"id": "…", "timestamp": "…", "direction": "…", "subject": "…", "body": "…"}],
     "calls": [], "meetings": [], "tasks": [],
+    "tickets":  [{"id": "…", "timestamp": "…", "subject": "…", "body": "…", "stage": "…"}],
     "redactions": 0,
     "summary": "0 activities. No notes, emails, calls, meetings, or tasks logged."
   },
@@ -93,19 +94,30 @@ Stages are written in order: `init` → `hubspot` → `associations`/`activity` 
     "referral_company": "Young Life National Headquarters (Give ID 3389679) – referral only; not a role",
     "role_companies": [],
     "household_company": null,
+    "duplicate_candidates": [
+      {"id": "37137002849", "name": "Paul Brown", "email": null, "email_domain": "outlook.com", "city": null, "state": null,
+       "seen_in": ["surname search"]}
+    ],
     "data_quality_flags": ["Two other Paul Brown records in HubSpot with different emails – review for duplicates"]
   },
 
   "research": {
     "researched_at": "2026-09-12T15:20:00Z",
     "navigation": "playwright | web_tools_fallback",
-    "model": "claude-sonnet-5 | interactive",
-    "match_confidence": "High | Moderate | Low | None",
+    "model": "claude-fable-5-1  (exact model ID of the model that did the research; interactive runs write their own ID, api_batch_runner.py fills it from the API response; printed in the PDF footer and the workbook – merge_state.py rejects placeholders like 'interactive')",
+    "match_confidence": "High | Moderate | Low | None   (the contact's own public identification)",
     "confidence_rationale": "…",
+    "household_confidence": "High | Moderate | Low | None   (the spouse/household; 'None' when no household member is known)",
+    "household_confidence_rationale": "…",
     "identity": {"full_name_public": null, "location": null, "linkedin_url": null, "other_web": []},
     "household": {"spouse_name": null, "spouse_source": null,
                   "spouse_in_hubspot": "confirmed | probable | surname-only | no | unknown",
-                  "spouse_hubspot_id": null, "notes": null},
+                  "spouse_hubspot_id": null, "notes": null,
+                  "spouse_corroboration": ["address | city | employer | phone | email_domain | age_band  (which HubSpot fact the public spouse source matches; required for household_confidence High unless the spouse comes from an association label)"],
+                  "spouse_company": {"name": null, "role_title": null, "hq_address": null, "website": null,
+                                     "revenue_estimate": null, "revenue_source": null,
+                                     "ownership_type": null, "owners_principals": null, "ownership_source": null,
+                                     "company_slug": null}},
     "company": {"name": null, "role_title": null, "hq_address": null, "website": null,
                 "revenue_estimate": null, "revenue_source": null,
                 "ownership_type": null, "owners_principals": null, "ownership_source": null,
@@ -150,4 +162,9 @@ Stages are written in order: `init` → `hubspot` → `associations`/`activity` 
 - If `match_confidence` is `High` or `Moderate`, `sources` must be non-empty.
 - If `match_confidence` is `Low` or `None`, every non-null string in `identity` and `company` must begin with `Candidate only:` or `Candidate:` (or be `N/A…`).
 - `overview` must not contain characterization words from the blocklist in `governance.md` (e.g., "personality", "prefers", "responds best to", "mindset").
-- Any value matching the Restricted-data patterns (SSN, card, account number, health lexicon) is rejected with an error and the record is flagged.
+- Any value matching the Restricted-data patterns (SSN, card, account number, credential such as `password: …` / `username: …`, health lexicon) is rejected with an error and the record is flagged.
+- `model` must be the exact model ID of the model that did the research; placeholders such as `interactive` are rejected. When the ID is off-policy for the tier (anything other than Fable 5.x or Opus 5 on `standard`; Haiku 4.5 also allowed on `thin`/`placeholder`), `merge_state.py` appends a "Researched by an off-policy model …" entry to `research.data_quality_flags` — a warning, not a rejection.
+- `household_confidence` is required (use `None` when no household member is known); High/Moderate requires a source; Low/None requires `Candidate only:` prefixes on `household.spouse_company` strings.
+- **Spouse-corroboration rule:** `household_confidence: High` with a public spouse source requires `household.spouse_corroboration` naming at least one HubSpot fact that source matches (`address`, `city`, `employer`, `phone`, `email_domain`, `age_band`). A wedding page or bio for a same-named couple that matches none of them supports Moderate at most. Exempt when `associations.spouse_in_hubspot.evidence` is an association label (API path).
+- Research fragments are screened for the Restricted-data *patterns* only (SSN, card, account, credential); the health/hardship lexicon applies to engagement bodies, not to research prose, so "medical device integrator" or a street named Terminal does not block a merge.
+- **Household-research gate:** if a spouse/household member is known (`research.household.spouse_name`, or `associations.spouse_in_hubspot.id` set by `derive.py`) and the contact's `match_confidence` is Low or None, `household.spouse_company.name` must be non-null — a name, or `Not found – <what was tried>`. This is what stops a run from writing "not identifiable, 0 sources" for a donor whose spouse is a documented executive.

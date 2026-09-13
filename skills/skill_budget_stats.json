@@ -388,6 +388,78 @@
             "tokens": 35697
           }
         }
+      },
+      {
+        "version": "1.2",
+        "release_date": "2026-09-13",
+        "recorded_at": "2026-09-13",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 248
+          },
+          "body": {
+            "lines": 105,
+            "tokens": 2352
+          },
+          "deferred": {
+            "lines": 2300,
+            "tokens": 34008,
+            "file_count": 16
+          },
+          "total": {
+            "lines": 2406,
+            "tokens": 36608
+          }
+        }
+      },
+      {
+        "version": "1.3",
+        "release_date": "2026-09-13",
+        "recorded_at": "2026-09-13",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 248
+          },
+          "body": {
+            "lines": 106,
+            "tokens": 2584
+          },
+          "deferred": {
+            "lines": 2409,
+            "tokens": 37456,
+            "file_count": 16
+          },
+          "total": {
+            "lines": 2516,
+            "tokens": 40288
+          }
+        }
+      },
+      {
+        "version": "1.4",
+        "release_date": "2026-09-13",
+        "recorded_at": "2026-09-13",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 248
+          },
+          "body": {
+            "lines": 106,
+            "tokens": 2650
+          },
+          "deferred": {
+            "lines": 2436,
+            "tokens": 38413,
+            "file_count": 16
+          },
+          "total": {
+            "lines": 2543,
+            "tokens": 41311
+          }
+        }
       }
     ]
   }

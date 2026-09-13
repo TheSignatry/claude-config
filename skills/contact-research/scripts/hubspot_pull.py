@@ -29,6 +29,7 @@ ENGAGEMENTS = {
     "calls": ["hs_call_title", "hs_call_body", "hs_timestamp", "hs_call_direction"],
     "meetings": ["hs_meeting_title", "hs_meeting_body", "hs_internal_meeting_notes", "hs_timestamp"],
     "tasks": ["hs_task_subject", "hs_task_body", "hs_timestamp", "hs_task_status"],
+    "tickets": ["subject", "content", "hs_pipeline_stage", "createdate"],
 }
 
 
@@ -157,18 +158,18 @@ def main():
             if links:
                 ep = hs.batch_read(kind, [l["id"] for l in links], eprops)
                 for eid, e in ep.items():
-                    body_key = [k for k in eprops if k.endswith(("_body", "_text", "_notes"))]
+                    body_key = [k for k in eprops if k.endswith(("_body", "_text", "_notes")) or k == "content"]
                     body = " ".join(str(e.get(k)) for k in body_key if e.get(k)) or None
-                    subj = e.get("hs_email_subject") or e.get("hs_call_title") or e.get("hs_meeting_title") or e.get("hs_task_subject")
+                    subj = e.get("hs_email_subject") or e.get("hs_call_title") or e.get("hs_meeting_title") or e.get("hs_task_subject") or e.get("subject")
                     clean, hit = screen_text(body)
                     if hit:
                         red += 1
-                    rows.append({"id": eid, "timestamp": e.get("hs_timestamp"), "subject": subj, "body": clean,
+                    rows.append({"id": eid, "timestamp": e.get("hs_timestamp") or e.get("createdate"), "subject": subj, "body": clean,
                                  "direction": e.get("hs_email_direction") or e.get("hs_call_direction")})
             act[kind] = rows
         act["redactions"] = red
         n = sum(len(act[k]) for k in ENGAGEMENTS)
-        act["summary"] = f"{n} activit{'y' if n == 1 else 'ies'}" + ("" if n else ". No notes, emails, calls, meetings, or tasks logged.")
+        act["summary"] = f"{n} activit{'y' if n == 1 else 'ies'}" + ("" if n else ". No notes, emails, calls, meetings, tasks, or tickets logged.")
         ct["activity"] = act
         if red:
             ct["status"]["errors"].append(f"{red} engagement body(ies) redacted as possible Restricted content – report to Technology Team (IT14 Policy 10)")

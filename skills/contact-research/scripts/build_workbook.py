@@ -79,6 +79,9 @@ def compose_note(ct):
     h = r.get("household") or {}
     if h.get("spouse_name"):
         lines.append(f"Spouse (per {h.get('spouse_source') or 'public source'}): {h['spouse_name']}. In HubSpot: {h.get('spouse_in_hubspot')}.")
+    sc = h.get("spouse_company") or {}
+    if sc.get("name"):
+        lines.append(f"Spouse's employer (household context, confidence {r.get('household_confidence')}): {sc['name']} — {sc.get('role_title') or 'role not published'}. Ownership: {sc.get('ownership_type') or 'n/a'}.")
     if r.get("data_quality_flags"):
         lines.append("Flags: " + " | ".join(r["data_quality_flags"]))
     if r.get("sources"):
@@ -107,6 +110,7 @@ COLS = [
     ("HS", "HS: Record Source / Event", lambda c, m: joined(c, "hubspot.properties.hs_object_source_label", "derived.record_source_event", sep=" – "), 28),
     ("HS", "HS: Created", lambda c, m: get(c, "hubspot.properties.createdate"), 18),
     ("HS", "HS: Associated Contacts", lambda c, m: "; ".join(f"{x.get('name')} ({', '.join(x.get('labels') or []) or 'no label'})" for x in ((c.get("associations") or {}).get("contacts") or [])) or NA, 26),
+    ("HS", "HS: Possible Duplicate Records", lambda c, m: "; ".join(f"{x.get('name')} (ID {x.get('id')}{', ' + (x.get('email') or x.get('email_domain')) if (x.get('email') or x.get('email_domain')) else ''}) – {', '.join(x.get('seen_in') or [])}" for x in ((c.get("derived") or {}).get("duplicate_candidates") or [])) or NA, 30),
     ("HS", "HS: Logged Activity", lambda c, m: get(c, "activity.summary"), 30),
     ("SP", "Spouse in HubSpot", lambda c, m: (lambda s: f"{s.get('name')} (ID {s.get('id')}) – {s.get('evidence')}" if s and s.get("id") else NA)((c.get("associations") or {}).get("spouse_in_hubspot")), 30),
     ("SP", "Household Pair (same form)", lambda c, m: (lambda p: f"{p.get('name')} (ID {p.get('id')}, {p.get('seconds_apart')} s apart)" if p and p.get("id") else NA)((c.get("associations") or {}).get("household_pair_candidate")), 26),
@@ -114,9 +118,14 @@ COLS = [
     ("SP", "Same-Surname Records", lambda c, m: "; ".join(f"{x.get('firstname')} (ID {x.get('id')}, {x.get('city') or '?'} {x.get('state') or ''})".strip() for x in ((c.get("associations") or {}).get("surname_matches") or [])) or NA, 30),
     ("SP", "Research: Spouse Identified", lambda c, m: get(c, "research.household.spouse_name"), 24),
     ("SP", "Research: Spouse Source / In HubSpot?", lambda c, m: joined(c, "research.household.spouse_source", "research.household.spouse_in_hubspot", sep=" | "), 30),
-    ("R", "Research: Match Confidence", lambda c, m: get(c, "research.match_confidence"), 14),
+    ("SP", "Research: Spouse Employer", lambda c, m: get(c, "research.household.spouse_company.name"), 24),
+    ("SP", "Research: Spouse Role / Title", lambda c, m: get(c, "research.household.spouse_company.role_title"), 24),
+    ("SP", "Research: Spouse Company Ownership", lambda c, m: joined(c, "research.household.spouse_company.ownership_type", "research.household.spouse_company.owners_principals", sep=" – "), 30),
+    ("R", "Research: Match Confidence (contact)", lambda c, m: get(c, "research.match_confidence"), 14),
+    ("R", "Research: Household Confidence", lambda c, m: get(c, "research.household_confidence"), 14),
     ("R", "Research: Confidence Rationale", lambda c, m: get(c, "research.confidence_rationale"), 34),
     ("R", "Research: Navigation", lambda c, m: get(c, "research.navigation"), 14),
+    ("R", "Research: Model", lambda c, m: get(c, "research.model"), 18),
     ("R", "Research: Public Name / Location", lambda c, m: joined(c, "research.identity.full_name_public", "research.identity.location", sep=" – "), 28),
     ("R", "Research: LinkedIn URL", lambda c, m: get(c, "research.identity.linkedin_url"), 36),
     ("R", "Research: Other Web", lambda c, m: get(c, "research.identity.other_web"), 30),
@@ -272,12 +281,13 @@ def sheet_methodology(wb, cs, m):
     ws = wb.create_sheet("Methodology")
     ws["A1"] = "Methodology, rules, and review requirement"; ws["A1"].font = F_TITLE
     nav = sorted({(c.get("research") or {}).get("navigation") for c in cs if c.get("research")} - {None})
+    models = sorted({(c.get("research") or {}).get("model") for c in cs if c.get("research")} - {None})
     rows = [
         ("Scope", f"{len(cs)} contact(s) in run {m['run_id']}; batch size {m['batch_size']}; {m['counts'].get('rejected', 0)} input row(s) rejected (rejected.csv). HubSpot IDs are stored as strings; Excel scientific-notation IDs are refused."),
-        ("HubSpot pull", "Properties, contact and company associations, and NOTE/EMAIL/CALL/MEETING/TASK engagements were pulled per references/hubspot_extraction.md. Engagement text passed a redaction screen for Restricted content before being stored."),
+        ("HubSpot pull", "Properties, contact and company associations (including 'Family'-type household companies and their members), and NOTE/EMAIL/CALL/MEETING/TASK/TICKET engagements were pulled per references/hubspot_extraction.md. Engagement text passed a redaction screen for Restricted content (SSN, card, account, credential, and health/hardship patterns) before being stored."),
         ("Nonprofit association rule", "A nonprofit company association is kept in the company/role columns only when the contact holds a role there. Where referral_company_give_id matches the company's Give Recipient ID (or the association is labeled Referred By), the association is a referral and is shown in 'HS: Referral Company' instead."),
-        ("Spouse evaluation", "Confirmed = a Spouse/Partner association label. Probable = same surname created by the same form within 120 seconds (registrant + guest). Surname-only matches are listed but not treated as spouses. Public sources naming a spouse are cited in the research columns."),
-        ("Public research", f"Navigation mode(s): {', '.join(nav) or 'n/a'}. Playwright is used where the environment allows; otherwise web search/fetch tools. Match standard: High = two independent signals; Moderate = one strong match on an uncommon name; Low = circumstantial candidate ('Candidate only:' prefix); None = not identified, fields left blank. No value is guessed."),
+        ("Spouse evaluation", "Confirmed = a Spouse/Partner association label (API path) or a public source naming the spouse. Probable = exactly one other person on the same 'Family'-type household company, or same surname created by the same form within 120 seconds (registrant + guest). Surname-only matches are listed but not treated as spouses. Two scores are reported: 'Match Confidence (contact)' for the contact's own public identification and 'Household Confidence' for the spouse/household; when the contact is not publicly identifiable but a spouse is known, the spouse's employer, role, and ownership are researched as household context and reported in the 'Research: Spouse …' columns, never in the contact's own company columns."),
+        ("Public research", f"Model(s): {', '.join(models) or 'n/a'} (also per contact in 'Research: Model' and in each PDF footer). Navigation mode(s): {', '.join(nav) or 'n/a'}. Playwright is used where the environment allows; otherwise web search/fetch tools. Match standard: High = two independent signals; Moderate = one strong match on an uncommon name; Low = circumstantial candidate ('Candidate only:' prefix); None = not identified, fields left blank. No value is guessed."),
         ("Revenue and ownership", "Reported only with a named source. Third-party estimates and predecessor/parent figures are labeled. Ownership from bios or press is marked as such; confirm against Secretary of State filings before relying on it."),
         ("Upload prep", "The two 'Upload Prep' sheets carry HubSpot import headers. Research values are pre-filled only for High/Moderate matches; a reviewer types Y in Accept? and exports the accepted rows to CSV for the HubSpot import wizard. This skill writes nothing to HubSpot."),
         ("Data handling", "Confidential (IT15). No Restricted data was requested or stored; redaction counts appear in the flags column. Third-party AI-generated behavioral content is excluded by policy."),

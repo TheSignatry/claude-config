@@ -46,9 +46,9 @@ else:
     print("WARNING: signatry-pdf-brand skill not found; rendering with Helvetica and no logo", file=sys.stderr)
 
 NA = "—"
-CONF_LABEL = {"High": "IDENTIFIED · HIGH CONFIDENCE", "Moderate": "IDENTIFIED · MODERATE CONFIDENCE",
-              "Low": "CANDIDATE ONLY · UNCONFIRMED", "None": "NOT IDENTIFIED", None: "NOT YET RESEARCHED"}
-CONF_COLOR = {"High": C["glacier"], "Moderate": C["glacier"], "Low": C["dawn"], "None": C["dusk"], None: colors.grey}
+SHORT = {"High": "HIGH", "Moderate": "MODERATE", "Low": "CANDIDATE ONLY", "None": "NOT IDENTIFIED", "N/A": "N/A", None: "NOT YET RESEARCHED"}
+CONF_COLOR = {"High": C["glacier"], "Moderate": C["glacier"], "Low": C["dawn"], "None": C["dusk"], "N/A": C["dusk"], None: colors.grey}
+RANK = {"High": 4, "Moderate": 3, "Low": 2, "None": 1, "N/A": 0, None: 0}
 
 
 def P(name, **kw):
@@ -96,7 +96,14 @@ def callout(text, fill):
 HDR_H = 1.55 * inch
 
 
-def on_page_factory(name, location, conf, rendered_date):
+def fmt_dup(x):
+    who = x.get("email") or x.get("email_domain")
+    where = " ".join(p for p in [x.get("city"), x.get("state")] if p)
+    extra = "".join(f", {v}" for v in (who, where) if v)
+    return f"{x.get('name')} (ID {x.get('id')}{extra}) – seen in {', '.join(x.get('seen_in') or [])}"
+
+
+def on_page_factory(name, location, conf, hh_conf, rendered_date, model):
     def on_page(canv, doc):
         w, h = letter
         canv.saveState()
@@ -109,14 +116,16 @@ def on_page_factory(name, location, conf, rendered_date):
         canv.drawString(x, h - 0.48 * inch, "CONTACT RESEARCH PROFILE  ·  INTERNAL  ·  CONFIDENTIAL (IT15)")
         canv.setFillColor(colors.white); canv.setFont(FONT_HEAD, 22); canv.drawString(x, h - 0.86 * inch, name)
         canv.setFillColor(C["ice"]); canv.setFont(FONT_BODY, 10.5); canv.drawString(x, h - 1.10 * inch, location[:80])
-        label = CONF_LABEL.get(conf, CONF_LABEL[None])
+        label = (f"CONTACT: {SHORT.get(conf, SHORT[None])}   ·   HOUSEHOLD: {SHORT.get(hh_conf, SHORT[None])}"
+                 if (conf or hh_conf) else SHORT[None])
+        best = max([conf, hh_conf], key=lambda k: RANK.get(k, 0))
         canv.setFont(FONT_BODY_B, 8); tw = canv.stringWidth(label, FONT_BODY_B, 8)
-        canv.setFillColor(CONF_COLOR.get(conf, colors.grey)); canv.roundRect(x, h - 1.45 * inch, tw + 16, 15, 3, stroke=0, fill=1)
+        canv.setFillColor(CONF_COLOR.get(best, colors.grey)); canv.roundRect(x, h - 1.45 * inch, tw + 16, 15, 3, stroke=0, fill=1)
         canv.setFillColor(colors.white); canv.drawString(x + 8, h - 1.41 * inch, label)
         canv.setFillColor(tint("#17242a", 60)); canv.setFont(FONT_BODY, 7.5)
         canv.drawString(0.75 * inch, 0.62 * inch, "The Signatry  ·  Internal contact research  ·  Confidential (IT15)")
         canv.drawString(0.75 * inch, 0.48 * inch, "AI-assisted; a human must review and verify before use in decisions affecting donors (IT14 Policy 1).")
-        canv.drawRightString(w - 0.75 * inch, 0.62 * inch, f"Rendered {rendered_date}  ·  Page {doc.page}")
+        canv.drawRightString(w - 0.75 * inch, 0.62 * inch, f"Model: {model}  ·  Rendered {rendered_date}  ·  Page {doc.page}")
         canv.restoreState()
     return on_page
 
@@ -131,12 +140,15 @@ def build(ct, out_dir, naming, rendered_date):
     name = f"{props.get('firstname') or inp.get('firstname') or ''} {props.get('lastname') or inp.get('lastname') or ''}".strip()
     location = re.sub(r"\s*\(.*$", "", g(r, "identity", "location")) if len(g(r, "identity", "location")) > 60 else g(r, "identity", "location")
     conf = r.get("match_confidence")
+    hh_conf = r.get("household_confidence") or ("N/A" if r else None)
+    sc = (r.get("household") or {}).get("spouse_company") or {}
+    model = r.get("model") or "not yet researched"
     fn = os.path.join(out_dir, profile_filename(ct, naming))
     doc = BaseDocTemplate(fn, pagesize=letter, leftMargin=0.75 * inch, rightMargin=0.75 * inch, topMargin=HDR_H + 0.35 * inch,
                           bottomMargin=0.8 * inch, title=f"Contact Research Profile – {name}", author="The Signatry",
                           subject="Internal donor research; Confidential (IT15); AI-assisted")
     frame = Frame(doc.leftMargin, doc.bottomMargin, doc.width, doc.height, id="f", leftPadding=0, rightPadding=0)
-    doc.addPageTemplates([PageTemplate(id="p", frames=[frame], onPage=on_page_factory(name, location if location != NA else "", conf, rendered_date))])
+    doc.addPageTemplates([PageTemplate(id="p", frames=[frame], onPage=on_page_factory(name, location if location != NA else "", conf, hh_conf, rendered_date, model))])
     st = []
     nsrc = len(r.get("sources") or [])
     st.append(callout(f"<b>Sources checked:</b> HubSpot contact record, associations, and logged activity; HubSpot record-source and referral fields; "
@@ -146,8 +158,11 @@ def build(ct, out_dir, naming, rendered_date):
     st.append(Paragraph(esc(r.get("overview") or "Not yet researched."), S["body"]))
     st.append(Paragraph("About", S["sec"]))
     st.append(kv([("Full name", name), ("Public spelling", g(r, "identity", "full_name_public")), ("Location", g(r, "identity", "location")),
-                  ("Match confidence", f"{conf or 'Not yet researched'} – {g(r, 'confidence_rationale')}"),
-                  ("HubSpot record", f"ID {ct['hs_object_id']}"), ("Contact owner", props.get("owner_name") or inp.get("owner") or NA),
+                  ("Match confidence (contact)", f"{conf or 'Not yet researched'} – {g(r, 'confidence_rationale')}"),
+                  ("Household confidence", f"{hh_conf or 'Not yet researched'} – {g(r, 'household_confidence_rationale')}"),
+                  ("HubSpot record", f"ID {ct['hs_object_id']}"),
+                  ("Possible duplicate records", "; ".join(fmt_dup(x) for x in d.get("duplicate_candidates") or []) or "None found in HubSpot"),
+                  ("Contact owner", props.get("owner_name") or inp.get("owner") or NA),
                   ("Record source", f"{props.get('hs_object_source_label') or NA} – {d.get('record_source_event') or props.get('hs_object_source_detail_1') or NA}"),
                   ("Created", props.get("createdate") or NA)]))
     st.append(Paragraph("Contact", S["sec"]))
@@ -165,7 +180,12 @@ def build(ct, out_dir, naming, rendered_date):
                   ("Household pair (same form)", f"{pair.get('name')} (ID {pair.get('id')}, {pair.get('seconds_apart')} s apart)" if pair.get("id") else NA),
                   ("Household company (HubSpot)", f"{d['household_company']['name']} (ID {d['household_company']['id']})" if d.get("household_company") else NA),
                   ("Same-surname records", "; ".join(f"{x.get('firstname')} (ID {x.get('id')}, {x.get('city') or '?'} {x.get('state') or ''})".strip() for x in assoc.get("surname_matches") or []) or NA),
-                  ("Notes", g(r, "household", "notes"))]))
+                  ("Notes", g(r, "household", "notes")),
+                  ("Spouse's employer (public)", sc.get("name")),
+                  ("Spouse's role / title", sc.get("role_title")),
+                  ("Spouse's company address / website", " / ".join(v for v in [sc.get("hq_address"), sc.get("website")] if v) or NA),
+                  ("Spouse's company revenue", " – ".join(v for v in [sc.get("revenue_estimate"), sc.get("revenue_source")] if v) or NA),
+                  ("Spouse's company ownership", " – ".join(v for v in [sc.get("ownership_type"), sc.get("owners_principals"), sc.get("ownership_source")] if v) or NA)]))
     st.append(Paragraph("Career and Company", S["sec"]))
     co = r.get("company") or {}
     st.append(kv([("Company", co.get("name")), ("Role / title", co.get("role_title")), ("Company address", co.get("hq_address")), ("Website", co.get("website")),
@@ -175,7 +195,8 @@ def build(ct, out_dir, naming, rendered_date):
     st.append(kv([("Ownership type", co.get("ownership_type")), ("Owner(s) / principals", co.get("owners_principals")), ("Source", co.get("ownership_source"))]))
     st.append(Paragraph("HubSpot Activity and Referral", S["sec"]))
     notes_txt = "; ".join(f"{n.get('timestamp','')[:10]}: {n.get('body')}" for n in (act.get("notes") or [])[:5]) or None
-    st.append(kv([("Logged activity", act.get("summary") or NA), ("Recent notes", notes_txt or NA),
+    tickets_txt = "; ".join(f"{t.get('timestamp','')[:10]}: {t.get('subject')}" for t in (act.get("tickets") or [])[:5]) or None
+    st.append(kv([("Logged activity", act.get("summary") or NA), ("Recent notes", notes_txt or NA), ("Recent tickets", tickets_txt or NA),
                   ("Referral channel", props.get("referral_channel") or NA), ("Referral company", d.get("referral_company") or NA),
                   ("Associated company (role-based)", "; ".join(x.get("name") or "" for x in d.get("role_companies") or []) or NA),
                   ("Associated contacts", "; ".join(f"{x.get('name')} ({', '.join(x.get('labels') or []) or 'no label'})" for x in assoc.get("contacts") or []) or NA),

@@ -8,8 +8,11 @@
 Model routing by identifiability tier (change with --model-thin / --model-standard):
   placeholder -> no request; a fixed "not researchable" research block is written locally
   thin        -> claude-haiku-4-5   web_search max_uses 2
-  standard    -> claude-sonnet-5    web_search max_uses 6, web_fetch max_uses 4
-Escalation to claude-opus-5 is left to the operator: re-submit specific IDs with --model-standard claude-opus-5.
+  standard    -> claude-fable-5-1   web_search max_uses 6, web_fetch max_uses 4
+The standard-tier default is Fable 5.1: in the September 2026 side-by-side on a real donor, Fable was the only model
+to reach both scores at High and it stopped at 3 searches; Sonnet 5 and Opus 5 stayed thin or stopped at "None" on
+the same state. Re-evaluate once the search recipe and household gate have been in use; to escalate or economize,
+re-submit specific IDs with --model-standard claude-opus-5 or --model-standard claude-sonnet-5.
 
 Why batches: 50% of standard price, built-in web-search throttling, and the static system prompt (from
 references/research_prompt.md) is marked cache_control so it is cached across the batch. Results come back as JSONL
@@ -75,7 +78,7 @@ def main():
     ap.add_argument("--ids", default=None)
     ap.add_argument("--batch-id", default=None)
     ap.add_argument("--model-thin", default="claude-haiku-4-5")
-    ap.add_argument("--model-standard", default="claude-sonnet-5")
+    ap.add_argument("--model-standard", default="claude-fable-5-1")
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args()
 

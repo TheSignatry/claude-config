@@ -30,6 +30,7 @@ def main():
     ap.add_argument("cmd", choices=["status", "next", "advance", "pending", "set-batch-size"])
     ap.add_argument("--stage", default="research", choices=["hubspot", "derived", "research", "rendered"])
     ap.add_argument("--limit", type=int, default=None)
+    ap.add_argument("--force", action="store_true", help="list contacts for research even when the Step 2 associations block is incomplete")
     ap.add_argument("value", nargs="?")
     a = ap.parse_args()
 
@@ -69,6 +70,19 @@ def main():
         # research requires derived; derived requires hubspot
         if a.stage == "research":
             pool = [ct for ct in pool if not needs(ct, "derived")]
+            # Step 2 completeness gate: research must not start on a contact whose connector pull was never written
+            blocked = []
+            for ct in list(pool):
+                assoc = ct.get("associations") or {}
+                missing = [k for k in ("contacts", "surname_matches", "companies") if k not in assoc]
+                if missing:
+                    blocked.append({"id": ct["hs_object_id"], "missing": missing})
+                    if not a.force:
+                        pool.remove(ct)
+            if blocked:
+                print(json.dumps({"BLOCKED" if not a.force else "WARNING": "Step 2 incomplete – associations block missing keys; finish "
+                                  "hubspot_extraction.md Path B steps 2–5 (or run hubspot_pull.py) before research. Pass --force to list anyway.",
+                                  "contacts": blocked}, indent=2), file=sys.stderr)
         if a.stage == "derived":
             pool = [ct for ct in pool if not needs(ct, "hubspot")]
         if a.limit:
