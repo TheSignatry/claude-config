@@ -12,7 +12,7 @@ Provenance (the most informative fields in the pilot): `createdate, relationship
 
 Activity counters and guest fields: `num_notes, notes_last_updated, hs_last_sales_activity_type, guest_first_name, guest_last_name, guest_email`
 
-Company properties for every associated company: `name, domain, type, give_recipient_id, city, state`
+Company properties for every associated company: `name, domain, type, give_recipient_id, city, state`. Confirmed `type` values on this portal: `Commercial, Custodian, Family, Foundation, Grant Recipient, Prospect` — `Family` is the donor-household convention (see "Referral vs role" below), not an employer.
 
 ## Why provenance beats activity
 
@@ -22,17 +22,22 @@ In the 12-contact pilot there were two notes and zero emails, calls, meetings, o
 
 A nonprofit that referred a contact to an event often ends up as the contact's associated company. That misleads a reader into thinking the donor works there. Classify each company association:
 
+- **household** if the company `type` is `Family` — this is The Signatry's own donor-household grouping convention (a "Cook Family"-style company record linking related contacts), never an employer. Always excluded from the company/role columns; feeds household/spouse detection instead (see "Household pair rule" below).
 - **referral** if `contact.referral_company_give_id == company.give_recipient_id`, or the association label is `Referred By` / `Referral`, or `referral_channel == "Nonprofit Partner"` and the company `type` is `Grant Recipient` with no role label.
 - **role** if the label is one of `Employee, Board Member, Officer, Founder, Owner, Staff, Volunteer Leader` (map to the portal's actual labels once; keep the list in `derive.py`).
 - **unknown** otherwise; the research step may resolve it (e.g., a public bio showing the person is on that board).
 
-Only **role** companies populate the company/role columns. Referral companies go to `derived.referral_company` and are mentioned in the PDF's referral field.
+Only **role** companies populate the company/role columns. Referral companies go to `derived.referral_company` and are mentioned in the PDF's referral field. Household companies go to `derived.household_company` and are never treated as an employer.
 
 ## Household pair rule
 
-Same `lastname` + same `hs_object_source_detail_1` + `createdate` within 120 seconds → registrant + guest from one form. Record as `household_pair_candidate`; it is stronger than a surname match but not a confirmed marriage. A confirmed spouse is only (a) a contact↔contact association labeled Spouse/Partner, or (b) a public source naming the spouse.
+Three signals feed `spouse_in_hubspot`, checked in this priority order (Path A can reach all three; Path B can only reach the second and third, since it cannot read association labels — see Path B step 3):
 
-Surname matches (other contacts with the same last name) are listed for the reviewer but are **not** treated as spouses unless geography or a public source supports it. Two "Recker" records in Iowa and Texas are not a couple.
+1. **Association label** — a contact↔contact association labeled Spouse/Partner. Confirmed, not just probable. Only visible via the API path.
+2. **Shared "Family"-type company** — when exactly one other, distinct person is associated with the same `Family`-type company (after excluding likely duplicate records of the same person by name), record them as `spouse_in_hubspot` with evidence citing the shared company. Probable, not confirmed — a Family company can in principle hold more than a married couple (e.g., an adult child), so treat it the same as the timing-based pair below: surfaced for review, not asserted as fact. If more than one distinct other person shares the company, do not guess which one — flag all of them for manual review instead (`derive.py` does this automatically).
+3. **Household pair by form timing** — same `lastname` + same `hs_object_source_detail_1` + `createdate` within 120 seconds → registrant + guest from one form. Record as `household_pair_candidate`. Weaker than either signal above.
+
+Surname matches (other contacts with the same last name) are listed for the reviewer but are **not** treated as spouses unless geography, a shared household company, or a public source supports it. Two "Recker" records in Iowa and Texas are not a couple.
 
 ## Path A — HubSpot API (scripts/hubspot_pull.py)
 
@@ -55,11 +60,12 @@ Rate limits: HubSpot private apps allow roughly 100 requests per 10 seconds; the
 
 1. **Batch read** the contacts: `get_crm_objects(objectType=CONTACT, objectIds=[…], properties=[property set])`. Up to ~50 IDs per call.
 2. **Same-surname screen**: one `search_crm_objects` with `lastname IN [surnames]` (limit 50) requesting `firstname, lastname, email, city, state`. For very common surnames add a `firstname EQ` filter to avoid flooding.
-3. **Associated contacts**: `search_crm_objects(objectType=CONTACT, filterGroups=[{associatedWith:[{objectType:"contacts", objectIdValues:[…], operator:"IN"}]}])`. Labels are not returned; record `labels: []` and let `derive.py` infer household pairs from timing instead.
-4. **Associated companies**: read the `associatedcompanyid` property, then `get_crm_objects(objectType=COMPANY, …, properties=[name, domain, type, give_recipient_id, city, state])`.
-5. **Engagements**: one `search_crm_objects` per type (NOTE, EMAIL, CALL, MEETING, TASK) with the same `associatedWith` filter and `limit 100`. Properties: notes `hs_note_body, hs_timestamp, hubspot_owner_id`; emails `hs_email_subject, hs_email_text, hs_email_direction, hs_timestamp`; calls `hs_call_title, hs_call_body, hs_timestamp`; meetings `hs_meeting_title, hs_meeting_body, hs_internal_meeting_notes, hs_timestamp`; tasks `hs_task_subject, hs_task_body, hs_timestamp`. Results are not tagged with the contact ID; match them by timestamp against `notes_last_updated`/`hs_last_sales_activity_date` or re-query per contact when ambiguous.
-6. **Owner name**: `search_owners` or the `hubspot_owner_id` → name map in `manifest.owners`. Write it as `owner_name` *inside* the `hubspot` fragment's `properties` object, not as a sibling key — `build_profiles.py`'s naming convention 3 and the workbook's Contact Owner column both read `hubspot.properties.owner_name`; a sibling-level `owner_name` is silently ignored and renders as "Unassigned".
-7. Write each contact's blocks with `merge_state.py --stage hubspot|associations|activity`.
+3. **Associated contacts**: `search_crm_objects(objectType=CONTACT, filterGroups=[{associatedWith:[{objectType:"contacts", objectIdValues:[…], operator:"IN"}]}], properties=[firstname, lastname, email, city, state, createdate, hs_object_source_detail_1])`. Labels are not returned by this call on any portal — confirmed by direct testing, not just an assumption — so record `labels: []`; the extra properties requested here let `derive.py`'s household-pair-by-timing check use these already-known associated contacts, not just other contacts in the current batch.
+4. **Associated companies**: do **not** rely on the `associatedcompanyid` contact property — on this portal it is frequently empty even when a real company association exists (confirmed: a contact with no `associatedcompanyid` still had a company association findable the other way). Instead search directly: `search_crm_objects(objectType=COMPANY, filterGroups=[{associatedWith:[{objectType:"contacts", objectIdValues:[…], operator:"EQUAL"}]}], properties=[name, domain, type, give_recipient_id, city, state])`.
+5. **Household members (when a `Family`-type company is found in step 4)**: run one more query, `search_crm_objects(objectType=CONTACT, filterGroups=[{associatedWith:[{objectType:"companies", objectIdValues:[family_company_id], operator:"EQUAL"}]}], properties=[firstname, lastname, email])`, and record the results (minus the contact itself) as `associations.household_members`. This is the connector path's substitute for the unreadable Spouse label — see "Household pair rule" above for how `derive.py` uses it.
+6. **Engagements**: one `search_crm_objects` per type (NOTE, EMAIL, CALL, MEETING, TASK) with the same `associatedWith` filter and `limit 100`. Properties: notes `hs_note_body, hs_timestamp, hubspot_owner_id`; emails `hs_email_subject, hs_email_text, hs_email_direction, hs_timestamp`; calls `hs_call_title, hs_call_body, hs_timestamp`; meetings `hs_meeting_title, hs_meeting_body, hs_internal_meeting_notes, hs_timestamp`; tasks `hs_task_subject, hs_task_body, hs_timestamp`. Results are not tagged with the contact ID; match them by timestamp against `notes_last_updated`/`hs_last_sales_activity_date` or re-query per contact when ambiguous. If a contact's `num_notes`/etc. counters are non-zero but a query here returns nothing, don't treat that as confirmed "no activity" — this has been observed to happen (possibly search-index lag); say so in a flag rather than asserting zero activity.
+7. **Owner name**: `search_owners` or the `hubspot_owner_id` → name map in `manifest.owners`. Write it as `owner_name` *inside* the `hubspot` fragment's `properties` object, not as a sibling key — `build_profiles.py`'s naming convention 3 and the workbook's Contact Owner column both read `hubspot.properties.owner_name`; a sibling-level `owner_name` is silently ignored and renders as "Unassigned".
+8. Write each contact's blocks with `merge_state.py --stage hubspot|associations|activity`.
 
 ## Redaction screen (both paths)
 

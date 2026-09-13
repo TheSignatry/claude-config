@@ -61,12 +61,17 @@ Stages are written in order: `init` → `hubspot` → `associations`/`activity` 
   "associations": {
     "companies": [
       {"id": "21373824583", "name": "Young Life National Headquarters", "domain": "younglife.org",
-       "type": "Grant Recipient", "give_recipient_id": "3389679", "labels": [], "classification": "referral | role | unknown"}
+       "type": "Grant Recipient", "give_recipient_id": "3389679", "labels": [], "classification": "referral | role | household | unknown"}
     ],
     "contacts": [
-      {"id": "127436451620", "name": "Caleb Scott", "labels": ["Colleague"], "email": null}
+      {"id": "127436451620", "name": "Caleb Scott", "labels": ["Colleague"], "email": null,
+       "createdate": null, "hs_object_source_detail_1": null}
     ],
-    "spouse_in_hubspot": {"id": null, "name": null, "evidence": "association label | household pair | none"},
+    "household_members": [
+      {"id": "158301137978", "name": "Andrew Cook", "email": "acook@onexia.com"}
+    ],
+    "spouse_in_hubspot": {"id": null, "name": null,
+      "evidence": "association label | shared 'Family'-type company | household pair (same form, registrant + guest) | none"},
     "household_pair_candidate": {"id": null, "name": null, "seconds_apart": null},
     "surname_matches": [
       {"id": "37137002849", "firstname": "Paul", "city": null, "state": null, "email_domain": "outlook.com"}
@@ -87,6 +92,7 @@ Stages are written in order: `init` → `hubspot` → `associations`/`activity` 
     "record_source_event": "2026-08 Iowa NASCAR Race (YL) VIP registration",
     "referral_company": "Young Life National Headquarters (Give ID 3389679) – referral only; not a role",
     "role_companies": [],
+    "household_company": null,
     "data_quality_flags": ["Two other Paul Brown records in HubSpot with different emails – review for duplicates"]
   },
 

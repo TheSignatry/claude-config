@@ -163,6 +163,7 @@ def build(ct, out_dir, naming, rendered_date):
     st.append(kv([("Spouse identified (public)", (f"{g(r, 'household', 'spouse_name')} – source: {g(r, 'household', 'spouse_source')}" if g(r, 'household', 'spouse_name') != NA else NA)),
                   ("Spouse in HubSpot?", f"{g(r, 'household', 'spouse_in_hubspot')}" + (f" – {sp.get('name')} (ID {sp.get('id')}; {sp.get('evidence')})" if sp.get("id") else "")),
                   ("Household pair (same form)", f"{pair.get('name')} (ID {pair.get('id')}, {pair.get('seconds_apart')} s apart)" if pair.get("id") else NA),
+                  ("Household company (HubSpot)", f"{d['household_company']['name']} (ID {d['household_company']['id']})" if d.get("household_company") else NA),
                   ("Same-surname records", "; ".join(f"{x.get('firstname')} (ID {x.get('id')}, {x.get('city') or '?'} {x.get('state') or ''})".strip() for x in assoc.get("surname_matches") or []) or NA),
                   ("Notes", g(r, "household", "notes"))]))
     st.append(Paragraph("Career and Company", S["sec"]))

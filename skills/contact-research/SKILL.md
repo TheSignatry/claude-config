@@ -1,8 +1,8 @@
 ---
 name: contact-research
 description: "Research and enrich HubSpot contacts for The Signatry's relationship managers, one at a time or in batches. Given a HubSpot Contact ID, a name, and at least one other data point (email, phone, or address), the skill pulls the full HubSpot record, checks associations and activity for spouse and company links, researches the person on the public web (LinkedIn URL, company, role, revenue, business ownership), and produces two outputs from a JSON state folder: an enrichment spreadsheet that separates HubSpot data from inferred web data and includes HubSpot upload-prep sheets, and one branded PDF profile per contact with a user-chosen file-naming convention. Use this skill whenever someone asks to enrich, research, profile, dossier, look up, or 'fill in the gaps' on HubSpot contacts, donors, or prospects; asks who a contact's spouse or company is; asks for a contact profile PDF; or asks to run RM contact research in bulk — even if they don't say 'contact_research' or 'HubSpot' by name."
-version: 1.0
-release_date: 2026-09-12
+version: 1.1
+release_date: 2026-09-13
 ---
 
 # contact_research

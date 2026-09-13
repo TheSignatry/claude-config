@@ -110,6 +110,7 @@ COLS = [
     ("HS", "HS: Logged Activity", lambda c, m: get(c, "activity.summary"), 30),
     ("SP", "Spouse in HubSpot", lambda c, m: (lambda s: f"{s.get('name')} (ID {s.get('id')}) – {s.get('evidence')}" if s and s.get("id") else NA)((c.get("associations") or {}).get("spouse_in_hubspot")), 30),
     ("SP", "Household Pair (same form)", lambda c, m: (lambda p: f"{p.get('name')} (ID {p.get('id')}, {p.get('seconds_apart')} s apart)" if p and p.get("id") else NA)((c.get("associations") or {}).get("household_pair_candidate")), 26),
+    ("SP", "Household Company (HubSpot)", lambda c, m: (lambda h: f"{h.get('name')} (ID {h.get('id')})" if h else NA)((c.get("derived") or {}).get("household_company")), 26),
     ("SP", "Same-Surname Records", lambda c, m: "; ".join(f"{x.get('firstname')} (ID {x.get('id')}, {x.get('city') or '?'} {x.get('state') or ''})".strip() for x in ((c.get("associations") or {}).get("surname_matches") or [])) or NA, 30),
     ("SP", "Research: Spouse Identified", lambda c, m: get(c, "research.household.spouse_name"), 24),
     ("SP", "Research: Spouse Source / In HubSpot?", lambda c, m: joined(c, "research.household.spouse_source", "research.household.spouse_in_hubspot", sep=" | "), 30),

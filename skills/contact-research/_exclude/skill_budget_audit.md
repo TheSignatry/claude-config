@@ -6,23 +6,23 @@
 |---|---|---|---|
 | Description (frontmatter) | 1 | 248 | Always loaded, every skill, every turn (FYI — length/quality governed by lint) |
 | Body (`SKILL.md`) | 105 | 2,333 | Loaded whenever this skill triggers |
-| Deferred (`reference/`, `scripts/`, `assets/`) | 2,204 | 31,664 | Loaded only if `SKILL.md` points Claude to it (16 files) |
-| **Total** | **2,310** | **34,245** | Worst case if everything is read |
+| Deferred (`reference/`, `scripts/`, `assets/`) | 2,253 | 33,116 | Loaded only if `SKILL.md` points Claude to it (16 files) |
+| **Total** | **2,359** | **35,697** | Worst case if everything is read |
 
 ## Comparison
 
 **Deferred usage:** `deferred-full-use` — scripts/ and references/ are sequential pipeline steps (init -> pull -> derive -> research -> merge -> render) that all run in a normal complete run, not a menu of alternatives. Two branch points exist -- hubspot_pull.py vs. references/hubspot_extraction.md for the API/connector HubSpot pull, and batch.py+playwright_fetch.py vs. api_batch_runner.py+references/research_prompt.md for interactive vs. unattended research -- but each still touches most of the deferred set, so full-use is the more honest default than alternatives.
 
-`contact-research`'s typical-call footprint is 7.79x the Signatry median (34,245 vs 4,394 tokens across 12 skills) **[OUTLIER]**.
+`contact-research`'s typical-call footprint is 8.12x the Signatry median (35,697 vs 4,394 tokens across 12 skills) **[OUTLIER]**.
 
 | | Skill Typical Call | Skill Worst Case | Signatry Median | Benchmark |
 |---|---|---|---|---|
-| Lines | 2,310 | 2,310 | 236 | 501 |
-| Tokens | 34,245 | 34,245 | 4,394 | 8,100 |
+| Lines | 2,359 | 2,359 | 236 | 501 |
+| Tokens | 35,697 | 35,697 | 4,394 | 8,100 |
 
 ## Version Delta
 
-No version change since the last recorded snapshot (v1.0, recorded 2026-09-12).
+No version change since the last recorded snapshot (v1.1, recorded 2026-09-12).
 
 ## Findings
 

@@ -7,8 +7,13 @@ Derivations:
   email_handle / email_domain / is_corporate_domain
   identifiability_tier: placeholder | thin | standard
   record_source_event: cleaned-up hs_object_source_detail_1
-  company classification: referral | role | unknown  (nonprofit rule)
-  household_pair_candidate: same surname + same form + createdate within 120 s (needs other contacts in the run)
+  company classification: referral | role | household | unknown  (nonprofit rule; a company with type
+    "Family" -- The Signatry's donor-household grouping convention, not an employer -- is always "household"
+    and is excluded from role_companies)
+  household_pair_candidate: same surname + same form + createdate within 120 s, checked against both the
+    current batch and any associated contacts that carry a createdate
+  spouse_in_hubspot: association label (Path A only) > shared "Family"-type company with exactly one other
+    distinct person > household_pair_candidate, in that priority order
   data_quality_flags: ZIP/state mismatch heuristics, placeholder names, duplicate-name records, referral-as-company
 """
 import argparse, os, sys, re, datetime
@@ -70,51 +75,74 @@ def derive_one(ct, all_contacts):
     # ---- company classification (nonprofit rule)
     ref_gid = str(props.get("referral_company_give_id") or "").strip() or None
     ref_channel = (props.get("referral_channel") or "").strip()
-    roles, refs = [], []
+    roles, refs, household_companies = [], [], []
     for co in assoc.get("companies") or []:
         labels = {str(l).lower() for l in (co.get("labels") or [])}
         gid = str(co.get("give_recipient_id") or "").strip() or None
-        if (ref_gid and gid and ref_gid == gid) or (labels & REFERRAL_LABELS):
+        co_type = (co.get("type") or "").strip().lower()
+        if co_type == "family":
+            cls = "household"
+        elif (ref_gid and gid and ref_gid == gid) or (labels & REFERRAL_LABELS):
             cls = "referral"
         elif labels & ROLE_LABELS:
             cls = "role"
-        elif ref_channel.lower() == "nonprofit partner" and (co.get("type") or "").lower() == "grant recipient":
+        elif ref_channel.lower() == "nonprofit partner" and co_type == "grant recipient":
             cls = "referral"
         else:
             cls = "unknown"
         co["classification"] = cls
-        (refs if cls == "referral" else roles if cls == "role" else roles).append(co) if cls != "unknown" else None
-        if cls == "unknown":
+        if cls == "referral":
+            refs.append(co)
+        elif cls == "household":
+            household_companies.append(co)
+        elif cls == "role":
+            roles.append(co)
+        else:
             roles.append(dict(co, note="association label not available – treat as unconfirmed role"))
     d["role_companies"] = [{"id": c["id"], "name": c.get("name"), "labels": c.get("labels", []), "note": c.get("note")} for c in roles]
     d["referral_company"] = "; ".join(f"{c.get('name')} (Give ID {c.get('give_recipient_id')}) – referral only; not a role" for c in refs) or None
     if ref_gid and not refs:
         d["referral_company"] = f"Give ID {ref_gid} (company not associated) – referral only"
+    d["household_company"] = {"id": household_companies[0]["id"], "name": household_companies[0].get("name")} if household_companies else None
 
-    # ---- household pair by form timing
+    # ---- household pair by form timing (checks the current batch, then any associated contact that carries a createdate)
     pair = assoc.get("household_pair_candidate") or {}
     if not pair.get("id"):
         my_ts = parse_ts(props.get("createdate"))
         my_src = props.get("hs_object_source_detail_1")
         best = None
-        for o in all_contacts:
-            if o["hs_object_id"] == ct["hs_object_id"]:
+        candidates = [(o["hs_object_id"], ((o.get("hubspot") or {}).get("properties")) or {}) for o in all_contacts
+                      if o["hs_object_id"] != ct["hs_object_id"]]
+        candidates += [(c["id"], c) for c in (assoc.get("contacts") or []) if c.get("createdate")]
+        for oid, op in candidates:
+            cand_last = op.get("lastname")
+            if not cand_last and op.get("name"):
+                cand_last = op["name"].split()[-1]
+            if not last or (cand_last or "").strip().lower() != last.lower():
                 continue
-            op = ((o.get("hubspot") or {}).get("properties")) or {}
-            if (op.get("lastname") or "").strip().lower() != last.lower() or not last:
-                continue
-            if my_src and op.get("hs_object_source_detail_1") != my_src:
+            if my_src and op.get("hs_object_source_detail_1") and op.get("hs_object_source_detail_1") != my_src:
                 continue
             ots = parse_ts(op.get("createdate"))
             if my_ts and ots:
                 gap = abs((my_ts - ots).total_seconds())
                 if gap <= 120 and (best is None or gap < best[1]):
-                    best = (o, gap)
+                    name = f"{op.get('firstname','')} {op.get('lastname','')}".strip() or op.get("name")
+                    best = ({"id": oid, "name": name, "seconds_apart": int(gap)}, gap)
         if best:
-            o, gap = best
-            op = o["hubspot"]["properties"]
-            pair = {"id": o["hs_object_id"], "name": f"{op.get('firstname','')} {op.get('lastname','')}".strip(), "seconds_apart": int(gap)}
+            pair = best[0]
     assoc["household_pair_candidate"] = pair or {"id": None, "name": None, "seconds_apart": None}
+
+    hh_members = assoc.get("household_members") or []
+    distinct_others, seen_ids = [], set()
+    for m in hh_members:
+        if m.get("id") in seen_ids or m.get("id") == ct["hs_object_id"]:
+            continue
+        mname = (m.get("name") or "").strip().lower()
+        if mname and mname == f"{first} {last}".strip().lower():
+            continue  # likely a duplicate record of this same person, not a distinct household member
+        seen_ids.add(m.get("id"))
+        distinct_others.append(m)
+
     sp = assoc.get("spouse_in_hubspot") or {"id": None, "name": None, "evidence": "none"}
     if not sp.get("id"):
         for c in assoc.get("contacts") or []:
@@ -122,7 +150,11 @@ def derive_one(ct, all_contacts):
                 sp = {"id": c["id"], "name": c.get("name"), "evidence": "association label"}
                 break
         else:
-            if pair.get("id"):
+            if d.get("household_company") and len(distinct_others) == 1:
+                m = distinct_others[0]
+                sp = {"id": m["id"], "name": m.get("name"),
+                      "evidence": f"shared 'Family'-type company \"{d['household_company']['name']}\" – probable, not confirmed"}
+            elif pair.get("id"):
                 sp = {"id": pair["id"], "name": pair["name"], "evidence": "household pair (same form, registrant + guest) – probable, not confirmed"}
     assoc["spouse_in_hubspot"] = sp
     ct["associations"] = assoc
@@ -141,6 +173,9 @@ def derive_one(ct, all_contacts):
         flags.append(f"{len(dup)} other HubSpot record(s) named {first} {last} with different emails (IDs {', '.join(m['id'] for m in dup)}) – review for duplicates")
     if pair.get("id"):
         flags.append(f"Probable household pair with {pair['name']} (ID {pair['id']}, created {pair['seconds_apart']} s apart) – no association recorded")
+    if d.get("household_company") and len(distinct_others) > 1:
+        others = ", ".join(f"{m.get('name')} (ID {m.get('id')})" for m in distinct_others)
+        flags.append(f"{len(distinct_others)} other people share the '{d['household_company']['name']}' household company ({others}) – relationship to each is ambiguous, review manually")
     if (ct.get("activity") or {}).get("redactions"):
         flags.append("Engagement text redacted as possible Restricted content – report to Technology Team (IT14 Policy 10)")
     d["data_quality_flags"] = flags
