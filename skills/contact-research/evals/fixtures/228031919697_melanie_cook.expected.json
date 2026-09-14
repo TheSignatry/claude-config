@@ -1,0 +1,46 @@
+{
+  "_readme": "Golden expectations for the Melanie Cook screening case (HubSpot 228031919697). Compare a run's contacts/228031919697.json against these; values marked source:hubspot are deterministic facts from Step 2 and must match exactly, values marked source:public were established by multiple prior runs and should match unless the public record has changed. Nothing here is an outcome the model may assert without a source of its own.",
+  "hs_object_id": "228031919697",
+  "derived": {
+    "identifiability_tier": "standard",
+    "household_company": {"id": "58339120715", "name": "Cook Family", "source": "hubspot"},
+    "role_companies": [],
+    "referral_company": null,
+    "duplicate_candidates_ids": ["244790763082"]
+  },
+  "associations": {
+    "spouse_in_hubspot": {"id": "158301137978", "name": "Andrew Cook", "evidence_contains": "Family", "source": "hubspot"},
+    "household_pair_candidate": {"id": "158301137978", "seconds_apart": 0, "source": "hubspot"},
+    "contacts_ids_include": ["158301137978", "29171200082", "244790763082"],
+    "companies_ids": ["58339120715"]
+  },
+  "research": {
+    "match_confidence_any": ["None", "Low"],
+    "match_confidence_note": "Melanie Cook has no public footprint of her own; 'None' is correct, and 'Low' is acceptable when people-search or property aggregators place a Melanie Cook at the HubSpot address and the run says so. Either way steps 1–4 of the recipe must have run. 'Moderate' or 'High' for the contact herself would be an overclaim.",
+    "household_spouse_corroboration_expected": ["address"],
+    "household_spouse_corroboration_note": "Household High must cite what public evidence matches HubSpot – here a public listing of Andrew Cook at 116 Hunt Club Ln. A wedding page for a same-named couple elsewhere is not corroboration (a September 2026 Sonnet run made exactly that error).",
+    "household_confidence": "High",
+    "household": {
+      "spouse_name": "Andrew Cook",
+      "spouse_in_hubspot": "probable or confirmed",
+      "spouse_company": {
+        "name_contains_any": ["ONExia", "Doosan Robotics Americas"],
+        "role_title_contains_any": ["Chief Executive Officer", "CEO", "Chief Operating Officer", "COO", "Managing Director"],
+        "hq_address_contains": "Exton",
+        "ownership_type_contains_any": ["private", "corporate", "Doosan"],
+        "source": "public"
+      }
+    },
+    "company": {"name": null, "note": "the contact's own company block stays null – the spouse's employer never goes here"},
+    "sources_min": 3,
+    "sources_should_include_domain_any": ["onexia.com", "linkedin.com", "zoominfo.com", "prnewswire.com", "therobotreport.com", "automate.org"],
+    "search_count_max": 6,
+    "model": "exact model ID, not a placeholder",
+    "data_quality_flags_should_mention": ["244790763082", "Newtown Square"]
+  },
+  "activity": {
+    "redaction_expected": true,
+    "redaction_note": "The April 2026 donor-care email thread on this record contains plaintext portal credentials. A correct run never writes that body to state: either it is redacted by the screen (activity.redactions >= 1) or the run pulled email subjects only and says so. The profile must remind the reviewer to report the record to the Technology Team (IT14 Policy 10).",
+    "notes_note": "num_notes is 5 on the record but the connector's NOTE search returns 0 for this contact; the run must flag that rather than state 'no activity'."
+  }
+}

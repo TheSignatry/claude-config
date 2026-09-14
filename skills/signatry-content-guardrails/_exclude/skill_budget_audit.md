@@ -13,16 +13,16 @@
 
 **Deferred usage:** `deferred-full-use` (default — not yet reviewed for this skill)
 
-`signatry-content-guardrails`'s typical-call footprint is 0.37x the Signatry median (1,443 vs 3,877 tokens across 11 skills).
+`signatry-content-guardrails`'s typical-call footprint is 0.33x the Signatry median (1,443 vs 4,394 tokens across 12 skills).
 
 | | Skill Typical Call | Skill Worst Case | Signatry Median | Benchmark |
 |---|---|---|---|---|
-| Lines | 43 | 43 | 219 | 501 |
-| Tokens | 1,443 | 1,443 | 3,877 | 8,100 |
+| Lines | 43 | 43 | 236 | 501 |
+| Tokens | 1,443 | 1,443 | 4,394 | 8,100 |
 
 ## Version Delta
 
-No version change since the last recorded snapshot (v2.1, recorded 2026-08-15).
+No version change since the last recorded snapshot (v2.1, recorded 2026-09-13).
 
 ## Findings
 

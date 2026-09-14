@@ -13,16 +13,16 @@
 
 **Deferred usage:** `deferred-alternatives` — Each references/*.md is a distinct audience persona; a prompt typically engages one audience, occasionally a few more for an explicit 'panel' request, but never realistically all seven at once.
 
-`sounding-board`'s typical-call footprint is 1.27x the Signatry median (4,911 vs 3,877 tokens across 11 skills).
+`sounding-board`'s typical-call footprint is 1.12x the Signatry median (4,911 vs 4,394 tokens across 12 skills).
 
 | | Skill Typical Call | Skill Worst Case | Signatry Median | Benchmark |
 |---|---|---|---|---|
-| Lines | 181 | 726 | 219 | 501 |
-| Tokens | 4,911 | 17,613 | 3,877 | 8,100 |
+| Lines | 181 | 726 | 236 | 501 |
+| Tokens | 4,911 | 17,613 | 4,394 | 8,100 |
 
 ## Version Delta
 
-No version change since the last recorded snapshot (v0.5, recorded 2026-08-15).
+No version change since the last recorded snapshot (v0.5, recorded 2026-09-13).
 
 ## Findings
 
