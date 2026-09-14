@@ -21,8 +21,10 @@ PROPS = ["firstname", "lastname", "salutation", "email", "phone", "mobilephone",
          "hs_object_source_label", "hs_object_source_detail_1", "hs_object_source_detail_2", "hs_analytics_source",
          "hs_latest_source", "referral_channel", "referral_company_give_id", "daf_application_referrer_name",
          "daf_application_referral_type", "num_notes", "notes_last_updated", "hs_last_sales_activity_type",
-         "guest_first_name", "guest_last_name", "guest_email", "associatedcompanyid"]
+         "guest_first_name", "guest_last_name", "guest_email", "associatedcompanyid", "direct_fund_balance_tier_min"]
 COMPANY_PROPS = ["name", "domain", "type", "give_recipient_id", "city", "state"]
+FUND_OBJECT = "2-24861263"  # custom object "Fund" (object-type ID); associated to Contact
+FUND_PROPS = ["current_balance"]
 ENGAGEMENTS = {
     "notes": ["hs_note_body", "hs_timestamp", "hubspot_owner_id"],
     "emails": ["hs_email_subject", "hs_email_text", "hs_email_direction", "hs_timestamp"],
@@ -31,6 +33,13 @@ ENGAGEMENTS = {
     "tasks": ["hs_task_subject", "hs_task_body", "hs_timestamp", "hs_task_status"],
     "tickets": ["subject", "content", "hs_pipeline_stage", "createdate"],
 }
+
+
+def to_num(v):
+    try:
+        return float(v) if v not in (None, "") else None
+    except (TypeError, ValueError):
+        return None
 
 
 class HS:
@@ -140,6 +149,10 @@ def main():
         contacts = [{"id": c["id"], "labels": c["labels"],
                      "name": f"{(oprops.get(c['id']) or {}).get('firstname','')} {(oprops.get(c['id']) or {}).get('lastname','')}".strip(),
                      "email": (oprops.get(c["id"]) or {}).get("email")} for c in cont_links]
+        fund_links = hs.assoc(hid, FUND_OBJECT)
+        fprops = hs.batch_read(FUND_OBJECT, [f["id"] for f in fund_links], FUND_PROPS) if fund_links else {}
+        funds = [{"id": f["id"], "labels": f["labels"], "current_balance": to_num((fprops.get(f["id"]) or {}).get("current_balance"))}
+                 for f in fund_links]
         surname = []
         if p.get("lastname"):
             for r in hs.surname(p["lastname"]):
@@ -147,7 +160,7 @@ def main():
                     rp = r.get("properties", {})
                     surname.append({"id": str(r["id"]), "firstname": rp.get("firstname"), "city": rp.get("city"),
                                     "state": rp.get("state"), "email_domain": (rp.get("email") or "@").split("@")[1] or None})
-        ct["associations"] = {"companies": companies, "contacts": contacts, "spouse_in_hubspot": None,
+        ct["associations"] = {"companies": companies, "contacts": contacts, "funds": funds, "spouse_in_hubspot": None,
                               "household_pair_candidate": None, "surname_matches": surname}
 
         # activity with redaction
@@ -176,7 +189,7 @@ def main():
         for s in ("hubspot", "associations", "activity"):
             ct["status"]["stages"][s] = now()
         save_json(contact_path(a.run_dir, hid), ct)
-        print(f"{hid} {p.get('firstname')} {p.get('lastname')}: {len(companies)} companies, {len(contacts)} contacts, {n} activities, {red} redactions")
+        print(f"{hid} {p.get('firstname')} {p.get('lastname')}: {len(companies)} companies, {len(contacts)} contacts, {len(funds)} funds, {n} activities, {red} redactions")
 
     recount(a.run_dir)
     # derive

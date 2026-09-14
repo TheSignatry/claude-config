@@ -1,8 +1,8 @@
 ---
 name: contact-research
 description: "Research and enrich HubSpot contacts for The Signatry's relationship managers, one at a time or in batches. Given a HubSpot Contact ID, a name, and at least one other data point (email, phone, or address), the skill pulls the full HubSpot record, checks associations and activity for spouse and company links, researches the person on the public web (LinkedIn URL, company, role, revenue, business ownership), and produces two outputs from a JSON state folder: an enrichment spreadsheet that separates HubSpot data from inferred web data and includes HubSpot upload-prep sheets, and one branded PDF profile per contact with a user-chosen file-naming convention. Use this skill whenever someone asks to enrich, research, profile, dossier, look up, or 'fill in the gaps' on HubSpot contacts, donors, or prospects; asks who a contact's spouse or company is; asks for a contact profile PDF; or asks to run RM contact research in bulk — even if they don't say 'contact_research' or 'HubSpot' by name."
-version: 1.4
-release_date: 2026-09-13
+version: 1.5
+release_date: 2026-09-14
 ---
 
 # contact_research
@@ -59,7 +59,7 @@ Then derive the deterministic facts (no model judgment needed):
 python scripts/derive.py --run-dir state/
 ```
 
-This computes the email handle, identifiability tier (`placeholder` / `thin` / `standard`), referral-vs-role for every company association, household-pair candidates (same surname, same form, created within 120 s), and data-quality flags. **A nonprofit company association is kept only when the contact holds a role there**; a referral (`referral_company_give_id` equals the company's `give_recipient_id`, or a Referred-By label) goes to the referral field instead. See `references/hubspot_extraction.md` for why this rule exists.
+This computes the email handle, identifiability tier (`placeholder` / `thin` / `standard`), referral-vs-role for every company association, household-pair candidates (same surname, same form, created within 120 s), the DAF rollup (fund count, sum of associated Fund `current_balance`, and `direct_fund_balance_tier_min` passed through as-is), and data-quality flags. **A nonprofit company association is kept only when the contact holds a role there**; a referral (`referral_company_give_id` equals the company's `give_recipient_id`, or a Referred-By label) goes to the referral field instead. See `references/hubspot_extraction.md` for why this rule exists.
 
 ### Step 3 — Research each contact
 
@@ -90,9 +90,9 @@ python scripts/build_profiles.py --run-dir state/ --out outputs/profiles/ [--nam
 
 Requires `openpyxl` (workbook) and `reportlab` (PDF profiles) — install with `pip install openpyxl reportlab` if either import fails.
 
-**Workbook sheets:** `Contact Enrichment` (HubSpot columns in blue, spouse in purple, research in green, ownership in gold, each research column prefixed `Research:`), `Summary`, `Upload Prep – Contacts` (HubSpot import headers; a reviewer types Y in **Accept?** and the row is ready for the import template), `Upload Prep – Notes` (one pre-composed, sourced note per contact for a Notes import), `Methodology`, and `Sources`.
+**Workbook sheets:** `Contact Enrichment` (HubSpot columns in blue — including the `DAF:` fund count/tier/balance columns — spouse in purple, research in green, ownership in gold, each research column prefixed `Research:`), `Summary`, `Upload Prep – Contacts` (HubSpot import headers; a reviewer types Y in **Accept?** and the row is ready for the import template), `Upload Prep – Notes` (one pre-composed, sourced note per contact for a Notes import), `Methodology`, and `Sources`.
 
-**PDF profile:** three pages per contact, Signatry-branded via the `signatry-pdf-brand` skill (Lora/Mulish, Legacy header, embedded fonts; falls back to Helvetica with a warning if that skill is absent). Header badge shows the confidence tier. Sections: Sources checked, Overview, About, Contact, Social/Web, Household & Spouse, Career & Company, Ownership, HubSpot Activity & Referral, Notes & Flags, Sources.
+**PDF profile:** three pages per contact, Signatry-branded via the `signatry-pdf-brand` skill (Lora/Mulish, Legacy header, embedded fonts; falls back to Helvetica with a warning if that skill is absent). Header shows a confidence-tier badge (left) and a Contact Owner badge (right); the footer shows the skill version, model, render date, and page number. Sections: Sources checked, Overview, About, Contact, DAF, Social/Web, Household & Spouse, Career & Company, Ownership, HubSpot Activity & Referral, Notes & Flags, Sources.
 
 Present both with `present_files`. Rendering never calls the model, so re-running after a reviewer edits a state file is free.
 

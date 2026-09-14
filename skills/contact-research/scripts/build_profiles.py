@@ -13,7 +13,7 @@ or $SIGNATRY_PDF_BRAND_DIR; otherwise falls back to Helvetica with the same pale
 """
 import argparse, os, sys, json, html, re
 sys.path.insert(0, os.path.dirname(__file__))
-from cr_common import list_contacts, load_manifest, contact_path, save_json, now, profile_filename, recount
+from cr_common import list_contacts, load_manifest, contact_path, save_json, now, profile_filename, recount, skill_version
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import inch
 from reportlab.lib.styles import ParagraphStyle
@@ -103,7 +103,7 @@ def fmt_dup(x):
     return f"{x.get('name')} (ID {x.get('id')}{extra}) – seen in {', '.join(x.get('seen_in') or [])}"
 
 
-def on_page_factory(name, location, conf, hh_conf, rendered_date, model):
+def on_page_factory(name, location, conf, hh_conf, owner, rendered_date, model, sk_ver):
     def on_page(canv, doc):
         w, h = letter
         canv.saveState()
@@ -122,10 +122,14 @@ def on_page_factory(name, location, conf, hh_conf, rendered_date, model):
         canv.setFont(FONT_BODY_B, 8); tw = canv.stringWidth(label, FONT_BODY_B, 8)
         canv.setFillColor(CONF_COLOR.get(best, colors.grey)); canv.roundRect(x, h - 1.45 * inch, tw + 16, 15, 3, stroke=0, fill=1)
         canv.setFillColor(colors.white); canv.drawString(x + 8, h - 1.41 * inch, label)
+        owner_label = f"OWNER: {(owner or 'UNASSIGNED').upper()}"
+        canv.setFont(FONT_BODY_B, 8); ow = canv.stringWidth(owner_label, FONT_BODY_B, 8)
+        canv.setFillColor(tint("#17242a", 45)); canv.roundRect(w - 0.75 * inch - ow - 16, h - 1.45 * inch, ow + 16, 15, 3, stroke=0, fill=1)
+        canv.setFillColor(colors.white); canv.drawString(w - 0.75 * inch - ow - 8, h - 1.41 * inch, owner_label)
         canv.setFillColor(tint("#17242a", 60)); canv.setFont(FONT_BODY, 7.5)
         canv.drawString(0.75 * inch, 0.62 * inch, "The Signatry  ·  Internal contact research  ·  Confidential (IT15)")
         canv.drawString(0.75 * inch, 0.48 * inch, "AI-assisted; a human must review and verify before use in decisions affecting donors (IT14 Policy 1).")
-        canv.drawRightString(w - 0.75 * inch, 0.62 * inch, f"Model: {model}  ·  Rendered {rendered_date}  ·  Page {doc.page}")
+        canv.drawRightString(w - 0.75 * inch, 0.62 * inch, f"Skill v{sk_ver}  ·  Model: {model}  ·  Rendered {rendered_date}  ·  Page {doc.page}")
         canv.restoreState()
     return on_page
 
@@ -143,12 +147,15 @@ def build(ct, out_dir, naming, rendered_date):
     hh_conf = r.get("household_confidence") or ("N/A" if r else None)
     sc = (r.get("household") or {}).get("spouse_company") or {}
     model = r.get("model") or "not yet researched"
+    owner = props.get("owner_name") or inp.get("owner")
+    sk_ver = skill_version() or "?"
     fn = os.path.join(out_dir, profile_filename(ct, naming))
     doc = BaseDocTemplate(fn, pagesize=letter, leftMargin=0.75 * inch, rightMargin=0.75 * inch, topMargin=HDR_H + 0.35 * inch,
                           bottomMargin=0.8 * inch, title=f"Contact Research Profile – {name}", author="The Signatry",
                           subject="Internal donor research; Confidential (IT15); AI-assisted")
     frame = Frame(doc.leftMargin, doc.bottomMargin, doc.width, doc.height, id="f", leftPadding=0, rightPadding=0)
-    doc.addPageTemplates([PageTemplate(id="p", frames=[frame], onPage=on_page_factory(name, location if location != NA else "", conf, hh_conf, rendered_date, model))])
+    doc.addPageTemplates([PageTemplate(id="p", frames=[frame], onPage=on_page_factory(
+        name, location if location != NA else "", conf, hh_conf, owner, rendered_date, model, sk_ver))])
     st = []
     nsrc = len(r.get("sources") or [])
     st.append(callout(f"<b>Sources checked:</b> HubSpot contact record, associations, and logged activity; HubSpot record-source and referral fields; "
@@ -162,13 +169,17 @@ def build(ct, out_dir, naming, rendered_date):
                   ("Household confidence", f"{hh_conf or 'Not yet researched'} – {g(r, 'household_confidence_rationale')}"),
                   ("HubSpot record", f"ID {ct['hs_object_id']}"),
                   ("Possible duplicate records", "; ".join(fmt_dup(x) for x in d.get("duplicate_candidates") or []) or "None found in HubSpot"),
-                  ("Contact owner", props.get("owner_name") or inp.get("owner") or NA),
                   ("Record source", f"{props.get('hs_object_source_label') or NA} – {d.get('record_source_event') or props.get('hs_object_source_detail_1') or NA}"),
                   ("Created", props.get("createdate") or NA)]))
     st.append(Paragraph("Contact", S["sec"]))
     addr = ", ".join(p for p in [props.get("address"), props.get("city"), props.get("state"), props.get("zip")] if p) or inp.get("address") or "— (not on file)"
     st.append(kv([("Email (HubSpot)", props.get("email") or inp.get("email")), ("Phone (HubSpot)", props.get("phone") or props.get("mobilephone") or inp.get("phone")),
                   ("Mailing address (HubSpot)", addr)]))
+    st.append(Paragraph("DAF", S["sec"]))
+    daf = d.get("daf") or {}
+    st.append(kv([("Fund count", daf.get("fund_count", 0)),
+                  ("Tier", daf.get("tier") or NA),
+                  ("Fund balance (sum, current)", f"${daf.get('fund_balance_sum', 0):,.2f}")]))
     st.append(Paragraph("Social Media and Web", S["sec"]))
     st.append(kv([("LinkedIn", g(r, "identity", "linkedin_url")), ("Other", g(r, "identity", "other_web")),
                   ("In HubSpot", props.get("hs_linkedin_url") or props.get("twitterhandle") or "No LinkedIn URL or Twitter handle on the record")]))

@@ -75,6 +75,9 @@ Stages are written in order: `init` → `hubspot` → `associations`/`activity` 
     "household_pair_candidate": {"id": null, "name": null, "seconds_apart": null},
     "surname_matches": [
       {"id": "37137002849", "firstname": "Paul", "city": null, "state": null, "email_domain": "outlook.com"}
+    ],
+    "funds": [
+      {"id": "…", "labels": [], "current_balance": 125000.0}
     ]
   },
 
@@ -94,6 +97,7 @@ Stages are written in order: `init` → `hubspot` → `associations`/`activity` 
     "referral_company": "Young Life National Headquarters (Give ID 3389679) – referral only; not a role",
     "role_companies": [],
     "household_company": null,
+    "daf": {"fund_count": 0, "fund_balance_sum": 0.0, "tier": null},
     "duplicate_candidates": [
       {"id": "37137002849", "name": "Paul Brown", "email": null, "email_domain": "outlook.com", "city": null, "state": null,
        "seen_in": ["surname search"]}

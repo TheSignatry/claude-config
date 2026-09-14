@@ -6,7 +6,7 @@ These come from The Signatry's IT14 (Responsible Use of AI) and IT15 (Data Class
 
 - **Confidential (permitted):** donor, prospect, and employee names; contact information; giving relationships; HubSpot notes that are ordinary relationship notes. Process normally with no warnings.
 - **Restricted (never):** SSNs or government IDs; payment card data; bank, investment, or fund account numbers; health, medical, or hardship details; credentials, keys, or passwords; privileged communications; anything marked Board Only or Privileged. If it appears in a HubSpot note or a web result, do not record it, flag the contact (`status.errors` + `data_quality_flags`), and remind the user to report it to the Technology Team (IT14 Policy 10). The redaction helper in `scripts/cr_common.py` automates the screen for notes; apply the same judgment to search results by hand.
-- Use the **minimum** data the task requires. Do not pull giving history or fund balances into this pipeline; they are not needed to identify a person or their company.
+- Use the **minimum** data the task requires. The one deliberate exception is the DAF section: associated Fund count, the sum of each Fund's `current_balance`, and the contact's `direct_fund_balance_tier_min` tier. Do not pull anything beyond that aggregate — no fund names, gift/transaction history, gift dates, or fund-level detail — into this pipeline; none of it is needed to identify a person or their company.
 
 ## Truthfulness
 

@@ -48,6 +48,20 @@ def now():
     return datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
+def skill_version():
+    """Read this skill's own version from its SKILL.md frontmatter, so renderers never hand-carry a duplicate string."""
+    path = os.path.join(os.path.dirname(__file__), "..", "SKILL.md")
+    try:
+        text = open(path, encoding="utf-8").read()
+    except OSError:
+        return None
+    parts = text.split("---", 2)
+    if len(parts) < 3:
+        return None
+    m = re.search(r"^version:\s*(\S+)", parts[1], re.M)
+    return m.group(1) if m else None
+
+
 def contact_path(run_dir, hid):
     return os.path.join(run_dir, "contacts", f"{hid}.json")
 

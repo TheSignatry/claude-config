@@ -6,6 +6,16 @@ Format: date · what changed · why it matters.
 
 ---
 
+## 2026-09-14 — new DAF section: fund count, tier, fund balance (v1.5)
+
+Added at RM request: a DAF section reporting the contact's number of associated Funds, `direct_fund_balance_tier_min`, and the sum of associated Funds' `current_balance`.
+
+1. **HubSpot pull** (`hubspot_pull.py`, `hubspot_extraction.md`). Added `direct_fund_balance_tier_min` to the contact property set, and a new pull of the Fund custom object (object-type ID `2-24861263`, property `current_balance`) associated to each contact, written to `associations.funds`. Path B connector instructions gained a matching step 6.
+2. **Derivation** (`derive.py`, `state_schema.md`). New deterministic `derived.daf` block: `fund_count`, `fund_balance_sum` (sum of each Fund's `current_balance`), `tier` (the contact property, passed through as-is).
+3. **Renderers** (`build_workbook.py`, `build_profiles.py`, `SKILL.md`). New `DAF:` columns (blue/HS group) on the Contact Enrichment sheet; new "DAF" section on the PDF profile, placed after "Contact".
+4. **Governance carve-out** (`governance.md`). The data-minimization rule ("do not pull giving history or fund balances") previously excluded this outright. Narrowed to name the DAF aggregate (fund count, current-balance sum, tier) as the one deliberate exception — no fund names, gift/transaction history, or fund-level detail beyond the current balance is pulled.
+5. **PDF header/footer** (`build_profiles.py`, `cr_common.py`). Contact Owner moved out of the "About" section and into a right-aligned header badge (mirrors the left-aligned confidence badge). Footer now reads "Skill v{version} · Model: {model} · Rendered … · Page …" — the skill version is read from `SKILL.md`'s own frontmatter (new `cr_common.skill_version()` helper) rather than hand-carried as a duplicate string.
+
 ## 2026-09-13 — spouse-corroboration rule; lexicon scoped to engagement bodies; golden file loosened (v1.4)
 
 Follow-ups from the three-model run of the five-contact screening set on v1.3 (Fable 5.1, Opus 5, Sonnet 5 on identical Step 2 state):

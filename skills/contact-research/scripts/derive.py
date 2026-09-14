@@ -16,6 +16,8 @@ Derivations:
     distinct person > household_pair_candidate, in that priority order
   duplicate_candidates: other HubSpot records with the same first + last name, gathered from the surname search,
     contact associations, and household-company members (so a duplicate is caught even when one source is empty)
+  daf: fund_count (associated Fund records), fund_balance_sum (sum of each Fund's current_balance), tier
+    (contact.direct_fund_balance_tier_min, passed through as-is)
   data_quality_flags: ZIP/state mismatch heuristics, placeholder names, duplicate-name records, referral-as-company
 """
 import argparse, os, sys, re, datetime
@@ -106,6 +108,12 @@ def derive_one(ct, all_contacts):
     if ref_gid and not refs:
         d["referral_company"] = f"Give ID {ref_gid} (company not associated) – referral only"
     d["household_company"] = {"id": household_companies[0]["id"], "name": household_companies[0].get("name")} if household_companies else None
+
+    # ---- DAF (fund count, balance sum, tier)
+    funds = assoc.get("funds") or []
+    d["daf"] = {"fund_count": len(funds),
+                "fund_balance_sum": sum(f["current_balance"] for f in funds if f.get("current_balance") is not None),
+                "tier": props.get("direct_fund_balance_tier_min")}
 
     # ---- household pair by form timing (checks the current batch, then any associated contact that carries a createdate)
     pair = assoc.get("household_pair_candidate") or {}
