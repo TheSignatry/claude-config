@@ -16,7 +16,7 @@ Status vocabulary and usage rules are in `SKILL.md`. Only `VERIFIED` values may 
 | `WEB-BOARD` | thesignatry.com/board-of-directors/ | metadata says 2024-04-30 but content is current |
 | `WEB-CONTACT` | thesignatry.com/contact/ | indexed 2026-04-09 |
 | `AR-2025` | `2025-The-Signatry-Annual-Report.pdf`, BrandTeam SharePoint | modified 2026-05-18 |
-| `IR-2026Q1` | `2026 - Q1Report Content.docx`, BrandTeam SharePoint | data as of May 2026 |
+| `IR-2026Q2` | `2026 - Q2Report Content.docx`, BrandTeam SharePoint | data as of August 2026 |
 | `IR-2025Q4` | 2025 Q4 Impact Report | data as of March 2026 |
 | `CG-2023` | `TheSignatry_CultureGuide_202306v2.pdf`, AllTeam SharePoint | June 2023 — **never for current figures** |
 | `IT14` | AI content governance policy | current |
@@ -48,7 +48,7 @@ All `VERIFIED` 2026-07-27.
 | Donor care direct line | **None published** — main line only | `WEB-CONTACT` |
 | EIN (Servant Foundation) | 43-1890105 | `WEB-FIN` — entity-specific, see below |
 
-Accreditations: ECFA accredited · Charity Navigator Four-Star 2026 · Candid/GuideStar Platinum Transparency 2025 · Best Christian Workplaces Certified 2025.
+Accreditations: ECFA accredited · Charity Navigator Four-Star 2026 · Candid/GuideStar Platinum Transparency 2026 · Best Christian Workplaces Certified 2026.
 
 ## Legal entity structure
 
@@ -118,15 +118,15 @@ The primary 990 and reporting documents have historically been filed under Serva
 
 ## Headline figures
 
-Full detail in `reference/figures.md`. Cumulative from `IR-2026Q1` (May 2026); CY2025 from `AR-2025`.
+Full detail in `reference/figures.md`. Cumulative from `IR-2026Q2` (August 2026); CY2025 from `AR-2025`.
 
 | Figure | Value |
 |---|---|
-| Granted since 2018 | over $3.9 billion |
-| Contributed since 2018 | $5.8 billion |
-| Nonprofits supported since 2018 | 13,421 |
+| Granted since 2018 | over $4 billion |
+| Contributed since 2018 | $5.9 billion |
+| Nonprofits supported since 2018 | 13,737 |
 | Total active donors | 6,202 |
-| Total active funds | 3,891 |
+| Total active funds | over 3,900 |
 | Generosity Activation Rate | 26.3% (top-15 median 17.9%) |
 
 **Nonliquid gifts were 34% of 2025 contributed dollars from 17 gifts.**
