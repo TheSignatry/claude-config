@@ -25,6 +25,20 @@ python3 shorten_oi.py
 Edit `organization_instructions_readable.md`, not `organization_instructions.md`
 directly — the compact file is generated output and will be overwritten.
 
+### acos family (personal productivity skills)
+
+A separate personal productivity suite — calendar analysis, Jira reporting,
+email triage, and daily/weekly/monthly planning — built around one shared
+identity/org-chart profile skill (`acos-aboutme`) so the others don't each
+ask the same setup questions. It follows the same skill folder layout and
+`_exclude/`/versioning conventions as every skill below, but isn't (yet)
+packaged and distributed org-wide via the Console the way the `signatry-*`
+family is — install locally only, and it's intentionally left out of the
+tracked skill table below since that table represents Console-distributed
+skills specifically. See
+[`skills/acos-aboutme/_exclude/GETTING_STARTED.md`](skills/acos-aboutme/_exclude/GETTING_STARTED.md)
+for the full setup walkthrough.
+
 ### Skills
 
 Every skill under `skills/{skill-slug}/` follows the same folder layout:
