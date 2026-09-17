@@ -22,7 +22,7 @@
 
 ## Version Delta
 
-No version change since the last recorded snapshot (v1.3, recorded 2026-09-13).
+Compared to the last recorded version (v1.3, released 2026-08-06): total lines **+0 (+0.0%)**, total tokens **+0 (+0.0%)**.
 
 ## Findings
 

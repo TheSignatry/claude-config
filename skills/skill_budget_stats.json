@@ -184,6 +184,30 @@
             "tokens": 11071
           }
         }
+      },
+      {
+        "version": "1.4",
+        "release_date": "2026-09-16",
+        "recorded_at": "2026-09-16",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 166
+          },
+          "body": {
+            "lines": 102,
+            "tokens": 2040
+          },
+          "deferred": {
+            "lines": 583,
+            "tokens": 8865,
+            "file_count": 7
+          },
+          "total": {
+            "lines": 686,
+            "tokens": 11071
+          }
+        }
       }
     ],
     "signatry-pdf-brand": [
