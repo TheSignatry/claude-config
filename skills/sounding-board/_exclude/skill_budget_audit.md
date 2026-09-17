@@ -6,8 +6,8 @@
 |---|---|---|---|
 | Description (frontmatter) | 1 | 202 | Always loaded, every skill, every turn (FYI — length/quality governed by lint) |
 | Body (`SKILL.md`) | 55 | 1,131 | Loaded whenever this skill triggers |
-| Deferred (`reference/`, `scripts/`, `assets/`) | 670 | 16,280 | Loaded only if `SKILL.md` points Claude to it (7 files) |
-| **Total** | **726** | **17,613** | Worst case if everything is read |
+| Deferred (`reference/`, `scripts/`, `assets/`) | 683 | 17,268 | Loaded only if `SKILL.md` points Claude to it (7 files) |
+| **Total** | **739** | **18,601** | Worst case if everything is read |
 
 ## Comparison
 
@@ -17,12 +17,12 @@
 
 | | Skill Typical Call | Skill Worst Case | Signatry Median | Benchmark |
 |---|---|---|---|---|
-| Lines | 181 | 726 | 236 | 501 |
-| Tokens | 4,911 | 17,613 | 4,394 | 8,100 |
+| Lines | 181 | 739 | 236 | 501 |
+| Tokens | 4,911 | 18,601 | 4,394 | 8,100 |
 
 ## Version Delta
 
-No version change since the last recorded snapshot (v0.5, recorded 2026-09-13).
+Compared to the last recorded version (v0.6, released 2026-09-16): total lines **+0 (+0.0%)**, total tokens **+656 (+3.7%)**.
 
 ## Findings
 

@@ -1,6 +1,6 @@
 {
   "corpus": {
-    "recorded_at": "2026-09-14",
+    "recorded_at": "2026-09-16",
     "sibling_count": 12,
     "median_typical_lines": 235.5,
     "median_typical_tokens": 4394.0
@@ -336,6 +336,54 @@
           "total": {
             "lines": 726,
             "tokens": 17613
+          }
+        }
+      },
+      {
+        "version": "0.6",
+        "release_date": "2026-09-16",
+        "recorded_at": "2026-09-16",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 202
+          },
+          "body": {
+            "lines": 55,
+            "tokens": 1131
+          },
+          "deferred": {
+            "lines": 683,
+            "tokens": 16612,
+            "file_count": 7
+          },
+          "total": {
+            "lines": 739,
+            "tokens": 17945
+          }
+        }
+      },
+      {
+        "version": "0.7",
+        "release_date": "2026-09-16",
+        "recorded_at": "2026-09-16",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 202
+          },
+          "body": {
+            "lines": 55,
+            "tokens": 1131
+          },
+          "deferred": {
+            "lines": 683,
+            "tokens": 17268,
+            "file_count": 7
+          },
+          "total": {
+            "lines": 739,
+            "tokens": 18601
           }
         }
       }
