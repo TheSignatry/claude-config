@@ -6,23 +6,23 @@
 |---|---|---|---|
 | Description (frontmatter) | 1 | 202 | Always loaded, every skill, every turn (FYI — length/quality governed by lint) |
 | Body (`SKILL.md`) | 55 | 1,131 | Loaded whenever this skill triggers |
-| Deferred (`reference/`, `scripts/`, `assets/`) | 670 | 16,280 | Loaded only if `SKILL.md` points Claude to it (7 files) |
-| **Total** | **726** | **17,613** | Worst case if everything is read |
+| Deferred (`reference/`, `scripts/`, `assets/`) | 683 | 17,268 | Loaded only if `SKILL.md` points Claude to it (7 files) |
+| **Total** | **739** | **18,601** | Worst case if everything is read |
 
 ## Comparison
 
 **Deferred usage:** `deferred-alternatives` — Each references/*.md is a distinct audience persona; a prompt typically engages one audience, occasionally a few more for an explicit 'panel' request, but never realistically all seven at once.
 
-`sounding-board`'s typical-call footprint is 1.27x the Signatry median (4,911 vs 3,877 tokens across 11 skills).
+`sounding-board`'s typical-call footprint is 1.12x the Signatry median (4,911 vs 4,394 tokens across 12 skills).
 
 | | Skill Typical Call | Skill Worst Case | Signatry Median | Benchmark |
 |---|---|---|---|---|
-| Lines | 181 | 726 | 219 | 501 |
-| Tokens | 4,911 | 17,613 | 3,877 | 8,100 |
+| Lines | 181 | 739 | 236 | 501 |
+| Tokens | 4,911 | 18,601 | 4,394 | 8,100 |
 
 ## Version Delta
 
-No version change since the last recorded snapshot (v0.5, recorded 2026-08-15).
+No version change since the last recorded snapshot (v0.7, recorded 2026-09-16).
 
 ## Findings
 

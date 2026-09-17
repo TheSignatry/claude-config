@@ -13,16 +13,16 @@
 
 **Deferred usage:** `deferred-alternatives` — Both reference files are narrow-trigger (scripture citation, extended donor narrative) -- most pieces need zero or one, not both.
 
-`signatry-style`'s typical-call footprint is 1.41x the Signatry median (5,480 vs 3,877 tokens across 11 skills).
+`signatry-style`'s typical-call footprint is 1.25x the Signatry median (5,480 vs 4,394 tokens across 12 skills).
 
 | | Skill Typical Call | Skill Worst Case | Signatry Median | Benchmark |
 |---|---|---|---|---|
-| Lines | 307 | 326 | 219 | 501 |
-| Tokens | 5,480 | 5,737 | 3,877 | 8,100 |
+| Lines | 307 | 326 | 236 | 501 |
+| Tokens | 5,480 | 5,737 | 4,394 | 8,100 |
 
 ## Version Delta
 
-No version change since the last recorded snapshot (v2.2, recorded 2026-08-15).
+No version change since the last recorded snapshot (v2.2, recorded 2026-09-13).
 
 ## Findings
 
