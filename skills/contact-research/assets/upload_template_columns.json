@@ -1,0 +1,23 @@
+{
+  "_comment": "HubSpot contact import accepts a CSV whose headers match property labels. 'Record ID' lets HubSpot update the existing record instead of creating a duplicate. Columns map a research field in state to a HubSpot import header. 'requires_confirmed' means the value is only pre-filled when match_confidence is High or Moderate; Low/None rows stay blank so a reviewer must type them deliberately.",
+  "contacts": [
+    {"header": "Record ID",        "state_path": "hs_object_id",                      "requires_confirmed": false, "always": true},
+    {"header": "Email",            "state_path": "hubspot.properties.email",          "requires_confirmed": false, "always": true},
+    {"header": "First Name",       "state_path": "hubspot.properties.firstname",      "requires_confirmed": false, "always": true},
+    {"header": "Last Name",        "state_path": "hubspot.properties.lastname",       "requires_confirmed": false, "always": true},
+    {"header": "Job Title",        "state_path": "research.company.role_title",       "requires_confirmed": true},
+    {"header": "Company Name",     "state_path": "research.company.name",             "requires_confirmed": true},
+    {"header": "LinkedIn URL",     "state_path": "research.identity.linkedin_url",    "requires_confirmed": true},
+    {"header": "Website URL",      "state_path": "research.company.website",          "requires_confirmed": true},
+    {"header": "City",             "state_path": "research.identity.city",            "requires_confirmed": true},
+    {"header": "State/Region",     "state_path": "research.identity.state",           "requires_confirmed": true},
+    {"header": "Spouse Name (custom)", "state_path": "research.household.spouse_name","requires_confirmed": true,
+     "note": "Create or map to a custom contact property before import, or use a Spouse association instead."}
+  ],
+  "notes": [
+    {"header": "Associated Contact Record ID", "state_path": "hs_object_id"},
+    {"header": "Note body",                    "state_path": "_composed_note"},
+    {"header": "Activity date",                "state_path": "research.researched_at"}
+  ],
+  "review_columns": ["Accept? (Y/N)", "Reviewer", "Reviewer comment"]
+}

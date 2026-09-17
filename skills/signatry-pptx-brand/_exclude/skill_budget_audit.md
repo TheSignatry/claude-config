@@ -13,16 +13,16 @@
 
 **Deferred usage:** `deferred-full-use` — scripts/ are sequential steps in this skill's own 'Definition of done' checklist and run on every build; the bundled logo assets and design-system.md are required reading/assets for any deck, not just some.
 
-`signatry-pptx-brand`'s typical-call footprint is 6.28x the Signatry median (24,349 vs 3,877 tokens across 11 skills) **[OUTLIER]**.
+`signatry-pptx-brand`'s typical-call footprint is 5.54x the Signatry median (24,349 vs 4,394 tokens across 12 skills) **[OUTLIER]**.
 
 | | Skill Typical Call | Skill Worst Case | Signatry Median | Benchmark |
 |---|---|---|---|---|
-| Lines | 1,102 | 1,102 | 219 | 501 |
-| Tokens | 24,349 | 24,349 | 3,877 | 8,100 |
+| Lines | 1,102 | 1,102 | 236 | 501 |
+| Tokens | 24,349 | 24,349 | 4,394 | 8,100 |
 
 ## Version Delta
 
-No version change since the last recorded snapshot (v2.5, recorded 2026-08-15).
+No version change since the last recorded snapshot (v2.5, recorded 2026-09-13).
 
 ## Findings
 

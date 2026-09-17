@@ -1,0 +1,148 @@
+{
+  "hs_object_id": "239596421482",
+  "input": {
+    "firstname": "Paul",
+    "lastname": "Brown",
+    "email": "pabrown54@gmail.com",
+    "phone": null,
+    "address": null,
+    "owner": null,
+    "source_row": 10
+  },
+  "hubspot": {
+    "properties": {
+      "firstname": "Paul",
+      "lastname": "Brown",
+      "email": "pabrown54@gmail.com",
+      "address": null,
+      "city": null,
+      "state": null,
+      "zip": null,
+      "hubspot_owner_id": "85144252",
+      "owner_name": "Dale Armstrong",
+      "createdate": "2026-08-03T15:12:46Z",
+      "hs_object_source_label": "FORM",
+      "hs_object_source_detail_1": "2026-08 - Iowa NASCAR Race (YL) - VIP - Event Registration Form (SimpleEvents.io)",
+      "referral_channel": "Family Office",
+      "referral_company_give_id": null,
+      "num_notes": "0"
+    },
+    "pulled_at": "2026-09-12T19:15:13Z"
+  },
+  "associations": {
+    "companies": [],
+    "contacts": [],
+    "surname_matches": [
+      {
+        "id": "37137002849",
+        "firstname": "Paul",
+        "city": null,
+        "state": null,
+        "email_domain": "outlook.com"
+      },
+      {
+        "id": "29167234345",
+        "firstname": "Paul",
+        "city": null,
+        "state": "IL",
+        "email_domain": "aol.com"
+      }
+    ],
+    "household_pair_candidate": {
+      "id": null,
+      "name": null,
+      "seconds_apart": null
+    },
+    "spouse_in_hubspot": {
+      "id": null,
+      "name": null,
+      "evidence": "none"
+    }
+  },
+  "activity": {
+    "notes": [],
+    "emails": [],
+    "calls": [],
+    "meetings": [],
+    "tasks": [],
+    "redactions": 0,
+    "summary": "0 activities. No notes, emails, calls, meetings, or tasks logged."
+  },
+  "derived": {
+    "email_handle": "pabrown54",
+    "email_domain": "gmail.com",
+    "is_corporate_domain": false,
+    "identifiability_tier": "standard",
+    "record_source_event": "2026-08 Iowa NASCAR Race (YL) VIP",
+    "role_companies": [],
+    "referral_company": null,
+    "data_quality_flags": [
+      "2 other HubSpot record(s) named Paul Brown with different emails (IDs 37137002849, 29167234345) – review for duplicates"
+    ]
+  },
+  "research": {
+    "match_confidence": "Low",
+    "confidence_rationale": "Email handle 'pabrown', Iowa event registration, and 'Family Office' referral channel all fit a Des Moines investment adviser named Paul Alvin Brown, but nothing links pabrown54@gmail.com to him.",
+    "navigation": "web_tools_fallback",
+    "model": "interactive",
+    "identity": {
+      "full_name_public": "Candidate only: Paul Alvin Brown",
+      "location": "Likely Iowa; candidate: Des Moines, IA",
+      "linkedin_url": "Not located",
+      "other_web": []
+    },
+    "household": {
+      "spouse_name": null,
+      "spouse_source": null,
+      "spouse_in_hubspot": "no",
+      "spouse_hubspot_id": null,
+      "notes": null
+    },
+    "company": {
+      "name": "Candidate only: Principal Financial Advisors, Inc. (Des Moines, IA) – employer, not owned",
+      "role_title": "Candidate only: Paul Alvin Brown, registered investment adviser representative (CRD# 2799256), Principal Financial Advisors, Inc.",
+      "hq_address": "Candidate: 655 9th St, Des Moines, IA 50309",
+      "website": "Candidate: principal.com",
+      "revenue_estimate": "N/A – candidate is an employee of Principal Financial Group (public: NASDAQ PFG), not a business owner",
+      "revenue_source": "N/A",
+      "ownership_type": "N/A (candidate is not a business owner)",
+      "owners_principals": "N/A",
+      "ownership_source": "Candidate only: FINRA/SEC registration data via theadvisoros.com (candidate only)",
+      "is_candidate_only": true,
+      "company_slug": null
+    },
+    "nonprofit_role_associations": [],
+    "referral_context": "Registered via the Aug 2026 Iowa NASCAR (Young Life) VIP form; referral channel 'Family Office'; no referral company recorded.",
+    "data_quality_flags": [],
+    "overview": "Paul Brown registered for the August 2026 Iowa NASCAR (Young Life) VIP event with a referral channel of \"Family Office.\" Combined with the email handle (\"pabrown\") and the Iowa geography, one plausible candidate emerged: Paul Alvin Brown, a registered investment adviser representative with Principal Financial Advisors, Inc., in Des Moines. This is an unconfirmed candidate; confirm by phone or email before relying on it.",
+    "notes": "Candidate identified from handle + geography + referral context; nothing on record links the Gmail address to him.",
+    "sources": [
+      {
+        "title": "FINRA/SEC registration – Paul Alvin Brown, Principal Financial Advisors, Des Moines (candidate only)",
+        "used_for": "identification",
+        "url": "https://www.theadvisoros.com/advisors/iowa/des-moines/paul-brown-9256"
+      }
+    ],
+    "search_count": 2,
+    "fetch_count": 0,
+    "researched_at": "2026-09-12T19:15:14Z"
+  },
+  "review": {
+    "reviewed_by": null,
+    "decision": null,
+    "notes": null,
+    "reviewed_at": null
+  },
+  "status": {
+    "stages": {
+      "init": "2026-09-12T19:15:13Z",
+      "hubspot": "2026-09-12T19:15:13Z",
+      "associations": "2026-09-12T19:15:13Z",
+      "activity": "2026-09-12T19:15:13Z",
+      "derived": "2026-09-12T19:15:13Z",
+      "research": "2026-09-12T19:15:14Z"
+    },
+    "batch": 0,
+    "errors": []
+  }
+}

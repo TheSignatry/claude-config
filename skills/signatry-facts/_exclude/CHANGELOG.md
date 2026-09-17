@@ -6,6 +6,14 @@ Format: date · file · what changed · why it matters.
 
 ---
 
+## 2026-09-16 — Q2 2026 impact report figures updated
+
+`facts.md` updated — Ben Martin, sourced from `IR-2026Q2` (`2026 - Q2Report Content.docx`, BrandTeam SharePoint, data as of August 2026), superseding `IR-2026Q1`.
+
+Source table row now cites `IR-2026Q2`. Headline cumulative-since-2018 figures updated: granted over $3.9 billion → over $4 billion, contributed $5.8 billion → $5.9 billion, nonprofits supported 13,421 → 13,737, total active funds 3,891 → over 3,900. Also updated: Candid/GuideStar Platinum Transparency and Best Christian Workplaces Certified accreditation years, both 2025 → 2026.
+
+**Why it matters:** keeps the skill's headline figures current with the latest published impact report instead of a quarter behind.
+
 ## 2026-08-06 — token-optimization pass; duplicate routing table removed
 
 `facts.md` updated — token-efficiency review, no factual changes.

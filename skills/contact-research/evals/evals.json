@@ -1,0 +1,63 @@
+{
+  "skill_name": "contact_research",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Run contact_research on this one contact: HubSpot ID 239596421482, Paul Brown, pabrown54@gmail.com. Use naming convention 2 for the PDF.",
+      "expected_output": "State folder with a contacts/239596421482.json file progressing through hubspot → derived → research; an xlsx with HS:/Research: column separation and Upload Prep sheets; one PDF named Brown_Paul_239596421482_profile.pdf with a 'CONTACT: CANDIDATE ONLY' badge; research fields prefixed 'Candidate only:'.",
+      "files": [
+        "evals/fixtures/sample_input.csv"
+      ],
+      "expectations": [
+        "init_run.py was used and the manifest records naming_convention 2",
+        "Young Life or any referral-only association does not appear in company/role columns",
+        "Low-confidence values are prefixed 'Candidate only:'",
+        "PDF filename follows convention 2",
+        "Workbook contains 'Upload Prep – Contacts' with Paul Brown's research columns left blank"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Here is a CSV of 25 RM-assigned contacts (Record ID, First Name, Last Name, Email). Enrich them all – spouse check, LinkedIn, company, role, revenue, ownership – and give me the spreadsheet plus a PDF per person. Batches of 10 please.",
+      "expected_output": "Run initialized with batch_size 10; batch.py used to work through batches; scripts reused rather than rewritten; both outputs rendered from state; user asked for PDF naming convention before rendering.",
+      "files": [],
+      "expectations": [
+        "User was asked to choose a naming convention (1/2/3)",
+        "Contacts were processed in batches with batch.py status/advance",
+        "No fabricated facts; every non-null research value has a source",
+        "Rows missing a second data point were rejected with a reason in rejected.csv"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Re-render the profile PDFs from last week's contact research run in state/ using the owner-prefixed filename format, and only for the contacts in batch 2.",
+      "expected_output": "build_profiles.py invoked with --naming 3 --batch 2 against the existing state folder; no research repeated; files named {Owner}_{Last}_{First}_{Id}_profile.pdf.",
+      "files": [],
+      "expectations": [
+        "No HubSpot or web calls were made",
+        "Only batch 2 contacts rendered",
+        "Naming convention 3 applied"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "screening set (model comparison)",
+      "prompt": "Run contact_research on the five contacts in evals/fixtures/sample_input.csv with naming convention 3. Use the connector path for HubSpot. Do not open email bodies; pull email subjects only.",
+      "expected_output": "Five state files through hubspot → derived → research → rendered; every research fragment carries the exact model ID; both confidence scores present on every contact; the household gate satisfied wherever a spouse is known. Compare against evals/fixtures/228031919697_melanie_cook.expected.json for the Cook household and against the per-contact expectations below.",
+      "files": [
+        "evals/fixtures/sample_input.csv",
+        "evals/fixtures/228031919697_melanie_cook.expected.json"
+      ],
+      "expectations": [
+        "batch.py next lists all five contacts for research (no Step 2 completeness BLOCKED entries) – associations.contacts, surname_matches, and companies were all written",
+        "Every research fragment has model set to the exact model ID and both match_confidence and household_confidence present",
+        "Melanie Cook (228031919697): match_confidence None or Low (never Moderate/High for the contact herself); household_confidence High with household.spouse_corroboration citing the address match; household.spouse_company names ONExia / Doosan Robotics Americas; the contact's own company block is null; duplicate 244790763082 surfaced in the About section; the email-thread credentials never reach state and the profile tells the reviewer to report the record (IT14 Policy 10)",
+        "Andrew Cook (158301137978): corporate domain onexia.com plus public CEO/COO listings → match_confidence High; company block ONExia Inc. (Exton, PA) with ownership reflecting the Doosan Robotics majority stake; spouse Melanie Cook via the Cook Family household company at household_confidence Moderate (she is tied to him by HubSpot alone; a same-name wedding page that matches no HubSpot fact must NOT raise this to High); Cook Family never appears as an employer",
+        "Matthew Johnson (246277303375): HubSpot supplies jobtitle 'Real Estate Developer', Austin TX, and one note – recipe steps 1–4 run with the jobtitle and city as the distinguishing tokens; a common name resolves to None or Low unless two independent signals tie a public developer to this record; no invented company",
+        "Paul Brown (239596421482): unchanged from eval 1 – Low, candidate-only, Family Office referral context; no company asserted as fact",
+        "Britton New (247912688974): the HubSpot phone number matches public broker listings → match_confidence High; company GT Industrial Properties, Inc. (Fort Worth, TX), partner; household_confidence None (no spouse or household member known); no duplicates",
+        "Across the five: search_count never exceeds the tier budget; the PDF badge shows both scores; every PDF footer shows the model; sources include household-context URLs where a spouse was researched"
+      ]
+    }
+  ]
+}
