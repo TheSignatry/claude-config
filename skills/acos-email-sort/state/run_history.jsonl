@@ -20,3 +20,4 @@
 {"counts": {"1_priority": 0, "2_review": 6, "3_delegate": 0, "5_draftsToReview": 0, "6_bulkToReview": 3, "7_toBeFiled": 8, "unclassified_in_inbox": 0}, "date": "2026-09-09", "declines": 0, "filed_without_action": 8}
 {"counts": {"1_priority": 2, "2_review": 19, "3_delegate": 0, "5_draftsToReview": 0, "6_bulkToReview": 11, "7_toBeFiled": 5, "unclassified_in_inbox": 0}, "date": "2026-09-10", "declines": 0, "filed_without_action": 2}
 {"counts": {"1_priority": 4, "2_review": 16, "3_delegate": 0, "5_draftsToReview": 6, "6_bulkToReview": 4, "7_toBeFiled": 18, "unclassified_in_inbox": 0}, "date": "2026-09-11", "declines": 3, "filed_without_action": 0}
+{"counts": {"1_priority": 13, "2_review": 42, "3_delegate": 0, "5_draftsToReview": 6, "6_bulkToReview": 60, "7_toBeFiled": 20}, "date": "2026-09-17", "declines": 3, "filed_without_action": 2}

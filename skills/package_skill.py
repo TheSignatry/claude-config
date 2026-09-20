@@ -24,7 +24,8 @@ from pathlib import Path
 from lint_skills import SEVERITY_CRITICAL, SEVERITY_ERROR, lint_skill, parse_frontmatter
 
 EXCLUDE_DIR_NAMES = {"__pycache__", ".git", "_exclude"}
-EXCLUDE_FILE_NAMES = {".DS_Store"}
+EXCLUDE_FILE_NAMES = {".DS_Store", ".env"}
+EXCLUDE_FILE_PREFIXES = (".env.",)
 EXCLUDE_SUFFIXES = {".zip", ".pyc"}
 
 
@@ -39,7 +40,8 @@ def build_zip(skill_dir, slug, version):
                 continue
             if EXCLUDE_DIR_NAMES & set(file_path.relative_to(skill_dir).parts[:-1]):
                 continue
-            if file_path.name in EXCLUDE_FILE_NAMES or file_path.suffix.lower() in EXCLUDE_SUFFIXES:
+            if (file_path.name in EXCLUDE_FILE_NAMES or file_path.suffix.lower() in EXCLUDE_SUFFIXES
+                    or file_path.name.startswith(EXCLUDE_FILE_PREFIXES)):
                 continue
             zf.write(file_path, file_path.relative_to(skill_dir))
     return out_path

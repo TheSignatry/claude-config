@@ -164,28 +164,40 @@ def main():
                               "household_pair_candidate": None, "surname_matches": surname}
 
         # activity with redaction
-        act, red = {"redactions": 0}, 0
+        act, red, unavailable = {"redactions": 0}, 0, []
         for kind, eprops in ENGAGEMENTS.items():
-            links = hs.assoc(hid, kind)
-            rows = []
-            if links:
-                ep = hs.batch_read(kind, [l["id"] for l in links], eprops)
-                for eid, e in ep.items():
-                    body_key = [k for k in eprops if k.endswith(("_body", "_text", "_notes")) or k == "content"]
-                    body = " ".join(str(e.get(k)) for k in body_key if e.get(k)) or None
-                    subj = e.get("hs_email_subject") or e.get("hs_call_title") or e.get("hs_meeting_title") or e.get("hs_task_subject") or e.get("subject")
-                    clean, hit = screen_text(body)
-                    if hit:
-                        red += 1
-                    rows.append({"id": eid, "timestamp": e.get("hs_timestamp") or e.get("createdate"), "subject": subj, "body": clean,
-                                 "direction": e.get("hs_email_direction") or e.get("hs_call_direction")})
-            act[kind] = rows
+            try:
+                links = hs.assoc(hid, kind)
+                rows = []
+                if links:
+                    ep = hs.batch_read(kind, [l["id"] for l in links], eprops)
+                    for eid, e in ep.items():
+                        body_key = [k for k in eprops if k.endswith(("_body", "_text", "_notes")) or k == "content"]
+                        body = " ".join(str(e.get(k)) for k in body_key if e.get(k)) or None
+                        subj = e.get("hs_email_subject") or e.get("hs_call_title") or e.get("hs_meeting_title") or e.get("hs_task_subject") or e.get("subject")
+                        clean, hit = screen_text(body)
+                        if hit:
+                            red += 1
+                        rows.append({"id": eid, "timestamp": e.get("hs_timestamp") or e.get("createdate"), "subject": subj, "body": clean,
+                                     "direction": e.get("hs_email_direction") or e.get("hs_call_direction")})
+                act[kind] = rows
+            except RuntimeError as err:
+                msg = str(err)
+                if "-> 403" in msg and "scope" in msg.lower():
+                    act[kind] = []
+                    unavailable.append(kind)
+                else:
+                    raise
         act["redactions"] = red
         n = sum(len(act[k]) for k in ENGAGEMENTS)
         act["summary"] = f"{n} activit{'y' if n == 1 else 'ies'}" + ("" if n else ". No notes, emails, calls, meetings, tasks, or tickets logged.")
+        if unavailable:
+            act["summary"] += f" ({', '.join(unavailable)} unavailable: app lacks HubSpot scope)"
         ct["activity"] = act
         if red:
             ct["status"]["errors"].append(f"{red} engagement body(ies) redacted as possible Restricted content – report to Technology Team (IT14 Policy 10)")
+        if unavailable:
+            ct["status"]["errors"].append(f"Engagement type(s) unavailable, app lacks HubSpot scope: {', '.join(unavailable)}")
         for s in ("hubspot", "associations", "activity"):
             ct["status"]["stages"][s] = now()
         save_json(contact_path(a.run_dir, hid), ct)
