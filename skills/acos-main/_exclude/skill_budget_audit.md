@@ -13,16 +13,16 @@
 
 **Deferred usage:** `deferred-full-use` (default — not yet reviewed for this skill)
 
-`acos-main`'s typical-call footprint is 2.41x the Signatry median (13,851 vs 5,738 tokens across 16 skills) **[OUTLIER]**.
+`acos-main`'s typical-call footprint is 2.31x the Signatry median (13,851 vs 5,995 tokens across 17 skills) **[OUTLIER]**.
 
 | | Skill Typical Call | Skill Worst Case | Signatry Median | Benchmark |
 |---|---|---|---|---|
 | Lines | 678 | 678 | 252 | 501 |
-| Tokens | 13,851 | 13,851 | 5,738 | 8,100 |
+| Tokens | 13,851 | 13,851 | 5,995 | 8,100 |
 
 ## Version Delta
 
-Compared to the last recorded version (v0.2, released 2026-08-15): total lines **+0 (+0.0%)**, total tokens **+15 (+0.1%)**.
+No version change since the last recorded snapshot (v0.3, recorded 2026-09-23).
 
 ## Findings
 

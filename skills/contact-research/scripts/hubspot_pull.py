@@ -12,7 +12,7 @@ Requires: requests (pip install requests --break-system-packages)
 import argparse, os, sys, time, json
 sys.path.insert(0, os.path.dirname(__file__))
 from cr_common import (list_contacts, load_manifest, save_manifest, contact_path, load_json, save_json, now,
-                       screen_text, recount)
+                       screen_text, recount, signatry_insider, fix_name_case, NO_OWNER)
 
 BASE = "https://api.hubapi.com"
 PROPS = ["firstname", "lastname", "salutation", "email", "phone", "mobilephone", "address", "street_address_2", "city",
@@ -67,7 +67,8 @@ class HS:
         while True:
             j = self.call("GET", "/crm/v3/owners", params={"limit": 100, **({"after": after} if after else {})})
             for o in j.get("results", []):
-                out[str(o["id"])] = f"{o.get('firstName','')} {o.get('lastName','')}".strip() or o.get("email")
+                # fix_name_case: one portal owner is stored as "dale armstrong"; naming convention 3 puts this in every PDF filename
+                out[str(o["id"])] = fix_name_case(f"{o.get('firstName','')} {o.get('lastName','')}".strip()) or o.get("email")
             after = (j.get("paging") or {}).get("next", {}).get("after")
             if not after:
                 return out
@@ -136,7 +137,7 @@ def main():
             ct["status"]["errors"].append("Contact ID not found in HubSpot")
             save_json(contact_path(a.run_dir, hid), ct)
             continue
-        p["owner_name"] = m["owners"].get(str(p.get("hubspot_owner_id")), None)
+        p["owner_name"] = m["owners"].get(str(p.get("hubspot_owner_id")), None) or (NO_OWNER if not p.get("hubspot_owner_id") else None)
         ct["hubspot"] = {"pulled_at": now(), "properties": p}
 
         # associations
@@ -163,8 +164,9 @@ def main():
         ct["associations"] = {"companies": companies, "contacts": contacts, "funds": funds, "spouse_in_hubspot": None,
                               "household_pair_candidate": None, "surname_matches": surname}
 
-        # activity with redaction
-        act, red, unavailable = {"redactions": 0}, 0, []
+        # activity with redaction; Signatry staff/board contacts also get the Board Confidential screen (IT15)
+        insider = signatry_insider(p, {"companies": companies})
+        act, red, board_red, unavailable = {"redactions": 0}, 0, 0, []
         for kind, eprops in ENGAGEMENTS.items():
             try:
                 links = hs.assoc(hid, kind)
@@ -175,9 +177,13 @@ def main():
                         body_key = [k for k in eprops if k.endswith(("_body", "_text", "_notes")) or k == "content"]
                         body = " ".join(str(e.get(k)) for k in body_key if e.get(k)) or None
                         subj = e.get("hs_email_subject") or e.get("hs_call_title") or e.get("hs_meeting_title") or e.get("hs_task_subject") or e.get("subject")
-                        clean, hit = screen_text(body)
-                        if hit:
-                            red += 1
+                        clean, hit = screen_text(body, insider=bool(insider))
+                        subj, shit = screen_text(subj, insider=bool(insider))
+                        for h in (hit, shit):
+                            if h:
+                                red += 1
+                                if h.startswith("board:"):
+                                    board_red += 1
                         rows.append({"id": eid, "timestamp": e.get("hs_timestamp") or e.get("createdate"), "subject": subj, "body": clean,
                                      "direction": e.get("hs_email_direction") or e.get("hs_call_direction")})
                 act[kind] = rows
@@ -195,7 +201,9 @@ def main():
             act["summary"] += f" ({', '.join(unavailable)} unavailable: app lacks HubSpot scope)"
         ct["activity"] = act
         if red:
-            ct["status"]["errors"].append(f"{red} engagement body(ies) redacted as possible Restricted content – report to Technology Team (IT14 Policy 10)")
+            ct["status"]["errors"].append(f"{red} engagement field(s) redacted as possible Restricted content – report to Technology Team (IT14 Policy 10)")
+        if board_red:
+            ct["status"]["errors"].append(f"{board_red} engagement field(s) redacted as possible Board Confidential content (Signatry {insider} record, IT15) – report to Technology Team (IT14 Policy 10)")
         if unavailable:
             ct["status"]["errors"].append(f"Engagement type(s) unavailable, app lacks HubSpot scope: {', '.join(unavailable)}")
         for s in ("hubspot", "associations", "activity"):

@@ -13,16 +13,16 @@
 
 **Deferred usage:** `deferred-full-use` (default — not yet reviewed for this skill)
 
-`acos-jira-analysis`'s typical-call footprint is 1.58x the Signatry median (9,078 vs 5,738 tokens across 16 skills).
+`acos-jira-analysis`'s typical-call footprint is 1.51x the Signatry median (9,078 vs 5,995 tokens across 17 skills).
 
 | | Skill Typical Call | Skill Worst Case | Signatry Median | Benchmark |
 |---|---|---|---|---|
 | Lines | 651 | 651 | 252 | 501 |
-| Tokens | 9,078 | 9,078 | 5,738 | 8,100 |
+| Tokens | 9,078 | 9,078 | 5,995 | 8,100 |
 
 ## Version Delta
 
-Compared to the last recorded version (v0.2, released 2026-08-15): total lines **+13 (+2.0%)**, total tokens **+232 (+2.6%)**.
+No version change since the last recorded snapshot (v0.3, recorded 2026-09-23).
 
 ## Findings
 

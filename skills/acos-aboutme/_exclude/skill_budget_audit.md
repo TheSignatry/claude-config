@@ -13,16 +13,16 @@
 
 **Deferred usage:** `deferred-full-use` (default — not yet reviewed for this skill)
 
-`acos-aboutme`'s typical-call footprint is 1.35x the Signatry median (7,769 vs 5,738 tokens across 16 skills).
+`acos-aboutme`'s typical-call footprint is 1.30x the Signatry median (7,769 vs 5,995 tokens across 17 skills).
 
 | | Skill Typical Call | Skill Worst Case | Signatry Median | Benchmark |
 |---|---|---|---|---|
 | Lines | 223 | 223 | 252 | 501 |
-| Tokens | 7,769 | 7,769 | 5,738 | 8,100 |
+| Tokens | 7,769 | 7,769 | 5,995 | 8,100 |
 
 ## Version Delta
 
-Compared to the last recorded version (v0.3, released 2026-08-15): total lines **+26 (+13.2%)**, total tokens **+1,387 (+21.7%)**.
+No version change since the last recorded snapshot (v0.4, recorded 2026-09-23).
 
 ## Findings
 
