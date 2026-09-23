@@ -15,7 +15,7 @@ Exit code 2 on validation failure (nothing written).
 import argparse, json, os, sys
 sys.path.insert(0, os.path.dirname(__file__))
 from cr_common import (load_json, save_json, contact_path, now, valid_id, contains_characterization,
-                       screen_text, recount, model_policy_flag)
+                       screen_text, recount, model_policy_flag, signatry_insider)
 
 CONF = {"High", "Moderate", "Low", "None"}
 CORROBORATION = {"address", "city", "employer", "phone", "email_domain", "age_band"}
@@ -71,6 +71,8 @@ def validate_research(frag, ct):
                     "employer, role, and ownership and set household.spouse_company.name (or 'Not found – <what was tried>')")
     if mc in ("High", "Moderate") and not frag.get("sources"):
         errs.append("High/Moderate confidence requires at least one source")
+    if "deceased_per_public_source" in frag and not isinstance(frag.get("deceased_per_public_source"), (bool, type(None))):
+        errs.append("deceased_per_public_source must be true, false, or null (record only the fact and date of death, never the cause)")
     if mc in ("Low", "None"):
         for blk in ("identity", "company"):
             for k, v in (frag.get(blk) or {}).items():
@@ -134,18 +136,23 @@ def main():
             print(json.dumps({"ok": False, "errors": errs}, indent=2))
             sys.exit(2)
     if a.stage == "activity":
-        red = 0
+        insider = signatry_insider((ct.get("hubspot") or {}).get("properties"), ct.get("associations"))
+        red, board_red = 0, 0
         for k in ("notes", "emails", "calls", "meetings", "tasks", "tickets"):
             for e in frag.get(k) or []:
                 for fld in ("body", "subject", "title"):
                     if e.get(fld):
-                        clean, hit = screen_text(e[fld])
+                        clean, hit = screen_text(e[fld], insider=bool(insider))
                         if hit:
                             e[fld] = clean
                             red += 1
+                            if hit.startswith("board:"):
+                                board_red += 1
         frag["redactions"] = frag.get("redactions", 0) + red
         if red:
             ct["status"]["errors"].append(f"{red} engagement field(s) redacted as possible Restricted content – report to Technology Team (IT14 Policy 10)")
+        if board_red:
+            ct["status"]["errors"].append(f"{board_red} engagement field(s) redacted as possible Board Confidential content (Signatry {insider} record, IT15) – report to Technology Team (IT14 Policy 10)")
         n = sum(len(frag.get(k) or []) for k in ("notes", "emails", "calls", "meetings", "tasks", "tickets"))
         frag.setdefault("summary", f"{n} activities." if n else "0 activities. No notes, emails, calls, meetings, tasks, or tickets logged.")
 

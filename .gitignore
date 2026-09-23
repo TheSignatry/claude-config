@@ -220,5 +220,14 @@ __marimo__/
 # Packaged skill artifacts (built by skills/package_skill.py)
 skills/*/*.zip
 
+# acos-email-sort runtime state (config with real VIP-sender addresses,
+# and the repeat-decline ledger) — per-user data, not part of the skill
+# package, never committed.
+skills/acos-email-sort/state/*.json
+
+# acos-aboutme runtime state (real names/emails of staff, VIPs, partners) —
+# per-user identity data, not part of the skill package, never committed.
+skills/acos-aboutme/state/*.json
+
 # macOS
 .DS_Store

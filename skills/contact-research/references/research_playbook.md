@@ -72,6 +72,12 @@ A third-party report supplied by staff (e.g., WhiteBridge) counts as one signal 
 
 **Nonprofit role associations:** boards, officer roles, and staff positions at nonprofits that a public source documents. This is where a HubSpot "referral" company can legitimately become a role if a bio proves it.
 
+**Public identifiers:** an EIN from a Form 990, a CRD from an SEC or FINRA record, a state professional license number, or a Secretary of State entity number is public data published by the regulator to identify the registrant. Record it where it helps a reviewer confirm the match (usually in `revenue_source`, `ownership_source`, or a source title) and leave it in source URLs. Do not record private identifiers (account, card, or government ID numbers of a person).
+
+**Deceased:** if an obituary, memorial page, or local news reports the contact has died, set `deceased_per_public_source: true` and put the date in `notes`. Never the cause. HubSpot often still shows such a record as an active client; the flag is what tells the relationship manager to fix it before outreach.
+
+**Role on the fund:** `derived.role_on_fund` comes from the Fund association labels. `advisor` means the contact is a financial or grant advisor on a client's fund, not a donor — research the firm normally, say so plainly in the overview, and do not describe the contact as a donor.
+
 **Flags:** ZIP/city mismatches, placeholder names, spelling variants, likely duplicates among surname matches, referral-only associations stored as companies, stale LinkedIn headlines.
 
 ## 6. Writing the overview
@@ -81,6 +87,10 @@ Three to six sentences, third person, plain and factual, in Signatry house style
 ## 7. Company reuse
 
 Before researching a company, check `state/companies/<slug>.json` (slug = email domain or lower-snake company name). If present, reuse it and add this contact to `used_by`. If not, write it after researching so colleagues in the same batch get it for free.
+
+**Shared domains.** Broker-dealer and wirehouse domains (`nm.com`, `lpl.com`, `ml.com`, `ubs.com`, `edwardjones.com`, and the rest of `SHARED_DOMAINS` in `cr_common.py`) are used by thousands of unrelated practices. A company record keyed to one of them describes one practice, not the next contact's employer. For a contact on a shared domain, use the practice's own website domain as the slug (`bieldwealth.com`, not `nm.com`); if the practice has no domain of its own, leave `company_slug` null and put the facts in the contact's `company` block only. `orchestrate.py pack` never offers a shared-domain record as `company_prior`; it does offer `company_prior_by_employer`, a record whose name matches the HubSpot employer, so colleagues on different email domains still share one record.
+
+**Personal and family domains.** `derive.py` marks free-mail, privacy-relay, and ISP domains (`PERSONAL_DOMAINS`) and surname vanity domains (`thewilsoncrew.com`, `sollazzo.org`; `derived.is_vanity_domain`) as non-corporate. Never write a company record for one.
 
 ## 8. Write the fragment
 

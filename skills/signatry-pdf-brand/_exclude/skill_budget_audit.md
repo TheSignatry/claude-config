@@ -13,16 +13,16 @@
 
 **Deferred usage:** `deferred-full-use` (default — not yet reviewed for this skill)
 
-`signatry-pdf-brand`'s typical-call footprint is 0.88x the Signatry median (3,877 vs 4,394 tokens across 12 skills).
+`signatry-pdf-brand`'s typical-call footprint is 0.65x the Signatry median (3,877 vs 5,995 tokens across 17 skills).
 
 | | Skill Typical Call | Skill Worst Case | Signatry Median | Benchmark |
 |---|---|---|---|---|
-| Lines | 252 | 252 | 236 | 501 |
-| Tokens | 3,877 | 3,877 | 4,394 | 8,100 |
+| Lines | 252 | 252 | 252 | 501 |
+| Tokens | 3,877 | 3,877 | 5,995 | 8,100 |
 
 ## Version Delta
 
-No version change since the last recorded snapshot (v1.3, recorded 2026-09-13).
+No version change since the last recorded snapshot (v1.3, recorded 2026-09-23).
 
 ## Findings
 

@@ -1,0 +1,242 @@
+# Vendor-decline template library for acos-email-sort.
+#
+# Shape mirrors the old src/cos/config/rejection_templates.yaml from the
+# retired MCP-server project: each entry is a topic name, deterministic
+# match patterns (subject/body regexes plus optional sender domains), and an
+# HTML body with {first_name} and {signoff} placeholders. scripts/triage.py
+# matches messages against these in file order — first match wins — and
+# fills both placeholders at draft time. {first_name} is the VENDOR's own
+# first name and falls back to "there" when the sender's display name
+# doesn't look like a person's name (e.g. a company or "Newsletter Team").
+# {signoff} is the mailbox owner's own name — pulled from acos-aboutme's
+# profile when that skill is installed and enrolled, or this skill's own
+# local `signature_first_name` fallback otherwise — so no person's name is
+# hardcoded here; that's what makes this template file reusable by anyone
+# who adopts this skill.
+#
+# The first four templates below (cybersec_msp_pitch, contact_list_data_pitch,
+# staffing_recruiting_pitch, software_dev_partnership_pitch) are Trevor's own
+# real decline drafts (the sign-off name swapped for {signoff}), pulled from
+# _watch/Vendors/8_Ashleigh to Respond/Not Interested/{CyberSec, List,
+# Staffing, SW_Dev} on 2026-08-02 — not invented copy. Match patterns were
+# built from the real vendor emails filed alongside each draft in that same
+# mailbox structure.
+#
+# nonprofit_outreach_pitch (added 2026-08-10) is DIFFERENT: it is drafted,
+# invented copy, not a real historical decline Trevor sent — added after
+# spotting a recurring "for your nonprofit" cold-outreach pattern across
+# several unrelated vendor pitches (supplier partnerships, succession
+# planning, AI/Salesforce upsell) with no single real prior reply to source
+# from. Its match patterns deliberately avoid a bare "nonprofit" keyword,
+# since that word is core Signatry vocabulary and appears constantly in
+# legitimate donor/grant/internal mail — matching only the outward-facing
+# "for/prepare your nonprofit" phrasing a cold vendor uses, which genuine
+# Signatry correspondence never does.
+#
+# email_verification_probe and generic_vendor_demo_pitch (both added
+# 2026-08-12, Theme C of _exclude/stage2_accuracy_report.md) are also invented
+# copy, not real historical declines. They exist to close a real coverage
+# gap the Stage 2 real-mailbox test found: 8 cold pitches Trevor hand-filed
+# as declines (a Data & AI platform pitch, a nonprofit-data-platform pitch,
+# a Salesforce "free sessions" upsell, a network-monitoring MSP pitch, an
+# HR/ATS demo ask, an email-verification spam probe, a travel-experience
+# pitch, and a GRC-platform content pitch) matched no existing template and
+# fell through to `undetermined` instead. generic_vendor_demo_pitch is
+# deliberately the broadest, most generic template in this file and is kept
+# LAST in file order on purpose (see the file-order note above — first
+# match wins, so anything more specific should still win first). It is also
+# the designated `fallback_decline_topic` in config.json, used by
+# `triage.py match-declines` for anything Trevor drops straight into
+# `4_autorespond` that doesn't match any template's keywords at all — see
+# SKILL.md's "Sweep 4_autorespond" section.
+#
+# conference_event_meetup_pitch (added 2026-08-17) is also invented copy, not
+# a real historical decline — added for a distinct pitch shape the existing
+# templates don't cover: a vendor checking whether the owner is attending a
+# named conference/event, then asking to meet up there or stop by a booth.
+# Deliberately doesn't try to match a specific conference name (that varies
+# every time) — only the surrounding "will you be there / let's meet up"
+# framing, kept before generic_vendor_demo_pitch in file order since it's
+# more specific.
+#
+# This content is still swappable data, not skill logic: Marketing should
+# review it as part of this skill's review process before it's trusted to
+# draft declines, especially the regex coverage, which is a first pass over
+# a small sample — nonprofit_outreach_pitch, email_verification_probe,
+# conference_event_meetup_pitch, and generic_vendor_demo_pitch most of all,
+# since they're unproven invented copy rather than a real draft Trevor
+# already stood behind.
+#
+# Nothing here is sent automatically — every draft this produces waits in
+# 5_draftsToReview for a human to send, and the disclosure_footer below is
+# appended to every rendered draft regardless of which template matched.
+# Plain <p>/<em> only, no style attribute — the live connector's outbound
+# HTML sanitizer rejects style=/class=/id= on any tag outright (whole draft
+# creation fails, not just the attribute stripped), found 2026-08-12 on the
+# first real live run.
+
+disclosure_footer: |
+  <p><em>This email was drafted with AI assistance so that every valid email receives a response (we wouldn't want to be ghosted, so this is how I'm keeping up with the volume of emails I receive). I do also want to reassure you that a human has reviewed each and every email and response before it was sent.</em></p>
+
+templates:
+  - topic: cybersec_msp_pitch
+    sender_domains: []
+    subject_patterns:
+      - "\\bmanaged (it )?(&|and)?\\s*cybersecurity\\b"
+      - "\\bmanaged security\\b"
+      - "\\bsecurity coordination\\b"
+      - "\\battack surface\\b"
+      - "\\bphishing (risk|resilience)\\b"
+      - "\\bcompliance without the chaos\\b"
+      - "\\bnetwork monitoring\\b"
+    body_patterns:
+      - "\\bmanaged (it|security) services?\\b"
+      - "\\b(SIEM|SOC|CMMC)\\b"
+      - "\\bvulnerabilit(y|ies)\\b"
+      - "\\bremediation\\b"
+      - "\\baudit readiness\\b"
+      - "\\brecompete\\b"
+      - "\\bmanaged security service provider\\b"
+      - "\\bcyber\\s*security\\b"
+    subject_prefix: "Re: "
+    html_body: |
+      <p>Dear {first_name},</p>
+      <p>Thank you for reaching out. We are engaged in a multi-year engagement with a Managed Security Service Provider and do not anticipate re-evaluating the agreement until the summer of 2027. Given that we are not a good prospect for your services at this time, I'm declining the meeting invitation.</p>
+      <p>If something changes or I'm looking for a new service - I'll typically post something on LinkedIn and you are welcome to follow me there (<a href="{personal_linkedin_url}">{personal_linkedin_url}</a>).</p>
+      <p>- {signoff}</p>
+
+  - topic: contact_list_data_pitch
+    sender_domains: []
+    subject_patterns:
+      - "\\bcontact list\\b"
+      - "\\bemail list\\b"
+      - "\\bemails? for outreach\\b"
+      - "\\bleads? list\\b"
+    body_patterns:
+      - "\\bverified list\\b"
+      - "\\bvalidated (email )?list\\b"
+      - "\\bcomplete contact details\\b"
+      - "\\bmarketing outreach\\b"
+      - "\\bprospect list\\b"
+      - "\\b(excel|csv) file format\\b"
+    subject_prefix: "Re: "
+    html_body: |
+      <p>Dear {first_name},</p>
+      <p>I sincerely appreciate your offer; however, we operate in a niche market and do not procure marketing lists. In fact we have a fairly strict OPT-IN only policy for our marketing practices.</p>
+      <p>Please remove us from your prospect list.</p>
+      <p>Thanks,<br>{signoff}</p>
+
+  - topic: staffing_recruiting_pitch
+    sender_domains: []
+    subject_patterns:
+      - "\\bstaffing (solutions|partner|services)\\b"
+      - "\\brecruit(ing|ment) (services|partner)\\b"
+      - "\\bconsultants? (ready|available)\\b"
+    body_patterns:
+      - "\\bready for their next project\\b"
+      - "\\bexploratory conversation\\b"
+      - "\\badditional skillsets?\\b"
+      - "\\bcontingency (fee|search)\\b"
+      - "\\b(bench|available) consultants?\\b"
+      - "\\bplace (a )?candidate\\b"
+    subject_prefix: "Re: "
+    html_body: |
+      <p>Dear {first_name},</p>
+      <p>Thank you for reaching out. I am not currently interested in your services. We have a very strong referral network and operate in a niche market, so we do not leverage any staffing or recruiting services in our standard practices.</p>
+      <p>Any open positions are typically advertised on our <a href="{careers_url}">Careers Page</a> and on <a href="{company_linkedin_url}">LinkedIn</a>. You are welcome to follow any changes there and reach out to our Talent department if you feel that you have a strong candidate.</p>
+      <p>{signoff}</p>
+
+  - topic: software_dev_partnership_pitch
+    sender_domains: []
+    subject_patterns:
+      - "\\bdevelopment partner(ship)?\\b"
+      - "\\bstaff augmentation\\b"
+      - "\\breduce .*development costs\\b"
+    body_patterns:
+      - "\\bdedicated development team\\b"
+      - "\\badd(ing)? (developers|players) to (your|the) (team|network)\\b"
+      - "\\boutsourc(e|ed|ing) (software )?development\\b"
+      - "\\b(nearshore|offshore) develop"
+      - "\\bin-house vs\\.? agency vs\\.? hybrid\\b"
+    subject_prefix: "Re: "
+    html_body: |
+      <p>Dear {first_name},</p>
+      <p>Thank you for reaching out. I have some great development partnerships in place. Right now, I do not have projects that require adding players to our network.</p>
+      <p>If something changes - I'll typically post something on LinkedIn and you are welcome to follow me there (<a href="{personal_linkedin_url}">{personal_linkedin_url}</a>).</p>
+      <p>- {signoff}</p>
+
+  - topic: nonprofit_outreach_pitch
+    sender_domains: []
+    subject_patterns:
+      - "\\bfor your nonprofit\\b"
+      - "\\bfellow .{0,20}nonprofit\\b"
+      - "\\bnonprofit disaster aid\\b"
+      - "\\bbuilt for nonprofits?\\b"
+    body_patterns:
+      - "\\bfor your nonprofit\\b"
+      - "\\bprepare your nonprofit\\b"
+      - "\\bnonprofits? face (these|this)\\b"
+    subject_prefix: "Re: "
+    html_body: |
+      <p>Dear {first_name},</p>
+      <p>Thank you for reaching out. We evaluate new vendor relationships internally rather than through cold outreach, and don't have a current need in this area.</p>
+      <p>If something changes, I'll typically post something on LinkedIn and you're welcome to follow me there (<a href="{personal_linkedin_url}">{personal_linkedin_url}</a>).</p>
+      <p>- {signoff}</p>
+
+  - topic: email_verification_probe
+    sender_domains: []
+    subject_patterns:
+      - "\\bquick check\\b"
+    body_patterns:
+      - "\\bmaking sure i have the correct email\\b"
+      - "\\bconfirm this is the best way to reach you\\b"
+      - "\\bcorrect email address for you\\b"
+      - "\\bbest way to reach you\\b"
+    subject_prefix: "Re: "
+    html_body: |
+      <p>Dear {first_name},</p>
+      <p>Thanks for reaching out, but I don't confirm contact details for unsolicited outreach. Please remove this address from your list.</p>
+      <p>{signoff}</p>
+
+  - topic: conference_event_meetup_pitch
+    sender_domains: []
+    subject_patterns:
+      - "\\bwill you be at\\b"
+      - "\\bare you attending\\b"
+      - "\\bmeet(ing)? up at\\b"
+      - "\\bsee you at\\b"
+    body_patterns:
+      - "\\bare you (planning on |going to be )?attending\\b"
+      - "\\bwill you be (at|attending)\\b"
+      - "\\bstop by (our|my) booth\\b"
+      - "\\bswing by (our|my) booth\\b"
+      - "\\bmeet up (at|during) (the )?(conference|summit|event|expo|show)\\b"
+      - "\\bconnect in person at (the )?(conference|summit|event|expo|show)\\b"
+      - "\\bsee you (there|at (the )?(conference|summit|event|expo|show))\\b"
+    subject_prefix: "Re: "
+    html_body: |
+      <p>Dear {first_name},</p>
+      <p>Thank you for the invite — I appreciate you thinking of me, but I won't be attending and won't be able to meet up.</p>
+      <p>If something changes, I'll typically post something on LinkedIn and you're welcome to follow me there (<a href="{personal_linkedin_url}">{personal_linkedin_url}</a>).</p>
+      <p>- {signoff}</p>
+
+  - topic: generic_vendor_demo_pitch
+    sender_domains: []
+    subject_patterns:
+      - "\\bdemo review\\b"
+      - "\\bfree sessions?\\b"
+      - "\\bwhy teams choose\\b"
+    body_patterns:
+      - "\\bquick (walk-?through|demo)\\b"
+      - "\\bjust reply (yes|y)\\b"
+      - "\\bexploring where it (could|might) support\\b"
+      - "\\bsee what'?s possible\\b"
+      - "\\bbook a (time|call|demo)\\b"
+      - "\\bschedule a (demo|call)\\b"
+      - "\\b(15|20|30)[- ]minute call\\b"
+    subject_prefix: "Re: "
+    html_body: |
+      <p>Dear {first_name},</p>
+      <p>Thank you for reaching out. We evaluate new vendor relationships internally rather than through cold outreach and don't have a need for this right now.</p>
+      <p>If something changes, I'll typically post something on LinkedIn and you're welcome to follow me there (<a href="{personal_linkedin_url}">{personal_linkedin_url}</a>).</p>
+      <p>- {signoff}</p>

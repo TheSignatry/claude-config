@@ -25,6 +25,20 @@ python3 shorten_oi.py
 Edit `organization_instructions_readable.md`, not `organization_instructions.md`
 directly — the compact file is generated output and will be overwritten.
 
+### acos family (personal productivity skills)
+
+A separate personal productivity suite — calendar analysis, Jira reporting,
+email triage, and daily/weekly/monthly planning — built around one shared
+identity/org-chart profile skill (`acos-aboutme`) so the others don't each
+ask the same setup questions. It follows the same skill folder layout and
+`_exclude/`/versioning conventions as every skill below, but isn't (yet)
+packaged and distributed org-wide via the Console the way the `signatry-*`
+family is — install locally only, and it's intentionally left out of the
+tracked skill table below since that table represents Console-distributed
+skills specifically. See
+[`skills/acos-aboutme/_exclude/GETTING_STARTED.md`](skills/acos-aboutme/_exclude/GETTING_STARTED.md)
+for the full setup walkthrough.
+
 ### Skills
 
 Every skill under `skills/{skill-slug}/` follows the same folder layout:
@@ -59,7 +73,7 @@ frontmatter fields exist, but does not check that this table matches them.
 | [`signatry-docx-brand`](skills/signatry-docx-brand/) | Signatry brand templates for Word documents: which of the two bundled `.dotx` templates to start from (general brand-styles vs. letterhead) and the mechanics of building from one. Pair with a general docx build skill and, for donor-facing copy, `signatry-style`. | 1.6 | 2026-08-07 |
 | [`signatry-pdf-brand`](skills/signatry-pdf-brand/) | Signatry brand system for PDFs built with reportlab: font registration/embedding, color palette, and logo usage. Pair with a general pdf skill and, for donor-facing copy, `signatry-style`. | 1.3 | 2026-08-06 |
 | [`sounding-board`](skills/sounding-board/) | Role-plays a panel of fictional, composite personas reacting to an idea, message, decision, or proposal before it goes out. Covers seven audiences (employee, donor, advisors, VIP family, board, shepherds/C-suite, nonprofit partner), each with its own persona file in `references/`. | 0.7 | 2026-09-16 |
-| [`contact-research`](skills/contact-research/) | Research and enrich HubSpot contacts for The Signatry's relationship managers, one at a time or in batches: pulls the HubSpot record, checks associations/activity for spouse and company links, researches the person on the public web, and produces an enrichment spreadsheet plus a branded PDF profile per contact from a JSON state folder. | 1.5 | 2026-09-14 |
+| [`contact-research`](skills/contact-research/) | Research and enrich HubSpot contacts for The Signatry's relationship managers, one at a time or in batches: pulls the HubSpot record, checks associations/activity for spouse and company links, researches the person on the public web, and produces an enrichment spreadsheet plus a branded PDF profile per contact from a JSON state folder; includes a parallel-subagent orchestrator with per-stage time and token reporting. | 1.0 | 2026-09-23 |
 
 ### Skill tooling
 

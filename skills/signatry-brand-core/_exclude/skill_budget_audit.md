@@ -13,16 +13,16 @@
 
 **Deferred usage:** `deferred-alternatives` — Logo files are use-case-specific (light vs. dark background, full wordmark vs. quill-only) -- a build needs the one matching its context, not all of them; reference/tints.md is loaded only when a specific tint value is actually needed.
 
-`signatry-brand-core`'s typical-call footprint is 2.21x the Signatry median (9,714 vs 4,394 tokens across 12 skills) **[OUTLIER]**.
+`signatry-brand-core`'s typical-call footprint is 1.62x the Signatry median (9,714 vs 5,995 tokens across 17 skills).
 
 | | Skill Typical Call | Skill Worst Case | Signatry Median | Benchmark |
 |---|---|---|---|---|
-| Lines | 253 | 332 | 236 | 501 |
-| Tokens | 9,714 | 12,037 | 4,394 | 8,100 |
+| Lines | 253 | 332 | 252 | 501 |
+| Tokens | 9,714 | 12,037 | 5,995 | 8,100 |
 
 ## Version Delta
 
-No version change since the last recorded snapshot (v1.2, recorded 2026-09-13).
+No version change since the last recorded snapshot (v1.2, recorded 2026-09-23).
 
 ## Findings
 
