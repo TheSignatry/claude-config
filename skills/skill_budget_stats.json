@@ -1,16 +1,16 @@
 {
   "corpus": {
-    "recorded_at": "2026-09-16",
-    "sibling_count": 12,
-    "median_typical_lines": 235.5,
-    "median_typical_tokens": 4394.0
+    "recorded_at": "2026-09-24",
+    "sibling_count": 17,
+    "median_typical_lines": 253,
+    "median_typical_tokens": 5995
   },
   "skills": {
     "signatry-style": [
       {
         "version": "2.2",
         "release_date": "2026-08-06",
-        "recorded_at": "2026-09-13",
+        "recorded_at": "2026-09-24",
         "composition": {
           "description": {
             "lines": 1,
@@ -36,7 +36,7 @@
       {
         "version": "3.4",
         "release_date": "2026-07-31",
-        "recorded_at": "2026-09-13",
+        "recorded_at": "2026-09-24",
         "composition": {
           "description": {
             "lines": 1,
@@ -86,7 +86,7 @@
       {
         "version": "1.2",
         "release_date": "2026-08-06",
-        "recorded_at": "2026-09-13",
+        "recorded_at": "2026-09-24",
         "composition": {
           "description": {
             "lines": 1,
@@ -112,7 +112,7 @@
       {
         "version": "2.1",
         "release_date": "2026-07-31",
-        "recorded_at": "2026-09-13",
+        "recorded_at": "2026-09-24",
         "composition": {
           "description": {
             "lines": 1,
@@ -138,7 +138,7 @@
       {
         "version": "1.6",
         "release_date": "2026-08-07",
-        "recorded_at": "2026-09-13",
+        "recorded_at": "2026-09-24",
         "composition": {
           "description": {
             "lines": 1,
@@ -188,7 +188,7 @@
       {
         "version": "1.4",
         "release_date": "2026-09-16",
-        "recorded_at": "2026-09-16",
+        "recorded_at": "2026-09-24",
         "composition": {
           "description": {
             "lines": 1,
@@ -214,7 +214,7 @@
       {
         "version": "1.3",
         "release_date": "2026-08-06",
-        "recorded_at": "2026-09-13",
+        "recorded_at": "2026-09-24",
         "composition": {
           "description": {
             "lines": 1,
@@ -240,7 +240,7 @@
       {
         "version": "2.1",
         "release_date": "2026-08-06",
-        "recorded_at": "2026-09-13",
+        "recorded_at": "2026-09-24",
         "composition": {
           "description": {
             "lines": 1,
@@ -290,7 +290,7 @@
       {
         "version": "2.5",
         "release_date": "2026-08-14",
-        "recorded_at": "2026-09-13",
+        "recorded_at": "2026-09-24",
         "composition": {
           "description": {
             "lines": 1,
@@ -316,7 +316,7 @@
       {
         "version": "1.0.1",
         "release_date": "2026-08-06",
-        "recorded_at": "2026-09-13",
+        "recorded_at": "2026-09-24",
         "composition": {
           "description": {
             "lines": 1,
@@ -390,7 +390,7 @@
       {
         "version": "0.7",
         "release_date": "2026-09-16",
-        "recorded_at": "2026-09-16",
+        "recorded_at": "2026-09-24",
         "composition": {
           "description": {
             "lines": 1,
@@ -414,7 +414,7 @@
     ],
     "contact-research": [
       {
-        "version": "1.0",
+        "version": "0.1",
         "release_date": "2026-09-12",
         "recorded_at": "2026-09-12",
         "composition": {
@@ -438,7 +438,7 @@
         }
       },
       {
-        "version": "1.1",
+        "version": "0.2",
         "release_date": "2026-09-13",
         "recorded_at": "2026-09-13",
         "composition": {
@@ -462,7 +462,7 @@
         }
       },
       {
-        "version": "1.2",
+        "version": "0.3",
         "release_date": "2026-09-13",
         "recorded_at": "2026-09-13",
         "composition": {
@@ -486,7 +486,7 @@
         }
       },
       {
-        "version": "1.3",
+        "version": "0.4",
         "release_date": "2026-09-13",
         "recorded_at": "2026-09-13",
         "composition": {
@@ -510,7 +510,7 @@
         }
       },
       {
-        "version": "1.4",
+        "version": "0.5",
         "release_date": "2026-09-13",
         "recorded_at": "2026-09-13",
         "composition": {
@@ -534,7 +534,7 @@
         }
       },
       {
-        "version": "1.5",
+        "version": "0.6",
         "release_date": "2026-09-14",
         "recorded_at": "2026-09-14",
         "composition": {
@@ -554,6 +554,30 @@
           "total": {
             "lines": 2630,
             "tokens": 43105
+          }
+        }
+      },
+      {
+        "version": "1.0",
+        "release_date": "2026-09-23",
+        "recorded_at": "2026-09-24",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 248
+          },
+          "body": {
+            "lines": 135,
+            "tokens": 4221
+          },
+          "deferred": {
+            "lines": 3224,
+            "tokens": 52437,
+            "file_count": 18
+          },
+          "total": {
+            "lines": 3360,
+            "tokens": 56906
           }
         }
       }
@@ -586,7 +610,7 @@
       {
         "version": "0.4",
         "release_date": "2026-08-16",
-        "recorded_at": "2026-08-16",
+        "recorded_at": "2026-09-24",
         "composition": {
           "description": {
             "lines": 1,
@@ -597,13 +621,109 @@
             "tokens": 4153
           },
           "deferred": {
-            "lines": 144,
-            "tokens": 3368,
+            "lines": 151,
+            "tokens": 3587,
             "file_count": 1
           },
           "total": {
-            "lines": 223,
-            "tokens": 7769
+            "lines": 230,
+            "tokens": 7988
+          }
+        }
+      },
+      {
+        "version": "0.5",
+        "release_date": "2026-09-24",
+        "recorded_at": "2026-09-24",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 248
+          },
+          "body": {
+            "lines": 78,
+            "tokens": 4153
+          },
+          "deferred": {
+            "lines": 151,
+            "tokens": 3587,
+            "file_count": 1
+          },
+          "total": {
+            "lines": 230,
+            "tokens": 7988
+          }
+        }
+      },
+      {
+        "version": "0.6",
+        "release_date": "2026-09-24",
+        "recorded_at": "2026-09-24",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 248
+          },
+          "body": {
+            "lines": 97,
+            "tokens": 4769
+          },
+          "deferred": {
+            "lines": 261,
+            "tokens": 3621,
+            "file_count": 2
+          },
+          "total": {
+            "lines": 359,
+            "tokens": 8638
+          }
+        }
+      },
+      {
+        "version": "0.7",
+        "release_date": "2026-09-24",
+        "recorded_at": "2026-09-24",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 248
+          },
+          "body": {
+            "lines": 98,
+            "tokens": 4856
+          },
+          "deferred": {
+            "lines": 262,
+            "tokens": 3626,
+            "file_count": 2
+          },
+          "total": {
+            "lines": 361,
+            "tokens": 8730
+          }
+        }
+      },
+      {
+        "version": "0.8",
+        "release_date": "2026-09-24",
+        "recorded_at": "2026-09-24",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 248
+          },
+          "body": {
+            "lines": 123,
+            "tokens": 5485
+          },
+          "deferred": {
+            "lines": 657,
+            "tokens": 7441,
+            "file_count": 3
+          },
+          "total": {
+            "lines": 781,
+            "tokens": 13174
           }
         }
       }
@@ -656,6 +776,54 @@
             "tokens": 24646
           }
         }
+      },
+      {
+        "version": "0.4",
+        "release_date": "2026-08-30",
+        "recorded_at": "2026-09-24",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 250
+          },
+          "body": {
+            "lines": 53,
+            "tokens": 2390
+          },
+          "deferred": {
+            "lines": 1790,
+            "tokens": 22288,
+            "file_count": 1
+          },
+          "total": {
+            "lines": 1844,
+            "tokens": 24928
+          }
+        }
+      },
+      {
+        "version": "0.5",
+        "release_date": "2026-09-24",
+        "recorded_at": "2026-09-24",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 250
+          },
+          "body": {
+            "lines": 53,
+            "tokens": 2390
+          },
+          "deferred": {
+            "lines": 1857,
+            "tokens": 23091,
+            "file_count": 1
+          },
+          "total": {
+            "lines": 1911,
+            "tokens": 25731
+          }
+        }
       }
     ],
     "acos-jira-analysis": [
@@ -686,7 +854,7 @@
       {
         "version": "0.3",
         "release_date": "2026-08-16",
-        "recorded_at": "2026-08-16",
+        "recorded_at": "2026-09-24",
         "composition": {
           "description": {
             "lines": 1,
@@ -697,13 +865,61 @@
             "tokens": 1848
           },
           "deferred": {
-            "lines": 614,
-            "tokens": 7120,
+            "lines": 650,
+            "tokens": 7587,
             "file_count": 1
           },
           "total": {
-            "lines": 651,
-            "tokens": 9078
+            "lines": 687,
+            "tokens": 9545
+          }
+        }
+      },
+      {
+        "version": "0.4",
+        "release_date": "2026-09-24",
+        "recorded_at": "2026-09-24",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 110
+          },
+          "body": {
+            "lines": 36,
+            "tokens": 1848
+          },
+          "deferred": {
+            "lines": 650,
+            "tokens": 7587,
+            "file_count": 1
+          },
+          "total": {
+            "lines": 687,
+            "tokens": 9545
+          }
+        }
+      },
+      {
+        "version": "0.5",
+        "release_date": "2026-09-24",
+        "recorded_at": "2026-09-24",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 110
+          },
+          "body": {
+            "lines": 36,
+            "tokens": 1848
+          },
+          "deferred": {
+            "lines": 713,
+            "tokens": 8328,
+            "file_count": 1
+          },
+          "total": {
+            "lines": 750,
+            "tokens": 10286
           }
         }
       }
@@ -756,6 +972,150 @@
             "tokens": 30821
           }
         }
+      },
+      {
+        "version": "0.5",
+        "release_date": "2026-08-17",
+        "recorded_at": "2026-09-24",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 93
+          },
+          "body": {
+            "lines": 160,
+            "tokens": 10436
+          },
+          "deferred": {
+            "lines": 1615,
+            "tokens": 20841,
+            "file_count": 3
+          },
+          "total": {
+            "lines": 1776,
+            "tokens": 31370
+          }
+        }
+      },
+      {
+        "version": "0.6",
+        "release_date": "2026-09-24",
+        "recorded_at": "2026-09-24",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 93
+          },
+          "body": {
+            "lines": 161,
+            "tokens": 10588
+          },
+          "deferred": {
+            "lines": 1602,
+            "tokens": 20435,
+            "file_count": 3
+          },
+          "total": {
+            "lines": 1764,
+            "tokens": 31116
+          }
+        }
+      },
+      {
+        "version": "0.7",
+        "release_date": "2026-09-24",
+        "recorded_at": "2026-09-24",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 93
+          },
+          "body": {
+            "lines": 161,
+            "tokens": 10588
+          },
+          "deferred": {
+            "lines": 1662,
+            "tokens": 21134,
+            "file_count": 3
+          },
+          "total": {
+            "lines": 1824,
+            "tokens": 31815
+          }
+        }
+      },
+      {
+        "version": "0.8",
+        "release_date": "2026-09-24",
+        "recorded_at": "2026-09-24",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 93
+          },
+          "body": {
+            "lines": 165,
+            "tokens": 10822
+          },
+          "deferred": {
+            "lines": 1704,
+            "tokens": 22227,
+            "file_count": 4
+          },
+          "total": {
+            "lines": 1870,
+            "tokens": 33142
+          }
+        }
+      },
+      {
+        "version": "0.9",
+        "release_date": "2026-09-24",
+        "recorded_at": "2026-09-24",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 93
+          },
+          "body": {
+            "lines": 165,
+            "tokens": 10840
+          },
+          "deferred": {
+            "lines": 1756,
+            "tokens": 22746,
+            "file_count": 4
+          },
+          "total": {
+            "lines": 1922,
+            "tokens": 33679
+          }
+        }
+      },
+      {
+        "version": "0.10",
+        "release_date": "2026-09-24",
+        "recorded_at": "2026-09-24",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 93
+          },
+          "body": {
+            "lines": 165,
+            "tokens": 10840
+          },
+          "deferred": {
+            "lines": 1756,
+            "tokens": 22753,
+            "file_count": 4
+          },
+          "total": {
+            "lines": 1922,
+            "tokens": 33686
+          }
+        }
       }
     ],
     "acos-main": [
@@ -786,7 +1146,7 @@
       {
         "version": "0.3",
         "release_date": "2026-08-16",
-        "recorded_at": "2026-08-16",
+        "recorded_at": "2026-09-24",
         "composition": {
           "description": {
             "lines": 1,
@@ -804,6 +1164,30 @@
           "total": {
             "lines": 678,
             "tokens": 13851
+          }
+        }
+      },
+      {
+        "version": "0.4",
+        "release_date": "2026-09-24",
+        "recorded_at": "2026-09-24",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 181
+          },
+          "body": {
+            "lines": 63,
+            "tokens": 3181
+          },
+          "deferred": {
+            "lines": 626,
+            "tokens": 10682,
+            "file_count": 2
+          },
+          "total": {
+            "lines": 690,
+            "tokens": 14044
           }
         }
       }

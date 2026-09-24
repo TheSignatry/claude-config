@@ -13,16 +13,16 @@
 
 **Deferred usage:** `deferred-full-use` (default — not yet reviewed for this skill)
 
-`signatry-docx-brand`'s typical-call footprint is 0.70x the Signatry median (3,091 vs 4,394 tokens across 12 skills).
+`signatry-docx-brand`'s typical-call footprint is 0.52x the Signatry median (3,091 vs 5,995 tokens across 17 skills).
 
 | | Skill Typical Call | Skill Worst Case | Signatry Median | Benchmark |
 |---|---|---|---|---|
-| Lines | 121 | 121 | 236 | 501 |
-| Tokens | 3,091 | 3,091 | 4,394 | 8,100 |
+| Lines | 121 | 121 | 253 | 501 |
+| Tokens | 3,091 | 3,091 | 5,995 | 8,100 |
 
 ## Version Delta
 
-No version change since the last recorded snapshot (v1.6, recorded 2026-09-13).
+No version change since the last recorded snapshot (v1.6, recorded 2026-09-24).
 
 ## Findings
 

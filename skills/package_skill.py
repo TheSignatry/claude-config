@@ -24,8 +24,39 @@ from pathlib import Path
 from lint_skills import SEVERITY_CRITICAL, SEVERITY_ERROR, lint_skill, parse_frontmatter
 
 EXCLUDE_DIR_NAMES = {"__pycache__", ".git", "_exclude"}
-EXCLUDE_FILE_NAMES = {".DS_Store"}
+EXCLUDE_FILE_NAMES = {".DS_Store", ".env"}
+EXCLUDE_FILE_PREFIXES = (".env.",)
 EXCLUDE_SUFFIXES = {".zip", ".pyc"}
+
+# A skill's state/ directory is one person's runtime data, never shippable: the
+# acos-aboutme profile is a full org chart with real staff, VIP and partner
+# names and email addresses, and acos-email-sort's ledger and summaries carry
+# external sender addresses and live mailbox message IDs. Before this rule,
+# acos-aboutme-0.4.zip and acos-email-sort-0.5.zip shipped 108 unique addresses
+# between them, and a zip is exactly what gets uploaded for org-wide deployment.
+#
+# Keep the empty directory itself, so a fresh install has the folder but no
+# data — which is also what makes enrollment fire, since every acos skill
+# detects "not enrolled yet" by the absence of its state file.
+#
+# Deliberately generic rather than acos-specific: contact-research also creates
+# a runtime state/ (scripts/init_run.py --run-dir state/) holding donor records.
+STATE_DIR_NAME = "state"
+STATE_KEEP_FILES = {".gitkeep"}
+
+
+def is_excluded(rel_path):
+    """rel_path is a skill-relative PurePath. True = keep it out of the zip."""
+    parts = rel_path.parts
+    if EXCLUDE_DIR_NAMES & set(parts[:-1]):
+        return True
+    if (rel_path.name in EXCLUDE_FILE_NAMES
+            or rel_path.suffix.lower() in EXCLUDE_SUFFIXES
+            or rel_path.name.startswith(EXCLUDE_FILE_PREFIXES)):
+        return True
+    if STATE_DIR_NAME in parts[:-1] and rel_path.name not in STATE_KEEP_FILES:
+        return True
+    return False
 
 
 def build_zip(skill_dir, slug, version):
@@ -37,11 +68,10 @@ def build_zip(skill_dir, slug, version):
         for file_path in sorted(skill_dir.rglob("*")):
             if file_path.is_dir():
                 continue
-            if EXCLUDE_DIR_NAMES & set(file_path.relative_to(skill_dir).parts[:-1]):
+            rel_path = file_path.relative_to(skill_dir)
+            if is_excluded(rel_path):
                 continue
-            if file_path.name in EXCLUDE_FILE_NAMES or file_path.suffix.lower() in EXCLUDE_SUFFIXES:
-                continue
-            zf.write(file_path, file_path.relative_to(skill_dir))
+            zf.write(file_path, rel_path)
     return out_path
 
 

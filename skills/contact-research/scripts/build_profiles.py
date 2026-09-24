@@ -13,7 +13,7 @@ or $SIGNATRY_PDF_BRAND_DIR; otherwise falls back to Helvetica with the same pale
 """
 import argparse, os, sys, json, html, re
 sys.path.insert(0, os.path.dirname(__file__))
-from cr_common import list_contacts, load_manifest, contact_path, save_json, now, profile_filename, recount, skill_version
+from cr_common import list_contacts, load_manifest, contact_path, save_json, now, profile_filename, recount, skill_version, owner_display, NO_OWNER
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import inch
 from reportlab.lib.styles import ParagraphStyle
@@ -96,6 +96,15 @@ def callout(text, fill):
 HDR_H = 1.55 * inch
 
 
+NOTE_CLIP = 400  # characters of a HubSpot note body shown on the profile; a full note can exceed a page and break layout
+
+
+def clip(text, n=NOTE_CLIP):
+    """Strip HTML tags, collapse whitespace, and truncate to n characters with an ellipsis."""
+    s = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", str(text or ""))).strip()
+    return s if len(s) <= n else s[:n].rstrip() + "…"
+
+
 def fmt_dup(x):
     who = x.get("email") or x.get("email_domain")
     where = " ".join(p for p in [x.get("city"), x.get("state")] if p)
@@ -122,7 +131,7 @@ def on_page_factory(name, location, conf, hh_conf, owner, rendered_date, model, 
         canv.setFont(FONT_BODY_B, 8); tw = canv.stringWidth(label, FONT_BODY_B, 8)
         canv.setFillColor(CONF_COLOR.get(best, colors.grey)); canv.roundRect(x, h - 1.45 * inch, tw + 16, 15, 3, stroke=0, fill=1)
         canv.setFillColor(colors.white); canv.drawString(x + 8, h - 1.41 * inch, label)
-        owner_label = f"OWNER: {(owner or 'UNASSIGNED').upper()}"
+        owner_label = f"OWNER: {(owner or NO_OWNER).upper()}"
         canv.setFont(FONT_BODY_B, 8); ow = canv.stringWidth(owner_label, FONT_BODY_B, 8)
         canv.setFillColor(tint("#17242a", 45)); canv.roundRect(w - 0.75 * inch - ow - 16, h - 1.45 * inch, ow + 16, 15, 3, stroke=0, fill=1)
         canv.setFillColor(colors.white); canv.drawString(w - 0.75 * inch - ow - 8, h - 1.41 * inch, owner_label)
@@ -147,7 +156,7 @@ def build(ct, out_dir, naming, rendered_date):
     hh_conf = r.get("household_confidence") or ("N/A" if r else None)
     sc = (r.get("household") or {}).get("spouse_company") or {}
     model = r.get("model") or "not yet researched"
-    owner = props.get("owner_name") or inp.get("owner")
+    owner = owner_display(props, inp)
     sk_ver = skill_version() or "?"
     fn = os.path.join(out_dir, profile_filename(ct, naming))
     doc = BaseDocTemplate(fn, pagesize=letter, leftMargin=0.75 * inch, rightMargin=0.75 * inch, topMargin=HDR_H + 0.35 * inch,
@@ -164,7 +173,9 @@ def build(ct, out_dir, naming, rendered_date):
     st.append(Paragraph("Overview", S["sec"]))
     st.append(Paragraph(esc(r.get("overview") or "Not yet researched."), S["body"]))
     st.append(Paragraph("About", S["sec"]))
+    deceased = {True: "Reported deceased by a public source – verify before any contact (see research notes)", False: "No public report"}.get(r.get("deceased_per_public_source"), NA)
     st.append(kv([("Full name", name), ("Public spelling", g(r, "identity", "full_name_public")), ("Location", g(r, "identity", "location")),
+                  ("Deceased (public source)", deceased),
                   ("Match confidence (contact)", f"{conf or 'Not yet researched'} – {g(r, 'confidence_rationale')}"),
                   ("Household confidence", f"{hh_conf or 'Not yet researched'} – {g(r, 'household_confidence_rationale')}"),
                   ("HubSpot record", f"ID {ct['hs_object_id']}"),
@@ -177,9 +188,12 @@ def build(ct, out_dir, naming, rendered_date):
                   ("Mailing address (HubSpot)", addr)]))
     st.append(Paragraph("DAF", S["sec"]))
     daf = d.get("daf") or {}
+    role_txt = {"holder": "Fund holder", "advisor": "Financial / grant advisor on a client's fund (professional adviser, not a donor)",
+                "other": "Other (no fund holder or advisor label)"}.get(d.get("role_on_fund"), NA)
     st.append(kv([("Fund count", daf.get("fund_count", 0)),
                   ("Tier", daf.get("tier") or NA),
-                  ("Fund balance (sum, current)", f"${daf.get('fund_balance_sum', 0):,.2f}")]))
+                  ("Fund balance (sum, current)", f"${daf.get('fund_balance_sum', 0):,.2f}"),
+                  ("Role on fund(s)", role_txt)]))
     st.append(Paragraph("Social Media and Web", S["sec"]))
     st.append(kv([("LinkedIn", g(r, "identity", "linkedin_url")), ("Other", g(r, "identity", "other_web")),
                   ("In HubSpot", props.get("hs_linkedin_url") or props.get("twitterhandle") or "No LinkedIn URL or Twitter handle on the record")]))
@@ -205,8 +219,8 @@ def build(ct, out_dir, naming, rendered_date):
     st.append(Paragraph("Business Ownership (public sources)", S["sec"]))
     st.append(kv([("Ownership type", co.get("ownership_type")), ("Owner(s) / principals", co.get("owners_principals")), ("Source", co.get("ownership_source"))]))
     st.append(Paragraph("HubSpot Activity and Referral", S["sec"]))
-    notes_txt = "; ".join(f"{n.get('timestamp','')[:10]}: {n.get('body')}" for n in (act.get("notes") or [])[:5]) or None
-    tickets_txt = "; ".join(f"{t.get('timestamp','')[:10]}: {t.get('subject')}" for t in (act.get("tickets") or [])[:5]) or None
+    notes_txt = "; ".join(f"{str(n.get('timestamp') or '')[:10]}: {clip(n.get('body'))}" for n in (act.get("notes") or [])[:5]) or None
+    tickets_txt = "; ".join(f"{str(t.get('timestamp') or '')[:10]}: {clip(t.get('subject'), 200)}" for t in (act.get("tickets") or [])[:5]) or None
     st.append(kv([("Logged activity", act.get("summary") or NA), ("Recent notes", notes_txt or NA), ("Recent tickets", tickets_txt or NA),
                   ("Referral channel", props.get("referral_channel") or NA), ("Referral company", d.get("referral_company") or NA),
                   ("Associated company (role-based)", "; ".join(x.get("name") or "" for x in d.get("role_companies") or []) or NA),

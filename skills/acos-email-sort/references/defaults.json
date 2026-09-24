@@ -1,0 +1,167 @@
+{
+  "_comment": "Org-wide acos-email-sort defaults, shipped with the skill. Everything here is classification vocabulary and org fact that is the same for everyone: the keyword pattern lists, the internal domain, the Outlook folder names, the thresholds, and the operational-alert senders. state/config.json holds only what is personal. triage.py loads this first and overlays the config, so any key the config sets wins and anything it omits falls back here. Central tuning of a pattern list therefore reaches every install on upgrade, instead of only new enrollments — the Stage 2/Stage 3 accuracy work retuned most of these lists at once, and under the old shape none of that reached an existing config.",
+  "defaults_version": 1,
+  "internal_domain": "thesignatry.com",
+  "internal_domain_note": "Local fallback only — superseded by acos-aboutme's owner.email domain whenever that profile exists. Any sender on this domain always routes to 2_review (see find_internal_or_operational_alert in triage.py), skipping the bulk-mail and decline checks entirely — added 2026-08-12 per Trevor's confirmation after the Stage 2 accuracy test (Theme B) found internal @thesignatry.com sends (e.g. an internal newsletter routed through an ESP) getting caught by the bulk-mail signature and swept toward 6_bulkToReview instead of the 2_review Trevor actually gave them. Updated 2026-08-12 (Stage 3 regression #2 of state/stage3_accuracy_report.md): find_internal_or_operational_alert now skips calendar/OOO artifacts (see calendar_ooo_note below) — an internal sender's calendar accept/decline notice (e.g. 'Accepted: FirstRate - Dev Kickoff') was being forced into 2_review with nothing to actually review.",
+  "folder_names": {
+    "root": "_claude",
+    "priority": "1_priority",
+    "review": "2_review",
+    "delegate": "3_delegate",
+    "autorespond": "4_autorespond",
+    "drafts_review": "5_draftsToReview",
+    "bulk_review": "6_bulkToReview",
+    "to_be_filed": "7_toBeFiled"
+  },
+  "decline_threshold": 3,
+  "filed_without_action_threshold": 3,
+  "filed_without_action_threshold_note": "Confirmed by Trevor 2026-08-12 (Theme A rec 4 of state/stage2_accuracy_report.md). Tracks a sender-behavior signal separate from decline_threshold above: a sender whose mail keeps reaching the 'routine, file it' judgment call and landing in 7_toBeFiled with no action taken, regardless of whether the content is marketing, a routine report, or anything else. At this count in a run, add a run-summary recommendation to consider unsubscribing or creating a rule — never anything more automatic than that note.",
+  "delegate_keywords": [
+    "schedule a time",
+    "reschedule",
+    "calendar invite",
+    "coordinate a time",
+    "logistics for",
+    "book (a|the) flight",
+    "travel itinerary",
+    "hotel reservation",
+    "travel receipt",
+    "travel reimbursement",
+    "mileage reimbursement"
+  ],
+  "delegate_keywords_note": "Confirmed by Trevor (2026-08-10) — no longer a placeholder. Ashleigh (EA) handles scheduling/calendar coordination and all travel logistics, including travel-related receipts/reimbursement, so those route to 3_delegate. Non-travel invoices/receipts (e.g. software) and general invoice/AP payment-request emails are Trevor's own to handle — he reviews, uploads, and codes those himself — so they route to 2_review instead, never 3_delegate. See invoice_review_note below for the accounts_payable@thesignatry.com detail. As of 2026-08-12 (Theme J), this list is used for the LLM's own judgment only — the one narrower, deterministic case of an explicit ask for the EA to schedule something is now handled in script by ea_scheduling_keywords/ea_name above, ahead of this list, and never reaches judgment at all.",
+  "urgent_keyword_patterns": [
+    "\\bapprove(d|s|al)?\\b",
+    "\\bsign[- ]?off\\b",
+    "\\bneeds? your (signature|approval|decision)\\b",
+    "\\bdeadline\\b",
+    "\\btime[- ]sensitive\\b",
+    "\\brespond by\\b",
+    "\\bby (end of day|eod|cob|tomorrow|noon)\\b",
+    "\\burgent\\b",
+    "\\bASAP\\b",
+    "\\bwaiting on you\\b"
+  ],
+  "sensitive_keyword_patterns": [
+    "\\bsalary\\b",
+    "\\btermination\\b",
+    "\\bterminat(e|ed|ing)\\b",
+    "\\bleave of absence\\b",
+    "\\bFMLA\\b",
+    "\\bmedical\\b",
+    "\\bdisability\\b",
+    "\\bharassment\\b",
+    "\\binvestigation\\b",
+    "\\bperformance improvement\\b",
+    "\\bPIP\\b",
+    "\\bbackground check\\b",
+    "\\bsocial security\\b",
+    "\\bssn\\b",
+    "\\bbenefits enrollment\\b",
+    "\\bworkers[' ]?comp\\b",
+    "\\bgrievance\\b",
+    "\\bboard confidential\\b",
+    "\\bexecutive session\\b",
+    "\\bsuccession plan\\b"
+  ],
+  "personnel_content_keyword_patterns": [
+    "\\bbittersweet\\b",
+    "\\blast day at the signatry\\b",
+    "\\bnotice of staff open position\\b"
+  ],
+  "personnel_content_keyword_patterns_note": "Confirmed by Trevor 2026-08-12 (Theme E of state/stage2_accuracy_report.md): checked in score_sensitive as an ADDITION to sensitive_keyword_patterns above, not a replacement -- catches personnel-adjacent content a general employee announces in plain language (a colleague's departure, a staff opening) regardless of sender domain, where sensitive_keyword_patterns only fires on messages that already sound like an HR-system notice. Deliberately excludes 'accepted an invitation to pursue', which appeared in the real example this was built from but which Trevor flagged as ambiguous with cybersecurity/access-grant language (e.g. a real 'Invitation accepted - Google Play Console' message in the same mailbox, an external contractor being granted account access, not a personnel departure) -- the real example is still caught by 'bittersweet'/'last day at' below regardless, so nothing is lost by leaving it out.",
+  "financial_document_keyword_patterns": [
+    "\\binvoice\\b",
+    "\\bpayment due\\b",
+    "\\bINV-\\d+\\b"
+  ],
+  "deal_document_keyword_patterns": [
+    "\\bsigned copy of\\b",
+    "\\b(?-i:SOW)\\b",
+    "\\b(?-i:MSA)\\b",
+    "\\bdebrief\\b",
+    "\\bdocuments for (the )?(offering|engagement)\\b"
+  ],
+  "hr_lifecycle_keyword_patterns": [
+    "\\btermination\\b",
+    "\\bterminat(ed|ing)\\b",
+    "\\blast day of work\\b"
+  ],
+  "meeting_reminder_keyword_patterns": [
+    "\\ba reminder for (our|your) (upcoming )?meeting\\b",
+    "\\byour meeting .+ is about to start\\b"
+  ],
+  "routine_payroll_notification_keyword_patterns": [
+    "\\baction required: you have pending tasks\\b",
+    "\\ba new .*task.*assigned to you\\b",
+    "\\bexcess hours run\\b"
+  ],
+  "vendor_onboarding_keyword_patterns": [
+    "\\byou'?ve been invited to join\\b",
+    "\\bsign up for an account\\b",
+    "\\bactivate your account\\b",
+    "\\bcreate your account\\b"
+  ],
+  "vendor_onboarding_keyword_patterns_note": "Confirmed by Trevor 2026-08-12 (Stage 3 high-severity review, Group G): paired with a known partner_vendors name match in score_priority (not a standalone list) -- catches a vendor's own account-setup/invitation notice even when it arrives via an unrelated third-party platform (e.g. TeamLogic IT's invitation sent from notifications.ui.com, not teamlogicit.com). Deliberately requires BOTH the vendor name AND this onboarding language; a bare vendor-name mention alone (e.g. in a signature block) is not priority-worthy.",
+  "personal_action_request_keyword_patterns": [
+    "\\bhas requested that you\\b",
+    "\\bletter of recommendation\\b",
+    "\\bunsigned commits\\b",
+    "\\bstopping (a |the )?merge\\b"
+  ],
+  "personal_action_request_keyword_patterns_note": "Confirmed by Trevor 2026-08-12 (Stage 3 high-severity review, Group D): a direct, personal ask that names Trevor specifically and needs a reply only he can give -- narrow, specific phrasings pulled from real examples (a letter-of-recommendation request, a GitHub mention blocking his own project's merge), not a broad category.",
+  "farewell_note_keyword_patterns": [
+    "\\baccount (gets|will be|is) turned off\\b",
+    "\\bmy last day (at|with)\\b",
+    "\\bas i (leave|depart)\\b"
+  ],
+  "farewell_note_keyword_patterns_note": "Confirmed by Trevor 2026-08-12 (Theme D rec #3 of state/stage2_accuracy_report.md): a one-time personal farewell/thank-you note from someone leaving The Signatry shouldn't be escalated all the way to 1_priority the way the HR-lifecycle keywords above do, but it also shouldn't fall silently into 2_review with no distinguishing flag. Deliberately narrow phrasing — a bare 'thank you' is far too common in ordinary business mail to use alone.",
+  "operational_alert_senders": [
+    "mssecurity-noreply@microsoft.com",
+    "office365alerts@microsoft.com",
+    "no-reply@sharepointonline.com",
+    "data-studio-noreply@google.com"
+  ],
+  "operational_alert_senders_note": "Confirmed by Trevor 2026-08-12 (Stage 2 accuracy test, Theme B): automated security/service-level alerts about our own systems should always land in 2_review, never get swept into 6_bulkToReview by the generic no-reply/ESP-padding bulk signature. Exact sender-address match only (not domain-wide — a broad microsoft.com or google.com domain match would sweep in unrelated marketing). Add more here as they turn up rather than patching each alert individually.",
+  "bulk_sender_address_patterns": [
+    "newsletter",
+    "no-?reply",
+    "do-?not-?reply",
+    "marketing",
+    "campaign",
+    "\\bnews\\b",
+    "digest",
+    "bulletin",
+    "webinars?",
+    "publications",
+    "substack"
+  ],
+  "bulk_sender_address_patterns_note": "Matched against the sender address (lowercased) by scripts/triage.py is_bulk_or_newsletter to suppress the decline flow for blast mail — drafting a personalized decline to a newsletter address is pointless. Substring regexes, so 'marketing' also catches 'marketing-team@'. operational_alert_senders above is checked first and wins, which is how our own no-reply system alerts avoid this net.",
+  "generic_sender_name_tokens": [
+    "the",
+    "team",
+    "support",
+    "sales",
+    "marketing",
+    "newsletter",
+    "newsletters",
+    "notifications",
+    "noreply",
+    "no-reply",
+    "info",
+    "hello",
+    "admin",
+    "updates",
+    "help",
+    "billing",
+    "accounts",
+    "office",
+    "service",
+    "services",
+    "care"
+  ],
+  "generic_sender_name_tokens_note": "First word of a sender's display name that is a role or mailbox label rather than a person, so a rendered decline template opens 'Hi there,' instead of 'Hi Team,'. Compared lowercased against the cleaned first token; order does not matter.",
+  "fallback_decline_topic": "generic_vendor_demo_pitch",
+  "fallback_decline_topic_note": "Confirmed by Trevor 2026-08-12 (Theme H of state/stage2_accuracy_report.md): 4_autorespond is now his own manual 'this is a decline' landing zone, not just a transient auto-decline retry state. scripts/triage.py match-declines uses this topic for anything found there that doesn't match any template's own keywords -- see SKILL.md's 'Sweep 4_autorespond' section.",
+  "accounts_payable_address": "accounts_payable@thesignatry.com"
+}

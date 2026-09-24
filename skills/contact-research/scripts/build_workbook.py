@@ -13,7 +13,7 @@ Sheets:
 """
 import argparse, os, sys, json
 sys.path.insert(0, os.path.dirname(__file__))
-from cr_common import list_contacts, load_manifest, load_json, now, contact_path, save_json, recount
+from cr_common import list_contacts, load_manifest, load_json, now, contact_path, save_json, recount, owner_display
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.utils import get_column_letter
@@ -94,7 +94,7 @@ COLS = [
     ("KEY", "HubSpot Record URL", lambda c, m: HS_URL.format(portal=m.get("portal_id", "44656601"), id=c["hs_object_id"]), 26),
     ("KEY", "Batch", lambda c, m: c["status"].get("batch"), 7),
     ("HS", "HS: Full Name", lambda c, m: joined(c, "hubspot.properties.firstname", "hubspot.properties.lastname", sep=" "), 18),
-    ("HS", "HS: Contact Owner", lambda c, m: get(c, "hubspot.properties.owner_name"), 16),
+    ("HS", "HS: Contact Owner", lambda c, m: owner_display((c.get("hubspot") or {}).get("properties"), c.get("input")), 16),
     ("HS", "HS: Email", lambda c, m: get(c, "hubspot.properties.email"), 28),
     ("HS", "HS: Phone", lambda c, m: joined(c, "hubspot.properties.phone", "hubspot.properties.mobilephone", sep=" / "), 14),
     ("HS", "HS: Street", lambda c, m: joined(c, "hubspot.properties.address", "hubspot.properties.street_address_2"), 20),
@@ -115,6 +115,8 @@ COLS = [
     ("HS", "DAF: Fund Count", lambda c, m: get(c, "derived.daf.fund_count", 0), 12),
     ("HS", "DAF: Tier", lambda c, m: get(c, "hubspot.properties.direct_fund_balance_tier_min"), 14),
     ("HS", "DAF: Fund Balance", lambda c, m: f"${get(c, 'derived.daf.fund_balance_sum', 0):,.2f}", 16),
+    ("HS", "DAF: Role on Fund", lambda c, m: get(c, "derived.role_on_fund"), 12),
+    ("HS", "HS: Signatry Staff / Board", lambda c, m: get(c, "derived.signatry_relationship"), 12),
     ("SP", "Spouse in HubSpot", lambda c, m: (lambda s: f"{s.get('name')} (ID {s.get('id')}) – {s.get('evidence')}" if s and s.get("id") else NA)((c.get("associations") or {}).get("spouse_in_hubspot")), 30),
     ("SP", "Household Pair (same form)", lambda c, m: (lambda p: f"{p.get('name')} (ID {p.get('id')}, {p.get('seconds_apart')} s apart)" if p and p.get("id") else NA)((c.get("associations") or {}).get("household_pair_candidate")), 26),
     ("SP", "Household Company (HubSpot)", lambda c, m: (lambda h: f"{h.get('name')} (ID {h.get('id')})" if h else NA)((c.get("derived") or {}).get("household_company")), 26),
@@ -129,6 +131,7 @@ COLS = [
     ("R", "Research: Confidence Rationale", lambda c, m: get(c, "research.confidence_rationale"), 34),
     ("R", "Research: Navigation", lambda c, m: get(c, "research.navigation"), 14),
     ("R", "Research: Model", lambda c, m: get(c, "research.model"), 18),
+    ("R", "Research: Deceased (public source)", lambda c, m: {True: "Yes – see notes", False: "No"}.get((c.get("research") or {}).get("deceased_per_public_source"), NA), 14),
     ("R", "Research: Public Name / Location", lambda c, m: joined(c, "research.identity.full_name_public", "research.identity.location", sep=" – "), 28),
     ("R", "Research: LinkedIn URL", lambda c, m: get(c, "research.identity.linkedin_url"), 36),
     ("R", "Research: Other Web", lambda c, m: get(c, "research.identity.other_web"), 30),
@@ -200,7 +203,10 @@ def sheet_summary(wb, cs, m):
             ("With an email in HubSpot", sum(1 for c in cs if get(c, "hubspot.properties.email", None))),
             ("With a spouse association or probable household pair", sum(1 for c in cs if ((c.get("associations") or {}).get("spouse_in_hubspot") or {}).get("id"))),
             ("Referral-only nonprofit associations removed from company columns", sum(1 for c in cs if (c.get("derived") or {}).get("referral_company"))),
-            ("Records flagged as placeholders", sum(1 for c in cs if (c.get("derived") or {}).get("identifiability_tier") == "placeholder"))] + \
+            ("Records flagged as placeholders", sum(1 for c in cs if (c.get("derived") or {}).get("identifiability_tier") == "placeholder")),
+            ("Associated to funds only as Financial/Grant Advisor (professional advisers)", sum(1 for c in cs if (c.get("derived") or {}).get("role_on_fund") == "advisor")),
+            ("Reported deceased by a public source (verify before contact)", sum(1 for c in cs if (c.get("research") or {}).get("deceased_per_public_source") is True)),
+            ("Signatry staff or board records (Board Confidential screen applied)", sum(1 for c in cs if (c.get("derived") or {}).get("signatry_relationship")))] + \
            [(f"Match confidence: {k}", v) for k, v in conf.items()] + \
            [("Rejected input rows (see rejected.csv)", m["counts"].get("rejected", 0)),
             ("Naming convention for PDFs", m.get("naming_convention"))]
@@ -287,7 +293,7 @@ def sheet_methodology(wb, cs, m):
     models = sorted({(c.get("research") or {}).get("model") for c in cs if c.get("research")} - {None})
     rows = [
         ("Scope", f"{len(cs)} contact(s) in run {m['run_id']}; batch size {m['batch_size']}; {m['counts'].get('rejected', 0)} input row(s) rejected (rejected.csv). HubSpot IDs are stored as strings; Excel scientific-notation IDs are refused."),
-        ("HubSpot pull", "Properties, contact and company associations (including 'Family'-type household companies and their members), and NOTE/EMAIL/CALL/MEETING/TASK/TICKET engagements were pulled per references/hubspot_extraction.md. Engagement text passed a redaction screen for Restricted content (SSN, card, account, credential, and health/hardship patterns) before being stored."),
+        ("HubSpot pull", "Properties, contact and company associations (including 'Family'-type household companies and their members), Fund associations, and NOTE/EMAIL/CALL/MEETING/TASK/TICKET engagements were pulled per references/hubspot_extraction.md. Engagement text passed a redaction screen for Restricted content (SSN, card, account, PIN, wire/ACH details, credential, and health/hardship/bereavement patterns) before being stored; for Signatry staff and board records a Board Confidential screen was also applied. Public registration identifiers found in research (EIN, CRD, professional license numbers) are public data and are retained."),
         ("Nonprofit association rule", "A nonprofit company association is kept in the company/role columns only when the contact holds a role there. Where referral_company_give_id matches the company's Give Recipient ID (or the association is labeled Referred By), the association is a referral and is shown in 'HS: Referral Company' instead."),
         ("Spouse evaluation", "Confirmed = a Spouse/Partner association label (API path) or a public source naming the spouse. Probable = exactly one other person on the same 'Family'-type household company, or same surname created by the same form within 120 seconds (registrant + guest). Surname-only matches are listed but not treated as spouses. Two scores are reported: 'Match Confidence (contact)' for the contact's own public identification and 'Household Confidence' for the spouse/household; when the contact is not publicly identifiable but a spouse is known, the spouse's employer, role, and ownership are researched as household context and reported in the 'Research: Spouse …' columns, never in the contact's own company columns."),
         ("Public research", f"Model(s): {', '.join(models) or 'n/a'} (also per contact in 'Research: Model' and in each PDF footer). Navigation mode(s): {', '.join(nav) or 'n/a'}. Playwright is used where the environment allows; otherwise web search/fetch tools. Match standard: High = two independent signals; Moderate = one strong match on an uncommon name; Low = circumstantial candidate ('Candidate only:' prefix); None = not identified, fields left blank. No value is guessed."),

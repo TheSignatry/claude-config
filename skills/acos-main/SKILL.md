@@ -1,8 +1,8 @@
 ---
 name: acos-main
 description: "Orchestrates the acos family into three time-perspective reports, each rendered as one branded HTML artifact (or markdown, on request): morning-plan (today's schedule + freshly-sorted mail + urgent Jira, run first thing), week-plan (the upcoming Mon-Sun week's time allocation, key meetings, critical mail, a 2-week product window, and open support tickets), and month-retro (last month's time-allocation vs. benchmark vs. prior month, delivered products, support-ticket performance, and email volume). Use when: run my morning plan, morning brief, what's my day look like, run my week plan, how's my week shaping up, weekly preview, run my month retro, monthly retrospective, how did last month go, acos main, run acos-main."
-version: "0.3"
-release_date: "2026-08-16"
+version: "0.4"
+release_date: "2026-09-24"
 ---
 
 ## Context

@@ -44,6 +44,18 @@ from pathlib import Path
 
 DEFAULT_ABOUTME_PATH = "../acos-aboutme/state/profile.json"
 
+# Category swatches for the time-allocation chart. Every value below is a
+# Signatry brand color: seven are base hexes and "Capacity unavailable" is
+# Midnight at 40%. The authoritative source is
+# signatry-brand-core/reference/tints.md (and the base table in that skill's
+# SKILL.md, which tints.md is itself generated from).
+#
+# Deliberately a literal map rather than a runtime read of that skill: this
+# script must render a chart without depending on another skill being
+# installed alongside it. The tradeoff is that a brand change could silently
+# drift, so lint_skills.py's check_acos_brand_colors verifies every hex here
+# still exists in signatry-brand-core before a package is built. If it fails,
+# update this map from tints.md rather than suppressing the check.
 CATEGORY_COLORS = {
     "Focused production": "#2b7a78",
     "People leadership": "#d77900",

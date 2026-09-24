@@ -92,6 +92,9 @@ Stages are written in order: `init` → `hubspot` → `associations`/`activity` 
 
   "derived": {
     "email_handle": "pabrown54", "email_domain": "gmail.com", "is_corporate_domain": false,
+    "is_vanity_domain": false,
+    "signatry_relationship": "staff | board | null   (switches on the Board Confidential engagement screen)",
+    "fund_roles": ["holder | advisor | other"], "role_on_fund": "holder | advisor | other | null   (from the Fund association labels; advisor = professional adviser on a client's fund)",
     "identifiability_tier": "placeholder | thin | standard",
     "record_source_event": "2026-08 Iowa NASCAR Race (YL) VIP registration",
     "referral_company": "Young Life National Headquarters (Give ID 3389679) – referral only; not a role",
@@ -128,6 +131,7 @@ Stages are written in order: `init` → `hubspot` → `associations`/`activity` 
                 "is_candidate_only": false, "company_slug": null},
     "nonprofit_role_associations": [{"name": "…", "role": "…", "source": "…"}],
     "referral_context": null,
+    "deceased_per_public_source": null,
     "data_quality_flags": [],
     "overview": "3–6 sentences of plain factual prose.",
     "notes": null,
@@ -143,6 +147,20 @@ Stages are written in order: `init` → `hubspot` → `associations`/`activity` 
     "errors": []
   }
 }
+```
+
+## orchestration/ (parallel interactive runs only)
+
+`scripts/orchestrate.py` keeps its own folder next to `state/` (override with `--work-dir`). Nothing in it is needed to render outputs; it exists to drive subagents and to report time and tokens by stage.
+
+```
+orchestration/
+├── queue.json      # [{"name": "b0g1", "model": "claude-fable-5-1", "ids": ["…"], "rerun_of": null}]
+├── ledger.json     # {"agents": [{"name", "model", "ids", "start", "end", "wall_s", "prompt",
+│                   #              "usage": {"subagent_tokens", "tool_uses", "duration_ms"}, "report",
+│                   #              "failed": true, "reason", "merged_before_failure": ["…"]}]}
+├── prompts/<group>.md      # filled subagent prompt with the contact payloads embedded
+└── fragments/research_<id>.json   # what each subagent wrote before merge_state.py merged it
 ```
 
 ## companies/<slug>.json
@@ -166,7 +184,8 @@ Stages are written in order: `init` → `hubspot` → `associations`/`activity` 
 - If `match_confidence` is `High` or `Moderate`, `sources` must be non-empty.
 - If `match_confidence` is `Low` or `None`, every non-null string in `identity` and `company` must begin with `Candidate only:` or `Candidate:` (or be `N/A…`).
 - `overview` must not contain characterization words from the blocklist in `governance.md` (e.g., "personality", "prefers", "responds best to", "mindset").
-- Any value matching the Restricted-data patterns (SSN, card, account number, credential such as `password: …` / `username: …`, health lexicon) is rejected with an error and the record is flagged.
+- Any value matching the Restricted-data patterns (SSN, card, account number, PIN, wire/ACH details, credential such as `password: …` / `username: …`, health lexicon) is rejected with an error and the record is flagged. URLs are removed before the digit-run pattern runs, so a press-release ID or an EDGAR accession number in a source link is not mistaken for a card number.
+- `deceased_per_public_source`, when present, must be `true`, `false`, or `null`. Record only the fact and date of death in `notes`, never the cause.
 - `model` must be the exact model ID of the model that did the research; placeholders such as `interactive` are rejected. When the ID is off-policy for the tier (anything other than Fable 5.x or Opus 5 on `standard`; Haiku 4.5 also allowed on `thin`/`placeholder`), `merge_state.py` appends a "Researched by an off-policy model …" entry to `research.data_quality_flags` — a warning, not a rejection.
 - `household_confidence` is required (use `None` when no household member is known); High/Moderate requires a source; Low/None requires `Candidate only:` prefixes on `household.spouse_company` strings.
 - **Spouse-corroboration rule:** `household_confidence: High` with a public spouse source requires `household.spouse_corroboration` naming at least one HubSpot fact that source matches (`address`, `city`, `employer`, `phone`, `email_domain`, `age_band`). A wedding page or bio for a same-named couple that matches none of them supports Moderate at most. Exempt when `associations.spouse_in_hubspot.evidence` is an association label (API path).
