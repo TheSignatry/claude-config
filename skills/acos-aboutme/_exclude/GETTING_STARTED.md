@@ -13,9 +13,11 @@ for what Claude itself is told to do on first run, see each skill's own
 A small personal productivity suite of five skills that share one identity
 profile instead of each asking you the same setup questions:
 
-- **`acos-aboutme`** — the shared identity/org-chart profile. Holds no logic
-  of its own; every other skill below reads from it. Installing this alone
-  does nothing observable — it only stores data for the others to read.
+- **`acos-aboutme`** — the shared identity/org-chart profile. No analysis
+  logic of its own; every other skill below reads from it. Installing this
+  alone does nothing observable — it only stores data for the others to
+  read. It also ships `scripts/state_backup.py`, the snapshot/restore tool
+  that protects every acos skill's `state/` folder.
 - **`acos-calendar-analysis`** — calendar time-classification, conflict
   detection, schedule health, and time-allocation benchmarking.
 - **`acos-jira-analysis`** — deterministic overdue/upcoming Jira reporting.
@@ -46,11 +48,49 @@ has no such fallback; it requires `acos-aboutme`.
 Nothing to configure by hand ahead of time. The first time any acos skill
 runs and doesn't find `acos-aboutme/state/profile.json`, it asks you a
 short set of setup questions itself and saves the answers there. Re-running
-any skill later just reads what's already saved — you're never asked
-twice. Adding a second skill later that needs a field the first enrollment
-didn't ask about (e.g. installing `acos-jira-analysis` after already
-enrolling via `acos-calendar-analysis`) just prompts for that specific gap,
-not a full re-enrollment.
+any skill later just reads what's already saved — you're never asked twice.
+
+Adding a second skill later that needs a field the first enrollment didn't
+ask about (e.g. installing `acos-jira-analysis` after enrolling via
+`acos-calendar-analysis`) prompts for that specific gap rather than a full
+re-enrollment.
+
+**What an upgrade does and does not carry forward.** Organization-wide
+settings are not in your profile at all — they ship in each skill's
+`references/defaults.json` (see the next section), so a new release's
+retuned values reach you on upgrade without you doing anything. Personal
+fields are different: a field added to the profile schema after you
+enrolled is simply absent from your file, and skills treat absent as "not
+provided" rather than erroring. Nothing detects that for you yet, so after
+upgrading, if a feature that depends on a new personal field seems inert,
+ask `acos-aboutme` to set it — `owner.pronouns` and
+`jira_workspaces.cloud_id` are both fields that arrived this way.
+
+## Two config files per skill: shared defaults, then your own
+
+Each skill that has configuration splits it in two, and reads both:
+
+- **`references/defaults.json`** ships inside the skill and holds everything
+  identical for everyone — `acos-aboutme` carries the Jira site and Product
+  Discovery field IDs, the Functional Area vocabulary, the time-allocation
+  benchmark tables and default working hours; `acos-email-sort` carries the
+  whole classification vocabulary, folder names, thresholds and
+  operational-alert senders. You do not edit these. They arrive with the
+  package and change when a new version ships.
+- **`state/profile.json`** (and `acos-email-sort/state/config.json`) hold
+  only what is personal.
+
+A skill loads the defaults, then overlays your file. Any key you set wins;
+anything you omit falls back. Dicts merge key by key, so overriding one
+working-hours day keeps the rest.
+
+**Why it matters for upgrades.** Before this split, shared values lived in
+the profile schema, so anyone who had already enrolled kept their original
+copy forever and never saw a central retune. Two real bugs came from that:
+Functional Area tagging ran silently with zero rules, and the Jira site
+hostname was missing outright. Set a key in your own file only when you
+mean to differ from the organization — doing so opts that key out of
+future updates.
 
 ## This is personal data, not shared
 
@@ -76,28 +116,59 @@ Three independent layers keep it that way, because one is not enough:
 
 ## Backing up your profile, and restoring it
 
-`state/` is gitignored, so git is not your safety net. An `acos-aboutme`
-profile has already been lost once to a working-tree restructure and had
-to be recovered from a stray download. Use the backup tool instead:
+`state/` is gitignored and excluded from the packaged zip, so neither git
+nor a reinstall is your safety net. An `acos-aboutme` profile has already
+been lost once to a working-tree restructure and had to be recovered from
+a stray download. Use the backup tool, which now ships **inside
+`acos-aboutme`** so it is available wherever the skill is installed, not
+only in this repository:
 
 ```bash
-python3 skills/acos_state_backup.py            # snapshot every acos state/ dir
-python3 skills/acos_state_backup.py --list     # newest first
-python3 skills/acos_state_backup.py --verify LABEL
-python3 skills/acos_state_backup.py --restore LABEL
-python3 skills/acos_state_backup.py --restore LABEL --skill acos-aboutme
+# from the repo
+python3 skills/acos-aboutme/scripts/state_backup.py
+
+# from an installed skill folder
+python3 scripts/state_backup.py
+
+python3 scripts/state_backup.py --roots        # what would be covered
+python3 scripts/state_backup.py --list         # snapshots, newest first
+python3 scripts/state_backup.py --verify LABEL
+python3 scripts/state_backup.py --restore LABEL
+python3 scripts/state_backup.py --restore LABEL --skill acos-aboutme
 ```
 
-Snapshots land in `~/.claude/acos-state-backups/<UTC timestamp>/`,
-deliberately **outside** the repository, so they survive a clone, a branch
-switch, a clean checkout, a restructure, or `git clean -fdx`. Each
-snapshot carries a `manifest.json` with every file's size, SHA-256 and the
-skill version at the time.
+`LABEL` is the UTC timestamp `--list` prints, e.g. `20260924T174557Z`.
 
-**Take a snapshot before upgrading a skill or re-running enrollment.**
-`--restore` refuses to overwrite a live file that differs from the
-snapshot unless you pass `--force`, so a restore cannot silently discard a
-profile you have since rebuilt.
+**You probably have two live copies of this state, not one.** The skills
+you actually run live in your installed skills folder — Console-synced
+skills land as siblings under
+`~/.claude/skills/synced/<id>/` — while a maintainer also has a checkout
+under `<repo>/skills/`. Those two copies drift apart, and a Console
+re-sync can replace the installed folder wholesale. The tool discovers
+every root it can see, snapshots all of them, keeps each root's files
+separate inside one snapshot, and restores each file to the copy it came
+from. Run `--roots` first to see what it found; add another location with
+`--root PATH`.
+
+Snapshots land in `~/.claude/acos-state-backups/<UTC timestamp>/`,
+deliberately **outside** every skill folder, so they survive a clone, a
+branch switch, a clean checkout, a restructure, `git clean -fdx`, and a
+re-sync. Each snapshot carries a `manifest.json` recording every file's
+source root, size, SHA-256 and the skill version at the time.
+
+**Take a snapshot before upgrading a skill, before re-running enrollment
+over an existing profile, and before any bulk profile edit.** `--restore`
+refuses to overwrite a live file that differs from the snapshot unless you
+pass `--force`, so a restore cannot silently discard a profile you have
+since rebuilt. If a recorded root no longer exists it says so and restores
+the rest. To pull one specific copy into a new location, combine `--root`
+with `--from-root` (use `--list-roots LABEL` to see the choices); a
+redirect that would merge two roots onto the same paths is refused rather
+than letting one overwrite the other.
+
+Snapshots taken before September 24, 2026 use the older single-root
+layout. The tool refuses to restore those rather than misplacing them —
+copy files out of the snapshot folder by hand if you need one.
 
 ## Data handling
 
@@ -125,7 +196,17 @@ Two consequences for anyone changing these skills:
   method. Committing to this repo does not deploy anything.
 - **The setup guide carries a version table.** Bump a skill and that
   table goes stale — reissue the guide, or at least the table, alongside
-  the upload so testers are not reading last release's numbers.
+  the upload so testers are not reading last release's numbers. **It is
+  stale for all five right now**: as of 2026-09-24 the repo holds
+  `acos-aboutme` 0.8, `acos-calendar-analysis` 0.5, `acos-jira-analysis`
+  0.5, `acos-email-sort` 0.9 and `acos-main` 0.4, and none of those have
+  been uploaded yet — the installed copies are still 0.4 / 0.4 / 0.3 /
+  0.5 / 0.3. Tell testers to take a state snapshot before they pick up
+  the new build.
+
+The root `README.md`'s skill table now lists all five acos skills
+alongside the `signatry-*` family, with a footnote pointing back here.
+Keep the versions in that table in step when you bump one.
 
 Because they now ship, nothing owner-specific belongs in a shipped file:
 no real names, addresses, project keys, or example subject lines drawn

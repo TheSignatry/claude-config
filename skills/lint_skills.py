@@ -35,6 +35,7 @@ Exit codes:
       (also returned for warnings when --strict is passed)
 """
 import argparse
+import hashlib
 import json
 import re
 import subprocess
@@ -357,8 +358,99 @@ def check_no_shipped_state(skill_dir):
         SEVERITY_ERROR,
         f"{skill_dir}: {len(tracked)} runtime state file(s) tracked in git "
         f"({listed}). Runtime state is per-user data and must not be committed — "
-        f"back it up with skills/acos_state_backup.py, `git rm --cached` it, and "
+        f"back it up with skills/acos-aboutme/scripts/state_backup.py, "
+        f"`git rm --cached` it, and "
         f"confirm .gitignore covers it.",
+    )]
+
+
+ACOS_OVERLAY_START = "# --- acos shared-defaults overlay "
+ACOS_OVERLAY_END = "# --- end acos shared-defaults overlay "
+
+
+def extract_acos_overlay(text):
+    """The vendored shared-defaults block, or None if this file has none."""
+    start = text.find(ACOS_OVERLAY_START)
+    if start == -1:
+        return None
+    end = text.find(ACOS_OVERLAY_END, start)
+    if end == -1:
+        return None
+    return text[start:text.find("\n", end) + 1]
+
+
+def check_acos_overlay_copies(skills_root):
+    """Every vendored copy of the acos shared-defaults block must be identical.
+
+    acos-jira-analysis, acos-calendar-analysis and acos-email-sort each carry a
+    byte-identical `load_acos_profile()` helper. They are duplicated rather than
+    shared because these skills install as independent siblings and import
+    nothing from each other — there is no shared-library mechanism to put it in.
+    Duplication that is allowed to drift is worse than no duplication at all:
+    one skill would silently resolve a different merged profile than the others,
+    which is the exact class of bug the defaults split exists to remove.
+
+    Runs once per lint invocation rather than per skill, since it compares
+    across skills; keyed off acos-aboutme so it reports against one skill."""
+    copies = {}
+    for script in sorted(skills_root.glob("acos-*/scripts/*.py")):
+        block = extract_acos_overlay(script.read_text(encoding="utf-8"))
+        if block is not None:
+            copies[str(script.relative_to(skills_root))] = block
+    if len(copies) < 2:
+        return []
+    digests = {}
+    for path, block in copies.items():
+        digests.setdefault(hashlib.sha256(block.encode()).hexdigest()[:12], []).append(path)
+    if len(digests) == 1:
+        return []
+    groups = "; ".join(f"[{d}] {', '.join(paths)}" for d, paths in sorted(digests.items()))
+    return [(
+        SEVERITY_ERROR,
+        f"acos shared-defaults overlay has drifted between vendored copies — {groups}. "
+        f"All copies must be byte-identical; re-sync them.",
+    )]
+
+
+HEX_RE = re.compile(r"#?\b([0-9a-fA-F]{6})\b")
+
+
+def check_acos_brand_colors(skills_root):
+    """acos-main's CATEGORY_COLORS must stay inside the Signatry palette.
+
+    That map is a literal rather than a runtime read of signatry-brand-core,
+    because acos-main has to render a chart without requiring that skill to be
+    installed beside it. The cost of a literal is silent drift if a brand color
+    ever changes, so this verifies at lint time -- which gates packaging -- that
+    every hex it uses still exists in signatry-brand-core, either as a base
+    color or as one of the precomputed tints in reference/tints.md.
+
+    Fix a failure by updating the map from tints.md, never by removing this."""
+    main_script = skills_root / "acos-main" / "scripts" / "main_plan.py"
+    brand_dir = skills_root / "signatry-brand-core"
+    if not main_script.exists() or not brand_dir.is_dir():
+        return []
+    known = set()
+    for rel in ("SKILL.md", "reference/tints.md"):
+        f = brand_dir / rel
+        if f.exists():
+            known.update(m.group(1).lower() for m in HEX_RE.finditer(f.read_text(encoding="utf-8")))
+    if not known:
+        return []
+    text = main_script.read_text(encoding="utf-8")
+    start = text.find("CATEGORY_COLORS = {")
+    if start == -1:
+        return []
+    block = text[start:text.find("}", start) + 1]
+    used = {m.group(1).lower() for m in HEX_RE.finditer(block)}
+    unknown = sorted(used - known)
+    if not unknown:
+        return []
+    return [(
+        SEVERITY_ERROR,
+        f"acos-main CATEGORY_COLORS uses {len(unknown)} hex value(s) not found in "
+        f"signatry-brand-core: {', '.join('#' + h for h in unknown)}. Update the map from "
+        f"signatry-brand-core/reference/tints.md.",
     )]
 
 
@@ -408,6 +500,10 @@ def lint_skill(skill_dir, schema, allowlist=None):
     issues.extend(allowlist_issues)
     issues.extend(check_changelog_exists(skill_dir))
     issues.extend(check_no_shipped_state(skill_dir))
+    if skill_dir.name == "acos-aboutme":
+        issues.extend(check_acos_overlay_copies(skill_dir.parent))
+    if skill_dir.name == "acos-main":
+        issues.extend(check_acos_brand_colors(skill_dir.parent))
 
     skill_md = skill_dir / "SKILL.md"
     if not skill_md.exists():

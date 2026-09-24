@@ -129,6 +129,65 @@ def _fail(message):
     sys.exit(1)
 
 
+# --- acos shared-defaults overlay -------------------------------------------
+# Vendored identically into acos-jira-analysis, acos-calendar-analysis and
+# acos-email-sort. These skills install as independent siblings and import
+# nothing from each other, so this block is duplicated rather than shared;
+# lint_skills.py checks the copies stay byte-identical.
+ACOS_DEFAULTS_RELPATH = ("..", "references", "defaults.json")
+
+
+def _acos_overlay(base, override):
+    """Recursive dict merge where `override` wins. A non-dict value replaces
+    whatever it lands on; only dicts are merged key by key."""
+    out = dict(base)
+    for key, value in (override or {}).items():
+        if isinstance(value, dict) and isinstance(out.get(key), dict):
+            out[key] = _acos_overlay(out[key], value)
+        else:
+            out[key] = value
+    return out
+
+
+def load_acos_profile(aboutme_path):
+    """acos-aboutme's org-wide defaults, overlaid by the person's own profile.
+
+    acos-aboutme ships `references/defaults.json` holding every value that is
+    identical for everyone -- the Jira site and its Product Discovery field
+    IDs, the Functional Area tagging vocabulary, the time-allocation benchmark
+    tables. `state/profile.json` holds only what is personal. Reading the
+    defaults first and letting the profile override means a profile written
+    before a default existed still receives it.
+
+    That is the whole point: when the Functional Area regex vocabulary moved
+    from module constants into the profile schema in acos-aboutme 0.4, every
+    profile created before that kept working with zero tagging rules and no
+    error, because `(cal.get(...) or {})` cannot tell "absent" from "empty".
+    Shipping the shared half separately makes a stale profile impossible.
+
+    Returns {} when the profile itself is absent, preserving each caller's
+    existing not-enrolled behaviour -- defaults alone must never look like an
+    enrolled profile. A missing or unparseable defaults file degrades to the
+    profile alone rather than raising, so an older acos-aboutme still works.
+    """
+    profile_path = Path(aboutme_path)
+    if not profile_path.exists():
+        return {}
+    try:
+        profile = json.loads(profile_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    defaults_path = profile_path.parent.joinpath(*ACOS_DEFAULTS_RELPATH)
+    defaults = {}
+    if defaults_path.exists():
+        try:
+            defaults = json.loads(defaults_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            defaults = {}
+    return _acos_overlay(defaults, profile)
+# --- end acos shared-defaults overlay ---------------------------------------
+
+
 def load_jira_workspaces(aboutme_path):
     """Read jira_workspaces out of acos-aboutme's profile.json. Raises a
     clear, catchable error rather than a stack trace if the profile doesn't
@@ -143,10 +202,14 @@ def load_jira_workspaces(aboutme_path):
             "jira_workspaces section to an existing profile."
         )
     try:
-        profile = json.loads(path.read_text())
+        json.loads(path.read_text())
     except json.JSONDecodeError as e:
         _fail(f"acos-aboutme profile at {aboutme_path} is not valid JSON: {e}")
 
+    # Org-wide defaults (the Jira site and its field IDs) underneath, this
+    # person's profile on top. cloud_id and product_fields normally come from
+    # defaults; a profile only needs them to override.
+    profile = load_acos_profile(aboutme_path)
     workspaces = profile.get("jira_workspaces")
     if not workspaces or not any(workspaces.get(g) for g in GROUP_ORDER):
         _fail(

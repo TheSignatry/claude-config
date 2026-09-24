@@ -1,0 +1,148 @@
+{
+  "_comment": "Org-wide acos defaults, shipped with acos-aboutme. Every value here is the same for everyone in the organization, so it lives in one shipped file rather than being copied into each person's state/profile.json. Consuming skills load this first, then overlay the profile: any key the profile sets wins, anything it omits falls back here. That means a profile written before a default existed still gets it, which is the failure this file exists to prevent — functional_area_keyword_patterns moved into the profile schema in acos-aboutme 0.4 and every profile created before that silently lost Functional Area tagging, with no error.",
+  "defaults_version": 1,
+  "jira_workspaces": {
+    "_comment": "cloud_id is the one Jira Cloud site the whole organization shares. product_fields are Jira Product Discovery custom-field IDs, which are assigned per site, so they are correct for every project on that site and meaningless on another. upcoming_window_days is a starting default a person may override in their own profile.",
+    "cloud_id": "signatry1.atlassian.net",
+    "upcoming_window_days": 14,
+    "product_fields": {
+      "project_target": "customfield_10149",
+      "product_area": "customfield_10156",
+      "roadmap": "customfield_10139",
+      "roadmap_exclude": [
+        "Done",
+        "Parking Lot"
+      ]
+    }
+  },
+  "calendar_analysis": {
+    "_comment": "functional_area_keyword_patterns and functional_area_disambiguation are the shared Functional Area tagging vocabulary — generic subject/attendee matching rules, no personal content. Their keys are also the canonical area names a profile's own functional_areas people-directory should use. time_allocation_targets are the benchmark ranges per staff position type; a person overrides them via calendar_analysis.time_allocation_target_overrides in their own profile, not by editing these. working_hours is a starting default.",
+    "working_hours": {
+      "_comment": "CONFIRMED 2026-08-10. Saturday/Sunday zero-width by deliberate choice, not the literal Step-1 default -- found via testing that leaving weekends on the 08:00-17:00 default silently counted ~18 idle weekend hours/week as 'available capacity' in the time-allocation denominator, inflating Free time % and deflating every other category's %.",
+      "default": {
+        "start": "08:00",
+        "end": "17:00"
+      },
+      "overrides": {
+        "saturday": {
+          "start": "00:00",
+          "end": "00:00"
+        },
+        "sunday": {
+          "start": "00:00",
+          "end": "00:00"
+        }
+      }
+    },
+    "functional_area_keyword_patterns": {
+      "Security": "\\bsecurity\\b|\\bmfa\\b|\\bphishing\\b|\\bsoc\\b|\\bpenetration test\\b|\\bvulnerabilit(y|ies)\\b",
+      "Data": "\\bdata\\b|\\banalytics\\b|\\bbi\\b|\\breporting pipeline\\b|\\betl\\b|\\bdashboard\\b",
+      "Finance": "\\bbudget\\b|\\bforecast\\b|\\binvoice\\b|\\bap\\b|\\bar\\b|\\bfinancial audit\\b",
+      "HR": "\\bhiring\\b|\\bonboarding\\b|\\bperformance review\\b|\\bbenefits\\b|\\bcompensation\\b|\\btalent\\b",
+      "Legal": "\\bcontract\\b|\\bdue diligence\\b|\\bgovernance\\b|\\bterm sheet\\b|\\bnda\\b",
+      "Compliance": "\\bcompliance\\b|\\bpolicy\\b|\\btax\\b|\\bregulat(ion|ory)\\b",
+      "Revenue": "\\bdonor\\b|\\bgift\\b|\\bdaf\\b|\\bgrant\\b|\\bcampaign\\b|\\bstewardship\\b|\\bmoves management\\b|\\bnonliquid gift\\b|\\bpipeline\\b|\\brev.it.up\\b",
+      "Engineering": "\\bdev team\\b|\\bengineering\\b|\\bsprint\\b|\\bcode\\b|\\bdeploy\\b|\\bbacklog\\b|\\baws\\b|\\bgcp\\b|\\binfrastructure\\b|\\bserver\\b|\\bnetwork\\b",
+      "Systems": "\\bhubspot\\b|\\bcrm\\b|\\bgive interactive\\b|\\bjira\\b|\\btalentlms\\b|\\brippling\\b",
+      "Operations": "\\bdonor care\\b|\\badvisor\\b|\\bfamily generosity services\\b|\\bnonprofit success\\b"
+    },
+    "functional_area_disambiguation": {
+      "ai_data_governance_pattern": "\\b(ai|artificial intelligence|data|model|algorithm)\\s+governance\\b",
+      "legal_non_governance_pattern": "\\bcontract\\b|\\bdue diligence\\b|\\bterm sheet\\b|\\bnda\\b",
+      "revenue_non_pipeline_pattern": "\\bdonor\\b|\\bgift\\b|\\bdaf\\b|\\bgrant\\b|\\bcampaign\\b|\\bstewardship\\b|\\bmoves management\\b|\\bnonliquid gift\\b|\\brev.it.up\\b",
+      "bare_pipeline_pattern": "\\bpipeline\\b"
+    },
+    "time_allocation_targets": {
+      "c_suite_executive": {
+        "People leadership": [
+          10,
+          20
+        ],
+        "Operating rhythm": [
+          15,
+          25
+        ],
+        "Strategy and transformation": [
+          15,
+          25
+        ],
+        "Stakeholder partnership": [
+          10,
+          20
+        ],
+        "External ecosystem": [
+          3,
+          10
+        ],
+        "Focused production": [
+          5,
+          15
+        ],
+        "Margin / Flex capacity": [
+          15,
+          25
+        ]
+      },
+      "manager": {
+        "People leadership": [
+          20,
+          35
+        ],
+        "Operating rhythm": [
+          15,
+          30
+        ],
+        "Strategy and transformation": [
+          5,
+          15
+        ],
+        "Stakeholder partnership": [
+          8,
+          18
+        ],
+        "External ecosystem": [
+          0,
+          8
+        ],
+        "Focused production": [
+          8,
+          20
+        ],
+        "Margin / Flex capacity": [
+          10,
+          20
+        ]
+      },
+      "general_staff": {
+        "People leadership": [
+          0,
+          10
+        ],
+        "Operating rhythm": [
+          10,
+          25
+        ],
+        "Strategy and transformation": [
+          0,
+          10
+        ],
+        "Stakeholder partnership": [
+          5,
+          15
+        ],
+        "External ecosystem": [
+          0,
+          5
+        ],
+        "Focused production": [
+          35,
+          60
+        ],
+        "Margin / Flex capacity": [
+          10,
+          20
+        ]
+      }
+    }
+  }
+}

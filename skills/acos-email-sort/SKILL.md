@@ -1,7 +1,7 @@
 ---
 name: acos-email-sort
 description: "Sorts the owner's Microsoft 365 inbox into the _claude/* Outlook folder taxonomy every morning, drafts polite vendor declines for human review, and never sends anything. Use when: run my morning email sort, sort my inbox, triage my email, process my inbox, run acos-email-sort, morning mail run, file my email, what's in 4_autorespond, 5_draftsToReview, or 6_bulkToReview."
-version: "0.6"
+version: "0.10"
 release_date: "2026-09-24"
 ---
 
@@ -26,6 +26,10 @@ Separately, check for `state/config.json`. If it doesn't exist:
 4. Save the answers into `state/config.json`, confirm back in one line, and don't ask again — only revisit if the owner says something like "add a VIP sender" or "update my email-sort config." An `acos-aboutme` update ("add a VIP," "change my signoff") belongs to that skill, not here — point them there instead of editing this skill's local fallback fields once `acos-aboutme` exists.
 
 `state/config.json` and `state/ledger.json` remain this skill's own runtime data — only the identity fields above are shared, and only by reading `acos-aboutme`'s file, never by writing to it.
+
+**Two config files: shared defaults, then personal config.** `references/defaults.json` ships with this skill and holds everything identical for everyone — the whole classification vocabulary (all twelve keyword pattern lists plus `generic_sender_name_tokens`), `internal_domain`, `folder_names`, the decline and filed-without-action thresholds, `operational_alert_senders`, `fallback_decline_topic` and `accounts_payable_address`. `state/config.json` holds only what is personal: the EA, the sender-exclusion lists, the signoff, and file paths. `triage.py` loads defaults first and overlays the config, so any key the config sets wins and anything it omits falls back.
+
+This is what makes central tuning reach people. The Stage 2 and Stage 3 accuracy work retuned most of those pattern lists at once; under the previous shape, where every config carried its own copy, none of that would have reached anyone who had already enrolled. Set a key in `state/config.json` only to deliberately differ from the org.
 
 **Delegate criteria.** The EA handles scheduling/calendar coordination and all travel logistics — flights, hotels, itineraries, and travel-related receipts/reimbursement — per `config.json`'s `delegate_keywords`. Invoices and receipts that aren't travel-related (e.g., a software subscription invoice) are the owner's own to review, upload, and code for accounting, and general invoice/AP payment-request emails are also theirs to handle personally — neither goes to `3_delegate`. See the **Judgment calls** section below for how this plays out for `undetermined` mail, and `config.json`'s `invoice_review_note` for the `accounts_payable_address` detail.
 

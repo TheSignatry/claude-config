@@ -11,13 +11,13 @@
 
 ## Comparison
 
-**Deferred usage:** `deferred-full-use` (default — not yet reviewed for this skill)
+**Deferred usage:** `deferred-alternatives` — Deferred content is one helper script plus font and logo binaries. reportlab opens the fonts and logos from disk and Claude executes the script; none of it is read into context. A typical call loads at most the script.
 
 `signatry-pdf-brand`'s typical-call footprint is 0.65x the Signatry median (3,877 vs 5,995 tokens across 17 skills).
 
 | | Skill Typical Call | Skill Worst Case | Signatry Median | Benchmark |
 |---|---|---|---|---|
-| Lines | 252 | 252 | 252 | 501 |
+| Lines | 252 | 252 | 253 | 501 |
 | Tokens | 3,877 | 3,877 | 5,995 | 8,100 |
 
 ## Version Delta

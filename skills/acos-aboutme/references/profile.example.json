@@ -1,41 +1,65 @@
 {
   "_comment": "Template for state/profile.json. Copy this file to ../state/profile.json during first-run enrollment (see SKILL.md) and fill it in. This is the one shared identity/org-chart file the whole acos family (cos, acos-email-sort, acos-jira-analysis, acos-calendar-analysis, and future acos skills) reads from — keep it here, not duplicated per skill.",
   "version": 2,
-
   "owner": {
     "first_name": "Example",
     "full_name": "Example Owner",
     "email": "owner@example.org",
     "signoff": "Example",
+    "pronouns": "",
     "staff_position_type": "c_suite_executive",
     "linkedin_url": ""
   },
-
   "staff": [
-    {"_comment": "LEGACY field, not read by acos-calendar-analysis — other acos skills (e.g. acos-email-sort) already read this as 'my core team' for their own purposes. Kept as-is; use `reports`/`team` below for acos-calendar-analysis. `is_executive_assistant: true` on exactly one entry is how acos-email-sort resolves `ea_name`/`ea_email` — a deliberate explicit flag rather than matching on `role` text, since role phrasing varies too much to match reliably."},
-    {"name": "Example Assistant", "email": "assistant@example.org", "role": "Executive Assistant", "is_executive_assistant": true}
+    {
+      "_comment": "LEGACY field, not read by acos-calendar-analysis — other acos skills (e.g. acos-email-sort) already read this as 'my core team' for their own purposes. Kept as-is; use `reports`/`team` below for acos-calendar-analysis. `is_executive_assistant: true` on exactly one entry is how acos-email-sort resolves `ea_name`/`ea_email` — a deliberate explicit flag rather than matching on `role` text, since role phrasing varies too much to match reliably."
+    },
+    {
+      "name": "Example Assistant",
+      "email": "assistant@example.org",
+      "role": "Executive Assistant",
+      "is_executive_assistant": true
+    }
   ],
-
   "reports": [
-    {"_comment": "STRICT management-chain fact: everyone who reports to the owner, directly or through someone who reports to them, flattened regardless of depth — an org-chart fact, not a judgment call. Feeds exactly three things in acos-calendar-analysis: (1) the People-leadership category's 2-person-1:1 rule — exactly one other attendee AND they're on this list; (2) the People-leadership category's management-keyword rule, jointly with `team` below; (3) the Audience tag's 'direct team' value — ALL non-organizer attendees are on this list (see calendar_analysis._audience_tag_comment for the full priority order)."},
-    {"name": "Example Assistant", "email": "assistant@example.org"}
+    {
+      "_comment": "STRICT management-chain fact: everyone who reports to the owner, directly or through someone who reports to them, flattened regardless of depth — an org-chart fact, not a judgment call. Feeds exactly three things in acos-calendar-analysis: (1) the People-leadership category's 2-person-1:1 rule — exactly one other attendee AND they're on this list; (2) the People-leadership category's management-keyword rule, jointly with `team` below; (3) the Audience tag's 'direct team' value — ALL non-organizer attendees are on this list (see calendar_analysis._audience_tag_comment for the full priority order)."
+    },
+    {
+      "name": "Example Assistant",
+      "email": "assistant@example.org"
+    }
   ],
-
   "team": [
-    {"_comment": "LOOSER 'who I consider my team day-to-day' fact — a superset of `reports` that can also include people who don't formally report to the owner (e.g. a dotted-line collaborator). Feeds three things: (1) the People-leadership category's management-keyword rule, jointly with `reports` above; (2) the Operating-rhythm category default — an internal multi-person meeting where every attendee is the owner plus people on Team/Reports, with no Shepherd present; (3) the Audience tag's 'broader internal' value — ALL non-organizer attendees are on Team but not narrowly all on Reports (see calendar_analysis._audience_tag_comment)."},
-    {"name": "Example Assistant", "email": "assistant@example.org"}
+    {
+      "_comment": "LOOSER 'who I consider my team day-to-day' fact — a superset of `reports` that can also include people who don't formally report to the owner (e.g. a dotted-line collaborator). Feeds three things: (1) the People-leadership category's management-keyword rule, jointly with `reports` above; (2) the Operating-rhythm category default — an internal multi-person meeting where every attendee is the owner plus people on Team/Reports, with no Shepherd present; (3) the Audience tag's 'broader internal' value — ALL non-organizer attendees are on Team but not narrowly all on Reports (see calendar_analysis._audience_tag_comment)."
+    },
+    {
+      "name": "Example Assistant",
+      "email": "assistant@example.org"
+    }
   ],
-
   "vip_senders": [
-    {"_comment": "This is also the 'Shepherd' group referenced by acos-calendar-analysis's Strategy-and-transformation audience default — do not create a separate list for that."},
-    {"name": "Example Executive", "email": "exec@example.org", "domain": null, "title": "President & CEO"}
+    {
+      "_comment": "This is also the 'Shepherd' group referenced by acos-calendar-analysis's Strategy-and-transformation audience default — do not create a separate list for that."
+    },
+    {
+      "name": "Example Executive",
+      "email": "exec@example.org",
+      "domain": null,
+      "title": "President & CEO"
+    }
   ],
-
   "partner_vendors": [
-    {"_comment": "functional_area powers acos-calendar-analysis's Functional Area tag and the Stakeholder-vs-External distinction. One of: Finance, HR, Legal, Compliance, Revenue, Engineering, Operations, Security, Data — or null if it doesn't fit any."},
-    {"name": "Example Partner Co", "domain": "examplepartner.com", "functional_area": null}
+    {
+      "_comment": "functional_area powers acos-calendar-analysis's Functional Area tag and the Stakeholder-vs-External distinction. One of: Finance, HR, Legal, Compliance, Revenue, Engineering, Operations, Security, Data — or null if it doesn't fit any."
+    },
+    {
+      "name": "Example Partner Co",
+      "domain": "examplepartner.com",
+      "functional_area": null
+    }
   ],
-
   "functional_areas": {
     "_comment": "Flat per-area directories used for acos-calendar-analysis's Functional Area tag. Match by email only, never by name. A person may appear in more than one area. Any area may be an empty list. `Systems` is literal product/tool ownership (HubSpot, CRM, Give Interactive, Jira, TalentLMS, Rippling, etc.) — distinct from `Engineering`, which is dev/infra work.",
     "Finance": [],
@@ -49,101 +73,40 @@
     "Security": [],
     "Data": []
   },
-
   "protected_senders": [
-    {"name": "Example Contact", "email": "person@example.org", "reason": "ongoing personal/business relationship — never auto-decline or auto-file without a human look"}
+    {
+      "name": "Example Contact",
+      "email": "person@example.org",
+      "reason": "ongoing personal/business relationship — never auto-decline or auto-file without a human look"
+    }
   ],
-
   "jira_workspaces": {
-    "_comment": "Workspace groups for acos-jira-analysis (and future acos skills). Each group is a list of one or more Jira project keys — don't assume one project per group. upcoming_window_days is the shared 'next N days' window every consuming skill should read from here rather than hardcoding. cloud_id is the Jira Cloud site hostname acos-jira-analysis passes to searchJiraIssuesUsingJql — required, no built-in default; acos-jira-analysis's `plan` step fails with a clear error if this is missing rather than guessing a site.",
+    "_shared_defaults_note": "Org-wide values (the Jira site and its Product Discovery field IDs, the Functional Area tagging vocabulary, the time-allocation benchmark tables, the default working hours) live in acos-aboutme's shipped references/defaults.json, not here. Consuming skills load that first and overlay this file, so anything set here wins and anything omitted falls back to the shared default. Set a key here only to deliberately differ.",
+    "_comment": "Workspace groups for acos-jira-analysis (and future acos skills). Each group is a list of one or more Jira project keys — don't assume one project per group. Only the project keys are personal — cloud_id, upcoming_window_days and the Product Discovery field IDs come from the shared defaults file; set them here only to differ from the org.",
     "product": [],
     "support": [],
-    "work": [],
-    "upcoming_window_days": 14,
-    "cloud_id": "signatry1.atlassian.net",
-    "_product_fields_comment": "Jira Product Discovery custom-field IDs for the `product` group, read by acos-jira-analysis instead of being hardcoded in its script. Custom-field IDs are per-Jira-site, so these are correct for every project on the cloud_id above but would be wrong on another site. project_target is a JSON string {\"start\":...,\"end\":\"YYYY-MM-DD\"} whose parsed end date is this group's due-date equivalent (standard duedate is not populated on these issues); product_area is multi-select; roadmap is single-select (Now/Next/Won't do). roadmap_exclude are the Roadmap values filtered out of the product-detail query. Omit this block entirely and the script falls back to these same values.",
-    "product_fields": {
-      "project_target": "customfield_10149",
-      "product_area": "customfield_10156",
-      "roadmap": "customfield_10139",
-      "roadmap_exclude": ["Done", "Parking Lot"]
-    }
+    "work": []
   },
-
   "calendar_analysis": {
+    "_shared_defaults_note": "Org-wide values (the Jira site and its Product Discovery field IDs, the Functional Area tagging vocabulary, the time-allocation benchmark tables, the default working hours) live in acos-aboutme's shipped references/defaults.json, not here. Consuming skills load that first and overlay this file, so anything set here wins and anything omitted falls back to the shared default. Set a key here only to deliberately differ.",
     "_comment": "Config specific to acos-calendar-analysis, grouped the same way jira_workspaces groups acos-jira-analysis's config. known_meeting_series is the one sub-key acos-calendar-analysis writes back to directly (sticky corrections) — every other field in this whole profile stays read-only to consuming skills.",
     "_audience_tag_comment": "The Audience tag (direct team / broader internal / peer / Shepherd-executive / board / existing partner / prospective external) is evaluated in this exact priority order, first match wins, over the event's non-organizer attendees: (1) board — any attendee is on vip_senders with a title containing 'Board'; (2) Shepherd/executive — any attendee is on vip_senders otherwise (presence alone counts, same as the Strategy-and-transformation default); (3) existing partner — any external attendee AND every external domain present is a partner_vendors domain; (4) prospective external — any external attendee, not all partner domains; (5) direct team — ALL non-organizer attendees are on `reports`; (6) broader internal — ALL non-organizer attendees are on `team`; (7) peer — internal, none of the above. Board/Shepherd are deliberately 'any attendee' checks (one exec in a big room still changes the read); direct-team/broader-internal are deliberately 'all attendees' checks (they describe the room's overall makeup, not one match in a crowd).",
-
-    "working_hours": {
-      "_comment": "Per-day working hours. `default` applies unless a specific weekday key is present under `overrides` (e.g. \"friday\": {\"start\": \"08:00\", \"end\": \"13:00\"}). Saturday/Sunday default to zero-width here deliberately, not the weekday default -- leaving weekends on a full 08:00-17:00 window silently counts idle weekend hours as 'available capacity' in the time-allocation denominator, inflating Free time % and deflating every other category's %. Override to a real window if weekend work hours should actually be measured.",
-      "default": {"start": "08:00", "end": "17:00"},
-      "overrides": {
-        "saturday": {"start": "00:00", "end": "00:00"},
-        "sunday": {"start": "00:00", "end": "00:00"}
-      }
-    },
-
     "_ignored_addresses_comment": "Personal/family addresses that show up as attendees on a company-wide culture event (a staff member's spouse cc'd on a devotional or celebration call) but aren't a real external attendee or business relationship -- filtered out at the earliest point so category classification, the Audience tag, the Functional Area tag, and prep-flag attendee/external counts all treat these as if they were never on the invite.",
     "ignored_addresses": [],
-
-    "_functional_area_keyword_patterns_comment": "One regex string per Functional Area category (Step 4.3's subject-keyword fallback, checked after the attendee-directory and partner-domain signals). These ship pre-filled with the values this profile's own organization tuned them to — Security/Data/Finance/HR/Legal/Compliance/Engineering are reasonably generic business vocabulary as-is, but Revenue/Systems/Operations carry nonprofit-specific terms (donor/DAF/moves-management language, named vendor products) that should be reviewed and re-tuned for a different organization rather than assumed to transfer as-is.",
-    "functional_area_keyword_patterns": {
-      "Security": "\\bsecurity\\b|\\bmfa\\b|\\bphishing\\b|\\bsoc\\b|\\bpenetration test\\b|\\bvulnerabilit(y|ies)\\b",
-      "Data": "\\bdata\\b|\\banalytics\\b|\\bbi\\b|\\breporting pipeline\\b|\\betl\\b|\\bdashboard\\b",
-      "Finance": "\\bbudget\\b|\\bforecast\\b|\\binvoice\\b|\\bap\\b|\\bar\\b|\\bfinancial audit\\b",
-      "HR": "\\bhiring\\b|\\bonboarding\\b|\\bperformance review\\b|\\bbenefits\\b|\\bcompensation\\b|\\btalent\\b",
-      "Legal": "\\bcontract\\b|\\bdue diligence\\b|\\bgovernance\\b|\\bterm sheet\\b|\\bnda\\b",
-      "Compliance": "\\bcompliance\\b|\\bpolicy\\b|\\btax\\b|\\bregulat(ion|ory)\\b",
-      "Revenue": "\\bdonor\\b|\\bgift\\b|\\bdaf\\b|\\bgrant\\b|\\bcampaign\\b|\\bstewardship\\b|\\bmoves management\\b|\\bnonliquid gift\\b|\\bpipeline\\b|\\brev.it.up\\b",
-      "Engineering": "\\bdev team\\b|\\bengineering\\b|\\bsprint\\b|\\bcode\\b|\\bdeploy\\b|\\bbacklog\\b|\\baws\\b|\\bgcp\\b|\\binfrastructure\\b|\\bserver\\b|\\bnetwork\\b",
-      "Systems": "\\bhubspot\\b|\\bcrm\\b|\\bgive interactive\\b|\\bjira\\b|\\btalentlms\\b|\\brippling\\b",
-      "Operations": "\\bdonor care\\b|\\badvisor\\b|\\bfamily generosity services\\b|\\bnonprofit success\\b"
-    },
-
-    "_functional_area_disambiguation_comment": "Auxiliary patterns the Legal/Revenue/Systems special cases in compute_functional_area_tags need beyond their plain keyword pattern above (see calendar_report.py -- the branch structure itself is fixed code, only these regex strings are configurable). ai_data_governance_pattern excludes an 'AI/data governance' mention from crediting Legal (a subject-matter false positive on the bare word 'governance'); legal_non_governance_pattern is the Legal keyword set minus 'governance' itself, used once governance is excluded; revenue_non_pipeline_pattern is the Revenue keyword set minus the bare word 'pipeline' (too generic on its own); bare_pipeline_pattern is that excluded bare word, credited to Revenue only when Data hasn't already claimed the event. Like the patterns above, review and re-tune for a different organization's own vocabulary.",
-    "functional_area_disambiguation": {
-      "ai_data_governance_pattern": "\\b(ai|artificial intelligence|data|model|algorithm)\\s+governance\\b",
-      "legal_non_governance_pattern": "\\bcontract\\b|\\bdue diligence\\b|\\bterm sheet\\b|\\bnda\\b",
-      "revenue_non_pipeline_pattern": "\\bdonor\\b|\\bgift\\b|\\bdaf\\b|\\bgrant\\b|\\bcampaign\\b|\\bstewardship\\b|\\bmoves management\\b|\\bnonliquid gift\\b|\\brev.it.up\\b",
-      "bare_pipeline_pattern": "\\bpipeline\\b"
-    },
-
     "known_meeting_series": [
-      {"_comment": "The primary mechanism for classifying recurring meetings consistently. match_patterns are lowercase substrings checked against the event subject (case-insensitive) — list more than one to support simple aliases. category is one of the seven primary categories. tags is optional and may pre-set any of the Step 4 tags. Corrections on a recurring series write back here automatically."},
-      {"name": "Example Series", "match_patterns": ["example series"], "category": "Operating rhythm", "tags": {}, "notes": null}
-    ],
-
-    "time_allocation_targets": {
-      "_comment": "Target percentage RANGE [min, max] per primary category, per staff position type. Capacity unavailable is intentionally absent — it is reported as raw hours only and never benchmarked. 'Margin / Flex capacity' is NOT a classification category (no event is ever tagged into it) — it corresponds to what the report calls 'Free time' (leftover capacity, not consumed by any classified event). As of 2026-08-11 it is present here as a target for reference but not yet wired into compute_benchmark/BENCHMARK_CATEGORIES in calendar_report.py, so 'Free time' still won't appear in the benchmark table until that's added. A point-target value per cell (distinct from the range midpoint) can be recorded in this comment if the person specifies one — the schema itself only stores the range.",
-      "c_suite_executive": {
-        "People leadership": [10, 20],
-        "Operating rhythm": [15, 25],
-        "Strategy and transformation": [15, 25],
-        "Stakeholder partnership": [10, 20],
-        "External ecosystem": [3, 10],
-        "Focused production": [5, 15],
-        "Margin / Flex capacity": [15, 25]
+      {
+        "_comment": "The primary mechanism for classifying recurring meetings consistently. match_patterns are lowercase substrings checked against the event subject (case-insensitive) — list more than one to support simple aliases. category is one of the seven primary categories. tags is optional and may pre-set any of the Step 4 tags. Corrections on a recurring series write back here automatically."
       },
-      "manager": {
-        "People leadership": [20, 35],
-        "Operating rhythm": [15, 30],
-        "Strategy and transformation": [5, 15],
-        "Stakeholder partnership": [8, 18],
-        "External ecosystem": [0, 8],
-        "Focused production": [8, 20],
-        "Margin / Flex capacity": [10, 20]
-      },
-      "general_staff": {
-        "People leadership": [0, 10],
-        "Operating rhythm": [10, 25],
-        "Strategy and transformation": [0, 10],
-        "Stakeholder partnership": [5, 15],
-        "External ecosystem": [0, 5],
-        "Focused production": [35, 60],
-        "Margin / Flex capacity": [10, 20]
+      {
+        "name": "Example Series",
+        "match_patterns": [
+          "example series"
+        ],
+        "category": "Operating rhythm",
+        "tags": {},
+        "notes": null
       }
-    },
-
+    ],
     "time_allocation_target_overrides": {
       "_comment": "Optional personal override, tighter or looser than the position-type default, keyed by category name to a [min, max] pair. Empty unless the person explicitly asks for a personal target. Never force this to be filled in."
     }

@@ -2,6 +2,36 @@
 
 All notable changes to this skill are documented here, newest first.
 
+## 0.10 — 2026-09-24
+
+**Fixed a crash that aborted a whole live run.** Found during the first full-volume sort against a real 247-message Inbox: 8 messages came back from Graph with `bodyPreview: null`. `message.get("bodyPreview", "")` does not return the default when the key exists with a null value, so `None` reached `re.search` in `match_decline_template` and raised `TypeError`, killing the entire `classify` step. Not one message was classified. Every message in the batch was lost to a single null field on 3% of them.
+
+All eight read sites now use `message.get(...) or ""`. Six of them are f-string haystacks, where the bug was silent rather than fatal: `None` interpolated as the literal text `"None"` and was then pattern-matched, so a null-preview message could in principle match on a word that was never in it. The two in `match_decline_template` are the ones that crashed.
+
+Verified against the same 247-message batch that triggered it: classification now completes, returning 14 priority, 81 bulk, 1 routine notification and 151 undetermined.
+
+## 0.9 — 2026-09-24
+
+**The last two hardcoded vocabularies moved into `references/defaults.json`.** 0.8 moved every keyword pattern list but left two lists in code: `BULK_SENDER_ADDRESS_PATTERNS` (11 regexes matched against the sender address) and `GENERIC_SENDER_NAME_TOKENS` (21 role-mailbox words that make a rendered decline open "Hi there," rather than "Hi Team,"). Both are classification vocabulary by the same test as the rest, so both now live in the defaults file as `bulk_sender_address_patterns` and `generic_sender_name_tokens`, tunable centrally and overridable per person.
+
+`is_bulk_or_newsletter()` and `_extract_first_name()` gained an optional `config` argument; both call sites already had the resolved config in hand. The module constants stay as `DEFAULT_BULK_SENDER_ADDRESS_PATTERNS` / `DEFAULT_GENERIC_SENDER_NAME_TOKENS`, the same last-resort fallback shape 0.8 used. The token constant changed from a `set` to a list to match what JSON can carry; the lookup builds the set at call time and lowercases as it goes, so a config that supplies mixed-case tokens still matches.
+
+Verified with a config holding only personal keys: both lists resolve from defaults with their full 11 and 21 entries, a bulk newsletter address is still caught, a config that narrows either list wins, and a caller passing no config falls back to the constants.
+
+## 0.8 — 2026-09-24
+
+**Config split into shared defaults and personal config**, the same shape acos-aboutme 0.6 applied to the profile. New shipped `references/defaults.json` holds the 19 keys that are identical for everyone: all eleven keyword pattern lists, `internal_domain`, `folder_names`, both thresholds, `delegate_keywords`, `operational_alert_senders`, `fallback_decline_topic` and `accounts_payable_address`. `state/config.json` keeps the 15 personal ones — the EA, the two sender-exclusion lists, the signoff, file paths. `config.example.json` was trimmed to match.
+
+`load_config` now loads defaults and overlays the config, so any key the config sets still wins.
+
+**Why this one matters most.** These pattern lists are the skill's accuracy surface and they get retuned centrally: the Stage 2/Stage 3 work rewrote most of them in a single pass. Under the previous shape every config carried a private copy, so a retune reached new enrollments only — everyone already running kept their original patterns silently and forever. Verified with a config holding only personal keys: all 19 org values resolve from defaults, and a config-level override of `decline_threshold` and `internal_domain` still wins.
+
+`urgent_keyword_patterns` and `sensitive_keyword_patterns` were null in the live config because `triage.py` substituted its module constants at load. Those constants' values now live in the defaults file, where they can be tuned without editing code; `DEFAULT_URGENT_KEYWORD_PATTERNS`/`DEFAULT_SENSITIVE_KEYWORD_PATTERNS` remain as a last-resort fallback if the defaults file is missing.
+
+## 0.7 — 2026-09-24
+
+`load_aboutme` reads acos-aboutme's shared `references/defaults.json` underneath the personal profile via the vendored `load_acos_profile()` helper. No behaviour change for this skill today — it reads identity fields, which stay personal — but it keeps all three consumers on one loading contract, so a future shared default is picked up here without another round of edits. The not-enrolled path is unchanged: an absent profile still returns `{}`, since defaults alone must never look like an enrolled profile.
+
 ## 0.6 — 2026-09-24
 
 Sanitization pass ahead of org-wide distribution. `SKILL.md` hardcoded a real internal address, `accounts_payable@thesignatry.com`, in two places; both now point at `config.json`'s existing `accounts_payable_address` field, which already holds it. Behaviour is unchanged and the skill stops carrying one organization's address in its shipped body.

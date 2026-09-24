@@ -25,20 +25,6 @@ python3 shorten_oi.py
 Edit `organization_instructions_readable.md`, not `organization_instructions.md`
 directly — the compact file is generated output and will be overwritten.
 
-### acos family (personal productivity skills)
-
-A separate personal productivity suite — calendar analysis, Jira reporting,
-email triage, and daily/weekly/monthly planning — built around one shared
-identity/org-chart profile skill (`acos-aboutme`) so the others don't each
-ask the same setup questions. It follows the same skill folder layout and
-`_exclude/`/versioning conventions as every skill below, but isn't (yet)
-packaged and distributed org-wide via the Console the way the `signatry-*`
-family is — install locally only, and it's intentionally left out of the
-tracked skill table below since that table represents Console-distributed
-skills specifically. See
-[`skills/acos-aboutme/_exclude/GETTING_STARTED.md`](skills/acos-aboutme/_exclude/GETTING_STARTED.md)
-for the full setup walkthrough.
-
 ### Skills
 
 Every skill under `skills/{skill-slug}/` follows the same folder layout:
@@ -74,6 +60,23 @@ frontmatter fields exist, but does not check that this table matches them.
 | [`signatry-pdf-brand`](skills/signatry-pdf-brand/) | Signatry brand system for PDFs built with reportlab: font registration/embedding, color palette, and logo usage. Pair with a general pdf skill and, for donor-facing copy, `signatry-style`. | 1.3 | 2026-08-06 |
 | [`sounding-board`](skills/sounding-board/) | Role-plays a panel of fictional, composite personas reacting to an idea, message, decision, or proposal before it goes out. Covers seven audiences (employee, donor, advisors, VIP family, board, shepherds/C-suite, nonprofit partner), each with its own persona file in `references/`. | 0.7 | 2026-09-16 |
 | [`contact-research`](skills/contact-research/) | Research and enrich HubSpot contacts for The Signatry's relationship managers, one at a time or in batches: pulls the HubSpot record, checks associations/activity for spouse and company links, researches the person on the public web, and produces an enrichment spreadsheet plus a branded PDF profile per contact from a JSON state folder; includes a parallel-subagent orchestrator with per-stage time and token reporting. | 1.0 | 2026-09-23 |
+| [`acos-aboutme`](skills/acos-aboutme/) ᵃ | Shared identity and org-chart profile every other acos skill reads instead of asking the same setup questions again: VIPs, staff, reports, team, partner vendors, protected contacts, email signoff, Jira workspace keys, working hours, and known meeting series. No analysis logic of its own — it is a profile plus the enrollment conversation that fills it in, and it ships the snapshot/restore tool that protects every acos skill's runtime state. | 0.8 | 2026-09-24 |
+| [`acos-calendar-analysis`](skills/acos-calendar-analysis/) ᵃ | Calendar time-classification, conflict detection, schedule health, and time-allocation benchmarking against per-position-type target ranges, with sticky corrections saved back as known meeting series. | 0.5 | 2026-09-24 |
+| [`acos-jira-analysis`](skills/acos-jira-analysis/) ᵃ | Deterministic overdue and upcoming Jira reporting across a person's product, support, and work workspace groups. | 0.5 | 2026-09-24 |
+| [`acos-email-sort`](skills/acos-email-sort/) ᵃ | Morning Microsoft 365 inbox triage into the `_claude/*` Outlook folder taxonomy, with drafted (never sent) vendor declines held for human review. Never sends, deletes, or creates a rule. | 0.10 | 2026-09-24 |
+| [`acos-main`](skills/acos-main/) ᵃ | Orchestrator for the acos family — runs the others together into a morning, week, or month plan. | 0.4 | 2026-09-24 |
+
+ᵃ **acos family.** A personal productivity suite, distributed org-wide the
+same way the `signatry-*` skills are, but with two differences worth knowing
+before you touch one. They must be installed together as sibling folders,
+because each resolves the shared profile by relative path, and each person's
+own data lives in a gitignored `state/` folder that is excluded from the
+packaged zip. Read
+[`skills/acos-aboutme/_exclude/GETTING_STARTED.md`](skills/acos-aboutme/_exclude/GETTING_STARTED.md)
+before installing, upgrading, or changing any of them — it covers the
+sibling-folder requirement, enrollment, the three layers that keep personal
+state out of the repo and the zip, and the snapshot/restore workflow that is
+the only safety net for that state.
 
 ### Skill tooling
 

@@ -17,7 +17,7 @@
 
 | | Skill Typical Call | Skill Worst Case | Signatry Median | Benchmark |
 |---|---|---|---|---|
-| Lines | 132 | 1,633 | 252 | 501 |
+| Lines | 132 | 1,633 | 253 | 501 |
 | Tokens | 5,995 | 149,524 | 5,995 | 8,100 |
 
 ## Version Delta

@@ -2,6 +2,32 @@
 
 All notable changes to this skill are documented here, newest first.
 
+## 0.8 — 2026-09-24
+
+**The state backup tool now ships with the skill, and covers the copy that actually runs.** It was `skills/acos_state_backup.py`, repo tooling that never packaged, documented only in `_exclude/GETTING_STARTED.md`, which also never packages. Anyone who installed these skills from the Console had neither the tool nor the instructions — the entire backup protocol was invisible to the people who most needed it. It moves to `scripts/state_backup.py` here, so it travels with the skill.
+
+**It was also backing up the wrong copy.** The old version resolved one root from its own location and snapshotted `<repo>/skills/acos-*/state/`. But Console-synced skills install as siblings under `~/.claude/skills/synced/<id>/`, and that installed tree carries its own live `profile.json`, `config.json` and ledger. Both copies were real and had diverged — the installed profile was missing `owner.linkedin_url` and still carried `jira_workspaces.upcoming_window_days` inline. A Console re-sync can replace that folder wholesale, so the unbacked-up copy was the more exposed one. The tool now discovers every acos root it can see (its own tree, plus `~/.claude/skills/` at three depths), snapshots all of them, keeps each root's files under a hashed subdirectory so two roots holding the same relative path never collide, and restores each file to the root it came from. `--roots` previews what it found, `--root PATH` adds one, `--list-roots LABEL` shows what a snapshot holds.
+
+Manifests move to version 2 to carry the root mapping. Snapshots written by the old script are detected and refused rather than misplaced, with instructions to copy them out by hand. `.gitkeep` is no longer snapshotted as if it were data.
+
+Restore safety, tested end to end: it still refuses to overwrite a live file differing from the snapshot without `--force`; it reports and skips a recorded root that no longer exists rather than failing the whole restore; and redirecting a multi-root selection into one directory with `--root` is refused outright, because it would have written one root's file over another's and silently kept whichever came last. That last case was a real bug found in testing and fixed with `--from-root`.
+
+**`SKILL.md` gained a "Backing up and restoring the profile" section** with the commands, when to take a snapshot, the two-copies explanation, and an instruction never to pass `--force` on the person's behalf. Enrollment now says explicitly what to do when a profile already exists. `lint_skills.py`'s state-tracking error text points at the new path, and the root `README.md` lists all five acos skills in its version table with a footnote pointing at the setup guide.
+
+## 0.7 — 2026-09-24
+
+Added `owner.pronouns` — optional, free text such as `she/her` or `they/them`. Any skill writing prose about the owner uses it and falls back to they/them when unset, rather than inferring from a name. Added to `profile.example.json`, the Schema section, the enrollment questions, and the Updating triggers ("My pronouns are ___").
+
+## 0.6 — 2026-09-24
+
+**Config split into shared defaults and personal profile.** New shipped `references/defaults.json` holds every value that is identical for everyone: `jira_workspaces.cloud_id` and `product_fields`, `upcoming_window_days`, `calendar_analysis.functional_area_keyword_patterns` and `functional_area_disambiguation`, `time_allocation_targets`, and the default `working_hours`. `state/profile.json` now holds only personal data — owner, staff, reports, team, VIPs, partner vendors, protected contacts, the person's own Jira project keys, their meeting series, ignored addresses, and any deliberate override. Both `profile.example.json` and the maintainer's live profile were trimmed accordingly.
+
+Consumers load defaults, then overlay the profile: any key the profile sets wins, anything it omits falls back. Dicts merge key by key, so overriding one working-hours day keeps the rest.
+
+**Why.** Shared values living in the profile schema meant a profile created before a value existed silently ran without it. That is not hypothetical: the Functional Area regex vocabulary moved from `acos-calendar-analysis`'s module constants into this profile in 0.4, and every profile predating that change tagged nothing — `(cal.get(...) or {})` cannot tell "absent" from "legitimately empty", so it failed with no error for weeks. `jira_workspaces.cloud_id` had the same root cause but failed loudly instead. Shipping the shared half separately makes a stale profile structurally impossible: a profile never has to carry what it can inherit.
+
+SKILL.md gains a "Two files" section explaining the split and the override rule, and the "For skill authors" contract now covers reading both files and the vendored `load_acos_profile()` helper.
+
 ## 0.5 — 2026-09-24
 
 Sanitization pass ahead of org-wide distribution, plus one more step in the 0.4 direction of moving site config out of sibling skills' code.

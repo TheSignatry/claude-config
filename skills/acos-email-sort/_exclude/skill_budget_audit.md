@@ -5,24 +5,24 @@
 | Skill Section | Lines | Tokens | Notes |
 |---|---|---|---|
 | Description (frontmatter) | 1 | 93 | Always loaded, every skill, every turn (FYI — length/quality governed by lint) |
-| Body (`SKILL.md`) | 161 | 10,588 | Loaded whenever this skill triggers |
-| Deferred (`reference/`, `scripts/`, `assets/`) | 1,602 | 20,435 | Loaded only if `SKILL.md` points Claude to it (3 files) |
-| **Total** | **1,764** | **31,116** | Worst case if everything is read |
+| Body (`SKILL.md`) | 165 | 10,840 | Loaded whenever this skill triggers |
+| Deferred (`reference/`, `scripts/`, `assets/`) | 1,756 | 22,753 | Loaded only if `SKILL.md` points Claude to it (4 files) |
+| **Total** | **1,922** | **33,686** | Worst case if everything is read |
 
 ## Comparison
 
-**Deferred usage:** `deferred-full-use` (default — not yet reviewed for this skill)
+**Deferred usage:** `deferred-alternatives` — All four deferred files are consumed by scripts/triage.py, not by Claude. The script is executed; references/defaults.json, config.example.json and rejection_templates.yaml are opened by that script at runtime. A normal sort run reads none of them into context, so charging the full 91 KB to a typical call overstates it substantially.
 
-`acos-email-sort`'s typical-call footprint is 5.19x the Signatry median (31,116 vs 5,995 tokens across 17 skills) **[OUTLIER]**.
+`acos-email-sort`'s typical-call footprint is 4.39x the Signatry median (26,300 vs 5,995 tokens across 17 skills) **[OUTLIER]**.
 
 | | Skill Typical Call | Skill Worst Case | Signatry Median | Benchmark |
 |---|---|---|---|---|
-| Lines | 1,764 | 1,764 | 252 | 501 |
-| Tokens | 31,116 | 31,116 | 5,995 | 8,100 |
+| Lines | 1,483 | 1,922 | 253 | 501 |
+| Tokens | 26,300 | 33,686 | 5,995 | 8,100 |
 
 ## Version Delta
 
-No version change since the last recorded snapshot (v0.6, recorded 2026-09-24).
+No version change since the last recorded snapshot (v0.10, recorded 2026-09-24).
 
 ## Findings
 

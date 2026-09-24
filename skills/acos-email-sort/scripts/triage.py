@@ -101,7 +101,7 @@ DEFAULT_SENSITIVE_KEYWORD_PATTERNS = [
     r"\bsuccession plan\b",
 ]
 
-BULK_SENDER_ADDRESS_PATTERNS = [
+DEFAULT_BULK_SENDER_ADDRESS_PATTERNS = [
     r"newsletter", r"no-?reply", r"do-?not-?reply", r"marketing", r"campaign",
     r"\bnews\b", r"digest", r"bulletin", r"webinars?", r"publications",
     r"substack",
@@ -138,31 +138,37 @@ def _has_esp_padding_signature(text, min_invisible=6):
     return False
 
 
-def is_bulk_or_newsletter(message):
+def is_bulk_or_newsletter(message, config=None):
     """Returns (True, reason) if this message looks like a bulk send
     (newsletter/marketing blast) rather than a direct, one-to-one
     solicitation -- used to suppress the decline flow, since drafting a
     personalized decline reply to a bulk sender is pointless (often nobody
     reads it) and this pattern was observed to false-positive on generic
     keyword overlap with newsletter copy (e.g. a CIO newsletter that just
-    happens to mention "cybersecurity")."""
+    happens to mention "cybersecurity").
+
+    The address patterns come from `bulk_sender_address_patterns` in the
+    resolved config so the vocabulary lives in references/defaults.json with
+    every other classification list; the module constant is the fallback for
+    a caller that passes no config."""
     address = ((message.get("sender") or {}).get("address") or message.get("senderAddress") or "").lower()
-    for pattern in BULK_SENDER_ADDRESS_PATTERNS:
+    patterns = (config or {}).get("bulk_sender_address_patterns") or DEFAULT_BULK_SENDER_ADDRESS_PATTERNS
+    for pattern in patterns:
         if re.search(pattern, address):
             return True, f"sender address matches bulk-mail pattern /{pattern}/"
 
-    haystack = f"{message.get('subject', '')}\n{message.get('bodyPreview', '')}"
+    haystack = f"{message.get('subject') or ''}\n{message.get('bodyPreview') or ''}"
     if _has_esp_padding_signature(haystack):
         return True, "body preview contains ESP preheader-padding characters (bulk-send signature)"
 
     return False, None
 
 
-GENERIC_SENDER_NAME_TOKENS = {
+DEFAULT_GENERIC_SENDER_NAME_TOKENS = [
     "the", "team", "support", "sales", "marketing", "newsletter", "newsletters",
     "notifications", "noreply", "no-reply", "info", "hello", "admin", "updates",
     "help", "billing", "accounts", "office", "service", "services", "care",
-}
+]
 
 REQUIRED_FOLDER_KEYS = [
     "priority", "review", "delegate", "autorespond", "drafts_review", "bulk_review", "to_be_filed",
@@ -177,8 +183,31 @@ def save_json(path, data):
     Path(path).write_text(json.dumps(data, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
+CONFIG_DEFAULTS_RELPATH = ("..", "references", "defaults.json")
+
+
 def load_config(path):
+    """Org-wide defaults overlaid by this person's own config.
+
+    `references/defaults.json` ships with the skill and holds the classification
+    vocabulary and org facts that are identical for everyone -- every keyword
+    pattern list, the internal domain, the folder names, the thresholds, the
+    operational-alert senders. `state/config.json` holds only what is personal.
+    Reading defaults first means a central retune of a pattern list reaches
+    every install on upgrade rather than only new enrollments, which is the
+    failure the acos-aboutme defaults split fixed for the shared profile.
+
+    Same overlay rule as there: any key the config sets wins, anything it omits
+    falls back. A missing defaults file degrades to the config alone.
+    """
     config = load_json(path)
+    defaults_path = Path(path).parent.joinpath(*CONFIG_DEFAULTS_RELPATH)
+    if defaults_path.exists():
+        try:
+            defaults = json.loads(defaults_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            defaults = {}
+        config = _acos_overlay(defaults, config)
     if not config.get("urgent_keyword_patterns"):
         config["urgent_keyword_patterns"] = DEFAULT_URGENT_KEYWORD_PATTERNS
     if not config.get("sensitive_keyword_patterns"):
@@ -208,13 +237,73 @@ def load_config(path):
     return config
 
 
+# --- acos shared-defaults overlay -------------------------------------------
+# Vendored identically into acos-jira-analysis, acos-calendar-analysis and
+# acos-email-sort. These skills install as independent siblings and import
+# nothing from each other, so this block is duplicated rather than shared;
+# lint_skills.py checks the copies stay byte-identical.
+ACOS_DEFAULTS_RELPATH = ("..", "references", "defaults.json")
+
+
+def _acos_overlay(base, override):
+    """Recursive dict merge where `override` wins. A non-dict value replaces
+    whatever it lands on; only dicts are merged key by key."""
+    out = dict(base)
+    for key, value in (override or {}).items():
+        if isinstance(value, dict) and isinstance(out.get(key), dict):
+            out[key] = _acos_overlay(out[key], value)
+        else:
+            out[key] = value
+    return out
+
+
+def load_acos_profile(aboutme_path):
+    """acos-aboutme's org-wide defaults, overlaid by the person's own profile.
+
+    acos-aboutme ships `references/defaults.json` holding every value that is
+    identical for everyone -- the Jira site and its Product Discovery field
+    IDs, the Functional Area tagging vocabulary, the time-allocation benchmark
+    tables. `state/profile.json` holds only what is personal. Reading the
+    defaults first and letting the profile override means a profile written
+    before a default existed still receives it.
+
+    That is the whole point: when the Functional Area regex vocabulary moved
+    from module constants into the profile schema in acos-aboutme 0.4, every
+    profile created before that kept working with zero tagging rules and no
+    error, because `(cal.get(...) or {})` cannot tell "absent" from "empty".
+    Shipping the shared half separately makes a stale profile impossible.
+
+    Returns {} when the profile itself is absent, preserving each caller's
+    existing not-enrolled behaviour -- defaults alone must never look like an
+    enrolled profile. A missing or unparseable defaults file degrades to the
+    profile alone rather than raising, so an older acos-aboutme still works.
+    """
+    profile_path = Path(aboutme_path)
+    if not profile_path.exists():
+        return {}
+    try:
+        profile = json.loads(profile_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    defaults_path = profile_path.parent.joinpath(*ACOS_DEFAULTS_RELPATH)
+    defaults = {}
+    if defaults_path.exists():
+        try:
+            defaults = json.loads(defaults_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            defaults = {}
+    return _acos_overlay(defaults, profile)
+# --- end acos shared-defaults overlay ---------------------------------------
+
+
 def load_aboutme(path):
     """Returns {} if the acos-aboutme profile doesn't exist — that skill may
     not be installed or enrolled, and this must degrade gracefully rather
     than fail (see acos-aboutme's "For skill authors" section)."""
     if not path or not Path(path).exists():
         return {}
-    return load_json(path)
+    # Org-wide defaults underneath, this person's profile on top.
+    return load_acos_profile(path)
 
 
 def merge_aboutme(config, aboutme):
@@ -511,7 +600,7 @@ def score_priority(message, config):
     if (message.get("importance") or "").lower() == "high":
         reasons.append("message flagged high importance")
 
-    haystack = f"{message.get('subject', '')}\n{message.get('bodyPreview', '')}"
+    haystack = f"{message.get('subject') or ''}\n{message.get('bodyPreview') or ''}"
     # urgent_keyword_excluded_senders (added 2026-08-12, Stage 3
     # high-severity review, Group F): mirrors financial_document_excluded_
     # senders below -- a small allowlist for senders whose automated report
@@ -610,7 +699,7 @@ def score_sensitive(message, config):
     personnel departure), and the Nick Bartelli message is still caught by
     'bittersweet'/'last day at' below regardless, so nothing is lost by
     leaving it out."""
-    haystack = f"{message.get('subject', '')}\n{message.get('bodyPreview', '')}"
+    haystack = f"{message.get('subject') or ''}\n{message.get('bodyPreview') or ''}"
     for pattern in _compile_all(config.get("sensitive_keyword_patterns", DEFAULT_SENSITIVE_KEYWORD_PATTERNS)):
         if pattern.search(haystack):
             return True, pattern.pattern
@@ -692,7 +781,7 @@ def find_farewell_note(message, config):
     skimmed past unanswered. Deliberately narrow patterns -- a bare 'thank
     you' is far too common in ordinary business mail to use as a signal on
     its own."""
-    haystack = f"{message.get('subject', '')}\n{message.get('bodyPreview', '')}"
+    haystack = f"{message.get('subject') or ''}\n{message.get('bodyPreview') or ''}"
     for pattern in _compile_all(config.get("farewell_note_keyword_patterns", [])):
         if pattern.search(haystack):
             return f"reads like a personal farewell/thank-you note from someone leaving: /{pattern.pattern}/"
@@ -716,7 +805,7 @@ def find_routine_notification(message, config):
     protected/partner-vendor sender (rippling.com and hubspot.com are both
     partner_vendors; a couple of specific senders are also protected_senders)
     doesn't get claimed by that check first."""
-    haystack = f"{message.get('subject', '')}\n{message.get('bodyPreview', '')}"
+    haystack = f"{message.get('subject') or ''}\n{message.get('bodyPreview') or ''}"
 
     for pattern in _compile_all(config.get("meeting_reminder_keyword_patterns", [])):
         if pattern.search(haystack):
@@ -740,7 +829,7 @@ def find_ea_scheduling_delegate(message, config):
     title) AND separate scheduling language -- neither alone is a reliable
     signal (a message can mention the EA in passing with no scheduling ask,
     or use scheduling language that has nothing to do with her)."""
-    haystack = f"{message.get('subject', '')}\n{message.get('bodyPreview', '')}"
+    haystack = f"{message.get('subject') or ''}\n{message.get('bodyPreview') or ''}"
 
     ea_name = (config.get("ea_name") or "").strip()
     mentions_ea = bool(ea_name and re.search(rf"\b{re.escape(ea_name)}\b", haystack, re.IGNORECASE))
@@ -759,8 +848,8 @@ def find_ea_scheduling_delegate(message, config):
 def match_decline_template(message, templates):
     address = (message.get("sender") or {}).get("address") or message.get("senderAddress") or ""
     domain = _sender_domain(address)
-    subject = message.get("subject", "")
-    body = message.get("bodyPreview", "")
+    subject = message.get("subject") or ""
+    body = message.get("bodyPreview") or ""
 
     for template in templates:
         allowed_domains = [d.lower() for d in template.get("sender_domains", [])]
@@ -853,7 +942,7 @@ def classify_message(message, config, templates, ledger):
             "reasons": [f"{internal_alert_reason} — bulk screen and decline both skipped, route straight to 2_review"],
         }
 
-    is_bulk, bulk_reason = is_bulk_or_newsletter(message)
+    is_bulk, bulk_reason = is_bulk_or_newsletter(message, config)
     if is_bulk:
         reasons = [f"{bulk_reason} — routed to bulk_review for a quick manual screen before final filing"]
         decline_match = match_decline_template(message, templates)
@@ -1090,12 +1179,20 @@ def cmd_record_failure(args):
     }, indent=2, sort_keys=True))
 
 
-def _extract_first_name(sender_name):
+def _extract_first_name(sender_name, config=None):
+    """The token list comes from `generic_sender_name_tokens` in the resolved
+    config (JSON has no set type, so it arrives as a list and is converted
+    here); the module constant is the fallback when no config is passed."""
     if not sender_name:
         return "there"
     first = sender_name.strip().split()[0] if sender_name.strip() else ""
     cleaned = re.sub(r"[^A-Za-z\-']", "", first)
-    if not cleaned or cleaned.lower() in GENERIC_SENDER_NAME_TOKENS or not cleaned[0].isupper():
+    tokens = {
+        str(t).lower()
+        for t in ((config or {}).get("generic_sender_name_tokens")
+                  or DEFAULT_GENERIC_SENDER_NAME_TOKENS)
+    }
+    if not cleaned or cleaned.lower() in tokens or not cleaned[0].isupper():
         return "there"
     return cleaned
 
@@ -1114,7 +1211,7 @@ def cmd_render_template(args):
     careers_url = config.get("careers_url") or ""
     company_linkedin_url = config.get("company_linkedin_url") or ""
 
-    first_name = _extract_first_name(args.sender_name)
+    first_name = _extract_first_name(args.sender_name, config)
     html_body_template = template["html_body"]
     if not personal_linkedin_url:
         # The "follow me on LinkedIn" sentence links the URL as its own visible

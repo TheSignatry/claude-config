@@ -2,6 +2,12 @@
 
 All notable changes to this skill are documented here, newest first.
 
+## 0.5 — 2026-09-24
+
+Reads acos-aboutme's shared `references/defaults.json` underneath the personal profile via the vendored `load_acos_profile()` helper, so `cloud_id` and the Product Discovery `product_fields` now arrive from the org-wide defaults instead of having to be present in every profile. A profile that sets either still wins. This fixes a live failure: the maintainer's profile predated `cloud_id` entering the schema, so `plan` hard-failed and took `acos-main`'s morning-plan and month-retro with it.
+
+`DEFAULT_PRODUCT_FIELDS` stays as a last-resort fallback for an install whose acos-aboutme is older than the defaults file.
+
 ## 0.4 — 2026-09-24
 
 The three Jira Product Discovery custom-field IDs — `customfield_10149` (Project target), `customfield_10156` (Product Area), `customfield_10139` (Roadmap) — and the Roadmap values excluded from the product-detail JQL were hardcoded across nine call sites in `scripts/jira_report.py`. Custom-field IDs are assigned per Jira site, so a differently-configured site would have returned empty fields with no error rather than failing loudly.

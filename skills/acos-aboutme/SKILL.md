@@ -1,7 +1,7 @@
 ---
 name: acos-aboutme
 description: "Shared identity and org-chart profile for the acos skill family (cos, acos-email-sort, acos-jira-analysis, acos-calendar-analysis, and future acos skills) — who's a VIP/Shepherd/executive, who's staff/reports/team, which vendors are trusted partners and what functional area they belong to, which contacts should never be auto-declined or auto-filed, how to sign off an email, which Jira project keys belong to each workspace group, working hours, staff position type, known recurring meeting series, and time-allocation targets. Use when: setting up or updating an acos profile, add a VIP, add a direct report or staff member, add someone to my team, add a partner vendor, tag a functional area, add a protected contact, change my email signoff, who's on my VIP list, add a Jira project to a workspace group, change my Jira upcoming window, change my working hours, change my staff position type, add a known meeting series, correct a meeting's category, update acos aboutme, run acos aboutme."
-version: "0.5"
+version: "0.8"
 release_date: "2026-09-24"
 ---
 
@@ -13,10 +13,10 @@ This skill does not gather calendars, inboxes, Jira issues, or anything else —
 
 ## Enrollment (first run only)
 
-Check for `state/profile.json`. If it doesn't exist:
+Check for `state/profile.json`. If it **does** exist, this person is already enrolled — go to Updating instead, and take a snapshot first (see "Backing up and restoring the profile") before re-running enrollment over it. If it doesn't exist:
 
 1. Copy `references/profile.example.json` to `state/profile.json` as a starting point.
-2. Ask, in one short message, only for what's missing: the person's first name, full name, and how they'd like to sign off an email (e.g. "Jane," "- Jane," "Thanks, Jane" — store just the name part; the surrounding phrasing is each template's own style); who their direct reports or core staff are (name and email each); who counts as an executive/VIP for priority handling (name and email each) — this same list is the "Shepherd" group `acos-calendar-analysis` uses for its Strategy-and-transformation default; which vendor companies are trusted partners rather than random vendors (name, domain, and functional area each); any specific individual contacts that should never be auto-declined or auto-filed even if a message from them looks like a form pitch (name, email, and why); and, if they use `acos-jira-analysis`, which Jira project keys belong to each of their workspace groups (product, support, work — a group can hold more than one key) and how many days out "upcoming" should look (default 14 if they have no opinion).
+2. Ask, in one short message, only for what's missing: the person's first name, full name, and how they'd like to sign off an email (e.g. "Jane," "- Jane," "Thanks, Jane" — store just the name part; the surrounding phrasing is each template's own style); their pronouns if they'd like them recorded, which any skill writing about them uses instead of guessing; who their direct reports or core staff are (name and email each); who counts as an executive/VIP for priority handling (name and email each) — this same list is the "Shepherd" group `acos-calendar-analysis` uses for its Strategy-and-transformation default; which vendor companies are trusted partners rather than random vendors (name, domain, and functional area each); any specific individual contacts that should never be auto-declined or auto-filed even if a message from them looks like a form pitch (name, email, and why); and, if they use `acos-jira-analysis`, which Jira project keys belong to each of their workspace groups (product, support, work — a group can hold more than one key) and how many days out "upcoming" should look (default 14 if they have no opinion).
 3. If they use `acos-calendar-analysis`, also ask: their downstream reports as one flat list regardless of org-chart depth (`reports`); their broader team beyond just reports (`team`); their working hours if not the 08:00–17:00 default every day; their staff position type — C-suite/executive, Manager, or General staff (`owner.staff_position_type`) — used to pick the right time-allocation target range table; and a flat directory of who belongs to which functional area (Finance, HR, Legal, Compliance, Revenue, Engineering, Systems, Operations, Security, Data), for the Functional Area tag.
 4. Every question is skippable — a thin or empty profile still works, it just means consuming skills can't tell a VIP from anyone else, a partner from a cold vendor, or a direct report from a stranger, until it's filled in.
 5. Save the answers into `state/profile.json`, confirm back in one line, and don't ask again — only revisit when the person says something like "add a VIP," "add a partner," or "update my signoff."
@@ -30,6 +30,7 @@ Handle these as small, targeted edits to `state/profile.json`, not a full re-enr
 - "Never auto-decline \<name\>/\<email\>" → append to `protected_senders` with a short reason.
 - "Add \<name\> to my staff" → append to `staff`.
 - "Change my signoff to \_\_\_" → update `owner.signoff`.
+- "My pronouns are \_\_\_" → update `owner.pronouns`.
 - "Add \<KEY\> to my \<product/support/work\> Jira workspace" → append the project key to that list under `jira_workspaces`.
 - "Change my Jira upcoming window to \<N\> days" → update `jira_workspaces.upcoming_window_days`.
 - "Add \<name\> to my reports/team" → append to `reports` and/or `team`.
@@ -45,11 +46,49 @@ Confirm each edit back in one line after saving.
 
 Every other field in this file is read-only to every other acos skill — a correction always flows through this skill's own update flow, per the ground rules below. `calendar_analysis.known_meeting_series` is the sole, deliberate exception: `acos-calendar-analysis`'s own correction flow (its "sticky corrections" requirement) writes new match patterns or category/tag changes into that array directly, without a round trip through this skill. This is documented here so the exception is visible in one place rather than silently assumed. If a person asks to remove or hand-edit a known series, that's fine to do from here too — it's the same array either way.
 
+## Backing up and restoring the profile
+
+`state/profile.json` is the only copy of this person's identity data. It is deliberately kept out of git and out of the packaged skill zip, so neither a commit nor a reinstall can bring it back — an acos profile has already been lost once to a folder restructure. `scripts/state_backup.py` is the safety net. It is stdlib-only and writes to `~/.claude/acos-state-backups/`, outside every skill folder, so a snapshot survives a re-sync, a reinstall, a branch switch, or a deleted checkout.
+
+Run it from this skill's own directory:
+
+```bash
+python3 scripts/state_backup.py               # snapshot every acos state file
+python3 scripts/state_backup.py --roots       # show what would be covered first
+python3 scripts/state_backup.py --list        # snapshots, newest first
+python3 scripts/state_backup.py --verify LABEL
+python3 scripts/state_backup.py --restore LABEL
+python3 scripts/state_backup.py --restore LABEL --skill acos-aboutme
+```
+
+`LABEL` is the UTC timestamp `--list` prints, e.g. `20260924T174557Z`.
+
+**Take a snapshot before anything that could overwrite an existing profile**: a re-enrollment over a profile that already exists, an acos skill upgrade, or a bulk edit such as replacing a whole list. First-time enrollment has nothing to lose, so it needs no snapshot. Taking one is cheap and needs no permission — just say afterwards that it happened and give the label.
+
+**A person usually has two live copies of this state** — the installed skill folder that actually runs, and a development checkout if they maintain these skills. They drift apart. The tool finds both on its own and keeps them separate inside one snapshot, restoring each file to the copy it came from. `--roots` shows what it found; add another with `--root PATH`.
+
+**Restoring is guarded.** It refuses to overwrite a live file whose contents differ from the snapshot unless `--force` is passed, so a restore cannot silently discard a profile rebuilt since. If a recorded location no longer exists, it says so and restores the rest. Use `--list-roots LABEL` and `--from-root` to pull one specific copy when redirecting a restore somewhere new with `--root`.
+
+If a restore would overwrite a differing live profile, show the person what differs and let them choose — do not pass `--force` on their behalf.
+
+## Two files: shared defaults, then personal profile
+
+Configuration is split by who it belongs to, and consuming skills read both:
+
+- **`references/defaults.json`** ships with this skill and holds every value that is the same for everyone in the organization: the Jira Cloud site and its Product Discovery field IDs, the Functional Area tagging vocabulary, the time-allocation benchmark tables, and the default working hours. Nobody edits this locally — it arrives with the package and is updated by shipping a new version.
+- **`state/profile.json`** holds only what is personal: who the owner is, their staff, reports, team, VIPs, partner vendors, protected contacts, their own Jira project keys, their meeting series, and any deliberate override of a shared default.
+
+A consumer loads the defaults, then overlays the profile. Any key the profile sets wins; anything it omits falls back to the shared value. Dicts merge key by key, so overriding one working-hours day does not discard the rest.
+
+**Why the split exists.** Before it, a shared value like the Functional Area regex vocabulary lived in the profile schema, so every profile created before that value was introduced silently ran without it. `(cal.get(...) or {})` cannot distinguish "absent" from "legitimately empty", so tagging returned nothing and reported no error. Shipping the shared half separately makes a stale profile structurally impossible: a profile written years earlier still picks up today's defaults, because it never had to carry them.
+
+**Overriding a default** means setting the same key in `state/profile.json`. Do that only to differ from the organization deliberately; it opts that key out of future updates to the shared file.
+
 ## Schema
 
-See `references/profile.example.json` for the full shape. Summary:
+See `references/profile.example.json` for the personal shape and `references/defaults.json` for the shared one. Summary:
 
-- `owner` — `first_name`, `full_name`, `email`, `signoff` (just the name/phrase to sign with — a template supplies its own "Thanks," or "-" lead-in around it), `staff_position_type` — one of `c_suite_executive`, `manager`, `general_staff`; picks which row of `calendar_analysis.time_allocation_targets` applies. `linkedin_url` — the owner's personal LinkedIn profile URL, optional; `acos-email-sort` reads this for its `{personal_linkedin_url}` decline-template placeholder so a decline draft never hardcodes it.
+- `owner` — `first_name`, `full_name`, `email`, `signoff` (just the name/phrase to sign with — a template supplies its own "Thanks," or "-" lead-in around it), `pronouns` — optional, e.g. `she/her`, `he/him`, `they/them`; any skill writing prose about the owner uses these, and falls back to they/them when unset rather than guessing from a name. `staff_position_type` — one of `c_suite_executive`, `manager`, `general_staff`; picks which row of `calendar_analysis.time_allocation_targets` applies. `linkedin_url` — the owner's personal LinkedIn profile URL, optional; `acos-email-sort` reads this for its `{personal_linkedin_url}` decline-template placeholder so a decline draft never hardcodes it.
 - `staff` — legacy field, direct reports / core team, each `{name, email, role, is_executive_assistant}`. Other acos skills (e.g. `acos-email-sort`) already read this as "my core team" for their own purposes — left untouched. **Not read by `acos-calendar-analysis`** — it uses `reports` and `team` below instead, which are more precise about a genuinely different distinction, not just a rename. `is_executive_assistant: true` on exactly one entry is how `acos-email-sort` resolves its `ea_name`/`ea_email` fields — set explicitly rather than inferred by matching `role` text, since role phrasing varies too much (title case, abbreviations, "to the CEO" suffixes) to match reliably.
 - `reports` — **strict management-chain fact**: everyone who reports to the owner, directly or through someone who reports to them, flattened regardless of org-chart depth — an org-chart fact, not a judgment call. Each `{name, email}`. Feeds exactly three things: (1) the People-leadership category's 2-person-1:1 rule (exactly one other attendee, and they're on this list); (2) the People-leadership category's management-keyword rule, jointly with `team`; (3) the Audience tag's "direct team" value (*all* non-organizer attendees on this list).
 - `team` — **looser "who counts as my team" fact** — a superset of `reports` that can include people who don't formally report to the owner (a dotted-line collaborator, a peer's report embedded with the group). Each `{name, email}`. Feeds three things: (1) the People-leadership keyword rule, jointly with `reports`; (2) the Operating-rhythm category default (every attendee is the owner plus people on Team/Reports, no Shepherd present); (3) the Audience tag's "broader internal" value (*all* non-organizer attendees on Team, but not narrowly all on Reports).
@@ -70,7 +109,13 @@ See `references/profile.example.json` for the full shape. Summary:
 
 ## For skill authors (how a consuming skill reads this)
 
-This skill's only externally-useful artifact is `state/profile.json`, read from a sibling skill directory at the fixed relative path `../acos-aboutme/state/profile.json` (adjust the relative depth to wherever skills are actually installed side by side). Treat every field as optional:
+This skill exposes two files, read from a sibling skill directory: `../acos-aboutme/state/profile.json` and `../acos-aboutme/references/defaults.json` (adjust the relative depth to wherever skills are actually installed side by side).
+
+**Read both, defaults first.** Every consuming script carries an identical vendored `load_acos_profile()` helper — these skills install independently and import nothing from each other, so the block is duplicated rather than shared, and `lint_skills.py` checks the copies stay byte-identical. It returns `{}` when the profile is absent, so the not-enrolled path below is unchanged; defaults alone must never look like an enrolled profile. A missing or unparseable defaults file degrades to the profile alone rather than raising, so an older install of this skill still works.
+
+Do not reach for a shared value directly out of `defaults.json` — read the merged view, so a person's deliberate override is honoured.
+
+Treat every field as optional:
 
 - If the file doesn't exist at all, this skill hasn't been installed or enrolled — degrade gracefully (e.g., an empty VIP list) rather than failing. Don't silently invent identity data on someone else's behalf.
 - If a field exists but is an empty list, treat it exactly like "not provided" — don't distinguish "empty because unfilled" from "empty because there truly are none" unless the consuming skill has its own reason to care.
