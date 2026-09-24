@@ -3,10 +3,10 @@
   "version": 2,
 
   "owner": {
-    "first_name": "Trevor",
-    "full_name": "Trevor Bunch",
-    "email": "tbunch@thesignatry.com",
-    "signoff": "Trevor",
+    "first_name": "Example",
+    "full_name": "Example Owner",
+    "email": "owner@example.org",
+    "signoff": "Example",
     "staff_position_type": "c_suite_executive",
     "linkedin_url": ""
   },
@@ -56,11 +56,18 @@
 
   "jira_workspaces": {
     "_comment": "Workspace groups for acos-jira-analysis (and future acos skills). Each group is a list of one or more Jira project keys — don't assume one project per group. upcoming_window_days is the shared 'next N days' window every consuming skill should read from here rather than hardcoding. cloud_id is the Jira Cloud site hostname acos-jira-analysis passes to searchJiraIssuesUsingJql — required, no built-in default; acos-jira-analysis's `plan` step fails with a clear error if this is missing rather than guessing a site.",
-    "product": ["TRM"],
-    "support": ["SUP"],
-    "work": ["TT", "IL", "HSER", "GE", "DVR"],
+    "product": [],
+    "support": [],
+    "work": [],
     "upcoming_window_days": 14,
-    "cloud_id": "your-site.atlassian.net"
+    "cloud_id": "signatry1.atlassian.net",
+    "_product_fields_comment": "Jira Product Discovery custom-field IDs for the `product` group, read by acos-jira-analysis instead of being hardcoded in its script. Custom-field IDs are per-Jira-site, so these are correct for every project on the cloud_id above but would be wrong on another site. project_target is a JSON string {\"start\":...,\"end\":\"YYYY-MM-DD\"} whose parsed end date is this group's due-date equivalent (standard duedate is not populated on these issues); product_area is multi-select; roadmap is single-select (Now/Next/Won't do). roadmap_exclude are the Roadmap values filtered out of the product-detail query. Omit this block entirely and the script falls back to these same values.",
+    "product_fields": {
+      "project_target": "customfield_10149",
+      "product_area": "customfield_10156",
+      "roadmap": "customfield_10139",
+      "roadmap_exclude": ["Done", "Parking Lot"]
+    }
   },
 
   "calendar_analysis": {

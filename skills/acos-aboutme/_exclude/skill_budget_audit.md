@@ -6,23 +6,23 @@
 |---|---|---|---|
 | Description (frontmatter) | 1 | 248 | Always loaded, every skill, every turn (FYI — length/quality governed by lint) |
 | Body (`SKILL.md`) | 78 | 4,153 | Loaded whenever this skill triggers |
-| Deferred (`reference/`, `scripts/`, `assets/`) | 144 | 3,368 | Loaded only if `SKILL.md` points Claude to it (1 file) |
-| **Total** | **223** | **7,769** | Worst case if everything is read |
+| Deferred (`reference/`, `scripts/`, `assets/`) | 151 | 3,587 | Loaded only if `SKILL.md` points Claude to it (1 file) |
+| **Total** | **230** | **7,988** | Worst case if everything is read |
 
 ## Comparison
 
 **Deferred usage:** `deferred-full-use` (default — not yet reviewed for this skill)
 
-`acos-aboutme`'s typical-call footprint is 1.30x the Signatry median (7,769 vs 5,995 tokens across 17 skills).
+`acos-aboutme`'s typical-call footprint is 1.33x the Signatry median (7,988 vs 5,995 tokens across 17 skills).
 
 | | Skill Typical Call | Skill Worst Case | Signatry Median | Benchmark |
 |---|---|---|---|---|
-| Lines | 223 | 223 | 252 | 501 |
-| Tokens | 7,769 | 7,769 | 5,995 | 8,100 |
+| Lines | 230 | 230 | 252 | 501 |
+| Tokens | 7,988 | 7,988 | 5,995 | 8,100 |
 
 ## Version Delta
 
-No version change since the last recorded snapshot (v0.4, recorded 2026-09-23).
+No version change since the last recorded snapshot (v0.5, recorded 2026-09-24).
 
 ## Findings
 

@@ -1,8 +1,8 @@
 ---
 name: acos-jira-analysis
 description: "Reports overdue and upcoming Jira work across the owner's configured workspace groups (product, support, work) on their configured Jira Cloud site, as one markdown report. Read-only — never creates, edits, transitions, or comments on an issue. Use when: run my jira report, jira analysis, what's overdue in jira, what's coming up in jira, acos jira analysis, product roadmap status, my jira tasks, support queue status, run acos-jira-analysis."
-version: "0.3"
-release_date: "2026-08-16"
+version: "0.4"
+release_date: "2026-09-24"
 ---
 
 ## Context

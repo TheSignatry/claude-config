@@ -1,8 +1,8 @@
 ---
 name: acos-aboutme
 description: "Shared identity and org-chart profile for the acos skill family (cos, acos-email-sort, acos-jira-analysis, acos-calendar-analysis, and future acos skills) — who's a VIP/Shepherd/executive, who's staff/reports/team, which vendors are trusted partners and what functional area they belong to, which contacts should never be auto-declined or auto-filed, how to sign off an email, which Jira project keys belong to each workspace group, working hours, staff position type, known recurring meeting series, and time-allocation targets. Use when: setting up or updating an acos profile, add a VIP, add a direct report or staff member, add someone to my team, add a partner vendor, tag a functional area, add a protected contact, change my email signoff, who's on my VIP list, add a Jira project to a workspace group, change my Jira upcoming window, change my working hours, change my staff position type, add a known meeting series, correct a meeting's category, update acos aboutme, run acos aboutme."
-version: "0.4"
-release_date: "2026-08-16"
+version: "0.5"
+release_date: "2026-09-24"
 ---
 
 ## Context

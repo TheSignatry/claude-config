@@ -36,10 +36,10 @@ Subcommands (each reads/writes plain JSON so Claude can pass data via files):
                    AI-assistance disclosure footer, returning the subject/
                    html body to hand to outlook_create_reply_draft.
   match-declines  Resolve which decline-template topic applies to a batch of
-                   messages already sitting in 4_autorespond (Trevor's own
+                   messages already sitting in 4_autorespond (the owner's own
                    manual "this is a decline" landing zone) -- unlike
                    classify, this never re-runs the sensitive/priority/
-                   protected/bulk checks, since Trevor's own placement there
+                   protected/bulk checks, since the owner's own placement there
                    already is the judgment call. Falls back to config's
                    fallback_decline_topic when no template's keywords match.
   record-filed    Called once per message AFTER an undetermined message is
@@ -443,11 +443,11 @@ def is_calendar_or_ooo_artifact(message):
     out-of-office autoreply, never a judgment call the sender made, so they
     should never trigger priority regardless of who sent them or what
     keyword happens to appear in the boilerplate body text. Added
-    2026-08-12 (Theme D of _exclude/stage2_accuracy_report.md) after finding a
+    2026-08-12 (Theme D of _exclude/CHANGELOG.md) after finding a
     VIP's meeting-cancellation notice (flagged via the high-importance flag)
     and an out-of-office autoreply that happened to contain the word
     'urgent' in its own boilerplate (flagged via the urgent-keyword scan)
-    both getting marked priority, when Trevor filed both as routine review/
+    both getting marked priority, when the owner filed both as routine review/
     no-action mail."""
     subject = message.get("subject") or ""
     return bool(CALENDAR_OOO_SUBJECT_PREFIX_PATTERN.match(subject.strip()))
@@ -457,7 +457,7 @@ def is_calendar_rsvp_artifact(message):
     """True only for the pure calendar-RSVP subset of is_calendar_or_ooo_
     artifact -- Accepted:/Declined:/Tentative:/Canceled:/Cancelled:, NOT
     Automatic reply:. Added 2026-08-12 (Stage 3 regression, follow-up round
-    2 of _exclude/stage3_accuracy_report.md) after score_priority's VIP-sender
+    2 of _exclude/CHANGELOG.md) after score_priority's VIP-sender
     exemption from calendar/OOO suppression (added the same day to fix
     VIP executives' Automatic-reply messages tied to a live initiative)
     turned out to be too broad: it also let a VIP's calendar-accept
@@ -493,12 +493,12 @@ def score_priority(message, config):
 
     if is_calendar_or_ooo_artifact(message):
         # Narrowed 2026-08-12 (Stage 3 regression #3 of
-        # _exclude/stage3_accuracy_report.md): this used to suppress every
+        # _exclude/CHANGELOG.md): this used to suppress every
         # priority signal unconditionally, including the VIP-sender one
         # above. Real data showed that was too broad -- three separate
         # executives' auto-replies tied to a live internal initiative
         # ("Stewarding AI at The Signatry") were still priority-worthy to
-        # Trevor despite being auto-generated. A VIP sender is a judgment
+        # the owner despite being auto-generated. A VIP sender is a judgment
         # about WHO sent it, not an artifact of HOW the message was
         # generated, so it survives this suppression *for Automatic-reply
         # subjects only* (see is_calendar_rsvp_artifact's guard above); the
@@ -530,7 +530,7 @@ def score_priority(message, config):
     # deal-document enhancement folded in) after the Stage 2 accuracy test
     # found invoices, active deal/contract documents, and HR-lifecycle
     # notices from non-VIP, non-urgent-keyword senders all sitting in
-    # 2_review or 7_toBeFiled when Trevor filed every one of them as
+    # 2_review or 7_toBeFiled when the owner filed every one of them as
     # 1_priority by hand.
     #
     # financial_document_excluded_senders (added 2026-08-12, Stage 3
@@ -559,8 +559,8 @@ def score_priority(message, config):
 
     # personal_action_request_keyword_patterns (added 2026-08-12, Stage 3
     # high-severity review, Group D): a direct, personal ask that names
-    # Trevor specifically and needs a reply only he can give -- a letter of
-    # recommendation request, a GitHub mention blocking his own project's
+    # the owner specifically and needs a reply only they can give -- a letter of
+    # recommendation request, a GitHub mention blocking their own project's
     # merge. Distinct from the generic urgent_keyword_patterns list (which
     # is about deadline/approval language in general) -- these are narrow,
     # specific phrasings chosen from real examples, not a broad category.
@@ -595,7 +595,7 @@ def score_priority(message, config):
 
 def score_sensitive(message, config):
     """personnel_content_keyword_patterns (added 2026-08-12, Theme E of
-    _exclude/stage2_accuracy_report.md) is checked as an addition to, not a
+    _exclude/CHANGELOG.md) is checked as an addition to, not a
     replacement for, sensitive_keyword_patterns -- it exists because the
     generic HR-jargon list above only fires on messages that already sound
     like an HR-system notice (termination, FMLA, PIP, etc.), and misses
@@ -603,7 +603,7 @@ def score_sensitive(message, config):
     language (a colleague's departure, a staff opening) regardless of
     sender domain. Deliberately does NOT include 'accepted an invitation to
     pursue' despite that phrasing appearing in the real Stage 2 example this
-    was built from ("Staff Update - Nick Bartelli") -- Trevor pointed out
+    was built from ("Staff Update - Nick Bartelli") -- the owner pointed out
     that phrase is ambiguous with cybersecurity/access-grant language (a
     real example in the same mailbox: "Invitation accepted - Google Play
     Console", an external contractor being granted account access, not a
@@ -642,20 +642,20 @@ def find_protected_match(message, config):
 
 
 def find_internal_or_operational_alert(message, config):
-    """Returns a reason string if the sender is either on Trevor's own
+    """Returns a reason string if the sender is either on the owner's own
     internal domain, or a known automated security/service-level alert
     sender for one of our own systems -- both cases should always land in
     2_review for a human glance, never get swept into bulk_review's
     marketing-screen lane or filed sight-unseen. Added 2026-08-12 after the
-    Stage 2 real-mailbox accuracy test (see _exclude/stage2_accuracy_report.md,
+    Stage 2 real-mailbox accuracy test (see _exclude/CHANGELOG.md,
     Theme B) showed MSSecurity-noreply@microsoft.com PIM alerts, SharePoint
     storage warnings, and internal @thesignatry.com sends all getting caught
     by is_bulk_or_newsletter's no-reply/ESP-padding signature and swept
-    toward 6_bulkToReview or 7_toBeFiled, when Trevor consistently filed
+    toward 6_bulkToReview or 7_toBeFiled, when the owner consistently filed
     every one of them into 2_review by hand instead.
 
     Skips calendar/OOO artifacts (2026-08-12, Stage 3 regression #2 of
-    _exclude/stage3_accuracy_report.md) -- a calendar accept/decline notice
+    _exclude/CHANGELOG.md) -- a calendar accept/decline notice
     from an internal sender (e.g. "Accepted: FirstRate - Dev Kickoff") was
     being forced into 2_review by this check even though is_calendar_or_ooo_
     artifact already establishes these are system artifacts, not judgment
@@ -685,7 +685,7 @@ def find_farewell_note(message, config):
     personally-addressed farewell/thank-you note from someone leaving The
     Signatry. A distinct, lighter-touch signal than the HR-lifecycle
     priority keywords in score_priority above (Theme D rec #3 of
-    _exclude/stage2_accuracy_report.md): escalating every goodbye note straight
+    _exclude/CHANGELOG.md): escalating every goodbye note straight
     to 1_priority would be overkill for what's usually a one-time personal
     moment, not an action item, but letting it fall silently into 2_review
     alongside routine review mail with no distinguishing flag risks it being
@@ -701,14 +701,14 @@ def find_farewell_note(message, config):
 
 def find_routine_notification(message, config):
     """Returns a reason string if the message matches a known recurring/
-    automated notification pattern Trevor has confirmed isn't worth a
+    automated notification pattern the owner has confirmed isn't worth a
     review pass: a meeting reminder, or one of Rippling's routine payroll/
     task-tracking pings. Confirmed by Trevor 2026-08-12 (Theme F of
-    _exclude/stage2_accuracy_report.md) -- accepting the report's meeting-
+    _exclude/CHANGELOG.md) -- accepting the report's meeting-
     reminder recommendation in its simpler form (any meeting reminder is
     safe to file, no need to compare the reminder's referenced meeting time
     against the message's own received time). Deliberately narrow content
-    patterns, not a blanket rippling.com/hubspot.com sender rule: Trevor was
+    patterns, not a blanket rippling.com/hubspot.com sender rule: the owner was
     explicit that a Rippling notification asking HIM to act (e.g. missing
     receipts on a card transaction) should stay on its normal path toward
     2_review, only the routine payroll/task-tracking boilerplate should be
@@ -730,9 +730,9 @@ def find_routine_notification(message, config):
 
 
 def find_ea_scheduling_delegate(message, config):
-    """Returns a reason string if the message explicitly asks Trevor's
+    """Returns a reason string if the message explicitly asks the owner's
     Executive Assistant to handle scheduling. Confirmed by Trevor
-    (2026-08-12, Theme J of _exclude/stage2_accuracy_report.md) as the one
+    (2026-08-12, Theme J of _exclude/CHANGELOG.md) as the one
     delegation signal clear enough to be deterministic -- every other
     delegate-worthy judgment (travel logistics, general coordination) stays
     an LLM call, see SKILL.md's Judgment calls section. Requires BOTH an EA
@@ -908,9 +908,9 @@ def cmd_classify(args):
 
 
 def cmd_match_declines(args):
-    """For messages Trevor has already placed in 4_autorespond by hand (see
+    """For messages the owner has already placed in 4_autorespond by hand (see
     SKILL.md's "Sweep 4_autorespond"), resolve which decline template applies
-    -- his own placement there is the judgment call that this is a decline,
+    -- their own placement there is the judgment call that this is a decline,
     so this deliberately skips classify_message's sensitive/priority/
     protected/bulk checks and goes straight to template matching, falling
     back to config's fallback_decline_topic when no template's keywords
@@ -987,14 +987,14 @@ def cmd_record_decline(args):
 
 def cmd_record_filed(args):
     """Confirmed by Trevor 2026-08-12 (Theme A rec 4 of
-    _exclude/stage2_accuracy_report.md). Mirrors cmd_record_decline's shape
+    _exclude/CHANGELOG.md). Mirrors cmd_record_decline's shape
     exactly, but tracks a different, softer signal in a separate ledger
     section (filed_senders, not senders): a sender whose mail keeps reaching
     the 'routine, no ambiguity, file it' judgment call and landing in
     7_toBeFiled with no action taken. This is deliberately behavior-based
     rather than content-based -- it doesn't try to decide whether a message
     "is marketing"; a sender that keeps recurring here regardless of why is
-    exactly the signal Trevor wants surfaced."""
+    exactly the signal the owner wants surfaced."""
     ledger = load_ledger(args.ledger)
     config = load_config(args.config)
     threshold = config.get("filed_without_action_threshold", 3)
@@ -1046,7 +1046,7 @@ def cmd_record_run(args):
 
 def cmd_bulk_review_status(args):
     """Confirmed by Trevor 2026-08-12 (Theme A rec 2 of
-    _exclude/stage2_accuracy_report.md): 6_bulkToReview stays a distinct
+    _exclude/CHANGELOG.md): 6_bulkToReview stays a distinct
     folder, monitored over time rather than assumed to be earning its keep.
     This never moves or reads full message content -- just id +
     receivedDateTime for a lightweight headcount/age check -- and never

@@ -37,6 +37,7 @@ Exit codes:
 import argparse
 import json
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -45,6 +46,9 @@ SEVERITY_WARNING = "WARNING"
 SEVERITY_CRITICAL = "CRITICAL"  # restricted-data findings (IT15)
 
 TEXT_EXTS = {".md", ".py", ".json", ".txt", ".yaml", ".yml", ".js", ".ts", ".sh", ".svg"}
+# The only file allowed to live in a skill's state/ directory in the repo.
+# Kept in sync with package_skill.py's STATE_KEEP_FILES.
+STATE_KEEP_FILES = {".gitkeep"}
 
 SCHEME_RE = re.compile(r"^[a-zA-Z][a-zA-Z0-9+.\-]*:")
 MD_LINK_RE = re.compile(r"\[[^\]]*\]\(([^)\s]+)[^)]*\)")
@@ -299,6 +303,65 @@ def check_changelog_exists(skill_dir):
     return []
 
 
+def check_no_shipped_state(skill_dir):
+    """No runtime state file may be tracked in git.
+
+    state/ is one person's runtime data — acos-aboutme's profile.json is a full
+    org chart of real staff, VIP and partner names and addresses; acos-email-sort's
+    ledger and summaries carry external sender addresses and live mailbox message
+    IDs; contact-research's run dirs hold donor records.
+
+    The test is *tracked in git*, not *present on disk*, and that distinction is
+    the whole point. This repo doubles as the runtime environment: the installed
+    skills read `skills/acos-aboutme/state/profile.json` directly (see that
+    skill's _exclude/GETTING_STARTED.md), so a healthy machine always has live
+    state sitting in the working tree. Failing on presence would make lint
+    permanently red on a correctly-configured machine and, because
+    package_skill.py refuses to build a zip for a skill with an ERROR, would
+    block packaging outright. Failing on *tracked* catches the thing that
+    actually leaks — state committed to a repo other people clone — while
+    leaving gitignored working data alone.
+
+    Packaging is protected separately and unconditionally by
+    package_skill.py's STATE_KEEP_FILES rule, which excludes state/ from the
+    zip whether or not git is involved. This check is the second layer.
+
+    Degrades to a warning if git is unavailable, rather than guessing."""
+    state_dir = skill_dir / "state"
+    if not state_dir.is_dir():
+        return []
+    on_disk = [
+        p for p in sorted(state_dir.rglob("*"))
+        if p.is_file() and p.name not in STATE_KEEP_FILES
+    ]
+    if not on_disk:
+        return []
+    try:
+        proc = subprocess.run(
+            ["git", "ls-files", "--error-unmatch", "--", *[str(p) for p in on_disk]],
+            cwd=skill_dir, capture_output=True, text=True, timeout=10,
+        )
+        tracked = [line.strip() for line in proc.stdout.splitlines() if line.strip()]
+    except (OSError, subprocess.SubprocessError):
+        return [(
+            SEVERITY_WARNING,
+            f"{skill_dir}: {len(on_disk)} runtime state file(s) under state/ and git "
+            f"is unavailable, so their tracked status could not be checked.",
+        )]
+    if not tracked:
+        return []
+    listed = ", ".join(tracked[:4])
+    if len(tracked) > 4:
+        listed += f", +{len(tracked) - 4} more"
+    return [(
+        SEVERITY_ERROR,
+        f"{skill_dir}: {len(tracked)} runtime state file(s) tracked in git "
+        f"({listed}). Runtime state is per-user data and must not be committed — "
+        f"back it up with skills/acos_state_backup.py, `git rm --cached` it, and "
+        f"confirm .gitignore covers it.",
+    )]
+
+
 def parse_allowlist_entries(raw_entries, skill_name):
     """Returns (allowed_refs set, issues list) for one skill's allowlist entries.
 
@@ -344,6 +407,7 @@ def lint_skill(skill_dir, schema, allowlist=None):
     )
     issues.extend(allowlist_issues)
     issues.extend(check_changelog_exists(skill_dir))
+    issues.extend(check_no_shipped_state(skill_dir))
 
     skill_md = skill_dir / "SKILL.md"
     if not skill_md.exists():

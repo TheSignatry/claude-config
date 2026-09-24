@@ -220,14 +220,18 @@ __marimo__/
 # Packaged skill artifacts (built by skills/package_skill.py)
 skills/*/*.zip
 
-# acos-email-sort runtime state (config with real VIP-sender addresses,
-# and the repeat-decline ledger) — per-user data, not part of the skill
-# package, never committed.
-skills/acos-email-sort/state/*.json
-
-# acos-aboutme runtime state (real names/emails of staff, VIPs, partners) —
-# per-user identity data, not part of the skill package, never committed.
-skills/acos-aboutme/state/*.json
+# Runtime state for every skill — per-user working data, never committed.
+# acos-aboutme holds the identity profile (real names/emails of staff, VIPs,
+# partners); acos-email-sort holds the config, the repeat-decline ledger, the
+# run summaries and the bulk-review snapshot; contact-research creates per-run
+# donor state. Only the empty-directory marker is tracked.
+#
+# Matches `state/*`, not `state/*.json`: the old json-only rules silently let
+# acos-email-sort/state/run_history.jsonl be committed for six commits.
+# skills/lint_skills.py's check_no_shipped_state enforces this, and
+# skills/package_skill.py keeps state/ out of the packaged zip regardless.
+skills/*/state/*
+!skills/*/state/.gitkeep
 
 # macOS
 .DS_Store

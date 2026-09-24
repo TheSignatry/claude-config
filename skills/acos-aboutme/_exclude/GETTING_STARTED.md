@@ -54,11 +54,50 @@ not a full re-enrollment.
 
 ## This is personal data, not shared
 
-`state/*.json` under both `acos-aboutme` and `acos-email-sort` is
-gitignored (`skills/acos-aboutme/state/*.json`,
-`skills/acos-email-sort/state/*.json` in this repo's `.gitignore`). Each
-person who installs these skills gets their own profile and config —
-never someone else's — and none of it is ever committed to this repo.
+Everything under any skill's `state/` is gitignored — the rule is
+`skills/*/state/*` with a `!skills/*/state/.gitkeep` negation, so only the
+empty-directory marker is ever committed. Each person who installs these
+skills gets their own profile and config, never someone else's.
+
+Three independent layers keep it that way, because one is not enough:
+
+1. **`.gitignore`** keeps it out of the repo. The rule used to be
+   `state/*.json`, which silently let `acos-email-sort/state/run_history.jsonl`
+   be committed for six commits before it was caught.
+2. **`skills/package_skill.py`** excludes `state/` from the built zip,
+   keeping only `state/.gitkeep`. Before this rule the packaged
+   `acos-aboutme` and `acos-email-sort` zips carried 108 real email
+   addresses between them, and a zip is exactly what gets uploaded for
+   distribution.
+3. **`skills/lint_skills.py`** (`check_no_shipped_state`) fails the build
+   if any state file is *tracked in git*. It deliberately tests tracked
+   rather than present, because this repo doubles as the runtime
+   environment — your live profile always sits in the working tree.
+
+## Backing up your profile, and restoring it
+
+`state/` is gitignored, so git is not your safety net. An `acos-aboutme`
+profile has already been lost once to a working-tree restructure and had
+to be recovered from a stray download. Use the backup tool instead:
+
+```bash
+python3 skills/acos_state_backup.py            # snapshot every acos state/ dir
+python3 skills/acos_state_backup.py --list     # newest first
+python3 skills/acos_state_backup.py --verify LABEL
+python3 skills/acos_state_backup.py --restore LABEL
+python3 skills/acos_state_backup.py --restore LABEL --skill acos-aboutme
+```
+
+Snapshots land in `~/.claude/acos-state-backups/<UTC timestamp>/`,
+deliberately **outside** the repository, so they survive a clone, a branch
+switch, a clean checkout, a restructure, or `git clean -fdx`. Each
+snapshot carries a `manifest.json` with every file's size, SHA-256 and the
+skill version at the time.
+
+**Take a snapshot before upgrading a skill or re-running enrollment.**
+`--restore` refuses to overwrite a live file that differs from the
+snapshot unless you pass `--force`, so a restore cannot silently discard a
+profile you have since rebuilt.
 
 ## Data handling
 
@@ -70,12 +109,30 @@ decline and point to IT15 if that ever comes up.
 
 ## Distribution status
 
-Unlike the `signatry-*` skill family, acos-family skills aren't (yet)
-packaged and uploaded to the Console Skills page — install locally only,
-per the root `README.md`'s "Local development/testing" method, not its
-"Org-wide deployment" one. That's also why they're intentionally left out
-of that README's tracked skill table, which represents what's actually
-distributed org-wide.
+**Beta, distributed org-wide since September 2026.** All five skills are
+packaged and uploaded to the Console Skills page like the `signatry-*`
+family, and beta testers enable all five on their own accounts — they
+depend on each other, so a partial install is not supported. The
+team-facing walkthrough is the *acos Beta Skills Setup Guide* (Technology
+Team, September 2026), which covers connectors, enrollment, the seven
+Outlook folders, first runs, and the beta's known limitations. This file
+is the maintainer's companion to it, not a replacement.
+
+Two consequences for anyone changing these skills:
+
+- **Package for real.** `python3 skills/package_skill.py <skill>` and
+  upload the zip, per the root `README.md`'s "Org-wide deployment"
+  method. Committing to this repo does not deploy anything.
+- **The setup guide carries a version table.** Bump a skill and that
+  table goes stale — reissue the guide, or at least the table, alongside
+  the upload so testers are not reading last release's numbers.
+
+Because they now ship, nothing owner-specific belongs in a shipped file:
+no real names, addresses, project keys, or example subject lines drawn
+from one person's mailbox. Identity lives in `state/`, which is
+gitignored and excluded from the zip; organization-wide facts that every
+tester shares — the Jira site hostname, for instance — are fine in
+`references/*.example.json`.
 
 ## Extending the family
 

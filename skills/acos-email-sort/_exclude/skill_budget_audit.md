@@ -5,24 +5,24 @@
 | Skill Section | Lines | Tokens | Notes |
 |---|---|---|---|
 | Description (frontmatter) | 1 | 93 | Always loaded, every skill, every turn (FYI — length/quality governed by lint) |
-| Body (`SKILL.md`) | 160 | 10,429 | Loaded whenever this skill triggers |
-| Deferred (`reference/`, `scripts/`, `assets/`) | 1,615 | 20,841 | Loaded only if `SKILL.md` points Claude to it (3 files) |
-| **Total** | **1,776** | **31,363** | Worst case if everything is read |
+| Body (`SKILL.md`) | 161 | 10,588 | Loaded whenever this skill triggers |
+| Deferred (`reference/`, `scripts/`, `assets/`) | 1,602 | 20,435 | Loaded only if `SKILL.md` points Claude to it (3 files) |
+| **Total** | **1,764** | **31,116** | Worst case if everything is read |
 
 ## Comparison
 
 **Deferred usage:** `deferred-full-use` (default — not yet reviewed for this skill)
 
-`acos-email-sort`'s typical-call footprint is 5.23x the Signatry median (31,363 vs 5,995 tokens across 17 skills) **[OUTLIER]**.
+`acos-email-sort`'s typical-call footprint is 5.19x the Signatry median (31,116 vs 5,995 tokens across 17 skills) **[OUTLIER]**.
 
 | | Skill Typical Call | Skill Worst Case | Signatry Median | Benchmark |
 |---|---|---|---|---|
-| Lines | 1,776 | 1,776 | 252 | 501 |
-| Tokens | 31,363 | 31,363 | 5,995 | 8,100 |
+| Lines | 1,764 | 1,764 | 252 | 501 |
+| Tokens | 31,116 | 31,116 | 5,995 | 8,100 |
 
 ## Version Delta
 
-No version change since the last recorded snapshot (v0.5, recorded 2026-09-23).
+No version change since the last recorded snapshot (v0.6, recorded 2026-09-24).
 
 ## Findings
 
