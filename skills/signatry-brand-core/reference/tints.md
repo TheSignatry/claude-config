@@ -9,16 +9,16 @@ See `SKILL.md`'s **Tints** section for the definition, formula, and application 
 | Color | 100% (base) | 80% | 60% | 40% | 20% | 5% |
 |---|---|---|---|---|---|---|
 | Legacy | `2b7a78` | `559593` | `80afae` | `aacac9` | `d5e4e4` | `f4f8f8` |
-| Glacier | `37a49f` | `5fb6b2` | `87c8c5` | `afdbd9` | `d7edec` | `f5fafa` |
+| Glacier | `3aafa9` | `61bfba` | `89cfcb` | `b0dfdd` | `d8efee` | `f5fbfb` |
 | Ice | `def2f1` | `e5f5f4` | `ebf7f7` | `f2faf9` | `f8fcfc` | `fdfefe` |
 | Midnight | `17242a` | `455055` | `747c7f` | `a2a7aa` | `d1d3d4` | `f3f4f4` |
 | Dusk | `d77900` | `df9433` | `e7af66` | `efc999` | `f7e4cc` | `fdf8f2` |
-| Dawn | `f2a65a` | `f5b87b` | `f7ca9c` | `fadbbd` | `fcedde` | `fefbf7` |
+| Dawn | `fbb03b` | `fcc062` | `fdd089` | `fddfb1` | `feefd8` | `fffbf5` |
 | Jubilee | `8a1e41` | `a14b67` | `b9788d` | `d0a5b3` | `e8d2d9` | `f9f4f6` |
 | Heartfelt | `fd4a5c` | `fd6e7d` | `fe929d` | `feb7be` | `ffdbde` | `fff6f7` |
 | Passage | `595378` | `7a7593` | `9b98ae` | `bdbac9` | `dedde4` | `f7f6f8` |
 | Mist | `8c88a3` | `a3a0b5` | `bab8c8` | `d1cfda` | `e8e7ed` | `f9f9fa` |
-| Soar | `68a269` | `86b587` | `a4c7a5` | `c3dac3` | `e1ece1` | `f7faf8` |
+| Soar | `68a2b9` | `86b5c7` | `a4c7d5` | `c3dae3` | `e1ecf1` | `f7fafc` |
 | Arctic | `8cb7c9` | `a3c5d4` | `bad4df` | `d1e2e9` | `e8f1f4` | `f9fbfc` |
 
 Notes:

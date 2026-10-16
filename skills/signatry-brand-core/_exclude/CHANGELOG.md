@@ -4,6 +4,16 @@
 
 Before this skill, colors and fonts were independently restated inside `signatry-pptx-brand`, `signatry-docx-brand`, and `signatry-style`. They had already drifted — `signatry-pptx-brand` had wrongly recorded Jubilee/Heartfelt as a retired theme pair (with an incorrect hex for Heartfelt), while `signatry-style` still carried an older table that predated the July 2026 confirmations. Centralizing here gives one place to update when the brand changes, instead of hunting down every skill that copied the numbers.
 
+## 2026-10-16 — v1.3, Glacier, Dawn, and Soar hex corrections
+
+Checked the palette against the official "The Signatry Colors" brand sheet (each hex cross-checked against the sheet's own RGB values). Three base hex values were wrong and are corrected in `SKILL.md` and `reference/tints.md` (tints recomputed with the existing formula):
+
+- Glacier: `37a49f` -> `3aafa9` (confirmed by dkeeting). The sheet labels `37a49f` as a Glacier text value; it is not carried here.
+- Dawn: `f2a65a` -> `fbb03b`
+- Soar: `68a269` -> `68a2b9` (the old value rendered green; Soar is a blue)
+
+All other colors matched the sheet. Pure (`feffff`) is on the sheet but intentionally not added at this time. Dependent skills (`signatry-pdf-brand`, `signatry-pptx-brand` including its .pptx theme, `signatry-icons` SVG/PNG assets, `acos-main`, `contact-research`) still carry the old values and will be updated separately.
+
 ## 2026-08-06 — v1.2, Italic weight added for Mulish and Lora
 
 Cross-skill audit found that no italic TTF existed anywhere in this skill or its dependents (`signatry-pptx-brand`, `signatry-pdf-brand`), despite both format skills' design specs calling for italic Mulish (Quote role). `<i>`/italic markup was silently rendering as upright regular weight with no warning — the exact failure mode this skill exists to prevent, just unaddressed for italics specifically.
