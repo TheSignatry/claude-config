@@ -5,24 +5,24 @@
 | Skill Section | Lines | Tokens | Notes |
 |---|---|---|---|
 | Description (frontmatter) | 1 | 184 | Always loaded, every skill, every turn (FYI — length/quality governed by lint) |
-| Body (`SKILL.md`) | 120 | 2,494 | Loaded whenever this skill triggers |
+| Body (`SKILL.md`) | 120 | 2,522 | Loaded whenever this skill triggers |
 | Deferred (`reference/`, `scripts/`, `assets/`) | 211 | 9,359 | Loaded only if `SKILL.md` points Claude to it (4 files) |
-| **Total** | **332** | **12,037** | Worst case if everything is read |
+| **Total** | **332** | **12,065** | Worst case if everything is read |
 
 ## Comparison
 
 **Deferred usage:** `deferred-alternatives` — Logo files are use-case-specific (light vs. dark background, full wordmark vs. quill-only) -- a build needs the one matching its context, not all of them; reference/tints.md is loaded only when a specific tint value is actually needed.
 
-`signatry-brand-core`'s typical-call footprint is 1.62x the Signatry median (9,714 vs 5,995 tokens across 17 skills).
+`signatry-brand-core`'s typical-call footprint is 1.63x the Signatry median (9,742 vs 5,995 tokens across 17 skills).
 
 | | Skill Typical Call | Skill Worst Case | Signatry Median | Benchmark |
 |---|---|---|---|---|
 | Lines | 253 | 332 | 253 | 501 |
-| Tokens | 9,714 | 12,037 | 5,995 | 8,100 |
+| Tokens | 9,742 | 12,065 | 5,995 | 8,100 |
 
 ## Version Delta
 
-No version change since the last recorded snapshot (v1.2, recorded 2026-09-24).
+Compared to the last recorded version (v1.2, released 2026-08-06): total lines **+0 (+0.0%)**, total tokens **+28 (+0.2%)**.
 
 ## Findings
 
