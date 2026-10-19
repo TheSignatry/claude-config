@@ -2,6 +2,14 @@
 
 All notable changes to this skill are documented here, newest first.
 
+## 0.5 — 2026-09-24
+
+`plan` reads acos-aboutme's shared `references/defaults.json` underneath the personal profile via the vendored `load_acos_profile()` helper. The Functional Area tagging vocabulary and the time-allocation benchmark tables now arrive from the org-wide defaults rather than needing to be present in every profile.
+
+This fixes a silent failure. Those regexes moved out of this skill's module constants and into the profile schema in 0.4; any profile created before that change compiled zero tagging rules, and because `functional_area_rules` is built from `(cal.get(...) or {})`, an absent key and an empty one are indistinguishable — every Functional Area tag came back blank with no error. Confirmed against the maintainer's profile: 0 rules where 10 were expected.
+
+`correct` deliberately does **not** use the merged view. `save_known_series_atomic` splices against the exact bytes it re-reads, so handing it a defaults-merged dict would risk rewriting the file from the merged shape.
+
 ## 0.4 — 2026-08-30
 
 Added `FLIGHT_NUMBER_PATTERN` to `_is_capacity_unavailable`'s solo-block checks: a subject naming a flight and its flight number (e.g. "Delta Air Lines flight 4065 to Detroit") now resolves to Capacity unavailable, the same as the pre-existing `AIRPORT_CODE_PAIR_PATTERN` already did for IATA-shorthand phrasing ("DL30001: BNA to ATL"). Found via live use: two flights in the same real week, phrased each way, landed in different categories (one Capacity unavailable, one Focused production's generic "no real attendees" branch) purely from subject wording, not any real difference between the trips. Same session also corrected `acos-aboutme`'s shared `known_meeting_series` STRATOP entry via this skill's own `correct` subcommand (a data fix, not a code change) — its only pattern, `"stratop"`, missed the two-word "Strat Op Day 1/2"/"Strat Op Team Dinner" phrasing a real annual StratOp Renewal offsite used, so those events fell through to External ecosystem instead of Strategy and transformation; added `"strat op"` as a second pattern.

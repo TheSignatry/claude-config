@@ -6,23 +6,23 @@
 |---|---|---|---|
 | Description (frontmatter) | 1 | 110 | Always loaded, every skill, every turn (FYI — length/quality governed by lint) |
 | Body (`SKILL.md`) | 36 | 1,848 | Loaded whenever this skill triggers |
-| Deferred (`reference/`, `scripts/`, `assets/`) | 614 | 7,120 | Loaded only if `SKILL.md` points Claude to it (1 file) |
-| **Total** | **651** | **9,078** | Worst case if everything is read |
+| Deferred (`reference/`, `scripts/`, `assets/`) | 713 | 8,328 | Loaded only if `SKILL.md` points Claude to it (1 file) |
+| **Total** | **750** | **10,286** | Worst case if everything is read |
 
 ## Comparison
 
-**Deferred usage:** `deferred-full-use` (default — not yet reviewed for this skill)
+**Deferred usage:** `deferred-alternatives` — The only deferred file is scripts/jira_report.py, executed via Bash and never read into context. Same single-file situation as acos-calendar-analysis.
 
-`acos-jira-analysis`'s typical-call footprint is 1.58x the Signatry median (9,078 vs 5,738 tokens across 16 skills).
+`acos-jira-analysis`'s typical-call footprint is 1.72x the Signatry median (10,286 vs 5,995 tokens across 17 skills).
 
 | | Skill Typical Call | Skill Worst Case | Signatry Median | Benchmark |
 |---|---|---|---|---|
-| Lines | 651 | 651 | 252 | 501 |
-| Tokens | 9,078 | 9,078 | 5,738 | 8,100 |
+| Lines | 750 | 750 | 253 | 501 |
+| Tokens | 10,286 | 10,286 | 5,995 | 8,100 |
 
 ## Version Delta
 
-Compared to the last recorded version (v0.2, released 2026-08-15): total lines **+13 (+2.0%)**, total tokens **+232 (+2.6%)**.
+No version change since the last recorded snapshot (v0.5, recorded 2026-09-24).
 
 ## Findings
 

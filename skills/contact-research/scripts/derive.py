@@ -18,15 +18,27 @@ Derivations:
     contact associations, and household-company members (so a duplicate is caught even when one source is empty)
   daf: fund_count (associated Fund records), fund_balance_sum (sum of each Fund's current_balance), tier
     (contact.direct_fund_balance_tier_min, passed through as-is)
+  fund_roles / role_on_fund: from the Fund association labels ("Fund Holder - …", "Financial Advisor - …",
+    "Grant Advisor - …") – holder | advisor | other | null; advisor-only contacts are flagged as professional
+    advisers rather than donors
+  signatry_relationship: staff | board | null (Signatry email domain or a Signatry-named company association
+    with an employment or board label) – switches on the Board Confidential engagement screen
+  is_vanity_domain: the email domain is the contact's own surname (thewilsoncrew.com, sollazzo.org) – personal
   data_quality_flags: ZIP/state mismatch heuristics, placeholder names, duplicate-name records, referral-as-company
 """
 import argparse, os, sys, re, datetime
 sys.path.insert(0, os.path.dirname(__file__))
 from cr_common import (list_contacts, contact_path, load_json, save_json, now, ROLE_LABELS, REFERRAL_LABELS,
-                       PLACEHOLDER_FIRSTNAMES, recount)
+                       PLACEHOLDER_FIRSTNAMES, PERSONAL_DOMAINS, recount, signatry_insider)
 
-FREE_MAIL = {"gmail.com", "yahoo.com", "hotmail.com", "outlook.com", "aol.com", "icloud.com", "msn.com",
-             "live.com", "me.com", "comcast.net", "att.net", "sbcglobal.net", "protonmail.com", "mac.com"}
+
+def is_vanity_domain(domain, last):
+    """thewilsoncrew.com, sollazzo.org, mulcrone.net: the registrable label is the surname, optionally wrapped in
+    'the…', '…family', '…crew', '…s'. A firm named after its founder (wilsonlaw.com) is deliberately NOT vanity."""
+    if not domain or not last or len(last) < 3:
+        return False
+    sld = domain.split(".")[0].lower()
+    return re.fullmatch(rf"(?:the)?{re.escape(last.lower())}(?:s|family|crew|household|home|clan|fam)?", sld) is not None
 
 ZIP_STATE_PREFIX = {  # first digit(s) of ZIP -> plausible states (coarse sanity check only)
     "TN": ("37", "38"), "TX": ("75", "76", "77", "78", "79", "73"), "IA": ("50", "51", "52"),
@@ -63,7 +75,9 @@ def derive_one(ct, all_contacts):
     handle, domain = (email.split("@") + [""])[:2] if email else ("", "")
     d["email_handle"] = handle or None
     d["email_domain"] = domain or None
-    d["is_corporate_domain"] = bool(domain) and domain not in FREE_MAIL
+    d["is_vanity_domain"] = is_vanity_domain(domain, last)
+    d["is_corporate_domain"] = bool(domain) and domain not in PERSONAL_DOMAINS and not d["is_vanity_domain"]
+    d["signatry_relationship"] = signatry_insider(props, assoc)
 
     has_locator = any([email, props.get("phone"), props.get("mobilephone"), props.get("address"), props.get("city"),
                        inp.get("phone"), inp.get("address")])
@@ -114,10 +128,23 @@ def derive_one(ct, all_contacts):
     d["daf"] = {"fund_count": len(funds),
                 "fund_balance_sum": sum(f["current_balance"] for f in funds if f.get("current_balance") is not None),
                 "tier": props.get("direct_fund_balance_tier_min")}
+    # role on the associated funds, from the association label prefix ("Fund Holder - Full Access", "Financial Advisor - Read Only")
+    fund_roles = set()
+    for f in funds:
+        for l in f.get("labels") or []:
+            head = str(l).split(" - ")[0].strip().lower()
+            fund_roles.add("holder" if head.startswith("fund holder") else "advisor" if head.endswith("advisor") else "other")
+    d["fund_roles"] = sorted(fund_roles)
+    d["role_on_fund"] = "holder" if "holder" in fund_roles else "advisor" if "advisor" in fund_roles else "other" if fund_roles else None
 
     # ---- household pair by form timing (checks the current batch, then any associated contact that carries a createdate)
+    # Skipped for IMPORT-sourced records: two rows of the same import file land seconds apart regardless of any
+    # household link, and bulk runs produced dozens of false pairs (fathers, brothers, colleagues) from that.
     pair = assoc.get("household_pair_candidate") or {}
-    if not pair.get("id"):
+    imported = (props.get("hs_object_source_label") or "").upper() == "IMPORT"
+    if imported:
+        pair = {}  # also clears a pair computed by an earlier version on re-derive
+    if not pair.get("id") and not imported:
         my_ts = parse_ts(props.get("createdate"))
         my_src = props.get("hs_object_source_detail_1")
         best = None
@@ -208,7 +235,18 @@ def derive_one(ct, all_contacts):
     if dups:
         flags.append(f"{len(dups)} other HubSpot record(s) named {first} {last} (IDs {', '.join(x['id'] for x in dups)}) – review for duplicates")
     if pair.get("id"):
-        flags.append(f"Probable household pair with {pair['name']} (ID {pair['id']}, created {pair['seconds_apart']} s apart) – no association recorded")
+        if sp.get("evidence") == "association label" and str(sp.get("id")) == str(pair["id"]):
+            pass  # the pair is the labeled spouse; nothing to flag
+        elif sp.get("evidence") == "association label":
+            flags.append(f"Probable household pair with {pair['name']} (ID {pair['id']}, created {pair['seconds_apart']} s apart) differs from the labeled spouse {sp.get('name')} (ID {sp.get('id')}) – probably a relative or import artifact")
+        else:
+            flags.append(f"Probable household pair with {pair['name']} (ID {pair['id']}, created {pair['seconds_apart']} s apart) – no association recorded")
+    if d["role_on_fund"] == "advisor":
+        flags.append("Associated to Fund records only as Financial Advisor / Grant Advisor – likely a professional adviser on a client's fund, not a donor")
+    if d["signatry_relationship"]:
+        flags.append(f"Signatry {d['signatry_relationship']} record – Board Confidential screen applied to engagement text (IT15); public research limited to the Signatry role")
+    if d["is_vanity_domain"]:
+        flags.append(f"Email domain {domain} is a personal/family domain (matches the surname) – not an employer")
     if d.get("household_company") and len(distinct_others) > 1:
         others = ", ".join(f"{m.get('name')} (ID {m.get('id')})" for m in distinct_others)
         flags.append(f"{len(distinct_others)} other people share the '{d['household_company']['name']}' household company ({others}) – relationship to each is ambiguous, review manually")

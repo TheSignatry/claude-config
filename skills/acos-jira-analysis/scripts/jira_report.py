@@ -94,6 +94,32 @@ DEFAULT_ABOUTME_PATH = "../acos-aboutme/state/profile.json"
 DEFAULT_WINDOW_DAYS = 14
 PRODUCT_DELIVERED_LOOKBACK_DAYS = 180
 
+# Jira Product Discovery custom-field IDs for the `product` group. Custom-field
+# IDs are assigned per Jira site, so these are correct for every project on the
+# site this skill was built against but meaningless on another one — which is
+# why they are configuration, read from the profile's
+# jira_workspaces.product_fields, not constants. These remain as the fallback so
+# an existing profile that predates that block keeps working unchanged.
+DEFAULT_PRODUCT_FIELDS = {
+    "project_target": "customfield_10149",   # JSON string {"start":..., "end":"YYYY-MM-DD"}
+    "product_area": "customfield_10156",     # multi-select
+    "roadmap": "customfield_10139",          # single-select: Now / Next / Won't do
+    "roadmap_exclude": ["Done", "Parking Lot"],
+}
+
+
+def resolve_product_fields(workspaces):
+    """Profile-supplied Product Discovery field IDs, falling back per key.
+
+    Merged key-by-key rather than all-or-nothing so a profile that sets only
+    one ID still gets working defaults for the rest."""
+    configured = (workspaces or {}).get("product_fields") or {}
+    resolved = dict(DEFAULT_PRODUCT_FIELDS)
+    for key, value in configured.items():
+        if value:
+            resolved[key] = value
+    return resolved
+
 GROUP_ORDER = ["product", "support", "work"]
 GROUP_LABELS = {"product": "Product", "support": "Support", "work": "Work/Tasks"}
 
@@ -101,6 +127,65 @@ GROUP_LABELS = {"product": "Product", "support": "Support", "work": "Work/Tasks"
 def _fail(message):
     print(json.dumps({"error": message}), file=sys.stderr)
     sys.exit(1)
+
+
+# --- acos shared-defaults overlay -------------------------------------------
+# Vendored identically into acos-jira-analysis, acos-calendar-analysis and
+# acos-email-sort. These skills install as independent siblings and import
+# nothing from each other, so this block is duplicated rather than shared;
+# lint_skills.py checks the copies stay byte-identical.
+ACOS_DEFAULTS_RELPATH = ("..", "references", "defaults.json")
+
+
+def _acos_overlay(base, override):
+    """Recursive dict merge where `override` wins. A non-dict value replaces
+    whatever it lands on; only dicts are merged key by key."""
+    out = dict(base)
+    for key, value in (override or {}).items():
+        if isinstance(value, dict) and isinstance(out.get(key), dict):
+            out[key] = _acos_overlay(out[key], value)
+        else:
+            out[key] = value
+    return out
+
+
+def load_acos_profile(aboutme_path):
+    """acos-aboutme's org-wide defaults, overlaid by the person's own profile.
+
+    acos-aboutme ships `references/defaults.json` holding every value that is
+    identical for everyone -- the Jira site and its Product Discovery field
+    IDs, the Functional Area tagging vocabulary, the time-allocation benchmark
+    tables. `state/profile.json` holds only what is personal. Reading the
+    defaults first and letting the profile override means a profile written
+    before a default existed still receives it.
+
+    That is the whole point: when the Functional Area regex vocabulary moved
+    from module constants into the profile schema in acos-aboutme 0.4, every
+    profile created before that kept working with zero tagging rules and no
+    error, because `(cal.get(...) or {})` cannot tell "absent" from "empty".
+    Shipping the shared half separately makes a stale profile impossible.
+
+    Returns {} when the profile itself is absent, preserving each caller's
+    existing not-enrolled behaviour -- defaults alone must never look like an
+    enrolled profile. A missing or unparseable defaults file degrades to the
+    profile alone rather than raising, so an older acos-aboutme still works.
+    """
+    profile_path = Path(aboutme_path)
+    if not profile_path.exists():
+        return {}
+    try:
+        profile = json.loads(profile_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    defaults_path = profile_path.parent.joinpath(*ACOS_DEFAULTS_RELPATH)
+    defaults = {}
+    if defaults_path.exists():
+        try:
+            defaults = json.loads(defaults_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            defaults = {}
+    return _acos_overlay(defaults, profile)
+# --- end acos shared-defaults overlay ---------------------------------------
 
 
 def load_jira_workspaces(aboutme_path):
@@ -117,10 +202,14 @@ def load_jira_workspaces(aboutme_path):
             "jira_workspaces section to an existing profile."
         )
     try:
-        profile = json.loads(path.read_text())
+        json.loads(path.read_text())
     except json.JSONDecodeError as e:
         _fail(f"acos-aboutme profile at {aboutme_path} is not valid JSON: {e}")
 
+    # Org-wide defaults (the Jira site and its field IDs) underneath, this
+    # person's profile on top. cloud_id and product_fields normally come from
+    # defaults; a profile only needs them to override.
+    profile = load_acos_profile(aboutme_path)
     workspaces = profile.get("jira_workspaces")
     if not workspaces or not any(workspaces.get(g) for g in GROUP_ORDER):
         _fail(
@@ -163,6 +252,10 @@ def build_plan(aboutme_path, cloud_id, since=None, until=None):
         )
     window_days = workspaces.get("upcoming_window_days", DEFAULT_WINDOW_DAYS)
     groups = {g: workspaces.get(g) or [] for g in GROUP_ORDER}
+    pf = resolve_product_fields(workspaces)
+    # Project keys go into JQL bare (_quote_jql_list just joins them); Roadmap
+    # values are strings and must be double-quoted, e.g. "Done", "Parking Lot".
+    roadmap_exclude = ", ".join(f'"{v}"' for v in pf["roadmap_exclude"])
     date_range = bool(since and until)
 
     queries = []
@@ -174,7 +267,7 @@ def build_plan(aboutme_path, cloud_id, since=None, until=None):
             "group": "product",
             "scope": "assignee",
             "jql": f"assignee = currentUser() AND project in ({keys}) AND statusCategory != Done ORDER BY key ASC",
-            "fields": ["customfield_10149"],
+            "fields": [pf["project_target"]],
             "used_for": ["summary"],
             "description": "Product group, current user's own assignments — feeds the Summary row's overdue/upcoming counts only.",
         })
@@ -184,9 +277,9 @@ def build_plan(aboutme_path, cloud_id, since=None, until=None):
             "scope": "team",
             "jql": (
                 f'project in ({keys}) AND statusCategory != Done '
-                'AND "Roadmap" NOT IN ("Done", "Parking Lot") ORDER BY key ASC'
+                f'AND "Roadmap" NOT IN ({roadmap_exclude}) ORDER BY key ASC'
             ),
-            "fields": ["summary", "customfield_10149", "customfield_10156", "customfield_10139", "assignee"],
+            "fields": ["summary", pf["project_target"], pf["product_area"], pf["roadmap"], "assignee"],
             "used_for": ["product_detail"],
             "description": "Product group, whole team (deliberately NOT assignee-scoped) — feeds the Product detail list.",
         })
@@ -200,7 +293,7 @@ def build_plan(aboutme_path, cloud_id, since=None, until=None):
                     f'project in ({keys}) AND "Roadmap" = "Done" '
                     f'AND updated >= "{lookback}" ORDER BY key ASC'
                 ),
-                "fields": ["summary", "customfield_10149", "customfield_10156", "assignee", "status"],
+                "fields": ["summary", pf["project_target"], pf["product_area"], "assignee", "status"],
                 "used_for": ["delivered_in_range"],
                 "description": (
                     "Product group, Roadmap marked Done — feeds month-retro's delivered-products "
@@ -261,6 +354,9 @@ def build_plan(aboutme_path, cloud_id, since=None, until=None):
         "since": since,
         "until": until,
         "groups": groups,
+        # Carried through the plan so build_report reads the same field IDs the
+        # queries asked for, without needing the profile a second time.
+        "product_fields": pf,
         "queries": queries,
     }
 
@@ -341,6 +437,9 @@ def build_report(plan, raw, today=None):
     window_days = plan["window_days"]
     window_end = today + timedelta(days=window_days)
     groups = plan["groups"]
+    # Falls back for a plan built before product_fields existed, e.g. one
+    # round-tripped through an older acos-main run.
+    pf = plan.get("product_fields") or DEFAULT_PRODUCT_FIELDS
     since, until = plan.get("since"), plan.get("until")
     date_range = bool(since and until)
 
@@ -354,7 +453,7 @@ def build_report(plan, raw, today=None):
     if groups.get("product"):
         overdue = upcoming = 0
         for issue in raw.get("product", []):
-            due = _parse_project_target_end(issue.get("fields", {}).get("customfield_10149"))
+            due = _parse_project_target_end(issue.get("fields", {}).get(pf["project_target"]))
             bucket = _bucket(due, today, window_end)
             if bucket == "overdue":
                 overdue += 1
@@ -364,7 +463,7 @@ def build_report(plan, raw, today=None):
 
         for issue in raw.get("product_detail", []):
             fields = issue.get("fields", {})
-            due = _parse_project_target_end(fields.get("customfield_10149"))
+            due = _parse_project_target_end(fields.get(pf["project_target"]))
             bucket = _bucket(due, today, window_end)
             if bucket is None:
                 continue
@@ -372,10 +471,10 @@ def build_report(plan, raw, today=None):
                 "key": issue["key"],
                 "url": issue.get("webUrl", ""),
                 "summary": fields.get("summary", ""),
-                "product_area": _product_area_str(fields.get("customfield_10156")),
+                "product_area": _product_area_str(fields.get(pf["product_area"])),
                 "assignee": _display_name(fields.get("assignee")),
                 "target_end": due,
-                "roadmap": _roadmap_str(fields.get("customfield_10139")),
+                "roadmap": _roadmap_str(fields.get(pf["roadmap"])),
                 "bucket": bucket,
             })
         product_detail.sort(key=lambda r: r["target_end"])
@@ -383,14 +482,14 @@ def build_report(plan, raw, today=None):
         if date_range:
             for issue in raw.get("product_delivered", []):
                 fields = issue.get("fields", {})
-                target_end = _parse_project_target_end(fields.get("customfield_10149"))
+                target_end = _parse_project_target_end(fields.get(pf["project_target"]))
                 if not target_end or not (since <= target_end <= until):
                     continue
                 delivered_in_range.append({
                     "key": issue["key"],
                     "url": issue.get("webUrl", ""),
                     "summary": fields.get("summary", ""),
-                    "product_area": _product_area_str(fields.get("customfield_10156")),
+                    "product_area": _product_area_str(fields.get(pf["product_area"])),
                     "assignee": _display_name(fields.get("assignee")),
                     "target_end": target_end,
                 })

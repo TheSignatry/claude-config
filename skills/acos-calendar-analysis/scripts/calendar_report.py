@@ -331,6 +331,65 @@ def _fail(message):
     sys.exit(1)
 
 
+# --- acos shared-defaults overlay -------------------------------------------
+# Vendored identically into acos-jira-analysis, acos-calendar-analysis and
+# acos-email-sort. These skills install as independent siblings and import
+# nothing from each other, so this block is duplicated rather than shared;
+# lint_skills.py checks the copies stay byte-identical.
+ACOS_DEFAULTS_RELPATH = ("..", "references", "defaults.json")
+
+
+def _acos_overlay(base, override):
+    """Recursive dict merge where `override` wins. A non-dict value replaces
+    whatever it lands on; only dicts are merged key by key."""
+    out = dict(base)
+    for key, value in (override or {}).items():
+        if isinstance(value, dict) and isinstance(out.get(key), dict):
+            out[key] = _acos_overlay(out[key], value)
+        else:
+            out[key] = value
+    return out
+
+
+def load_acos_profile(aboutme_path):
+    """acos-aboutme's org-wide defaults, overlaid by the person's own profile.
+
+    acos-aboutme ships `references/defaults.json` holding every value that is
+    identical for everyone -- the Jira site and its Product Discovery field
+    IDs, the Functional Area tagging vocabulary, the time-allocation benchmark
+    tables. `state/profile.json` holds only what is personal. Reading the
+    defaults first and letting the profile override means a profile written
+    before a default existed still receives it.
+
+    That is the whole point: when the Functional Area regex vocabulary moved
+    from module constants into the profile schema in acos-aboutme 0.4, every
+    profile created before that kept working with zero tagging rules and no
+    error, because `(cal.get(...) or {})` cannot tell "absent" from "empty".
+    Shipping the shared half separately makes a stale profile impossible.
+
+    Returns {} when the profile itself is absent, preserving each caller's
+    existing not-enrolled behaviour -- defaults alone must never look like an
+    enrolled profile. A missing or unparseable defaults file degrades to the
+    profile alone rather than raising, so an older acos-aboutme still works.
+    """
+    profile_path = Path(aboutme_path)
+    if not profile_path.exists():
+        return {}
+    try:
+        profile = json.loads(profile_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    defaults_path = profile_path.parent.joinpath(*ACOS_DEFAULTS_RELPATH)
+    defaults = {}
+    if defaults_path.exists():
+        try:
+            defaults = json.loads(defaults_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            defaults = {}
+    return _acos_overlay(defaults, profile)
+# --- end acos shared-defaults overlay ---------------------------------------
+
+
 def load_json(path):
     p = Path(path)
     if not p.exists():
@@ -1346,7 +1405,12 @@ def resolve_period(period_type, ref_date):
 
 
 def cmd_plan(args):
-    profile = load_json(args.aboutme)
+    # Org-wide defaults underneath, this person's profile on top: the
+    # Functional Area vocabulary and benchmark tables normally come from
+    # acos-aboutme's shipped defaults.json, not from the profile.
+    profile = load_acos_profile(args.aboutme)
+    if not profile:
+        _fail(f"file not found: {args.aboutme}")
     ref_date = datetime.strptime(args.date, "%Y-%m-%d").date() if args.date else date.today()
     start, end = resolve_period(args.period, ref_date)
     after_dt = datetime.combine(start, datetime.min.time())
@@ -1682,6 +1746,9 @@ def cmd_correct(args):
     field and every other byte of the profile round-trips untouched -- see
     save_known_series_atomic's own comment for why a targeted splice replaced
     this function's first version (a full-file rewrite)."""
+    # Deliberately NOT load_acos_profile: save_known_series_atomic splices
+    # against the exact bytes re-read here, so this must see the profile
+    # file as written, never a defaults-merged view.
     profile = load_json(args.aboutme)
     cal = profile.setdefault("calendar_analysis", {})
     series_list = cal.setdefault("known_meeting_series", [])

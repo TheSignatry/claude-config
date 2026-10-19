@@ -5,24 +5,24 @@
 | Skill Section | Lines | Tokens | Notes |
 |---|---|---|---|
 | Description (frontmatter) | 1 | 248 | Always loaded, every skill, every turn (FYI — length/quality governed by lint) |
-| Body (`SKILL.md`) | 78 | 4,153 | Loaded whenever this skill triggers |
-| Deferred (`reference/`, `scripts/`, `assets/`) | 144 | 3,368 | Loaded only if `SKILL.md` points Claude to it (1 file) |
-| **Total** | **223** | **7,769** | Worst case if everything is read |
+| Body (`SKILL.md`) | 123 | 5,485 | Loaded whenever this skill triggers |
+| Deferred (`reference/`, `scripts/`, `assets/`) | 657 | 7,441 | Loaded only if `SKILL.md` points Claude to it (3 files) |
+| **Total** | **781** | **13,174** | Worst case if everything is read |
 
 ## Comparison
 
-**Deferred usage:** `deferred-full-use` (default — not yet reviewed for this skill)
+**Deferred usage:** `deferred-alternatives` — Two reference files that are never both loaded. references/profile.example.json is copied once at enrollment; references/defaults.json is read by consuming skills through their own relative path, not by this skill. scripts/state_backup.py is executed from a shell, never read into context.
 
-`acos-aboutme`'s typical-call footprint is 1.35x the Signatry median (7,769 vs 5,738 tokens across 16 skills).
+`acos-aboutme`'s typical-call footprint is 1.59x the Signatry median (9,548 vs 5,995 tokens across 17 skills).
 
 | | Skill Typical Call | Skill Worst Case | Signatry Median | Benchmark |
 |---|---|---|---|---|
-| Lines | 223 | 223 | 252 | 501 |
-| Tokens | 7,769 | 7,769 | 5,738 | 8,100 |
+| Lines | 519 | 781 | 253 | 501 |
+| Tokens | 9,548 | 13,174 | 5,995 | 8,100 |
 
 ## Version Delta
 
-Compared to the last recorded version (v0.3, released 2026-08-15): total lines **+26 (+13.2%)**, total tokens **+1,387 (+21.7%)**.
+No version change since the last recorded snapshot (v0.8, recorded 2026-09-24).
 
 ## Findings
 

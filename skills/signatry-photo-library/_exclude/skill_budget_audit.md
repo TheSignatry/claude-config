@@ -13,16 +13,16 @@
 
 **Deferred usage:** `deferred-alternatives` — references/placement-rules.md is only needed when actually placing an image, not when searching or shortlisting -- a search-only task doesn't load it at all.
 
-`signatry-photo-library`'s typical-call footprint is 0.80x the Signatry median (3,507 vs 4,394 tokens across 12 skills).
+`signatry-photo-library`'s typical-call footprint is 0.58x the Signatry median (3,507 vs 5,995 tokens across 17 skills).
 
 | | Skill Typical Call | Skill Worst Case | Signatry Median | Benchmark |
 |---|---|---|---|---|
-| Lines | 252 | 279 | 236 | 501 |
-| Tokens | 3,507 | 4,182 | 4,394 | 8,100 |
+| Lines | 252 | 279 | 253 | 501 |
+| Tokens | 3,507 | 4,182 | 5,995 | 8,100 |
 
 ## Version Delta
 
-No version change since the last recorded snapshot (v2.1, recorded 2026-09-13).
+No version change since the last recorded snapshot (v2.1, recorded 2026-09-24).
 
 ## Findings
 

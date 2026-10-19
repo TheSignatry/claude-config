@@ -1,8 +1,8 @@
 ---
 name: contact-research
 description: "Research and enrich HubSpot contacts for The Signatry's relationship managers, one at a time or in batches. Given a HubSpot Contact ID, a name, and at least one other data point (email, phone, or address), the skill pulls the full HubSpot record, checks associations and activity for spouse and company links, researches the person on the public web (LinkedIn URL, company, role, revenue, business ownership), and produces two outputs from a JSON state folder: an enrichment spreadsheet that separates HubSpot data from inferred web data and includes HubSpot upload-prep sheets, and one branded PDF profile per contact with a user-chosen file-naming convention. Use this skill whenever someone asks to enrich, research, profile, dossier, look up, or 'fill in the gaps' on HubSpot contacts, donors, or prospects; asks who a contact's spouse or company is; asks for a contact profile PDF; or asks to run RM contact research in bulk — even if they don't say 'contact_research' or 'HubSpot' by name."
-version: 1.5
-release_date: 2026-09-14
+version: 1.0
+release_date: 2026-09-23
 ---
 
 # contact_research
@@ -15,7 +15,7 @@ Research is the expensive, rate-limited part; rendering is cheap. Keeping every 
 
 ## Governance (read before the first run)
 
-This skill handles **Confidential** donor data (IT15). Names, contact info, and giving relationships are fine to process. **Restricted** data is never pulled, searched for, or recorded: government IDs, account numbers, card data, health/medical/hardship details, credentials, privileged or Board Confidential material. If any appears in a HubSpot note or search result, drop it, flag the record, and remind the user to report it (IT14 Policy 10). Every output is AI-assisted and needs human review before use (IT14 Policy 1); the renderers stamp this automatically. Never invent a fact, never characterize personality or "how to approach" a person, and never reproduce a third-party report's AI-generated behavioral sections. `references/governance.md` has the full list.
+This skill handles **Confidential** donor data (IT15). Names, contact info, and giving relationships are fine to process. **Restricted** data is never pulled, searched for, or recorded: government IDs, account numbers, card data, PINs and wire/ACH instructions, health/medical/bereavement/hardship details, credentials, privileged or Board Confidential material. If any appears in a HubSpot note or search result, drop it, flag the record, and remind the user to report it (IT14 Policy 10). Public registration identifiers (EIN, CRD, professional license numbers) are public data and are kept. Contacts who are Signatry staff or board members get an additional Board Confidential screen on their engagement text. Every output is AI-assisted and needs human review before use (IT14 Policy 1); the renderers stamp this automatically. Never invent a fact, never characterize personality or "how to approach" a person, and never reproduce a third-party report's AI-generated behavioral sections. `references/governance.md` has the full list.
 
 ## Model
 
@@ -59,7 +59,7 @@ Then derive the deterministic facts (no model judgment needed):
 python scripts/derive.py --run-dir state/
 ```
 
-This computes the email handle, identifiability tier (`placeholder` / `thin` / `standard`), referral-vs-role for every company association, household-pair candidates (same surname, same form, created within 120 s), the DAF rollup (fund count, sum of associated Fund `current_balance`, and `direct_fund_balance_tier_min` passed through as-is), and data-quality flags. **A nonprofit company association is kept only when the contact holds a role there**; a referral (`referral_company_give_id` equals the company's `give_recipient_id`, or a Referred-By label) goes to the referral field instead. See `references/hubspot_extraction.md` for why this rule exists.
+This computes the email handle, identifiability tier (`placeholder` / `thin` / `standard`), whether the domain is corporate (free-mail, privacy-relay, ISP, and surname vanity domains are not), referral-vs-role for every company association, household-pair candidates (same surname, same form, created within 120 s; skipped for IMPORT-sourced records, where the timing means nothing), the DAF rollup (fund count, sum of associated Fund `current_balance`, `direct_fund_balance_tier_min` passed through as-is, and `role_on_fund` from the association labels so a financial advisor on a client's fund is not mistaken for a donor), `signatry_relationship` for staff and board records, and data-quality flags. **A nonprofit company association is kept only when the contact holds a role there**; a referral (`referral_company_give_id` equals the company's `give_recipient_id`, or a Referred-By label) goes to the referral field instead. See `references/hubspot_extraction.md` for why this rule exists.
 
 ### Step 3 — Research each contact
 
@@ -70,7 +70,8 @@ Work through `python scripts/batch.py --run-dir state/ next` which lists the nex
 - If HubSpot or research names a spouse or household member (`associations.spouse_in_hubspot`, `household_pair_candidate`, or a public source) and the contact herself is Low/None, research **that person's** employer, role, and ownership as household context into `research.household.spouse_company` — never into the contact's own `company` block. `merge_state.py` refuses a fragment that skips this.
 - Use **Playwright** for page navigation when the environment allows it: `python scripts/playwright_fetch.py --url <url> [--search "<query>"]`. The script fails fast with a clear reason (no browser binaries, blocked network) — when it does, fall back to the `web_search` / `web_fetch` tools and record `"navigation": "web_tools_fallback"` in state so the reviewer knows. Do not attempt to log in to LinkedIn or any site; use only what is publicly indexed.
 - Score two things separately, each with the same scale: `match_confidence` for the **contact's own** public identification and `household_confidence` for the **spouse/household** identification (`None` when no household member is known). **High** needs two independent signals; **Moderate** is one strong match on an uncommon name; **Low** is circumstantial; **None** leaves the corresponding fields null. Prefix every Low/None candidate detail with `Candidate only:`. Sources used for household context are real sources — list them. A public page naming a spouse supports household **High** only when it matches a HubSpot fact (address, city, employer/email domain, phone, age band) — record which in `household.spouse_corroboration`; a same-name couple that matches nothing is Moderate at most.
-- Research the company once per email domain / company name and reuse it for colleagues (`--company-prior`).
+- Research the company once per email domain / company name and reuse it for colleagues. Shared broker-dealer domains (`nm.com`, `lpl.com`, `ml.com`, and the rest of `SHARED_DOMAINS` in `cr_common.py`) are never a company slug; use the practice's own domain. See `references/research_playbook.md` §7.
+- Record public registration identifiers (EIN, CRD, license numbers) where they help a reviewer confirm a match; they are public data. If a public source reports the contact deceased, set `deceased_per_public_source: true` with the date in `notes` and never the cause.
 - Write the result:
   ```bash
   python scripts/merge_state.py --run-dir state/ --id <id> --stage research --file research_<id>.json
@@ -79,7 +80,30 @@ Work through `python scripts/batch.py --run-dir state/ next` which lists the nex
 
 Mark the batch and move on: `python scripts/batch.py --run-dir state/ advance`.
 
-For unattended bulk runs, `scripts/api_batch_runner.py` submits the same research prompt (in `references/research_prompt.md`) through the Claude Message Batches API and merges results into state. It needs `ANTHROPIC_API_KEY`; see the script header for model routing by tier.
+#### Step 3, parallel (Claude Code with subagents; the default for more than about 20 contacts)
+
+`scripts/orchestrate.py` drives many research subagents at once and records what each one cost, so the run ends with a time-and-token report by stage instead of an estimate. The session's own model stays the orchestrator; every subagent is launched with `model: fable` (or the policy model of the tier) and told to read one prompt file.
+
+**Budget the run before starting it.** Seven bulk runs in September 2026 — 2,119 contacts on Fable 5.1 — settled at about **25,000 tokens per contact** and **18 to 19 seconds per contact** of wall time while holding 8 subagents in flight. Research is roughly 90 percent of both; init, render, and the HubSpot pull are rounding errors against it. Multiply by list size for a usable estimate: 500 contacts is about 12.5M tokens and just under 3 hours. Quote that range when a run is proposed, so nobody starts a 500-contact list expecting it inside an hour. The one run that broke the pattern launched 16 groups at once, exhausted the session's WebSearch allowance, and cost 36,500 tokens per contact because 42 of its 76 contacts had to be researched twice — which is why the loop below holds at 8.
+
+```bash
+python scripts/orchestrate.py queue    --run-dir state/            # groups of 5 unresearched contacts → orchestration/queue.json
+python scripts/orchestrate.py dispatch --run-dir state/ --n 8      # pops 8 groups, writes orchestration/prompts/<group>.md, logs start
+```
+
+Then, for each dispatched group, launch a background subagent whose entire prompt is: *"Read and follow every instruction in the file `<prompt path>` exactly. That file is your complete task specification, including the required final report format."* The prompt file (from `references/subagent_prompt.md`) already embeds each contact's payload — HubSpot state, related records in the run, and any company prior — so the subagent never has to run a script to read Confidential state.
+
+Loop until the queue is empty and nothing is in flight:
+
+1. When a subagent hands back, read its `CONTACT | …` lines and `NOTES`. Act on anything it reports: a Restricted sighting in HubSpot activity it did not read gets a targeted redaction of the matching engagement fields (never read them yourself); a fact the minimum-data rule excludes gets removed from the record with an `orchestrator_edit` entry in `status.errors`.
+2. Record its usage from the task notification: `python scripts/orchestrate.py finish --run-dir state/ --group <name> --tokens N --tool-uses N --duration-ms N --report "<one-line summary>"`.
+3. Dispatch one replacement (`dispatch --n 1`) and launch it. Hold **8** in flight; 16 at once exhausted the session's WebSearch allowance mid-run.
+4. If a subagent dies (API 429, credits exhausted, session error), run `orchestrate.py fail --run-dir state/ --group <name> --reason "<error>"`. It marks the agent failed, keeps whatever contacts were already merged, and puts the unmerged ones back at the front of the queue as `<name>-r1`.
+5. `orchestrate.py status --run-dir state/` shows researched count, in-flight groups, and the queue at any time.
+
+When the queue is empty: `orchestrate.py verify --run-dir state/` (completeness, model policy, sources, digit runs outside URLs, forced merges, prefix rule, lexicon hits in prose to review by hand), then render, then `orchestrate.py stats --run-dir state/` for the stage table. Stats report measured subagent tokens only; a failed agent reports none, so say so in the summary.
+
+For unattended bulk runs without a Claude Code session, `scripts/api_batch_runner.py` submits the same research prompt (in `references/research_prompt.md`) through the Claude Message Batches API and merges results into state. It needs `ANTHROPIC_API_KEY`; see the script header for model routing by tier.
 
 ### Step 4 — Render outputs (any time, repeatable)
 
@@ -90,9 +114,9 @@ python scripts/build_profiles.py --run-dir state/ --out outputs/profiles/ [--nam
 
 Requires `openpyxl` (workbook) and `reportlab` (PDF profiles) — install with `pip install openpyxl reportlab` if either import fails.
 
-**Workbook sheets:** `Contact Enrichment` (HubSpot columns in blue — including the `DAF:` fund count/tier/balance columns — spouse in purple, research in green, ownership in gold, each research column prefixed `Research:`), `Summary`, `Upload Prep – Contacts` (HubSpot import headers; a reviewer types Y in **Accept?** and the row is ready for the import template), `Upload Prep – Notes` (one pre-composed, sourced note per contact for a Notes import), `Methodology`, and `Sources`.
+**Workbook sheets:** `Contact Enrichment` (HubSpot columns in blue — including the `DAF:` fund count/tier/balance/role-on-fund columns and a Signatry staff/board column — spouse in purple, research in green including `Research: Deceased (public source)`, ownership in gold, each research column prefixed `Research:`), `Summary`, `Upload Prep – Contacts` (HubSpot import headers; a reviewer types Y in **Accept?** and the row is ready for the import template), `Upload Prep – Notes` (one pre-composed, sourced note per contact for a Notes import), `Methodology`, and `Sources`.
 
-**PDF profile:** three pages per contact, Signatry-branded via the `signatry-pdf-brand` skill (Lora/Mulish, Legacy header, embedded fonts; falls back to Helvetica with a warning if that skill is absent). Header shows a confidence-tier badge (left) and a Contact Owner badge (right); the footer shows the skill version, model, render date, and page number. Sections: Sources checked, Overview, About, Contact, DAF, Social/Web, Household & Spouse, Career & Company, Ownership, HubSpot Activity & Referral, Notes & Flags, Sources.
+**PDF profile:** three pages per contact, Signatry-branded via the `signatry-pdf-brand` skill (Lora/Mulish, Legacy header, embedded fonts; falls back to Helvetica with a warning if that skill is absent). Header shows a confidence-tier badge (left) and a Contact Owner badge (right; owner names HubSpot stores in lowercase are title-cased at pull time, and a contact with no HubSpot owner shows "None Assigned" in the badge, the workbook, and naming convention 3 filenames); the footer shows the skill version, model, render date, and page number. Sections: Sources checked, Overview, About (including a Deceased row), Contact, DAF (including Role on fund), Social/Web, Household & Spouse, Career & Company, Ownership, HubSpot Activity & Referral, Notes & Flags, Sources.
 
 Present both with `present_files`. Rendering never calls the model, so re-running after a reviewer edits a state file is free.
 
@@ -108,6 +132,7 @@ Point the user to the `Accept?` column and the per-contact `review` block in sta
 | How to search, match standard, spouse/ownership/revenue rules, Playwright vs fallback | `references/research_playbook.md` |
 | JSON layout of `manifest.json` and `contacts/<id>.json` | `references/state_schema.md` |
 | System prompt used by the API batch runner (also a good checklist when researching by hand) | `references/research_prompt.md` |
+| Prompt template each parallel subagent receives (filled by `orchestrate.py dispatch`) | `references/subagent_prompt.md` |
 | HubSpot import header mapping for the upload-prep sheets | `assets/upload_template_columns.json` |
 | Confidentiality, fabrication, characterization, and disclosure rules | `references/governance.md` |
 

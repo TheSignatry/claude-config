@@ -6,23 +6,23 @@
 |---|---|---|---|
 | Description (frontmatter) | 1 | 181 | Always loaded, every skill, every turn (FYI — length/quality governed by lint) |
 | Body (`SKILL.md`) | 63 | 3,181 | Loaded whenever this skill triggers |
-| Deferred (`reference/`, `scripts/`, `assets/`) | 614 | 10,489 | Loaded only if `SKILL.md` points Claude to it (2 files) |
-| **Total** | **678** | **13,851** | Worst case if everything is read |
+| Deferred (`reference/`, `scripts/`, `assets/`) | 626 | 10,682 | Loaded only if `SKILL.md` points Claude to it (2 files) |
+| **Total** | **690** | **14,044** | Worst case if everything is read |
 
 ## Comparison
 
-**Deferred usage:** `deferred-full-use` (default — not yet reviewed for this skill)
+**Deferred usage:** `deferred-alternatives` — A run loads exactly one of the two deferred files. references/visual_system.md is read into context before authoring any artifact, as SKILL.md requires; scripts/main_plan.py is executed and never read. They are never both in context, so Typical Call should be one file rather than their sum.
 
-`acos-main`'s typical-call footprint is 2.41x the Signatry median (13,851 vs 5,738 tokens across 16 skills) **[OUTLIER]**.
+`acos-main`'s typical-call footprint is 1.59x the Signatry median (9,510 vs 5,995 tokens across 17 skills).
 
 | | Skill Typical Call | Skill Worst Case | Signatry Median | Benchmark |
 |---|---|---|---|---|
-| Lines | 678 | 678 | 252 | 501 |
-| Tokens | 13,851 | 13,851 | 5,738 | 8,100 |
+| Lines | 541 | 690 | 253 | 501 |
+| Tokens | 9,510 | 14,044 | 5,995 | 8,100 |
 
 ## Version Delta
 
-Compared to the last recorded version (v0.2, released 2026-08-15): total lines **+0 (+0.0%)**, total tokens **+15 (+0.1%)**.
+No version change since the last recorded snapshot (v0.4, recorded 2026-09-24).
 
 ## Findings
 

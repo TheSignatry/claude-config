@@ -36,10 +36,10 @@ Subcommands (each reads/writes plain JSON so Claude can pass data via files):
                    AI-assistance disclosure footer, returning the subject/
                    html body to hand to outlook_create_reply_draft.
   match-declines  Resolve which decline-template topic applies to a batch of
-                   messages already sitting in 4_autorespond (Trevor's own
+                   messages already sitting in 4_autorespond (the owner's own
                    manual "this is a decline" landing zone) -- unlike
                    classify, this never re-runs the sensitive/priority/
-                   protected/bulk checks, since Trevor's own placement there
+                   protected/bulk checks, since the owner's own placement there
                    already is the judgment call. Falls back to config's
                    fallback_decline_topic when no template's keywords match.
   record-filed    Called once per message AFTER an undetermined message is
@@ -101,7 +101,7 @@ DEFAULT_SENSITIVE_KEYWORD_PATTERNS = [
     r"\bsuccession plan\b",
 ]
 
-BULK_SENDER_ADDRESS_PATTERNS = [
+DEFAULT_BULK_SENDER_ADDRESS_PATTERNS = [
     r"newsletter", r"no-?reply", r"do-?not-?reply", r"marketing", r"campaign",
     r"\bnews\b", r"digest", r"bulletin", r"webinars?", r"publications",
     r"substack",
@@ -138,31 +138,37 @@ def _has_esp_padding_signature(text, min_invisible=6):
     return False
 
 
-def is_bulk_or_newsletter(message):
+def is_bulk_or_newsletter(message, config=None):
     """Returns (True, reason) if this message looks like a bulk send
     (newsletter/marketing blast) rather than a direct, one-to-one
     solicitation -- used to suppress the decline flow, since drafting a
     personalized decline reply to a bulk sender is pointless (often nobody
     reads it) and this pattern was observed to false-positive on generic
     keyword overlap with newsletter copy (e.g. a CIO newsletter that just
-    happens to mention "cybersecurity")."""
+    happens to mention "cybersecurity").
+
+    The address patterns come from `bulk_sender_address_patterns` in the
+    resolved config so the vocabulary lives in references/defaults.json with
+    every other classification list; the module constant is the fallback for
+    a caller that passes no config."""
     address = ((message.get("sender") or {}).get("address") or message.get("senderAddress") or "").lower()
-    for pattern in BULK_SENDER_ADDRESS_PATTERNS:
+    patterns = (config or {}).get("bulk_sender_address_patterns") or DEFAULT_BULK_SENDER_ADDRESS_PATTERNS
+    for pattern in patterns:
         if re.search(pattern, address):
             return True, f"sender address matches bulk-mail pattern /{pattern}/"
 
-    haystack = f"{message.get('subject', '')}\n{message.get('bodyPreview', '')}"
+    haystack = f"{message.get('subject') or ''}\n{message.get('bodyPreview') or ''}"
     if _has_esp_padding_signature(haystack):
         return True, "body preview contains ESP preheader-padding characters (bulk-send signature)"
 
     return False, None
 
 
-GENERIC_SENDER_NAME_TOKENS = {
+DEFAULT_GENERIC_SENDER_NAME_TOKENS = [
     "the", "team", "support", "sales", "marketing", "newsletter", "newsletters",
     "notifications", "noreply", "no-reply", "info", "hello", "admin", "updates",
     "help", "billing", "accounts", "office", "service", "services", "care",
-}
+]
 
 REQUIRED_FOLDER_KEYS = [
     "priority", "review", "delegate", "autorespond", "drafts_review", "bulk_review", "to_be_filed",
@@ -177,8 +183,31 @@ def save_json(path, data):
     Path(path).write_text(json.dumps(data, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
+CONFIG_DEFAULTS_RELPATH = ("..", "references", "defaults.json")
+
+
 def load_config(path):
+    """Org-wide defaults overlaid by this person's own config.
+
+    `references/defaults.json` ships with the skill and holds the classification
+    vocabulary and org facts that are identical for everyone -- every keyword
+    pattern list, the internal domain, the folder names, the thresholds, the
+    operational-alert senders. `state/config.json` holds only what is personal.
+    Reading defaults first means a central retune of a pattern list reaches
+    every install on upgrade rather than only new enrollments, which is the
+    failure the acos-aboutme defaults split fixed for the shared profile.
+
+    Same overlay rule as there: any key the config sets wins, anything it omits
+    falls back. A missing defaults file degrades to the config alone.
+    """
     config = load_json(path)
+    defaults_path = Path(path).parent.joinpath(*CONFIG_DEFAULTS_RELPATH)
+    if defaults_path.exists():
+        try:
+            defaults = json.loads(defaults_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            defaults = {}
+        config = _acos_overlay(defaults, config)
     if not config.get("urgent_keyword_patterns"):
         config["urgent_keyword_patterns"] = DEFAULT_URGENT_KEYWORD_PATTERNS
     if not config.get("sensitive_keyword_patterns"):
@@ -208,13 +237,73 @@ def load_config(path):
     return config
 
 
+# --- acos shared-defaults overlay -------------------------------------------
+# Vendored identically into acos-jira-analysis, acos-calendar-analysis and
+# acos-email-sort. These skills install as independent siblings and import
+# nothing from each other, so this block is duplicated rather than shared;
+# lint_skills.py checks the copies stay byte-identical.
+ACOS_DEFAULTS_RELPATH = ("..", "references", "defaults.json")
+
+
+def _acos_overlay(base, override):
+    """Recursive dict merge where `override` wins. A non-dict value replaces
+    whatever it lands on; only dicts are merged key by key."""
+    out = dict(base)
+    for key, value in (override or {}).items():
+        if isinstance(value, dict) and isinstance(out.get(key), dict):
+            out[key] = _acos_overlay(out[key], value)
+        else:
+            out[key] = value
+    return out
+
+
+def load_acos_profile(aboutme_path):
+    """acos-aboutme's org-wide defaults, overlaid by the person's own profile.
+
+    acos-aboutme ships `references/defaults.json` holding every value that is
+    identical for everyone -- the Jira site and its Product Discovery field
+    IDs, the Functional Area tagging vocabulary, the time-allocation benchmark
+    tables. `state/profile.json` holds only what is personal. Reading the
+    defaults first and letting the profile override means a profile written
+    before a default existed still receives it.
+
+    That is the whole point: when the Functional Area regex vocabulary moved
+    from module constants into the profile schema in acos-aboutme 0.4, every
+    profile created before that kept working with zero tagging rules and no
+    error, because `(cal.get(...) or {})` cannot tell "absent" from "empty".
+    Shipping the shared half separately makes a stale profile impossible.
+
+    Returns {} when the profile itself is absent, preserving each caller's
+    existing not-enrolled behaviour -- defaults alone must never look like an
+    enrolled profile. A missing or unparseable defaults file degrades to the
+    profile alone rather than raising, so an older acos-aboutme still works.
+    """
+    profile_path = Path(aboutme_path)
+    if not profile_path.exists():
+        return {}
+    try:
+        profile = json.loads(profile_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    defaults_path = profile_path.parent.joinpath(*ACOS_DEFAULTS_RELPATH)
+    defaults = {}
+    if defaults_path.exists():
+        try:
+            defaults = json.loads(defaults_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            defaults = {}
+    return _acos_overlay(defaults, profile)
+# --- end acos shared-defaults overlay ---------------------------------------
+
+
 def load_aboutme(path):
     """Returns {} if the acos-aboutme profile doesn't exist — that skill may
     not be installed or enrolled, and this must degrade gracefully rather
     than fail (see acos-aboutme's "For skill authors" section)."""
     if not path or not Path(path).exists():
         return {}
-    return load_json(path)
+    # Org-wide defaults underneath, this person's profile on top.
+    return load_acos_profile(path)
 
 
 def merge_aboutme(config, aboutme):
@@ -443,11 +532,11 @@ def is_calendar_or_ooo_artifact(message):
     out-of-office autoreply, never a judgment call the sender made, so they
     should never trigger priority regardless of who sent them or what
     keyword happens to appear in the boilerplate body text. Added
-    2026-08-12 (Theme D of _exclude/stage2_accuracy_report.md) after finding a
+    2026-08-12 (Theme D of _exclude/CHANGELOG.md) after finding a
     VIP's meeting-cancellation notice (flagged via the high-importance flag)
     and an out-of-office autoreply that happened to contain the word
     'urgent' in its own boilerplate (flagged via the urgent-keyword scan)
-    both getting marked priority, when Trevor filed both as routine review/
+    both getting marked priority, when the owner filed both as routine review/
     no-action mail."""
     subject = message.get("subject") or ""
     return bool(CALENDAR_OOO_SUBJECT_PREFIX_PATTERN.match(subject.strip()))
@@ -457,7 +546,7 @@ def is_calendar_rsvp_artifact(message):
     """True only for the pure calendar-RSVP subset of is_calendar_or_ooo_
     artifact -- Accepted:/Declined:/Tentative:/Canceled:/Cancelled:, NOT
     Automatic reply:. Added 2026-08-12 (Stage 3 regression, follow-up round
-    2 of _exclude/stage3_accuracy_report.md) after score_priority's VIP-sender
+    2 of _exclude/CHANGELOG.md) after score_priority's VIP-sender
     exemption from calendar/OOO suppression (added the same day to fix
     VIP executives' Automatic-reply messages tied to a live initiative)
     turned out to be too broad: it also let a VIP's calendar-accept
@@ -493,12 +582,12 @@ def score_priority(message, config):
 
     if is_calendar_or_ooo_artifact(message):
         # Narrowed 2026-08-12 (Stage 3 regression #3 of
-        # _exclude/stage3_accuracy_report.md): this used to suppress every
+        # _exclude/CHANGELOG.md): this used to suppress every
         # priority signal unconditionally, including the VIP-sender one
         # above. Real data showed that was too broad -- three separate
         # executives' auto-replies tied to a live internal initiative
         # ("Stewarding AI at The Signatry") were still priority-worthy to
-        # Trevor despite being auto-generated. A VIP sender is a judgment
+        # the owner despite being auto-generated. A VIP sender is a judgment
         # about WHO sent it, not an artifact of HOW the message was
         # generated, so it survives this suppression *for Automatic-reply
         # subjects only* (see is_calendar_rsvp_artifact's guard above); the
@@ -511,7 +600,7 @@ def score_priority(message, config):
     if (message.get("importance") or "").lower() == "high":
         reasons.append("message flagged high importance")
 
-    haystack = f"{message.get('subject', '')}\n{message.get('bodyPreview', '')}"
+    haystack = f"{message.get('subject') or ''}\n{message.get('bodyPreview') or ''}"
     # urgent_keyword_excluded_senders (added 2026-08-12, Stage 3
     # high-severity review, Group F): mirrors financial_document_excluded_
     # senders below -- a small allowlist for senders whose automated report
@@ -530,7 +619,7 @@ def score_priority(message, config):
     # deal-document enhancement folded in) after the Stage 2 accuracy test
     # found invoices, active deal/contract documents, and HR-lifecycle
     # notices from non-VIP, non-urgent-keyword senders all sitting in
-    # 2_review or 7_toBeFiled when Trevor filed every one of them as
+    # 2_review or 7_toBeFiled when the owner filed every one of them as
     # 1_priority by hand.
     #
     # financial_document_excluded_senders (added 2026-08-12, Stage 3
@@ -559,8 +648,8 @@ def score_priority(message, config):
 
     # personal_action_request_keyword_patterns (added 2026-08-12, Stage 3
     # high-severity review, Group D): a direct, personal ask that names
-    # Trevor specifically and needs a reply only he can give -- a letter of
-    # recommendation request, a GitHub mention blocking his own project's
+    # the owner specifically and needs a reply only they can give -- a letter of
+    # recommendation request, a GitHub mention blocking their own project's
     # merge. Distinct from the generic urgent_keyword_patterns list (which
     # is about deadline/approval language in general) -- these are narrow,
     # specific phrasings chosen from real examples, not a broad category.
@@ -595,7 +684,7 @@ def score_priority(message, config):
 
 def score_sensitive(message, config):
     """personnel_content_keyword_patterns (added 2026-08-12, Theme E of
-    _exclude/stage2_accuracy_report.md) is checked as an addition to, not a
+    _exclude/CHANGELOG.md) is checked as an addition to, not a
     replacement for, sensitive_keyword_patterns -- it exists because the
     generic HR-jargon list above only fires on messages that already sound
     like an HR-system notice (termination, FMLA, PIP, etc.), and misses
@@ -603,14 +692,14 @@ def score_sensitive(message, config):
     language (a colleague's departure, a staff opening) regardless of
     sender domain. Deliberately does NOT include 'accepted an invitation to
     pursue' despite that phrasing appearing in the real Stage 2 example this
-    was built from ("Staff Update - Nick Bartelli") -- Trevor pointed out
+    was built from ("Staff Update - Nick Bartelli") -- the owner pointed out
     that phrase is ambiguous with cybersecurity/access-grant language (a
     real example in the same mailbox: "Invitation accepted - Google Play
     Console", an external contractor being granted account access, not a
     personnel departure), and the Nick Bartelli message is still caught by
     'bittersweet'/'last day at' below regardless, so nothing is lost by
     leaving it out."""
-    haystack = f"{message.get('subject', '')}\n{message.get('bodyPreview', '')}"
+    haystack = f"{message.get('subject') or ''}\n{message.get('bodyPreview') or ''}"
     for pattern in _compile_all(config.get("sensitive_keyword_patterns", DEFAULT_SENSITIVE_KEYWORD_PATTERNS)):
         if pattern.search(haystack):
             return True, pattern.pattern
@@ -642,20 +731,20 @@ def find_protected_match(message, config):
 
 
 def find_internal_or_operational_alert(message, config):
-    """Returns a reason string if the sender is either on Trevor's own
+    """Returns a reason string if the sender is either on the owner's own
     internal domain, or a known automated security/service-level alert
     sender for one of our own systems -- both cases should always land in
     2_review for a human glance, never get swept into bulk_review's
     marketing-screen lane or filed sight-unseen. Added 2026-08-12 after the
-    Stage 2 real-mailbox accuracy test (see _exclude/stage2_accuracy_report.md,
+    Stage 2 real-mailbox accuracy test (see _exclude/CHANGELOG.md,
     Theme B) showed MSSecurity-noreply@microsoft.com PIM alerts, SharePoint
     storage warnings, and internal @thesignatry.com sends all getting caught
     by is_bulk_or_newsletter's no-reply/ESP-padding signature and swept
-    toward 6_bulkToReview or 7_toBeFiled, when Trevor consistently filed
+    toward 6_bulkToReview or 7_toBeFiled, when the owner consistently filed
     every one of them into 2_review by hand instead.
 
     Skips calendar/OOO artifacts (2026-08-12, Stage 3 regression #2 of
-    _exclude/stage3_accuracy_report.md) -- a calendar accept/decline notice
+    _exclude/CHANGELOG.md) -- a calendar accept/decline notice
     from an internal sender (e.g. "Accepted: FirstRate - Dev Kickoff") was
     being forced into 2_review by this check even though is_calendar_or_ooo_
     artifact already establishes these are system artifacts, not judgment
@@ -685,14 +774,14 @@ def find_farewell_note(message, config):
     personally-addressed farewell/thank-you note from someone leaving The
     Signatry. A distinct, lighter-touch signal than the HR-lifecycle
     priority keywords in score_priority above (Theme D rec #3 of
-    _exclude/stage2_accuracy_report.md): escalating every goodbye note straight
+    _exclude/CHANGELOG.md): escalating every goodbye note straight
     to 1_priority would be overkill for what's usually a one-time personal
     moment, not an action item, but letting it fall silently into 2_review
     alongside routine review mail with no distinguishing flag risks it being
     skimmed past unanswered. Deliberately narrow patterns -- a bare 'thank
     you' is far too common in ordinary business mail to use as a signal on
     its own."""
-    haystack = f"{message.get('subject', '')}\n{message.get('bodyPreview', '')}"
+    haystack = f"{message.get('subject') or ''}\n{message.get('bodyPreview') or ''}"
     for pattern in _compile_all(config.get("farewell_note_keyword_patterns", [])):
         if pattern.search(haystack):
             return f"reads like a personal farewell/thank-you note from someone leaving: /{pattern.pattern}/"
@@ -701,14 +790,14 @@ def find_farewell_note(message, config):
 
 def find_routine_notification(message, config):
     """Returns a reason string if the message matches a known recurring/
-    automated notification pattern Trevor has confirmed isn't worth a
+    automated notification pattern the owner has confirmed isn't worth a
     review pass: a meeting reminder, or one of Rippling's routine payroll/
     task-tracking pings. Confirmed by Trevor 2026-08-12 (Theme F of
-    _exclude/stage2_accuracy_report.md) -- accepting the report's meeting-
+    _exclude/CHANGELOG.md) -- accepting the report's meeting-
     reminder recommendation in its simpler form (any meeting reminder is
     safe to file, no need to compare the reminder's referenced meeting time
     against the message's own received time). Deliberately narrow content
-    patterns, not a blanket rippling.com/hubspot.com sender rule: Trevor was
+    patterns, not a blanket rippling.com/hubspot.com sender rule: the owner was
     explicit that a Rippling notification asking HIM to act (e.g. missing
     receipts on a card transaction) should stay on its normal path toward
     2_review, only the routine payroll/task-tracking boilerplate should be
@@ -716,7 +805,7 @@ def find_routine_notification(message, config):
     protected/partner-vendor sender (rippling.com and hubspot.com are both
     partner_vendors; a couple of specific senders are also protected_senders)
     doesn't get claimed by that check first."""
-    haystack = f"{message.get('subject', '')}\n{message.get('bodyPreview', '')}"
+    haystack = f"{message.get('subject') or ''}\n{message.get('bodyPreview') or ''}"
 
     for pattern in _compile_all(config.get("meeting_reminder_keyword_patterns", [])):
         if pattern.search(haystack):
@@ -730,9 +819,9 @@ def find_routine_notification(message, config):
 
 
 def find_ea_scheduling_delegate(message, config):
-    """Returns a reason string if the message explicitly asks Trevor's
+    """Returns a reason string if the message explicitly asks the owner's
     Executive Assistant to handle scheduling. Confirmed by Trevor
-    (2026-08-12, Theme J of _exclude/stage2_accuracy_report.md) as the one
+    (2026-08-12, Theme J of _exclude/CHANGELOG.md) as the one
     delegation signal clear enough to be deterministic -- every other
     delegate-worthy judgment (travel logistics, general coordination) stays
     an LLM call, see SKILL.md's Judgment calls section. Requires BOTH an EA
@@ -740,7 +829,7 @@ def find_ea_scheduling_delegate(message, config):
     title) AND separate scheduling language -- neither alone is a reliable
     signal (a message can mention the EA in passing with no scheduling ask,
     or use scheduling language that has nothing to do with her)."""
-    haystack = f"{message.get('subject', '')}\n{message.get('bodyPreview', '')}"
+    haystack = f"{message.get('subject') or ''}\n{message.get('bodyPreview') or ''}"
 
     ea_name = (config.get("ea_name") or "").strip()
     mentions_ea = bool(ea_name and re.search(rf"\b{re.escape(ea_name)}\b", haystack, re.IGNORECASE))
@@ -759,8 +848,8 @@ def find_ea_scheduling_delegate(message, config):
 def match_decline_template(message, templates):
     address = (message.get("sender") or {}).get("address") or message.get("senderAddress") or ""
     domain = _sender_domain(address)
-    subject = message.get("subject", "")
-    body = message.get("bodyPreview", "")
+    subject = message.get("subject") or ""
+    body = message.get("bodyPreview") or ""
 
     for template in templates:
         allowed_domains = [d.lower() for d in template.get("sender_domains", [])]
@@ -853,7 +942,7 @@ def classify_message(message, config, templates, ledger):
             "reasons": [f"{internal_alert_reason} — bulk screen and decline both skipped, route straight to 2_review"],
         }
 
-    is_bulk, bulk_reason = is_bulk_or_newsletter(message)
+    is_bulk, bulk_reason = is_bulk_or_newsletter(message, config)
     if is_bulk:
         reasons = [f"{bulk_reason} — routed to bulk_review for a quick manual screen before final filing"]
         decline_match = match_decline_template(message, templates)
@@ -908,9 +997,9 @@ def cmd_classify(args):
 
 
 def cmd_match_declines(args):
-    """For messages Trevor has already placed in 4_autorespond by hand (see
+    """For messages the owner has already placed in 4_autorespond by hand (see
     SKILL.md's "Sweep 4_autorespond"), resolve which decline template applies
-    -- his own placement there is the judgment call that this is a decline,
+    -- their own placement there is the judgment call that this is a decline,
     so this deliberately skips classify_message's sensitive/priority/
     protected/bulk checks and goes straight to template matching, falling
     back to config's fallback_decline_topic when no template's keywords
@@ -987,14 +1076,14 @@ def cmd_record_decline(args):
 
 def cmd_record_filed(args):
     """Confirmed by Trevor 2026-08-12 (Theme A rec 4 of
-    _exclude/stage2_accuracy_report.md). Mirrors cmd_record_decline's shape
+    _exclude/CHANGELOG.md). Mirrors cmd_record_decline's shape
     exactly, but tracks a different, softer signal in a separate ledger
     section (filed_senders, not senders): a sender whose mail keeps reaching
     the 'routine, no ambiguity, file it' judgment call and landing in
     7_toBeFiled with no action taken. This is deliberately behavior-based
     rather than content-based -- it doesn't try to decide whether a message
     "is marketing"; a sender that keeps recurring here regardless of why is
-    exactly the signal Trevor wants surfaced."""
+    exactly the signal the owner wants surfaced."""
     ledger = load_ledger(args.ledger)
     config = load_config(args.config)
     threshold = config.get("filed_without_action_threshold", 3)
@@ -1046,7 +1135,7 @@ def cmd_record_run(args):
 
 def cmd_bulk_review_status(args):
     """Confirmed by Trevor 2026-08-12 (Theme A rec 2 of
-    _exclude/stage2_accuracy_report.md): 6_bulkToReview stays a distinct
+    _exclude/CHANGELOG.md): 6_bulkToReview stays a distinct
     folder, monitored over time rather than assumed to be earning its keep.
     This never moves or reads full message content -- just id +
     receivedDateTime for a lightweight headcount/age check -- and never
@@ -1090,12 +1179,20 @@ def cmd_record_failure(args):
     }, indent=2, sort_keys=True))
 
 
-def _extract_first_name(sender_name):
+def _extract_first_name(sender_name, config=None):
+    """The token list comes from `generic_sender_name_tokens` in the resolved
+    config (JSON has no set type, so it arrives as a list and is converted
+    here); the module constant is the fallback when no config is passed."""
     if not sender_name:
         return "there"
     first = sender_name.strip().split()[0] if sender_name.strip() else ""
     cleaned = re.sub(r"[^A-Za-z\-']", "", first)
-    if not cleaned or cleaned.lower() in GENERIC_SENDER_NAME_TOKENS or not cleaned[0].isupper():
+    tokens = {
+        str(t).lower()
+        for t in ((config or {}).get("generic_sender_name_tokens")
+                  or DEFAULT_GENERIC_SENDER_NAME_TOKENS)
+    }
+    if not cleaned or cleaned.lower() in tokens or not cleaned[0].isupper():
         return "there"
     return cleaned
 
@@ -1114,7 +1211,7 @@ def cmd_render_template(args):
     careers_url = config.get("careers_url") or ""
     company_linkedin_url = config.get("company_linkedin_url") or ""
 
-    first_name = _extract_first_name(args.sender_name)
+    first_name = _extract_first_name(args.sender_name, config)
     html_body_template = template["html_body"]
     if not personal_linkedin_url:
         # The "follow me on LinkedIn" sentence links the URL as its own visible

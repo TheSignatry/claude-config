@@ -35,5 +35,29 @@
   "contact-research": {
     "classification": "deferred-full-use",
     "reason": "scripts/ and references/ are sequential pipeline steps (init -> pull -> derive -> research -> merge -> render) that all run in a normal complete run, not a menu of alternatives. Two branch points exist -- hubspot_pull.py vs. references/hubspot_extraction.md for the API/connector HubSpot pull, and batch.py+playwright_fetch.py vs. api_batch_runner.py+references/research_prompt.md for interactive vs. unattended research -- but each still touches most of the deferred set, so full-use is the more honest default than alternatives."
+  },
+  "acos-aboutme": {
+    "classification": "deferred-alternatives",
+    "reason": "Two reference files that are never both loaded. references/profile.example.json is copied once at enrollment; references/defaults.json is read by consuming skills through their own relative path, not by this skill. scripts/state_backup.py is executed from a shell, never read into context."
+  },
+  "acos-calendar-analysis": {
+    "classification": "deferred-alternatives",
+    "reason": "The only deferred file is scripts/calendar_report.py, which Claude runs via Bash and never reads into context. Worst Case and Typical Call are identical for a single-file skill; this entry records that the file is executed rather than read."
+  },
+  "acos-email-sort": {
+    "classification": "deferred-alternatives",
+    "reason": "All four deferred files are consumed by scripts/triage.py, not by Claude. The script is executed; references/defaults.json, config.example.json and rejection_templates.yaml are opened by that script at runtime. A normal sort run reads none of them into context, so charging the full 91 KB to a typical call overstates it substantially."
+  },
+  "acos-jira-analysis": {
+    "classification": "deferred-alternatives",
+    "reason": "The only deferred file is scripts/jira_report.py, executed via Bash and never read into context. Same single-file situation as acos-calendar-analysis."
+  },
+  "acos-main": {
+    "classification": "deferred-alternatives",
+    "reason": "A run loads exactly one of the two deferred files. references/visual_system.md is read into context before authoring any artifact, as SKILL.md requires; scripts/main_plan.py is executed and never read. They are never both in context, so Typical Call should be one file rather than their sum."
+  },
+  "signatry-pdf-brand": {
+    "classification": "deferred-alternatives",
+    "reason": "Deferred content is one helper script plus font and logo binaries. reportlab opens the fonts and logos from disk and Claude executes the script; none of it is read into context. A typical call loads at most the script."
   }
 }
