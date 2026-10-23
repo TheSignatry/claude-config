@@ -811,7 +811,17 @@ def classify_primary_category(event, lookups):
     known, seeded series to External ecosystem instead of Strategy and
     transformation every time it recurs. A recurring series is supposed to
     classify "consistently" (the known-series table's whole point) regardless
-    of which random address happens to be cc'd that week."""
+    of which random address happens to be cc'd that week.
+
+    Known-series match is also checked BEFORE Focused production (and
+    People leadership), right after Capacity unavailable. A solo block has no
+    real attendees, so Focused production's generic "no real attendees" rule
+    claimed every one of them first, and a series entry for a recurring solo
+    block (e.g. "Strategy - Protected" meant to count as Strategy and
+    transformation) was written correctly by `correct` but could never match.
+    A series match is an explicit owner decision, so it outranks the generic
+    structural rules that follow it. Capacity unavailable stays first: a PTO
+    or travel block is never overridden by a subject-pattern match."""
     subject = event.get("subject") or ""
     _, participants, others = _participants(event, lookups["owner_email"], lookups["ignored_addresses"])
     ext_domains = sorted(_external_domains(others, lookups["owner_domain"]))
@@ -820,6 +830,12 @@ def classify_primary_category(event, lookups):
     if cap_unavail:
         return {"category": "Capacity unavailable", "reason": cap_reason, "needs_llm": False,
                 "matched_series": None, "series_tags": {}, "external_domains": ext_domains}
+
+    series = _match_known_series(subject, lookups["known_series"])
+    if series:
+        return {"category": series["category"], "reason": f"known-series match: {series['name']}",
+                "needs_llm": False, "matched_series": series["name"], "series_tags": series.get("tags") or {},
+                "external_domains": ext_domains}
 
     focused, focus_reason = _is_focused_production(others, subject)
     if focused:
@@ -830,12 +846,6 @@ def classify_primary_category(event, lookups):
     if pl:
         return {"category": "People leadership", "reason": pl_reason, "needs_llm": False,
                 "matched_series": None, "series_tags": {}, "external_domains": ext_domains}
-
-    series = _match_known_series(subject, lookups["known_series"])
-    if series:
-        return {"category": series["category"], "reason": f"known-series match: {series['name']}",
-                "needs_llm": False, "matched_series": series["name"], "series_tags": series.get("tags") or {},
-                "external_domains": ext_domains}
 
     if ext_domains:
         return {"category": "External ecosystem", "reason": f"external domain(s) present: {ext_domains}",
@@ -1142,9 +1152,33 @@ def flag_meetings_needing_prep(events_with_category, owner_email, owner_domain, 
     return flagged
 
 
-def compute_schedule_health(events_with_category, working_hours):
-    real_meetings = [e for e, c in events_with_category if _is_schedulable(e, c)]
+def find_protected_block_ids(classified, lookups):
+    """Ids of recurring solo blocks the owner has registered as a known series
+    (e.g. "Strategy - Protected"). They carry the series' category for time
+    allocation, but they are still the owner's own protected time: they are
+    deep-work blocks, never meetings. A known series can only claim a solo
+    event ahead of Focused production (see classify_primary_category), so
+    without this a "Protected" block classified as Strategy and transformation
+    would start counting as a meeting -- tight transitions, needs-prep flags,
+    PTO interruptions -- and a real meeting overlapping it would no longer
+    register as a deep-work infringement."""
+    ids = set()
+    for e, r in classified:
+        if not r.get("matched_series") or e.get("isAllDay") or e.get("isCancelled"):
+            continue
+        _, _, others = _participants(e, lookups["owner_email"], lookups["ignored_addresses"])
+        if not others and e.get("id"):
+            ids.add(e["id"])
+    return frozenset(ids)
+
+
+def compute_schedule_health(events_with_category, working_hours, protected_ids=frozenset()):
+    real_meetings = [e for e, c in events_with_category if _is_schedulable(e, c) and e.get("id") not in protected_ids]
     deep_work_blocks = _select_blocks(events_with_category, "Focused production", allow_all_day=False)
+    seen = {b.get("id") for b in deep_work_blocks}
+    deep_work_blocks += [e for e, c in events_with_category
+                         if e.get("id") in protected_ids and e.get("id") not in seen
+                         and not e.get("isCancelled") and _has_concrete_time(e)]
     capacity_blocks = _select_blocks(events_with_category, "Capacity unavailable", allow_all_day=True)
 
     deep_work = _find_block_infringements(deep_work_blocks, real_meetings)
@@ -1625,6 +1659,8 @@ def cmd_report(args):
         classified.append((e, result))
 
     events_with_category = [(e, r["category"]) for e, r in classified]
+    protected_ids = find_protected_block_ids(classified, lookups)
+    meeting_candidates = [(e, c) for e, c in events_with_category if e.get("id") not in protected_ids]
 
     tagged_events = []
     for e, r in classified:
@@ -1703,10 +1739,10 @@ def cmd_report(args):
         "period": period,
         "events": tagged_events,
         "unresolved_events": unresolved_events,
-        "conflicts": detect_conflicts(events_with_category),
-        "schedule_health": compute_schedule_health(events_with_category, lookups["working_hours"]),
+        "conflicts": detect_conflicts(meeting_candidates),
+        "schedule_health": compute_schedule_health(events_with_category, lookups["working_hours"], protected_ids),
         "meetings_needing_prep": flag_meetings_needing_prep(
-            events_with_category, lookups["owner_email"], lookups["owner_domain"], lookups["ignored_addresses"]),
+            meeting_candidates, lookups["owner_email"], lookups["owner_domain"], lookups["ignored_addresses"]),
     }
 
     if unresolved_events:

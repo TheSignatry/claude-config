@@ -1,6 +1,6 @@
 {
   "corpus": {
-    "recorded_at": "2026-09-24",
+    "recorded_at": "2026-10-13",
     "sibling_count": 17,
     "median_typical_lines": 253,
     "median_typical_tokens": 5995
@@ -824,6 +824,30 @@
             "tokens": 25731
           }
         }
+      },
+      {
+        "version": "0.6",
+        "release_date": "2026-10-07",
+        "recorded_at": "2026-10-07",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 250
+          },
+          "body": {
+            "lines": 53,
+            "tokens": 2390
+          },
+          "deferred": {
+            "lines": 1893,
+            "tokens": 23651,
+            "file_count": 1
+          },
+          "total": {
+            "lines": 1947,
+            "tokens": 26291
+          }
+        }
       }
     ],
     "acos-jira-analysis": [
@@ -1114,6 +1138,54 @@
           "total": {
             "lines": 1922,
             "tokens": 33686
+          }
+        }
+      },
+      {
+        "version": "0.11",
+        "release_date": "2026-10-08",
+        "recorded_at": "2026-10-08",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 93
+          },
+          "body": {
+            "lines": 165,
+            "tokens": 10840
+          },
+          "deferred": {
+            "lines": 1778,
+            "tokens": 23015,
+            "file_count": 4
+          },
+          "total": {
+            "lines": 1944,
+            "tokens": 33948
+          }
+        }
+      },
+      {
+        "version": "0.12",
+        "release_date": "2026-10-13",
+        "recorded_at": "2026-10-13",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 93
+          },
+          "body": {
+            "lines": 166,
+            "tokens": 11139
+          },
+          "deferred": {
+            "lines": 1778,
+            "tokens": 23015,
+            "file_count": 4
+          },
+          "total": {
+            "lines": 1945,
+            "tokens": 34247
           }
         }
       }

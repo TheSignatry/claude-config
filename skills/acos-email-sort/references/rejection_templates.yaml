@@ -58,6 +58,28 @@ disclosure_footer: |
   <p><em>This email was drafted with AI assistance so that every valid email receives a response (we wouldn't want to be ghosted, so this is how I'm keeping up with the volume of emails I receive). I do also want to reassure you that a human has reviewed each and every email and response before it was sent.</em></p>
 
 templates:
+  - topic: executive_recruiter_outreach
+    provenance: drafted
+    sender_domains: []
+    subject_patterns:
+      - "\\bexecutive (search|opportunit(y|ies)|career)\\b"
+      - "\\bleadership opportunit(y|ies)\\b"
+      - "\\bcomp(ensation)? (at|for) your level\\b"
+      - "\\byour background caught my attention\\b"
+    body_patterns:
+      - "\\bconfidential (senior )?(leadership|executive) search\\b"
+      - "\\bcame across your (background|profile)\\b"
+      - "\\bindependent (recruiter|talent)\\b"
+      - "\\b(executive|talent) recruiter\\b"
+      - "\\bwhere you.?d like to take things\\b"
+      - "\\bbased on your background\\b"
+    subject_prefix: "Re: "
+    html_body: |
+      <p>Dear {first_name},</p>
+      <p>Thank you for reaching out. I am flattered, but I am committed to my work at The Signatry and am not actively exploring other opportunities right now.</p>
+      <p>If you have a specific position you would like to present, I will respond accordingly. I am not interested in generic offers.</p>
+      <p>- {signoff}</p>
+
   - topic: cybersec_msp_pitch
     provenance: real
     sender_domains: []

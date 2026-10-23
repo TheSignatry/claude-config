@@ -2,6 +2,16 @@
 
 All notable changes to this skill are documented here, newest first.
 
+## 0.6 — 2026-10-07
+
+A known-series match now outranks the Focused production and People leadership rules, so a series entry for a recurring solo block (no attendees) takes effect. It still comes after Capacity unavailable, so a PTO or travel block is never overridden by a subject pattern.
+
+This fixes an inert correction. A solo block has no real attendees, and Focused production's generic "no real attendees" rule claimed it before the series table was ever consulted. Entries added through `correct` for "Strategy - Protected", "Strategy and Planning - Protected", and "TRM Grooming and Release Slate" were written correctly but could never match. Checked against a real week (34 events): exactly those four events moved, from Focused production to Strategy and transformation. Nothing else changed category, and no event became unresolved.
+
+Recurring solo blocks registered as a known series (no real attendees, e.g. "Strategy - Protected") keep their series category for time allocation but are still treated as the owner's protected time. They stay out of tight-transition, double-booking, and needs-prep checks, and they count as deep-work blocks, so a meeting overlapping one is reported as a deep-work infringement. `find_protected_block_ids` identifies them. Without it the reorder made these blocks read as meetings: tight transitions went from 5 to 9, needs-prep from 21 to 24, and the deep-work block count fell from 7 to 3 on the same real week. With it, all three match the pre-change figures. A synthetic meeting placed inside a Strategy - Protected block is reported as an infringement.
+
+Not changed: Work Mode for these blocks reads Meeting or Planning instead of Execution.
+
 ## 0.5 — 2026-09-24
 
 `plan` reads acos-aboutme's shared `references/defaults.json` underneath the personal profile via the vendored `load_acos_profile()` helper. The Functional Area tagging vocabulary and the time-allocation benchmark tables now arrive from the org-wide defaults rather than needing to be present in every profile.
