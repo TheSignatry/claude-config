@@ -19,6 +19,10 @@ every skill's data is in hand:
   5. Package every skill that passes lint (package_skill.py's build_zip())
      -- also refreshes any zip left over from a prior version, since
      build_zip() deletes old {slug}-*.zip files before writing the new one.
+  6. Run the unit tests of every skill that has a tests/ directory
+     (python3 -m unittest discover -s tests, from the skill's root). A
+     failing or erroring suite is BLOCKING, like an ERROR lint finding.
+     tests/ itself never ships -- package_skill.py excludes it.
 
 This does NOT check org-instructions/ (that needs an actual regenerate-
 and-diff, not a static comparison) or whether README's prose descriptions
@@ -30,14 +34,15 @@ Usage:
   python3 skills/final_qa.py --path path/to/skills
 
 Exit codes:
-  0 - no skill has an ERROR/CRITICAL lint finding (warnings may still print)
-  1 - at least one skill has an ERROR/CRITICAL lint finding
+  0 - no ERROR/CRITICAL lint finding and no failing test suite (warnings may still print)
+  1 - at least one ERROR/CRITICAL lint finding or failing test suite
 """
 import argparse
 import datetime
 import json
 import re
 import statistics
+import subprocess
 import sys
 from pathlib import Path
 
@@ -164,8 +169,32 @@ def run_package_phase(skill_dirs, lint_results, budget_index):
     return results
 
 
-def print_summary(skill_dirs, lint_results, budget_results, package_results, deferred_gap_issues, readme_issues):
-    print(f"{'Skill':<30} {'Lint':<8} {'Budget':<10} Package")
+def run_test_phase(skill_dirs):
+    """Runs each skill's tests/ suite, returning {name: {"ok", "note"}} for the
+    skills that have one. The note is unittest's own last line ("OK",
+    "FAILED (failures=2)") with the test count."""
+    results = {}
+    for skill_dir in skill_dirs:
+        if not (skill_dir / "tests").is_dir():
+            continue
+        try:
+            proc = subprocess.run(
+                [sys.executable, "-m", "unittest", "discover", "-s", "tests"],
+                cwd=skill_dir, capture_output=True, text=True, timeout=600,
+            )
+        except subprocess.TimeoutExpired:
+            results[skill_dir.name] = {"ok": False, "note": "timed out after 600s"}
+            continue
+        lines = [l.strip() for l in proc.stderr.splitlines() if l.strip()]
+        ran = next((l for l in reversed(lines) if l.startswith("Ran ")), "no tests ran")
+        status = lines[-1] if lines else "no output"
+        results[skill_dir.name] = {"ok": proc.returncode == 0, "note": f"{ran.split(' in ')[0]}, {status}"}
+    return results
+
+
+def print_summary(skill_dirs, lint_results, budget_results, package_results, deferred_gap_issues, readme_issues,
+                  test_results):
+    print(f"{'Skill':<30} {'Lint':<8} {'Budget':<10} {'Tests':<8} Package")
     for skill_dir in skill_dirs:
         name = skill_dir.name
         issues = lint_results.get(name, [])
@@ -178,9 +207,12 @@ def print_summary(skill_dirs, lint_results, budget_results, package_results, def
         else:
             budget_status = "OUTLIER" if budget_result["comparison"]["is_outlier"] else "ok"
 
+        test = test_results.get(name)
+        test_status = "n/a" if test is None else ("PASS" if test["ok"] else "FAIL")
+
         pkg = package_results.get(name, {})
         pkg_note = pkg.get("note") or pkg.get("reason") or "n/a"
-        print(f"{name:<30} {lint_status:<8} {budget_status:<10} {pkg_note}")
+        print(f"{name:<30} {lint_status:<8} {budget_status:<10} {test_status:<8} {pkg_note}")
 
     total = len(skill_dirs)
     blocking_lines = [
@@ -189,6 +221,11 @@ def print_summary(skill_dirs, lint_results, budget_results, package_results, def
         for severity, message in issues
         if severity in (SEVERITY_ERROR, SEVERITY_CRITICAL)
     ]
+    blocking_lines.extend(
+        f"{name}: tests failed ({result['note']})"
+        for name, result in sorted(test_results.items())
+        if not result["ok"]
+    )
     clean = total - len({name for name, issues in lint_results.items()
                           for severity, _ in issues if severity in (SEVERITY_ERROR, SEVERITY_CRITICAL)})
 
@@ -280,12 +317,16 @@ def main():
     deferred_gap_issues = check_deferred_usage_gap(budget_results, deferred_usage_config)
     readme_issues = check_readme_freshness(root, budget_index)
     package_results = run_package_phase(skill_dirs, lint_results, budget_index)
+    test_results = run_test_phase(skill_dirs)
 
-    print_summary(skill_dirs, lint_results, budget_results, package_results, deferred_gap_issues, readme_issues)
+    print_summary(skill_dirs, lint_results, budget_results, package_results, deferred_gap_issues, readme_issues,
+                  test_results)
+    for name, result in sorted(test_results.items()):
+        print(f"\nTests, {name}: {result['note']}")
 
     has_error = any(
         severity in (SEVERITY_ERROR, SEVERITY_CRITICAL) for issues in lint_results.values() for severity, _ in issues
-    )
+    ) or any(not r["ok"] for r in test_results.values())
     return 1 if has_error else 0
 
 

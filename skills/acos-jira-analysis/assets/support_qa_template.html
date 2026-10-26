@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>__TITLE__</title>
+<style>
+@font-face{font-family:'Lora';font-weight:400;font-style:normal;src:url(data:font/ttf;base64,__LORA__) format('truetype');}
+@font-face{font-family:'Mulish';font-weight:400;src:url(data:font/ttf;base64,__MUL400__) format('truetype');}
+@font-face{font-family:'Mulish';font-weight:600;src:url(data:font/ttf;base64,__MUL600__) format('truetype');}
+@font-face{font-family:'Mulish';font-weight:700;src:url(data:font/ttf;base64,__MUL700__) format('truetype');}
+@font-face{font-family:'Mulish';font-weight:800;src:url(data:font/ttf;base64,__MUL800__) format('truetype');}
+/*__PALETTE__*/
+/*__BASE_CSS__*/
+/*__LEDGER_CSS__*/
+/* support report */
+.glyph.good{color:var(--legacy);}
+.detail col.c-id{width:84px}.detail col.c-st{width:148px}.detail col.c-as{width:128px}.detail col.c-op{width:100px}.detail col.c-up{width:96px}.detail col.c-in{width:76px}.detail col.c-qa{width:120px}
+.detail td{overflow-wrap:anywhere;}
+.sub{display:block;font-size:12px;color:var(--ink-soft);white-space:nowrap;}
+.sub.wrap{white-space:normal;}
+.days{font-weight:700;white-space:nowrap;}
+.days.hot{color:var(--risk);}
+.lnk{white-space:nowrap;}
+.qa{flex-wrap:nowrap;}
+details.moving > summary{list-style:none;}
+details.moving > summary::-webkit-details-marker{display:none;}
+details.moving > summary .section-heading{display:inline;}
+details.moving > summary::after{content:"Show";margin-left:10px;font-size:12px;color:var(--ink-soft);text-decoration:underline;}
+details.moving[open] > summary::after{content:"Hide";}
+.rules{margin-top:6px;}
+.rules td:first-child{width:36px;padding-top:12px;}
+.rules td:nth-child(2){width:220px;font-weight:700;}
+.rules .param{color:var(--ink-soft);font-size:12px;display:block;font-weight:400;}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<!--__SPRITE__-->
+</defs></svg>
+
+<header class="band wash"><div class="inner">
+  <p class="eyebrow" id="eyebrow"></p>
+  <h1 class="headline" id="headline"></h1>
+  <p class="subhead" id="subhead"></p>
+  <div class="runway-wrap"><svg class="runway" id="aging" role="img" aria-label="Open support tickets by days since last update"></svg></div>
+  <div class="legend">
+    <span><i class="sw" style="background:var(--c-wfs)"></i>Waiting on us</span>
+    <span><i class="sw" style="background:var(--c-wfc)"></i>Waiting on the customer</span>
+    <span><i class="sw" style="background:var(--c-pend)"></i>Pending, linked to delivery work</span>
+    <span><i class="sw" style="background:var(--c-bad)"></i>Pending, no linked work</span>
+  </div>
+</div></header>
+
+<section class="band base"><div class="inner">
+  <h2 class="section-heading">QA checks</h2>
+  <p class="section-cap">Select a check or an owner to filter the tables below. Resolved and closed tickets are left out.</p>
+  <div class="ledger" id="ledger"></div>
+  <div class="split"><h2 class="section-heading">By owner</h2><div class="table-wrap"><table class="owners" id="owners"></table></div></div>
+</div></section>
+
+<main class="band base"><div class="inner">
+  <div class="filterbar" id="filterbar"><span id="filtertext"></span><button type="button" id="clearfilter">Clear filter</button></div>
+  <div id="sections"></div>
+</div></main>
+
+<section class="band wash"><div class="inner">
+  <h2 class="section-heading">Rules</h2>
+  <p class="section-cap">Each check is a fixed rule with a tunable threshold in jira_workspaces.support_qa.</p>
+  <div class="table-wrap"><table class="rules" id="rules"></table></div>
+</div></section>
+
+<section class="band base" id="findband"><div class="inner">
+  <h2 class="section-heading">What the data says about the rules</h2>
+  <ol class="list" id="findings"></ol>
+</div></section>
+
+<section class="band wash"><div class="inner">
+  <details><summary>Design notes</summary><dl class="spec" id="spec"></dl></details>
+  <p class="foot" style="margin-top:24px" id="source"></p>
+</div></section>
+
+<script>
+const DATA = __DATA__;
+const CHECKS = DATA.checks;
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const glyph=(id,cls='',title='')=>`<svg class="glyph ${cls}" role="img" aria-label="${esc(title)}"><title>${esc(title)}</title><use href="#g-${id}"/></svg>`;
+const roleCls=c=>c.role==='ink'?'':c.role;
+const items=DATA.items, byKey=Object.fromEntries(items.map(i=>[i.key,i]));
+const DOT={unlinked:'var(--c-bad)',us:'var(--c-wfs)',customer:'var(--c-wfc)',linked:'var(--c-pend)'};
+
+document.getElementById('eyebrow').textContent=DATA.eyebrow;
+document.getElementById('headline').textContent=DATA.headline;
+document.getElementById('subhead').textContent=DATA.subhead;
+document.getElementById('source').textContent=DATA.sourceLine;
+
+/* aging chart */
+(function(){
+  const B=DATA.aging.buckets;
+  const W=1056, colW=W/B.length, per=9, step=13, r=5;
+  const maxRows=Math.max(...B.map(b=>Math.ceil(b.keys.length/per)),1);
+  const top=34, base=top+maxRows*step, H=base+52;
+  let s=`<line x1="0" x2="${W}" y1="${base+8}" y2="${base+8}" stroke="var(--ink-grey)" stroke-width="1.5"/>`;
+  const xs=colW*(DATA.aging.staleIndex+1);
+  if(xs<W){
+    s+=`<rect x="${xs}" y="16" width="${W-xs}" height="${base-8}" fill="var(--c-wfs)" opacity=".08"/>`;
+    s+=`<line x1="${xs}" x2="${xs}" y1="6" y2="${base+8}" stroke="var(--c-line)" stroke-width="2"/>`;
+    s+=`<text class="lbl-strong" x="${xs+6}" y="13">${esc(DATA.aging.staleLabel)}</text>`;
+  }
+  B.forEach((b,bi)=>{
+    const x0=bi*colW+(colW-per*step)/2+step/2;
+    b.keys.forEach((k,n)=>{
+      const i=byKey[k], cx=x0+(n%per)*step, cy=base-Math.floor(n/per)*step;
+      s+=`<g class="dot" tabindex="0" role="button" data-key="${esc(i.key)}" aria-label="${esc(i.key+' '+i.summary)}"><title>${esc(i.key)}: ${esc(i.summary)} (${esc(i.status)}, last update ${i.updDays} days ago)</title><circle cx="${cx}" cy="${cy}" r="${r}" fill="${DOT[i.dot]}" stroke="var(--bg)" stroke-width="1.5"/></g>`;
+    });
+    s+=`<text x="${bi*colW+colW/2}" y="${base+26}" text-anchor="middle">${esc(b.label)}</text>`;
+    s+=`<text class="lbl-strong" x="${bi*colW+colW/2}" y="${base+46}" text-anchor="middle">${b.keys.length}</text>`;
+  });
+  const svg=document.getElementById('aging'); svg.setAttribute('viewBox',`0 0 ${W} ${H}`); svg.innerHTML=s;
+  svg.querySelectorAll('.dot').forEach(g=>{const go=()=>jump(g.dataset.key);g.addEventListener('click',go);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});});
+})();
+
+let filter=null;
+function setFilter(f){filter=(filter&&f&&filter.type===f.type&&filter.value===f.value)?null:f;render();}
+document.getElementById('clearfilter').addEventListener('click',()=>{filter=null;render();});
+const matches=i=>!filter||(filter.type==='qa'?i.qa[filter.value]:i.assignee===filter.value);
+
+function renderLedger(){
+  const el=document.getElementById('ledger');
+  el.innerHTML=CHECKS.map(c=>{const n=c.count,pct=items.length?Math.round(n/items.length*100):0,on=filter&&filter.type==='qa'&&filter.value===c.id;
+    return `<button type="button" aria-pressed="${!!on}" data-qa="${esc(c.id)}"><span class="top">${glyph(c.id,roleCls(c),c.name)}<span class="n">${n}</span><span class="of">of ${items.length}</span></span><span class="name">${esc(c.name)}</span><span class="rule">${esc(c.rule)}</span><span class="bar ${c.role==='risk'?'risk':''}"><i style="width:${pct}%"></i></span></button>`;}).join('');
+  el.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>setFilter({type:'qa',value:b.dataset.qa})));
+}
+function renderOwners(){
+  const cols=DATA.ownerColumns;
+  const cell=(k,n)=>k==='oldest'?`<td class="num">${n} days</td>`:`<td class="num ${n?(k===CHECKS.find(c=>c.role==='risk')?.id?'riskn':''):'zero'}">${n}</td>`;
+  document.getElementById('owners').innerHTML=`<thead><tr><th>Owner</th>${cols.map(([k,l])=>`<th class="num">${esc(l)}</th>`).join('')}</tr></thead><tbody>`+
+    DATA.owners.map(o=>{const on=filter&&filter.type==='owner'&&filter.value===o.name;
+      return `<tr class="clickable" tabindex="0" aria-pressed="${!!on}" data-owner="${esc(o.name)}"><td><b>${esc(o.name)}</b></td>${cols.map(([k])=>cell(k,o[k])).join('')}</tr>`;}).join('')+'</tbody>';
+  document.querySelectorAll('#owners tr.clickable').forEach(tr=>{const go=()=>setFilter({type:'owner',value:tr.dataset.owner});tr.addEventListener('click',go);tr.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});});
+}
+function qaCell(i){
+  const out=CHECKS.filter(c=>i.qa[c.id]).map(c=>glyph(c.id,roleCls(c),i.qaTips[c.id]||c.name));
+  return `<div class="qa">${out.length?out.join(''):'<span class="muted">Clear</span>'}</div>`;
+}
+function row(i){
+  const meta=[]; if(i.requestType) meta.push(esc(i.requestType)); if(i.system) meta.push(esc(i.system)); if(i.urgency) meta.push(`${esc(i.urgency)} urgency`);
+  const links=i.links.length?`<span class="meta">Linked: ${i.links.map(l=>`<a class="lnk" href="${esc(DATA.site+l.key)}" target="_blank" rel="noopener">${esc(l.key)}</a> ${esc(l.status)}`).join('; ')}</span>`:'';
+  return `<tr id="row-${esc(i.key)}"><td><a class="key" href="${esc(i.url)}" target="_blank" rel="noopener">${esc(i.key)}</a></td>
+    <td><span class="sum">${esc(i.summary)}</span>${meta.length?`<span class="meta">${meta.join(', ')}</span>`:''}${links}</td>
+    <td>${esc(i.status)}${i.pendingReason?`<span class="sub wrap">${esc(i.pendingReason)}</span>`:''}</td>
+    <td>${i.assignee==='Unassigned'?'<span class="muted">Unassigned</span>':esc(i.assignee)}</td>
+    <td><span class="date">${esc(i.createdText)}</span><span class="sub">${i.ageDays} days old</span></td>
+    <td><span class="days ${i.hot?'hot':''}">${i.updDays} days</span><span class="sub">${esc(i.updatedText)}</span></td>
+    <td><span class="days">${i.inStatusDays} days</span></td>
+    <td>${qaCell(i)}</td></tr>`;
+}
+function table(arr){return `<div class="table-wrap"><table class="detail"><colgroup><col class="c-id"><col class="c-sum"><col class="c-st"><col class="c-as"><col class="c-op"><col class="c-up"><col class="c-in"><col class="c-qa"></colgroup>
+  <thead><tr><th>ID</th><th>Summary</th><th>Status</th><th>Assignee</th><th>Opened</th><th>Last update</th><th>In status</th><th>QA</th></tr></thead><tbody>${arr.map(row).join('')}</tbody></table></div>`;}
+function renderSections(){
+  const host=document.getElementById('sections'); let shown=0;
+  host.innerHTML=DATA.sections.map(sec=>{const arr=items.filter(i=>i.verdict===sec.id&&matches(i)); shown+=arr.length; if(!arr.length) return '';
+    const head=`<h2 class="section-heading">${esc(sec.title)} (${arr.length})</h2>`;
+    if(sec.collapsed&&!filter) return `<div class="section"><details class="moving"><summary>${head}</summary><p class="section-cap" style="margin-top:6px">${esc(sec.cap)}</p>${table(arr)}</details></div>`;
+    return `<div class="section">${head}<p class="section-cap">${esc(sec.cap)}</p>${table(arr)}</div>`;}).join('')||'<p class="section-cap">No tickets match this filter.</p>';
+  const fb=document.getElementById('filterbar');
+  if(filter){const label=filter.type==='qa'?CHECKS.find(c=>c.id===filter.value).name:filter.value;document.getElementById('filtertext').innerHTML=`Showing ${shown} ticket${shown===1?'':'s'}: <b>${esc(label)}</b>`;fb.classList.add('on');} else fb.classList.remove('on');
+}
+function jump(key){
+  if(filter&&!matches(byKey[key])){filter=null;render();}
+  const tr=document.getElementById('row-'+key); if(!tr) return;
+  const d=tr.closest('details'); if(d) d.open=true;
+  tr.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'});
+  tr.classList.add('flash'); setTimeout(()=>tr.classList.remove('flash'),1600);
+}
+function render(){renderLedger();renderOwners();renderSections();}
+render();
+
+document.getElementById('rules').innerHTML='<tbody>'+CHECKS.map(c=>`<tr><td>${glyph(c.id,roleCls(c),c.name)}</td><td>${esc(c.name)}<span class="param">${esc(c.param)}</span></td><td>${esc(c.rule)}</td></tr>`).join('')+'</tbody>';
+if(DATA.findings.length) document.getElementById('findings').innerHTML=DATA.findings.map(([t,s],k)=>`<li class="item"><span class="item-num">${k+1}</span><div><div class="item-title">${esc(t)}</div><div class="item-sentence">${esc(s)}</div></div></li>`).join('');
+else document.getElementById('findband').hidden=true;
+document.getElementById('spec').innerHTML=DATA.spec.map(([a,b])=>`<dt>${esc(a)}</dt><dd>${esc(b)}</dd>`).join('');
+</script>
+</body>
+</html>

@@ -41,6 +41,10 @@ Every skill under `skills/{skill-slug}/` follows the same folder layout:
   reports (e.g. `skill_budget_audit.py`'s output, below). Excluded from
   `package_skill.py`'s zip and never read into context automatically —
   nothing here is meant to reach Claude.
+- **`tests/`** — optional. Repo-only regression tests (`python3 -m unittest
+  discover -s tests` from the skill's folder). Never packaged. Fixtures must
+  be pseudonymized with `skills/pseudonymize_fixtures.py` before they are
+  committed — no real names or ticket text, even though the folder never ships.
 
 Version and release date come from each skill's own `SKILL.md` frontmatter — update
 this table whenever those change. `python3 skills/lint_skills.py` enforces that the
@@ -60,9 +64,9 @@ frontmatter fields exist, but does not check that this table matches them.
 | [`signatry-pdf-brand`](skills/signatry-pdf-brand/) | Signatry brand system for PDFs built with reportlab: font registration/embedding, color palette, and logo usage. Pair with a general pdf skill and, for donor-facing copy, `signatry-style`. | 1.3 | 2026-08-06 |
 | [`sounding-board`](skills/sounding-board/) | Role-plays a panel of fictional, composite personas reacting to an idea, message, decision, or proposal before it goes out. Covers seven audiences (employee, donor, advisors, VIP family, board, shepherds/C-suite, nonprofit partner), each with its own persona file in `references/`. | 0.7 | 2026-09-16 |
 | [`contact-research`](skills/contact-research/) | Research and enrich HubSpot contacts for The Signatry's relationship managers, one at a time or in batches: pulls the HubSpot record, checks associations/activity for spouse and company links, researches the person on the public web, and produces an enrichment spreadsheet plus a branded PDF profile per contact from a JSON state folder; includes a parallel-subagent orchestrator with per-stage time and token reporting. | 1.0 | 2026-09-23 |
-| [`acos-aboutme`](skills/acos-aboutme/) ᵃ | Shared identity and org-chart profile every other acos skill reads instead of asking the same setup questions again: VIPs, staff, reports, team, partner vendors, protected contacts, email signoff, Jira workspace keys, working hours, and known meeting series. No analysis logic of its own — it is a profile plus the enrollment conversation that fills it in, and it ships the snapshot/restore tool that protects every acos skill's runtime state. | 0.8 | 2026-09-24 |
+| [`acos-aboutme`](skills/acos-aboutme/) ᵃ | Shared identity and org-chart profile every other acos skill reads instead of asking the same setup questions again: VIPs, staff, reports, team, partner vendors, protected contacts, email signoff, Jira workspace keys, working hours, and known meeting series. No analysis logic of its own — it is a profile plus the enrollment conversation that fills it in, and it ships the snapshot/restore tool that protects every acos skill's runtime state. Also holds the Product, Support, and Work Boards QA reports' and the Personal Focus dashboard's checklists, rules, weights, and palettes. | 0.9 | 2026-10-24 |
 | [`acos-calendar-analysis`](skills/acos-calendar-analysis/) ᵃ | Calendar time-classification, conflict detection, schedule health, and time-allocation benchmarking against per-position-type target ranges, with sticky corrections saved back as known meeting series. | 0.6 | 2026-10-07 |
-| [`acos-jira-analysis`](skills/acos-jira-analysis/) ᵃ | Deterministic overdue and upcoming Jira reporting across a person's product, support, and work workspace groups. | 0.5 | 2026-09-24 |
+| [`acos-jira-analysis`](skills/acos-jira-analysis/) ᵃ | Deterministic overdue and upcoming Jira reporting across a person's product, support, and work workspace groups, plus three config-driven QA reports rendered as branded HTML pages: Product QA (roadmap ideas missing fields), Support QA (open tickets that look stuck), and Work Boards QA (closable, stalled, vendor-at-risk, or misassigned work across every work board), and a Personal Focus dashboard that ranks the owner's own next moves. | 0.6 | 2026-10-24 |
 | [`acos-email-sort`](skills/acos-email-sort/) ᵃ | Morning Microsoft 365 inbox triage into the `_claude/*` Outlook folder taxonomy, with drafted (never sent) vendor declines held for human review. Never sends, deletes, or creates a rule. | 0.12 | 2026-10-13 |
 | [`acos-main`](skills/acos-main/) ᵃ | Orchestrator for the acos family — runs the others together into a morning, week, or month plan. | 0.4 | 2026-09-24 |
 
@@ -116,7 +120,16 @@ the only safety net for that state.
 - **`skills/package_skill.py`** — packages a single skill into an
   upload-ready `{skill-slug}-{version}.zip` (SKILL.md at the zip root, no
   wrapping folder), refusing to package if the skill fails
-  `lint_skills.py` with an ERROR or CRITICAL finding.
+  `lint_skills.py` with an ERROR or CRITICAL finding. `_exclude/`, `tests/`,
+  and runtime `state/` never go into the zip.
+- **`skills/pseudonymize_fixtures.py`** — rewrites test fixtures built from
+  real connector data so they carry no real names or wording while keeping
+  every property the code under test depends on (sort order, word counts,
+  issue keys, the words a rule matches). Its `--map` file is the
+  re-identification key: it must live outside the repo (the tool refuses a
+  path inside any git work tree). `lint_skills.py` backs it up with a warning
+  for any `tests/` or `_exclude/*_data.json` file that contains a full name
+  from the maintainer's acos-aboutme profile.
 
 Run these from the repo root:
 
@@ -138,6 +151,11 @@ python3 skills/skill_budget_audit.py signatry-style
 
 # Same, across every skill, as JSON
 python3 skills/skill_budget_audit.py --all --json
+
+# Pseudonymize a skill's test fixtures before committing them (see the script's
+# docstring for the full acos-jira-analysis invocation, with its preserve lists)
+python3 skills/pseudonymize_fixtures.py --map ~/.claude/fixture-maps/{skill-slug}.json \
+    skills/{skill-slug}/tests/fixtures/*/*.json skills/{skill-slug}/tests/test_*.py
 ```
 
 If `lint_skills.py` reports a `CRITICAL` finding, do not distribute the

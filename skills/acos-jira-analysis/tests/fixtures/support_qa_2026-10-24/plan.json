@@ -1,0 +1,382 @@
+{
+ "report": "support_qa",
+ "cloud_id": "signatry1.atlassian.net",
+ "site": "https://signatry1.atlassian.net/browse/",
+ "support_keys": [
+  "SUP"
+ ],
+ "support_fields": {
+  "request_type": "customfield_10022",
+  "pending_reason": "customfield_10099",
+  "urgency": "customfield_10098",
+  "software_affected": "customfield_10195",
+  "system_data_source": "customfield_10196",
+  "time_to_resolution": "customfield_10105",
+  "time_to_first_response": "customfield_10106",
+  "timely_updates": "customfield_10360",
+  "date_of_first_response": "customfield_10017"
+ },
+ "support_qa": {
+  "_comment": "Support QA report config. Checks run in listed order; only failing checks render in a row's QA cell. Field keys refer to jira_workspaces.support_fields.",
+  "stale_days": 14,
+  "customer_quiet_days": 14,
+  "customer_update_days": 30,
+  "enhancement_grace_days": 7,
+  "month_untouched_days": 30,
+  "enhancement_request_types": [
+   "Request an enhancement"
+  ],
+  "status_names": {
+   "waiting_on_us": [
+    "Waiting for support"
+   ],
+   "waiting_on_customer": [
+    "Waiting for customer"
+   ],
+   "pending": [
+    "Pending"
+   ]
+  },
+  "customer_update_statuses": [
+   "Waiting for support",
+   "Pending"
+  ],
+  "delivery_link_scope": "any_non_support",
+  "delivery_link_types": [],
+  "team_roster_sources": [
+   "staff",
+   "reports",
+   "team"
+  ],
+  "team_roster_include_assignees": true,
+  "aging_buckets": [
+   [
+    0,
+    7
+   ],
+   [
+    8,
+    14
+   ],
+   [
+    15,
+    30
+   ],
+   [
+    31,
+    60
+   ],
+   [
+    61,
+    90
+   ],
+   [
+    91,
+    180
+   ],
+   [
+    181,
+    null
+   ]
+  ],
+  "checks": [
+   {
+    "id": "st",
+    "enabled": true,
+    "name": "Stalled on us",
+    "rule": "Waiting for support with no update in 14+ days.",
+    "type": "stale_on_us",
+    "color_role": "risk",
+    "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 1.8h8M4 14.2h8\"/><path d=\"M4.8 1.8v2.4c0 1.6 3.2 2.6 3.2 3.8S4.8 10.2 4.8 11.8v2.4M11.2 1.8v2.4c0 1.6-3.2 2.6-3.2 3.8s3.2 2.2 3.2 3.8v2.4\"/><path d=\"M6.4 12.6h3.2\"/></g>"
+   },
+   {
+    "id": "cq",
+    "enabled": true,
+    "name": "Customer gone quiet",
+    "rule": "Waiting for customer for 14+ days.",
+    "type": "customer_quiet",
+    "color_role": "ink",
+    "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"1.8\" y=\"3.4\" width=\"12.4\" height=\"9.2\" rx=\"1.4\"/><path d=\"M2.2 4.2 8 8.6l5.8-4.4\"/></g>"
+   },
+   {
+    "id": "nu",
+    "enabled": true,
+    "name": "No customer update in 30 days",
+    "rule": "Waiting for support or Pending, and no team comment in 30+ days.",
+    "type": "no_team_comment",
+    "color_role": "ink",
+    "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2.2 3.6a1.4 1.4 0 0 1 1.4-1.4h8.8a1.4 1.4 0 0 1 1.4 1.4v6a1.4 1.4 0 0 1-1.4 1.4H7l-3.2 2.8V11h-.2a1.4 1.4 0 0 1-1.4-1.4z\"/><path d=\"M8 4.6v2.4\"/><path d=\"M8 9h.01\" stroke-width=\"2\"/></g>"
+   },
+   {
+    "id": "pl",
+    "enabled": true,
+    "name": "Pending, no link",
+    "rule": "Pending with no linked work on another board.",
+    "type": "pending_no_link",
+    "color_role": "ink",
+    "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M7.2 4.6l1.5-1.5a2.8 2.8 0 0 1 4 4l-1.5 1.5\"/><path d=\"M8.8 11.4l-1.5 1.5a2.8 2.8 0 0 1-4-4l1.5-1.5\"/><path d=\"M2.2 4.2l1.6.6M4.2 2.2l.6 1.6M13.8 11.8l-1.6-.6M11.8 13.8l-.6-1.6\"/></g>"
+   },
+   {
+    "id": "pr",
+    "enabled": true,
+    "name": "Pending, no reason",
+    "rule": "Pending with Pending reason empty.",
+    "type": "pending_empty_field",
+    "field": "pending_reason",
+    "color_role": "ink",
+    "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"8\" cy=\"8\" r=\"6.2\"/><path d=\"M6.4 5.6v4.8M9.6 5.6v4.8\"/></g>"
+   },
+   {
+    "id": "lu",
+    "enabled": true,
+    "name": "Linked work unscheduled",
+    "rule": "Linked delivery work is still in a To Do category (Parking lot, To Do).",
+    "type": "linked_unscheduled",
+    "color_role": "ink",
+    "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"2\" y=\"2\" width=\"12\" height=\"12\" rx=\"2\"/><path d=\"M6.2 11.6V4.6h2.6a2.1 2.1 0 0 1 0 4.2H6.2\"/></g>"
+   },
+   {
+    "id": "en",
+    "enabled": true,
+    "name": "Enhancement not routed",
+    "rule": "“Request an enhancement” 7+ days old that isn’t Pending and linked.",
+    "type": "enhancement_not_routed",
+    "color_role": "ink",
+    "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5.8 11.2c0-1.4-2.3-2.6-2.3-5.1a4.5 4.5 0 0 1 9 0c0 2.5-2.3 3.7-2.3 5.1z\"/><path d=\"M6.2 13.4h3.6M6.8 15h2.4\"/></g>"
+   },
+   {
+    "id": "od",
+    "enabled": true,
+    "name": "Past due date",
+    "rule": "Due date is before today.",
+    "type": "due_before_today",
+    "color_role": "ink",
+    "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"2\" y=\"3.2\" width=\"12\" height=\"10.8\" rx=\"1.6\"/><path d=\"M2 6.6h12\"/><path d=\"M5.2 1.6v3M10.8 1.6v3\"/><path d=\"M8 8.6v2\"/><path d=\"M8 12.4h.01\" stroke-width=\"2\"/></g>"
+   },
+   {
+    "id": "rr",
+    "enabled": true,
+    "name": "Ready to resolve",
+    "rule": "Every linked delivery item is done.",
+    "type": "linked_all_done",
+    "color_role": "good",
+    "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"8\" cy=\"8\" r=\"6.2\"/><path d=\"M5.2 8.2l2 2 3.6-4\"/></g>"
+   }
+  ],
+  "verdicts": [
+   {
+    "id": "resolve",
+    "title": "Ready to resolve",
+    "when": [
+     "rr"
+    ],
+    "sort": "upd_days_desc",
+    "cap": "All linked delivery work is done; close the loop with the requester."
+   },
+   {
+    "id": "stalled",
+    "title": "Stalled on us",
+    "when": [
+     "st",
+     "nu@waiting_on_us"
+    ],
+    "sort": "upd_days_desc",
+    "cap": "Waiting for support with no update in 14+ days, or no team comment in 30+ days. Oldest update first."
+   },
+   {
+    "id": "quiet",
+    "title": "Customer gone quiet",
+    "when": [
+     "cq"
+    ],
+    "sort": "in_status_days_desc",
+    "cap": "Waiting for customer for 14+ days. Nudge once, then resolve per the auto-close policy. Longest wait first."
+   },
+   {
+    "id": "parked",
+    "title": "Pending without a clear path",
+    "when": [
+     "pl",
+     "pr",
+     "lu@pending"
+    ],
+    "sort": "in_status_days_desc",
+    "cap": "Pending, but missing a linked delivery ticket or a Pending reason, or the linked work is still unscheduled."
+   },
+   {
+    "id": "route",
+    "title": "Enhancements not routed",
+    "when": [
+     "en"
+    ],
+    "sort": "age_days_desc",
+    "cap": "Enhancement requests older than 7 days that aren’t yet Pending and linked to a delivery board."
+   },
+   {
+    "id": "ok",
+    "title": "Moving, or pending the right way",
+    "when": [
+     "*"
+    ],
+    "sort": "upd_days_desc",
+    "collapsed": true,
+    "cap": "Recently updated, or Pending with a reason and active linked work."
+   }
+  ],
+  "stuck_verdicts": [
+   "resolve",
+   "stalled",
+   "quiet",
+   "parked",
+   "route"
+  ],
+  "diagnostics": {
+   "sla_saturation_pct": 50,
+   "due_date_saturation_pct": 60,
+   "owner_concentration_pct": 40
+  },
+  "palette_extra": {
+   "_comment": "Aging-chart dot colors, light / dark. Shared tokens come from product_qa.palette.",
+   "dot_waiting_on_us": [
+    "#fbb03b",
+    "#fbb03b"
+   ],
+   "dot_waiting_on_customer": [
+    "#2b7a78",
+    "#3aafa9"
+   ],
+   "dot_pending_linked": [
+    "#a2a7aa",
+    "#6f7d82"
+   ],
+   "dot_pending_unlinked": [
+    "#8a1e41",
+    "#fd4a5c"
+   ],
+   "stale_line": [
+    "#d77900",
+    "#eef5f5"
+   ]
+  },
+  "timezone": "America/Chicago"
+ },
+ "palette": {
+  "_comment": "Hex values from signatry-brand-core. Light / dark pairs.",
+  "ink": [
+   "#17242a",
+   "#eef5f5"
+  ],
+  "ink_soft": [
+   "#747c7f",
+   "#a9b4b7"
+  ],
+  "ink_grey": [
+   "#a2a7aa",
+   "#7d8a8e"
+  ],
+  "hairline": [
+   "#d1d3d4",
+   "#2f4148"
+  ],
+  "wash": [
+   "#f4f8f8",
+   "#1d2e35"
+  ],
+  "bg": [
+   "#ffffff",
+   "#17242a"
+  ],
+  "accent": [
+   "#d77900",
+   "#fbb03b"
+  ],
+  "risk": [
+   "#8a1e41",
+   "#fd4a5c"
+  ],
+  "legacy": [
+   "#2b7a78",
+   "#3aafa9"
+  ],
+  "highlight": [
+   "#fef7eb",
+   "#2b3426"
+  ],
+  "runway_overdue": [
+   "#fbb03b",
+   "#fbb03b"
+  ],
+  "runway_in_flight": [
+   "#2b7a78",
+   "#3aafa9"
+  ],
+  "runway_not_started": [
+   "#a2a7aa",
+   "#6f7d82"
+  ],
+  "runway_delivered": [
+   "#17242a",
+   "#def2f1"
+  ],
+  "runway_today": [
+   "#d77900",
+   "#eef5f5"
+  ],
+  "dot_waiting_on_us": [
+   "#fbb03b",
+   "#fbb03b"
+  ],
+  "dot_waiting_on_customer": [
+   "#2b7a78",
+   "#3aafa9"
+  ],
+  "dot_pending_linked": [
+   "#a2a7aa",
+   "#6f7d82"
+  ],
+  "dot_pending_unlinked": [
+   "#8a1e41",
+   "#fd4a5c"
+  ],
+  "stale_line": [
+   "#d77900",
+   "#eef5f5"
+  ]
+ },
+ "roster": [
+  "Emery Example"
+ ],
+ "timezone": "America/Chicago",
+ "queries": [
+  {
+   "id": "support_qa",
+   "jql": "project in (SUP) AND statusCategory != Done ORDER BY created ASC",
+   "fields": [
+    "summary",
+    "status",
+    "assignee",
+    "reporter",
+    "created",
+    "updated",
+    "duedate",
+    "statuscategorychangedate",
+    "issuelinks",
+    "customfield_10022",
+    "customfield_10099",
+    "customfield_10098",
+    "customfield_10195",
+    "customfield_10196",
+    "customfield_10105"
+   ],
+   "description": "Every open support ticket, team-wide (deliberately not assignee-scoped)."
+  },
+  {
+   "id": "support_qa_comments",
+   "jql": "project in (SUP) AND statusCategory != Done AND created <= \"2026-09-25\" ORDER BY created ASC",
+   "fields": [
+    "comment"
+   ],
+   "description": "Comments only, kept separate so the main pages stay under the connector's size limit. Newer tickets can't fail the no-team-comment rule, so they're skipped."
+  }
+ ]
+}

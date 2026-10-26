@@ -1,6 +1,6 @@
 {
   "corpus": {
-    "recorded_at": "2026-10-13",
+    "recorded_at": "2026-10-25",
     "sibling_count": 17,
     "median_typical_lines": 253,
     "median_typical_tokens": 5995
@@ -726,6 +726,30 @@
             "tokens": 13174
           }
         }
+      },
+      {
+        "version": "0.9",
+        "release_date": "2026-10-24",
+        "recorded_at": "2026-10-25",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 253
+          },
+          "body": {
+            "lines": 173,
+            "tokens": 7750
+          },
+          "deferred": {
+            "lines": 2603,
+            "tokens": 25689,
+            "file_count": 3
+          },
+          "total": {
+            "lines": 2777,
+            "tokens": 33692
+          }
+        }
       }
     ],
     "acos-calendar-analysis": [
@@ -944,6 +968,30 @@
           "total": {
             "lines": 750,
             "tokens": 10286
+          }
+        }
+      },
+      {
+        "version": "0.6",
+        "release_date": "2026-10-24",
+        "recorded_at": "2026-10-25",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 228
+          },
+          "body": {
+            "lines": 98,
+            "tokens": 4515
+          },
+          "deferred": {
+            "lines": 4034,
+            "tokens": 50785,
+            "file_count": 10
+          },
+          "total": {
+            "lines": 4133,
+            "tokens": 55528
           }
         }
       }

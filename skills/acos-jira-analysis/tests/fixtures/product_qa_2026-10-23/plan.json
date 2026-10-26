@@ -1,0 +1,365 @@
+{
+ "report": "product_qa",
+ "cloud_id": "signatry1.atlassian.net",
+ "site": "https://signatry1.atlassian.net/browse/",
+ "product_keys": [
+  "TRM"
+ ],
+ "product_fields": {
+  "project_target": "customfield_10149",
+  "project_start": "customfield_10148",
+  "product_area": "customfield_10156",
+  "roadmap": "customfield_10139",
+  "short_description": "customfield_10153",
+  "teams": "customfield_10143",
+  "commitment_level": "customfield_10645",
+  "tshirt_size": "customfield_10646",
+  "idea_archived": "customfield_10261",
+  "roadmap_exclude": [
+   "Done",
+   "Parking Lot"
+  ]
+ },
+ "product_qa": {
+  "_comment": "Product QA report config. Checks run in listed order; only failing checks render in a row's QA cell. Field keys refer to jira_workspaces.product_fields.",
+  "horizon_days": 30,
+  "chart_lookback_days": 22,
+  "qa_roadmap_exclude": [
+   "Done",
+   "Parking Lot",
+   "Won't do"
+  ],
+  "exclude_from_qa": {
+   "archived": true,
+   "roadmap_values": [
+    "Done"
+   ],
+   "status_categories": [
+    "done"
+   ]
+  },
+  "started_statuses": [
+   "In Progress",
+   "Quality Review"
+  ],
+  "delivery_link_types": [
+   "Polaris work item link",
+   "Discovery - Connected"
+  ],
+  "date_format": "dd MMM yyyy",
+  "checks": [
+   {
+    "id": "od",
+    "enabled": true,
+    "name": "Overdue",
+    "rule": "Project target end is before today.",
+    "type": "date_before_today",
+    "field": "project_target",
+    "part": "end",
+    "color_role": "risk",
+    "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"8\" cy=\"8.6\" r=\"5.9\"/><path d=\"M8 5.6v3.2l2.3 1.4\"/><path d=\"M6.4 1.6h3.2\"/></g>"
+   },
+   {
+    "id": "sd",
+    "enabled": true,
+    "name": "No short description",
+    "rule": "Idea short description is empty.",
+    "type": "empty",
+    "field": "short_description",
+    "color_role": "ink",
+    "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"><path d=\"M2.5 4h11\"/><path d=\"M2.5 8h11\"/><path d=\"M2.5 12h4\"/><path d=\"M9.5 12h.01M12 12h.01\" stroke-width=\"2\"/></g>"
+   },
+   {
+    "id": "dt",
+    "enabled": true,
+    "name": "Imprecise dates",
+    "rule": "Project start or target is a range, not one day.",
+    "type": "exact_date",
+    "fields": [
+     "project_start",
+     "project_target"
+    ],
+    "color_role": "ink",
+    "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"2\" y=\"3.2\" width=\"12\" height=\"10.8\" rx=\"1.6\"/><path d=\"M2 6.6h12\"/><path d=\"M5.2 1.6v3M10.8 1.6v3\"/><path d=\"M4.9 10.4c1-.9 2.1-.9 3.1 0s2.1.9 3.1 0\"/></g>"
+   },
+   {
+    "id": "pa",
+    "enabled": true,
+    "name": "No product area",
+    "rule": "Product Area is empty.",
+    "type": "empty",
+    "field": "product_area",
+    "color_role": "ink",
+    "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M8.7 2H14v5.3l-6.6 6.6a1 1 0 0 1-1.4 0L2.1 10a1 1 0 0 1 0-1.4z\"/></g><circle cx=\"11.3\" cy=\"4.7\" r=\"1.1\" fill=\"currentColor\"/>"
+   },
+   {
+    "id": "tm",
+    "enabled": true,
+    "name": "No team",
+    "rule": "Teams is empty.",
+    "type": "empty",
+    "field": "teams",
+    "color_role": "ink",
+    "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"6\" cy=\"5.4\" r=\"2.4\"/><path d=\"M1.6 14c0-2.6 2-4.4 4.4-4.4s4.4 1.8 4.4 4.4\"/><path d=\"M10.6 3.3a2.2 2.2 0 0 1 0 4.3\"/><path d=\"M12.2 9.9c1.4.5 2.3 2 2.3 3.9\"/></g>"
+   },
+   {
+    "id": "cl",
+    "enabled": true,
+    "name": "No commitment level",
+    "rule": "Commitment Level is empty.",
+    "type": "empty",
+    "field": "commitment_level",
+    "color_role": "ink",
+    "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3.5 14.4V2\"/><path d=\"M3.5 2.6h8.8l-1.9 3.2 1.9 3.2H3.5\"/></g>"
+   },
+   {
+    "id": "ts",
+    "enabled": true,
+    "name": "No T-shirt size",
+    "rule": "T-Shirt Size is empty.",
+    "type": "empty",
+    "field": "tshirt_size",
+    "color_role": "ink",
+    "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5.6 2.2 1.8 4.4l1.5 3 1.6-.8V14h6.2V6.6l1.6.8 1.5-3-3.8-2.2c-.4 1.2-1.3 1.9-2.4 1.9S6 3.4 5.6 2.2z\"/></g>"
+   },
+   {
+    "id": "dl",
+    "enabled": true,
+    "name": "No delivery tickets",
+    "rule": "No linked delivery work items.",
+    "type": "no_delivery_links",
+    "color_role": "ink",
+    "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M7.2 4.6l1.5-1.5a2.8 2.8 0 0 1 4 4l-1.5 1.5\"/><path d=\"M8.8 11.4l-1.5 1.5a2.8 2.8 0 0 1-4-4l1.5-1.5\"/><path d=\"M2.2 4.2l1.6.6M4.2 2.2l.6 1.6M13.8 11.8l-1.6-.6M11.8 13.8l-.6-1.6\"/></g>"
+   }
+  ],
+  "rewrite_rules": {
+   "_comment": "Codified 'Needs a rewrite' rules for short descriptions that exist but won't hold up. Each enabled rule that fires adds one reason.",
+   "min_words": {
+    "enabled": true,
+    "value": 8,
+    "message": "Too short to stand on its own ({n} words)."
+   },
+   "repeated_word": {
+    "enabled": true,
+    "message": "Repeated word: “{match}.”"
+   },
+   "misspellings": {
+    "enabled": true,
+    "message": "Typo: “{word}” should be “{fix}.”",
+    "map": {
+     "usefullness": "usefulness",
+     "enterprize": "enterprise",
+     "recieve": "receive",
+     "seperate": "separate",
+     "occured": "occurred",
+     "accomodate": "accommodate",
+     "definately": "definitely",
+     "managment": "management",
+     "enviroment": "environment",
+     "calender": "calendar"
+    }
+   },
+   "relative_date": {
+    "enabled": true,
+    "message": "Uses a relative date (“{match}”) that goes stale.",
+    "patterns": [
+     "\\bthe \\d{1,2}(st|nd|rd|th)\\b(?! of (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec))",
+     "\\b(next|last|this) (week|month|quarter|monday|tuesday|wednesday|thursday|friday)\\b",
+     "\\b(tomorrow|yesterday|today)\\b"
+    ]
+   },
+   "list_fragment": {
+    "enabled": true,
+    "min_segments": 3,
+    "max_words_per_segment": 4,
+    "message": "Reads as a list of workstreams, not a description of the outcome."
+   },
+   "aux_plus_base_verb": {
+    "enabled": true,
+    "message": "Likely grammar slip: “{match}.”",
+    "pattern": "\\b(we|they|I|you)\\s+(are|is|am|was|were)\\s+(refresh|update|build|create|implement|migrate|deploy|review|replace|move|setup|install)\\b"
+   },
+   "no_outcome_cue": {
+    "enabled": true,
+    "applies_to": "featured_or_overdue",
+    "message": "No outcome or success criterion stated.",
+    "cues": [
+     "so that",
+     "in order to",
+     "to enable",
+     "enable",
+     "reduce",
+     "improve",
+     "increase",
+     "eliminate",
+     "ensure",
+     "allow",
+     "replace",
+     "%",
+     "by "
+    ]
+   },
+   "featured_suffix": " Featured on {agenda}."
+  },
+  "palette": {
+   "_comment": "Hex values from signatry-brand-core. Light / dark pairs.",
+   "ink": [
+    "#17242a",
+    "#eef5f5"
+   ],
+   "ink_soft": [
+    "#747c7f",
+    "#a9b4b7"
+   ],
+   "ink_grey": [
+    "#a2a7aa",
+    "#7d8a8e"
+   ],
+   "hairline": [
+    "#d1d3d4",
+    "#2f4148"
+   ],
+   "wash": [
+    "#f4f8f8",
+    "#1d2e35"
+   ],
+   "bg": [
+    "#ffffff",
+    "#17242a"
+   ],
+   "accent": [
+    "#d77900",
+    "#fbb03b"
+   ],
+   "risk": [
+    "#8a1e41",
+    "#fd4a5c"
+   ],
+   "legacy": [
+    "#2b7a78",
+    "#3aafa9"
+   ],
+   "highlight": [
+    "#fef7eb",
+    "#2b3426"
+   ],
+   "runway_overdue": [
+    "#fbb03b",
+    "#fbb03b"
+   ],
+   "runway_in_flight": [
+    "#2b7a78",
+    "#3aafa9"
+   ],
+   "runway_not_started": [
+    "#a2a7aa",
+    "#6f7d82"
+   ],
+   "runway_delivered": [
+    "#17242a",
+    "#def2f1"
+   ],
+   "runway_today": [
+    "#d77900",
+    "#eef5f5"
+   ]
+  }
+ },
+ "people_tokens": [
+  "emery",
+  "example",
+  "owner"
+ ],
+ "agenda_keys": [
+  "TRM-158",
+  "TRM-161",
+  "TRM-289",
+  "TRM-295",
+  "TRM-303",
+  "TRM-315",
+  "TRM-317",
+  "TRM-325",
+  "TRM-331",
+  "TRM-332",
+  "TRM-341",
+  "TRM-342",
+  "TRM-357",
+  "TRM-363",
+  "TRM-366",
+  "TRM-368",
+  "TRM-373",
+  "TRM-383",
+  "TRM-388",
+  "TRM-400",
+  "TRM-401",
+  "TRM-404",
+  "TRM-405",
+  "TRM-409",
+  "TRM-410",
+  "TRM-440",
+  "TRM-444",
+  "TRM-445"
+ ],
+ "queries": [
+  {
+   "id": "product_qa",
+   "jql": "project in (TRM) AND statusCategory != Done AND \"Roadmap\" NOT IN (\"Done\", \"Parking Lot\", \"Won't do\") ORDER BY key ASC",
+   "fields": [
+    "summary",
+    "status",
+    "assignee",
+    "issuelinks",
+    "customfield_10149",
+    "customfield_10139",
+    "customfield_10261",
+    "customfield_10153",
+    "customfield_10148",
+    "customfield_10156",
+    "customfield_10143",
+    "customfield_10645",
+    "customfield_10646"
+   ],
+   "description": "Product group ideas that may need QA (whole team)."
+  },
+  {
+   "id": "product_qa_agenda",
+   "jql": "key in (TRM-158, TRM-161, TRM-289, TRM-295, TRM-303, TRM-315, TRM-317, TRM-325, TRM-331, TRM-332, TRM-341, TRM-342, TRM-357, TRM-363, TRM-366, TRM-368, TRM-373, TRM-383, TRM-388, TRM-400, TRM-401, TRM-404, TRM-405, TRM-409, TRM-410, TRM-440, TRM-444, TRM-445) ORDER BY key ASC",
+   "fields": [
+    "summary",
+    "status",
+    "assignee",
+    "issuelinks",
+    "customfield_10149",
+    "customfield_10139",
+    "customfield_10261",
+    "customfield_10153",
+    "customfield_10148",
+    "customfield_10156",
+    "customfield_10143",
+    "customfield_10645",
+    "customfield_10646"
+   ],
+   "description": "Every agenda key, including closed, archived, or Roadmap-excluded ideas, so the corrections section can name them."
+  },
+  {
+   "id": "product_qa_delivered",
+   "jql": "project in (TRM) AND \"Roadmap\" = \"Done\" AND updated >= \"2026-09-01\" ORDER BY key ASC",
+   "fields": [
+    "summary",
+    "status",
+    "assignee",
+    "issuelinks",
+    "customfield_10149",
+    "customfield_10139",
+    "customfield_10261",
+    "customfield_10153",
+    "customfield_10148",
+    "customfield_10156",
+    "customfield_10143",
+    "customfield_10645",
+    "customfield_10646"
+   ],
+   "description": "Ideas delivered inside the chart window. The updated bound is a fetch-volume guard; the real filter (exact Project target between chart start and today) runs in Python."
+  }
+ ]
+}

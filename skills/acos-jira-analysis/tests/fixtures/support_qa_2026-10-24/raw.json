@@ -1,0 +1,8014 @@
+{
+ "support_qa": [
+  {
+   "issues": [
+    {
+     "key": "SUP-179",
+     "fields": {
+      "summary": "OCIFENEDABI: Izosemimi - IDUM Vagoluf edineru INO/JAL dutus",
+      "status": {
+       "name": "Pending",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Bodie Delaney"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2025-04-09T15:07:00.000-0500",
+      "updated": "2025-12-17T15:07:00.000-0600",
+      "duedate": null,
+      "statuscategorychangedate": "2025-06-27T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Report CyberSecurity event (AFTER CALLING TREADWELL)"
+       },
+       "currentStatus": {
+        "status": "Pending",
+        "statusDate": {
+         "jira": "2025-06-27T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": null,
+      "customfield_10195": null,
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": true
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-180",
+     "fields": {
+      "summary": "OCIFENEDABI: Izosemimi - OVO Oviba Opehiho",
+      "status": {
+       "name": "Pending",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Bodie Delaney"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2025-04-09T15:07:00.000-0500",
+      "updated": "2025-12-17T15:07:00.000-0600",
+      "duedate": null,
+      "statuscategorychangedate": "2025-06-27T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Report CyberSecurity event (AFTER CALLING TREADWELL)"
+       },
+       "currentStatus": {
+        "status": "Pending",
+        "statusDate": {
+         "jira": "2025-06-27T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": null,
+      "customfield_10195": null,
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": true
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-188",
+     "fields": {
+      "summary": "+ Ego New utuzih to urofoh copakivijo on Grant Uzutejosobipab guru",
+      "status": {
+       "name": "Pending",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2025-04-14T15:07:00.000-0500",
+      "updated": "2025-07-22T15:07:00.000-0500",
+      "duedate": "2025-04-17",
+      "statuscategorychangedate": "2025-04-22T15:07:00.000-0500",
+      "issuelinks": [
+       {
+        "type": {
+         "name": "Polaris work item link"
+        },
+        "outwardIssue": {
+         "key": "GE-206",
+         "fields": {
+          "status": {
+           "name": "Signatry Approved",
+           "statusCategory": {
+            "key": "indeterminate"
+           }
+          }
+         }
+        }
+       }
+      ],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request an enhancement"
+       },
+       "currentStatus": {
+        "status": "Pending",
+        "statusDate": {
+         "jira": "2025-04-22T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "High"
+      },
+      "customfield_10195": {
+       "value": "Give"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": true
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-258",
+     "fields": {
+      "summary": "Ehola to Izasako Hizibosabat of a Tinab Cazicono obesucezepe",
+      "status": {
+       "name": "Pending",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2025-05-14T09:07:00.000-0500",
+      "updated": "2026-02-18T15:07:00.000-0600",
+      "duedate": "2025-08-01",
+      "statuscategorychangedate": "2026-02-18T15:07:00.000-0600",
+      "issuelinks": [
+       {
+        "type": {
+         "name": "Polaris work item link"
+        },
+        "outwardIssue": {
+         "key": "GE-214",
+         "fields": {
+          "status": {
+           "name": "Signatry Approved",
+           "statusCategory": {
+            "key": "indeterminate"
+           }
+          }
+         }
+        }
+       }
+      ],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request an enhancement"
+       },
+       "currentStatus": {
+        "status": "Pending",
+        "statusDate": {
+         "jira": "2026-02-18T15:07:00.000-0600"
+        }
+       }
+      },
+      "customfield_10099": {
+       "value": "Waiting on vendor"
+      },
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "Give"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": true
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-259",
+     "fields": {
+      "summary": "New Ipifira Hokevedop - Lubecocika Digucec",
+      "status": {
+       "name": "Pending",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Ellery Yardley"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2025-05-14T15:07:00.000-0500",
+      "updated": "2025-08-08T09:07:00.000-0500",
+      "duedate": "2025-07-29",
+      "statuscategorychangedate": "2025-08-07T15:07:00.000-0500",
+      "issuelinks": [
+       {
+        "type": {
+         "name": "Duplicate"
+        },
+        "outwardIssue": {
+         "key": "DVR-103",
+         "fields": {
+          "status": {
+           "name": "Implementation",
+           "statusCategory": {
+            "key": "indeterminate"
+           }
+          }
+         }
+        }
+       },
+       {
+        "type": {
+         "name": "Polaris datapoint work item link"
+        },
+        "outwardIssue": {
+         "key": "TRM-181",
+         "fields": {
+          "status": {
+           "name": "Parking lot",
+           "statusCategory": {
+            "key": "new"
+           }
+          }
+         }
+        }
+       }
+      ],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request a report or data analysis"
+       },
+       "currentStatus": {
+        "status": "Pending",
+        "statusDate": {
+         "jira": "2025-08-07T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Low"
+      },
+      "customfield_10195": {
+       "value": "HubSpot"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": true
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-353",
+     "fields": {
+      "summary": "DanUcip idahocipe to nedapubinec replace Odemi Aboz tugumu ?",
+      "status": {
+       "name": "Pending",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2025-06-25T09:07:00.000-0500",
+      "updated": "2026-06-18T15:07:00.000-0500",
+      "duedate": "2025-09-01",
+      "statuscategorychangedate": "2026-02-19T15:07:00.000-0600",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request an enhancement"
+       },
+       "currentStatus": {
+        "status": "Pending",
+        "statusDate": {
+         "jira": "2026-02-19T15:07:00.000-0600"
+        }
+       }
+      },
+      "customfield_10099": {
+       "value": "More info required"
+      },
+      "customfield_10098": {
+       "value": "Low"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "HubSpot"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": true
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-464",
+     "fields": {
+      "summary": "Unikuzoso Itimecosevika Munet Atokarafalolol in Danucip Apovaloz",
+      "status": {
+       "name": "Pending",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2025-08-12T09:07:00.000-0500",
+      "updated": "2026-02-19T15:07:00.000-0600",
+      "duedate": "2026-08-01",
+      "statuscategorychangedate": "2026-02-19T15:07:00.000-0600",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request an enhancement"
+       },
+       "currentStatus": {
+        "status": "Pending",
+        "statusDate": {
+         "jira": "2026-02-19T15:07:00.000-0600"
+        }
+       }
+      },
+      "customfield_10099": {
+       "value": "Awaiting approval"
+      },
+      "customfield_10098": {
+       "value": "Low"
+      },
+      "customfield_10195": {
+       "value": "Power BI"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": true
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-480",
+     "fields": {
+      "summary": "LUFI Grant Idahocipe - izovifibo on tugumu zori not match ecik is in LUFI",
+      "status": {
+       "name": "Pending",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Ellery Yardley"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2025-08-19T15:07:00.000-0500",
+      "updated": "2026-02-20T15:07:00.000-0600",
+      "duedate": null,
+      "statuscategorychangedate": "2025-10-06T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Report a data syncing issue"
+       },
+       "currentStatus": {
+        "status": "Pending",
+        "statusDate": {
+         "jira": "2025-10-06T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "Give"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": true
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-510",
+     "fields": {
+      "summary": "Create a DanUcip Lavo for Adojevoper Padir",
+      "status": {
+       "name": "Pending",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Ellery Yardley"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2025-09-04T09:07:00.000-0500",
+      "updated": "2026-05-07T15:07:00.000-0500",
+      "duedate": "2026-01-01",
+      "statuscategorychangedate": "2025-11-04T15:07:00.000-0600",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Pending",
+        "statusDate": {
+         "jira": "2025-11-04T15:07:00.000-0600"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Low"
+      },
+      "customfield_10195": {
+       "value": "HubSpot"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": true
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-602",
+     "fields": {
+      "summary": "Rebo Metit: Udikeno Ivemegicupu Urihip and Ukudalugupapi",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2025-10-20T09:07:00.000-0500",
+      "updated": "2025-10-20T09:07:00.000-0500",
+      "duedate": "2025-10-27",
+      "statuscategorychangedate": "2025-10-20T09:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2025-10-20T09:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "HubSpot"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-658",
+     "fields": {
+      "summary": "Icopar Ego GL to Izifidila Obesucezepe Tugumu",
+      "status": {
+       "name": "Pending",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Ellery Yardley"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2025-11-25T15:07:00.000-0600",
+      "updated": "2026-02-20T15:07:00.000-0600",
+      "duedate": "2025-11-26",
+      "statuscategorychangedate": "2025-12-10T09:07:00.000-0600",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request a report or data analysis"
+       },
+       "currentStatus": {
+        "status": "Pending",
+        "statusDate": {
+         "jira": "2025-12-10T09:07:00.000-0600"
+        }
+       }
+      },
+      "customfield_10099": {
+       "value": "Pending on change request"
+      },
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": {
+       "value": "Power BI"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": true
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-680",
+     "fields": {
+      "summary": "Zoburejupodo Ugutezorikih Lavo for Umibo Tarebimupe",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Ellery Yardley"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2025-12-12T15:07:00.000-0600",
+      "updated": "2026-10-21T15:07:00.000-0500",
+      "duedate": "2026-01-30",
+      "statuscategorychangedate": "2026-10-21T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request an enhancement"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-10-21T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "HubSpot"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-699",
+     "fields": {
+      "summary": "Pugozudi ofonumuk: mapej \"vapuzogu\" anedihura javaf on socigiralali",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2025-12-23T09:07:00.000-0600",
+      "updated": "2026-03-17T09:07:00.000-0500",
+      "duedate": "2026-01-30",
+      "statuscategorychangedate": "2026-03-17T09:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-03-17T09:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Low"
+      },
+      "customfield_10195": {
+       "value": "HubSpot"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-709",
+     "fields": {
+      "summary": "Inuki Grant & Zoburejupodo Tugumu",
+      "status": {
+       "name": "Pending",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Ellery Yardley"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2025-12-31T15:07:00.000-0600",
+      "updated": "2026-02-26T09:07:00.000-0600",
+      "duedate": "2026-02-20",
+      "statuscategorychangedate": "2026-01-25T15:07:00.000-0600",
+      "issuelinks": [
+       {
+        "type": {
+         "name": "Blocks"
+        },
+        "outwardIssue": {
+         "key": "DVR-133",
+         "fields": {
+          "status": {
+           "name": "Implementation",
+           "statusCategory": {
+            "key": "indeterminate"
+           }
+          }
+         }
+        }
+       }
+      ],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request a report or data analysis"
+       },
+       "currentStatus": {
+        "status": "Pending",
+        "statusDate": {
+         "jira": "2026-01-25T15:07:00.000-0600"
+        }
+       }
+      },
+      "customfield_10099": {
+       "value": "Awaiting approval"
+      },
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "Give"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": true
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-716",
+     "fields": {
+      "summary": "Ego Okosip (OTED) uhipogizace fojig",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-01-05T15:07:00.000-0600",
+      "updated": "2026-08-24T15:07:00.000-0500",
+      "duedate": "2026-01-12",
+      "statuscategorychangedate": "2026-04-17T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-04-17T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": {
+       "value": "HubSpot"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-723",
+     "fields": {
+      "summary": "Bukinoko Umuvafa to Ajefu IkaHatenus in Ajivona & Avenenek Vum to Ebavopi Munet to CEP",
+      "status": {
+       "name": "Pending",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-01-08T15:07:00.000-0600",
+      "updated": "2026-10-08T15:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-02-09T15:07:00.000-0600",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Get IT help"
+       },
+       "currentStatus": {
+        "status": "Pending",
+        "statusDate": {
+         "jira": "2026-02-09T15:07:00.000-0600"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "Microsoft/Office365 Account"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": true
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-729",
+     "fields": {
+      "summary": "Ekez Aric afeni with ribalid toceveg into cova haza",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-01-13T15:07:00.000-0600",
+      "updated": "2026-05-21T15:07:00.000-0500",
+      "duedate": "2026-01-16",
+      "statuscategorychangedate": "2026-05-21T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-05-21T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": {
+       "value": "HubSpot"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-742",
+     "fields": {
+      "summary": "Year To Date on Gucozuced ",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-01-20T15:07:00.000-0600",
+      "updated": "2026-01-22T15:07:00.000-0600",
+      "duedate": "2026-08-01",
+      "statuscategorychangedate": "2026-01-20T15:07:00.000-0600",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request an enhancement"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-01-20T15:07:00.000-0600"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Low"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "Give"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-749",
+     "fields": {
+      "summary": "Tigur & Grant Erefuzes Rovidabifata Odihute",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-01-25T15:07:00.000-0600",
+      "updated": "2026-03-23T09:07:00.000-0500",
+      "duedate": "2026-02-28",
+      "statuscategorychangedate": "2026-01-26T15:07:00.000-0600",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request an enhancement"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-01-26T15:07:00.000-0600"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": {
+       "value": "Give"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-763",
+     "fields": {
+      "summary": "Cihilepe RM Opadekor Opodon on New Eruresaduri Ahuvarodag Ipafu",
+      "status": {
+       "name": "Pending",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-01-29T15:07:00.000-0600",
+      "updated": "2026-08-31T15:07:00.000-0500",
+      "duedate": "2026-02-28",
+      "statuscategorychangedate": "2026-08-31T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request an enhancement"
+       },
+       "currentStatus": {
+        "status": "Pending",
+        "statusDate": {
+         "jira": "2026-08-31T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "HubSpot"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": true
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-773",
+     "fields": {
+      "summary": "Ego Ceporad Lap-Jepekilid Ikubacabil to MihaGuku on Afehihupi Egilaniv",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-02-02T09:07:00.000-0600",
+      "updated": "2026-10-07T09:07:00.000-0500",
+      "duedate": "2026-03-31",
+      "statuscategorychangedate": "2026-02-08T15:07:00.000-0600",
+      "issuelinks": [
+       {
+        "type": {
+         "name": "Discovery - Connected"
+        },
+        "outwardIssue": {
+         "key": "TRM-363",
+         "fields": {
+          "status": {
+           "name": "In Progress",
+           "statusCategory": {
+            "key": "indeterminate"
+           }
+          }
+         }
+        }
+       },
+       {
+        "type": {
+         "name": "Polaris work item link"
+        },
+        "outwardIssue": {
+         "key": "TT-1390",
+         "fields": {
+          "status": {
+           "name": "In Progress",
+           "statusCategory": {
+            "key": "indeterminate"
+           }
+          }
+         }
+        }
+       },
+       {
+        "type": {
+         "name": "Relates"
+        },
+        "inwardIssue": {
+         "key": "SUP-1243",
+         "fields": {
+          "status": {
+           "name": "Waiting for support",
+           "statusCategory": {
+            "key": "new"
+           }
+          }
+         }
+        }
+       }
+      ],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request an enhancement"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-02-08T15:07:00.000-0600"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": {
+       "value": "Give"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-782",
+     "fields": {
+      "summary": "New Grant \"Fejurucejami for The Guhivizi\" nimefaz enet update",
+      "status": {
+       "name": "Pending",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-02-04T09:07:00.000-0600",
+      "updated": "2026-05-19T15:07:00.000-0500",
+      "duedate": "2026-02-18",
+      "statuscategorychangedate": "2026-02-10T15:07:00.000-0600",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Pending",
+        "statusDate": {
+         "jira": "2026-02-10T15:07:00.000-0600"
+        }
+       }
+      },
+      "customfield_10099": {
+       "value": "Waiting on vendor"
+      },
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "Give"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": true
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-811",
+     "fields": {
+      "summary": "Lufi not secakobok gedivazak from Hacobemur gofe fiku zori not idaroc on Hacobemur",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-02-19T09:07:00.000-0600",
+      "updated": "2026-06-11T09:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-06-11T09:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-06-11T09:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": {
+       "value": "Device Issue"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-829",
+     "fields": {
+      "summary": "OTU Apov apiru zekob and icezote from hazaz",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-02-26T15:07:00.000-0600",
+      "updated": "2026-06-26T15:07:00.000-0500",
+      "duedate": "2026-03-04",
+      "statuscategorychangedate": "2026-06-26T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request an enhancement"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-06-26T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "High"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "Give"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-838",
+     "fields": {
+      "summary": "Zukiruv hazaz to Vuk ipafu",
+      "status": {
+       "name": "Pending",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Ellery Yardley"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-03-03T09:07:00.000-0600",
+      "updated": "2026-04-20T15:07:00.000-0500",
+      "duedate": "2026-03-31",
+      "statuscategorychangedate": "2026-04-20T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request a report or data analysis"
+       },
+       "currentStatus": {
+        "status": "Pending",
+        "statusDate": {
+         "jira": "2026-04-20T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": {
+       "value": "More info required"
+      },
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": {
+       "value": "HubSpot"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": true
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-852",
+     "fields": {
+      "summary": "DanUcip Juvuhasa Ohilanibuloki",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-03-12T09:07:00.000-0500",
+      "updated": "2026-08-13T15:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-08-13T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-08-13T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "Device Issue"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-864",
+     "fields": {
+      "summary": "Grant Ugutezorikih Munet Ezepu Atata ",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-03-18T15:07:00.000-0500",
+      "updated": "2026-03-18T15:07:00.000-0500",
+      "duedate": "2026-03-27",
+      "statuscategorychangedate": "2026-03-18T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-03-18T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": {
+       "value": "Give"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-878",
+     "fields": {
+      "summary": "Heti to Heti Ufipuhibi - idahocipe iremav for ehumuv ",
+      "status": {
+       "name": "Pending",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Ellery Yardley"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-03-26T15:07:00.000-0500",
+      "updated": "2026-05-22T15:07:00.000-0500",
+      "duedate": "2026-04-02",
+      "statuscategorychangedate": "2026-05-22T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request a report or data analysis"
+       },
+       "currentStatus": {
+        "status": "Pending",
+        "statusDate": {
+         "jira": "2026-05-22T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "High"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "Power BI"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": true
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-888",
+     "fields": {
+      "summary": "ERO Munet Lubecocika",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Larkin Dalton"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-04-01T15:07:00.000-0500",
+      "updated": "2026-10-01T09:07:00.000-0500",
+      "duedate": "2026-04-30",
+      "statuscategorychangedate": "2026-04-02T09:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request a report or data analysis"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-04-02T09:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": {
+       "value": "HubSpot"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-910",
+     "fields": {
+      "summary": "Uhofizu Gik Ohukilozecikid Suborito & Year-Hib Odemajafoc",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-04-10T09:07:00.000-0500",
+      "updated": "2026-09-21T15:07:00.000-0500",
+      "duedate": "2026-04-10",
+      "statuscategorychangedate": "2026-04-16T09:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request an enhancement"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-04-16T09:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "High"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "Give"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-930",
+     "fields": {
+      "summary": "Lufi Jikocu Idogeno Tugumu",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Treadwell Cassidy"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-04-20T09:07:00.000-0500",
+      "updated": "2026-10-20T15:07:00.000-0500",
+      "duedate": "2026-08-27",
+      "statuscategorychangedate": "2026-10-20T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request a report or data analysis"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-10-20T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": {
+       "value": "More info required"
+      },
+      "customfield_10098": {
+       "value": "High"
+      },
+      "customfield_10195": {
+       "value": "Give"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-937",
+     "fields": {
+      "summary": "Evucupi Heti Zutatuz",
+      "status": {
+       "name": "Pending",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Ellery Yardley"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-04-22T15:07:00.000-0500",
+      "updated": "2026-10-15T15:07:00.000-0500",
+      "duedate": "2026-05-29",
+      "statuscategorychangedate": "2026-05-13T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Pending",
+        "statusDate": {
+         "jira": "2026-05-13T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "HubSpot"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": true
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-941",
+     "fields": {
+      "summary": "Elumicona For Dubij to Tipuze Duviramog Dipava Ulana",
+      "status": {
+       "name": "Pending",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Ellery Yardley"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-04-23T15:07:00.000-0500",
+      "updated": "2026-04-29T09:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-04-24T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Get IT help"
+       },
+       "currentStatus": {
+        "status": "Pending",
+        "statusDate": {
+         "jira": "2026-04-24T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Low"
+      },
+      "customfield_10195": {
+       "value": "Device Issue"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": true
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-951",
+     "fields": {
+      "summary": "Ajifubub Alefazehodozod in Zazemit",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-04-29T09:07:00.000-0500",
+      "updated": "2026-09-24T15:07:00.000-0500",
+      "duedate": "2026-05-04",
+      "statuscategorychangedate": "2026-04-29T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-04-29T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "HubSpot"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-952",
+     "fields": {
+      "summary": "Fiseloke with himabeh munet nofuromeh not dabeguj osanesib to Danucip",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Ellery Yardley"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-04-29T15:07:00.000-0500",
+      "updated": "2026-05-04T15:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-05-04T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Report a data syncing issue"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-05-04T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": {
+       "value": "HubSpot"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-958",
+     "fields": {
+      "summary": "Dujasor 2 navojipilis",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Ellery Yardley"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-04-30T09:07:00.000-0500",
+      "updated": "2026-05-04T15:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-05-04T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Report a data syncing issue"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-05-04T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Low"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "HubSpot"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-960",
+     "fields": {
+      "summary": "Mavezasati Munet Odemajafoc to Vifole Tigur of Osoge Zoburejupodo Opakofe",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-05-01T15:07:00.000-0500",
+      "updated": "2026-09-24T15:07:00.000-0500",
+      "duedate": "2026-05-15",
+      "statuscategorychangedate": "2026-09-24T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-09-24T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Low"
+      },
+      "customfield_10195": {
+       "value": "Give"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-963",
+     "fields": {
+      "summary": "Egilaniv tugumu not evaleco tofaligin ",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Imogen Colby"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-05-04T15:07:00.000-0500",
+      "updated": "2026-05-15T09:07:00.000-0500",
+      "duedate": "2026-05-08",
+      "statuscategorychangedate": "2026-05-05T09:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-05-05T09:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "High"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "HubSpot"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-967",
+     "fields": {
+      "summary": "Acizizu Apovosic Isotihimej Ahalehum",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-05-05T15:07:00.000-0500",
+      "updated": "2026-07-02T15:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-05-07T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Get IT help"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-05-07T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": {
+       "value": "Intacct"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-969",
+     "fields": {
+      "summary": "Opadekor Citavok ",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Ellery Yardley"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-05-06T09:07:00.000-0500",
+      "updated": "2026-10-01T09:07:00.000-0500",
+      "duedate": "2026-05-22",
+      "statuscategorychangedate": "2026-10-01T09:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request a report or data analysis"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-10-01T09:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "HubSpot"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-972",
+     "fields": {
+      "summary": "Navalof Egiditecos",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-05-07T09:07:00.000-0500",
+      "updated": "2026-05-07T09:07:00.000-0500",
+      "duedate": "2026-05-08",
+      "statuscategorychangedate": "2026-05-07T09:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-05-07T09:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "High"
+      },
+      "customfield_10195": {
+       "value": "Give"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-983",
+     "fields": {
+      "summary": "Tugumu Nararira for new Hifika Zutatuz",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Ellery Yardley"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-05-13T15:07:00.000-0500",
+      "updated": "2026-08-14T09:07:00.000-0500",
+      "duedate": "2026-05-15",
+      "statuscategorychangedate": "2026-08-14T09:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-08-14T09:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "High"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "HubSpot"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-986",
+     "fields": {
+      "summary": "Ego Fojig to Dipava TEC Ulana",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Ellery Yardley"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-05-14T15:07:00.000-0500",
+      "updated": "2026-05-15T15:07:00.000-0500",
+      "duedate": "2027-05-14",
+      "statuscategorychangedate": "2026-05-15T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request a report or data analysis"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-05-15T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Low"
+      },
+      "customfield_10195": {
+       "value": "HubSpot"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1023",
+     "fields": {
+      "summary": "Acizizu - Ituzure Ijojiti",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-05-28T09:07:00.000-0500",
+      "updated": "2026-07-23T15:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-06-11T09:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Get IT help"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-06-11T09:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "Intacct"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1030",
+     "fields": {
+      "summary": "Ipacase for OKO Ofunocopato Pigocaludot",
+      "status": {
+       "name": "Pending",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-05-29T09:07:00.000-0500",
+      "updated": "2026-06-11T15:07:00.000-0500",
+      "duedate": "2026-07-15",
+      "statuscategorychangedate": "2026-06-11T15:07:00.000-0500",
+      "issuelinks": [
+       {
+        "type": {
+         "name": "Polaris work item link"
+        },
+        "outwardIssue": {
+         "key": "DVR-155",
+         "fields": {
+          "status": {
+           "name": "Development",
+           "statusCategory": {
+            "key": "indeterminate"
+           }
+          }
+         }
+        }
+       }
+      ],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Pending",
+        "statusDate": {
+         "jira": "2026-06-11T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": {
+       "value": "Awaiting approval"
+      },
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": {
+       "value": "HubSpot"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": true
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1057",
+     "fields": {
+      "summary": "Vuk Jeruso Fejurucejami and kahipan paha",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-06-09T15:07:00.000-0500",
+      "updated": "2026-07-23T15:07:00.000-0500",
+      "duedate": "2026-08-28",
+      "statuscategorychangedate": "2026-06-09T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request an enhancement"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-06-09T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "HubSpot"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1097",
+     "fields": {
+      "summary": "TADI Aboz Management - EJU",
+      "status": {
+       "name": "Pending",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Ellery Yardley"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-06-22T15:07:00.000-0500",
+      "updated": "2026-07-31T15:07:00.000-0500",
+      "duedate": "2026-07-02",
+      "statuscategorychangedate": "2026-07-01T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request a report or data analysis"
+       },
+       "currentStatus": {
+        "status": "Pending",
+        "statusDate": {
+         "jira": "2026-07-01T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "High"
+      },
+      "customfield_10195": {
+       "value": "Give"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": true
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1099",
+     "fields": {
+      "summary": "An epos to an ojujibig pugozudi",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-06-23T15:07:00.000-0500",
+      "updated": "2026-07-02T15:07:00.000-0500",
+      "duedate": "2026-06-25",
+      "statuscategorychangedate": "2026-07-02T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-07-02T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "HubSpot"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1107",
+     "fields": {
+      "summary": "Ale obif should not be a gihagela fojig on P Gopi",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Ellery Yardley"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-06-25T15:07:00.000-0500",
+      "updated": "2026-10-24T09:07:00.000-0500",
+      "duedate": "2026-07-09",
+      "statuscategorychangedate": "2026-10-24T09:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request a report or data analysis"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-10-24T09:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": {
+       "value": "HubSpot"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1119",
+     "fields": {
+      "summary": "Lufi Bihozov Uhemorapet",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Ellery Yardley"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-07-01T15:07:00.000-0500",
+      "updated": "2026-07-01T15:07:00.000-0500",
+      "duedate": "2026-07-31",
+      "statuscategorychangedate": "2026-07-01T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request a report or data analysis"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-07-01T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "Give"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1127",
+     "fields": {
+      "summary": "Dejisuto Cadafanu - Ahak Nob",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-07-06T15:07:00.000-0500",
+      "updated": "2026-07-06T15:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-07-06T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Get IT help"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-07-06T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "High"
+      },
+      "customfield_10195": {
+       "value": "Rippling"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1131",
+     "fields": {
+      "summary": "FW: HS feg aboz",
+      "status": {
+       "name": "Pending",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-07-08T15:07:00.000-0500",
+      "updated": "2026-08-24T09:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-08-24T09:07:00.000-0500",
+      "issuelinks": [
+       {
+        "type": {
+         "name": "Relates"
+        },
+        "outwardIssue": {
+         "key": "DVR-145",
+         "fields": {
+          "status": {
+           "name": "Complete",
+           "statusCategory": {
+            "key": "done"
+           }
+          }
+         }
+        }
+       },
+       {
+        "type": {
+         "name": "Polaris work item link"
+        },
+        "outwardIssue": {
+         "key": "DVR-160",
+         "fields": {
+          "status": {
+           "name": "Development",
+           "statusCategory": {
+            "key": "indeterminate"
+           }
+          }
+         }
+        }
+       }
+      ],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Emailed request"
+       },
+       "currentStatus": {
+        "status": "Pending",
+        "statusDate": {
+         "jira": "2026-08-24T09:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": {
+       "value": "More info required"
+      },
+      "customfield_10098": null,
+      "customfield_10195": null,
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": true
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1157",
+     "fields": {
+      "summary": "Inajib Irusek--for Avery",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-07-20T15:07:00.000-0500",
+      "updated": "2026-10-14T09:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-09-10T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Get IT help"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-09-10T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": {
+       "value": "Jira"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1158",
+     "fields": {
+      "summary": "ADO Ofopefokonup, OKO Odemi Anec, Nurunik ipob, Nidefecalidot",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-07-20T15:07:00.000-0500",
+      "updated": "2026-07-21T15:07:00.000-0500",
+      "duedate": "2026-08-10",
+      "statuscategorychangedate": "2026-07-20T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-07-20T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "HubSpot"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1163",
+     "fields": {
+      "summary": "Dejisuto EE vs Nifac ",
+      "status": {
+       "name": "Pending",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-07-22T09:07:00.000-0500",
+      "updated": "2026-07-23T15:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-07-23T09:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Get IT help"
+       },
+       "currentStatus": {
+        "status": "Pending",
+        "statusDate": {
+         "jira": "2026-07-23T09:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": {
+       "value": "Waiting on vendor"
+      },
+      "customfield_10098": {
+       "value": "Low"
+      },
+      "customfield_10195": {
+       "value": "Rippling"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": true
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1168",
+     "fields": {
+      "summary": "(Dahozak) Vuk Ekusidize Idahocipe per KUP",
+      "status": {
+       "name": "Pending",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Larkin Dalton"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-07-23T09:07:00.000-0500",
+      "updated": "2026-10-01T09:07:00.000-0500",
+      "duedate": "2026-07-30",
+      "statuscategorychangedate": "2026-07-24T09:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request a report or data analysis"
+       },
+       "currentStatus": {
+        "status": "Pending",
+        "statusDate": {
+         "jira": "2026-07-24T09:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Low"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "HubSpot"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": true
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1171",
+     "fields": {
+      "summary": "Jukiti to Ego Dubij to Okosip Hazaz",
+      "status": {
+       "name": "Pending",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-07-24T09:07:00.000-0500",
+      "updated": "2026-08-27T15:07:00.000-0500",
+      "duedate": "2026-08-07",
+      "statuscategorychangedate": "2026-07-29T09:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Pending",
+        "statusDate": {
+         "jira": "2026-07-29T09:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": {
+       "value": "Waiting on vendor"
+      },
+      "customfield_10098": {
+       "value": "Low"
+      },
+      "customfield_10195": {
+       "value": "Give"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": true
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1175",
+     "fields": {
+      "summary": "ZAZEMIT - Vuk Management Itetasob Bitura - Igosug Hecu Idahocipe ",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Ellery Yardley"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-07-24T15:07:00.000-0500",
+      "updated": "2026-08-20T15:07:00.000-0500",
+      "duedate": "2026-07-29",
+      "statuscategorychangedate": "2026-08-19T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request an enhancement"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-08-19T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "High"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "HubSpot"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1189",
+     "fields": {
+      "summary": "Review Dejisuto Nifac Ufate & Ufomefolo",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-07-30T09:07:00.000-0500",
+      "updated": "2026-08-03T15:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-07-30T09:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Get IT help"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-07-30T09:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": {
+       "value": "Rippling"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1192",
+     "fields": {
+      "summary": "Itahezenekutoga of Lufi Jiza_Cefupaz Ibufud and Usituni ice of Segiritura",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Ellery Yardley"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-07-30T09:07:00.000-0500",
+      "updated": "2026-08-12T15:07:00.000-0500",
+      "duedate": "2026-10-30",
+      "statuscategorychangedate": "2026-07-31T15:07:00.000-0500",
+      "issuelinks": [
+       {
+        "type": {
+         "name": "Relates"
+        },
+        "outwardIssue": {
+         "key": "DVR-161",
+         "fields": {
+          "status": {
+           "name": "Development",
+           "statusCategory": {
+            "key": "indeterminate"
+           }
+          }
+         }
+        }
+       }
+      ],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request a report or data analysis"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-07-31T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Low"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "Give"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    }
+   ],
+   "isLast": false,
+   "nextPageToken": "p2"
+  },
+  {
+   "issues": [
+    {
+     "key": "SUP-1220",
+     "fields": {
+      "summary": "Eruresaduri ice for Heti Aloseb?",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-08-11T15:07:00.000-0500",
+      "updated": "2026-08-18T15:07:00.000-0500",
+      "duedate": "2026-08-17",
+      "statuscategorychangedate": "2026-08-11T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-08-11T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": {
+       "value": "HubSpot"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1224",
+     "fields": {
+      "summary": "Moluba Gaju",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Ellery Yardley"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-08-12T15:07:00.000-0500",
+      "updated": "2026-08-20T15:07:00.000-0500",
+      "duedate": "2026-08-14",
+      "statuscategorychangedate": "2026-08-13T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request an enhancement"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-08-13T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "High"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "HubSpot"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1243",
+     "fields": {
+      "summary": "ZAL Egilaniv Update",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Treadwell Cassidy"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-08-17T15:07:00.000-0500",
+      "updated": "2026-10-21T15:07:00.000-0500",
+      "duedate": "2026-09-30",
+      "statuscategorychangedate": "2026-10-21T15:07:00.000-0500",
+      "issuelinks": [
+       {
+        "type": {
+         "name": "Discovery - Connected"
+        },
+        "outwardIssue": {
+         "key": "TRM-363",
+         "fields": {
+          "status": {
+           "name": "In Progress",
+           "statusCategory": {
+            "key": "indeterminate"
+           }
+          }
+         }
+        }
+       }
+      ],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request a report or data analysis"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-10-21T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "High"
+      },
+      "customfield_10195": {
+       "value": "Give"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1244",
+     "fields": {
+      "summary": "Ekicod Grant Vetapevoc",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Treadwell Cassidy"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-08-17T15:07:00.000-0500",
+      "updated": "2026-08-28T15:07:00.000-0500",
+      "duedate": "2026-12-31",
+      "statuscategorychangedate": "2026-08-28T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request a report or data analysis"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-08-28T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "High"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "HubSpot"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1247",
+     "fields": {
+      "summary": "Ipifira Lanapigi Nuhehapih",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Ellery Yardley"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-08-18T15:07:00.000-0500",
+      "updated": "2026-09-10T15:07:00.000-0500",
+      "duedate": "2026-09-04",
+      "statuscategorychangedate": "2026-08-20T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-08-20T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": {
+       "value": "HubSpot"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1248",
+     "fields": {
+      "summary": "KUP Kijemubizul for Nujozoke Orofazi",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Ellery Yardley"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-08-18T15:07:00.000-0500",
+      "updated": "2026-08-20T15:07:00.000-0500",
+      "duedate": "2026-08-21",
+      "statuscategorychangedate": "2026-08-20T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-08-20T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "HubSpot"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1249",
+     "fields": {
+      "summary": "\"Porimejesa Gubuge\" okapuj ikupuca up in Dejisuto ",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-08-18T15:07:00.000-0500",
+      "updated": "2026-08-19T15:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-08-18T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Get IT help"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-08-18T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Low"
+      },
+      "customfield_10195": {
+       "value": "Rippling"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1260",
+     "fields": {
+      "summary": "Orodutizodeza of okujofilib falucesazuj tat for CS Zama bobu",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-08-19T09:07:00.000-0500",
+      "updated": "2026-09-08T15:07:00.000-0500",
+      "duedate": "2026-08-26",
+      "statuscategorychangedate": "2026-09-08T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-09-08T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Low"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "Give"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1276",
+     "fields": {
+      "summary": "HS OTU Itetasob ",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-08-24T09:07:00.000-0500",
+      "updated": "2026-09-04T15:07:00.000-0500",
+      "duedate": "2026-09-15",
+      "statuscategorychangedate": "2026-09-04T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request an enhancement"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-09-04T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": {
+       "value": "HubSpot"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1294",
+     "fields": {
+      "summary": "Afeni in UnutufURE Itubevos",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-08-28T09:07:00.000-0500",
+      "updated": "2026-09-02T09:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-08-28T09:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Get IT help"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-08-28T09:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "TalentLMS"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1299",
+     "fields": {
+      "summary": "Ufev Nurunik Tugumu Zohumeja",
+      "status": {
+       "name": "Pending",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Larkin Dalton"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-08-28T15:07:00.000-0500",
+      "updated": "2026-09-11T15:07:00.000-0500",
+      "duedate": "2027-02-01",
+      "statuscategorychangedate": "2026-09-11T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request a report or data analysis"
+       },
+       "currentStatus": {
+        "status": "Pending",
+        "statusDate": {
+         "jira": "2026-09-11T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": {
+       "value": "Qlik"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": true
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1318",
+     "fields": {
+      "summary": "AI Aboz Rirodahuzo: Idaci",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-09-01T15:07:00.000-0500",
+      "updated": "2026-10-17T15:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-10-17T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Get IT help"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-10-17T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "High"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "Jira"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1328",
+     "fields": {
+      "summary": "Ego Udahevurav Urihip Tosaji to Janotirako",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-09-03T15:07:00.000-0500",
+      "updated": "2026-09-17T15:07:00.000-0500",
+      "duedate": "2026-09-16",
+      "statuscategorychangedate": "2026-09-17T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request an enhancement"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-09-17T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": {
+       "value": "Give"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1331",
+     "fields": {
+      "summary": "Usolazu Urihip in Ufev",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Larkin Dalton"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-09-03T15:07:00.000-0500",
+      "updated": "2026-09-08T15:07:00.000-0500",
+      "duedate": "2026-10-09",
+      "statuscategorychangedate": "2026-09-08T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request a report or data analysis"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-09-08T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "Qlik"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1344",
+     "fields": {
+      "summary": "IT uzutejosobipab for cen to implement orecoheka munet ukudalugupapi for aromug DanUcip hisimagahu ",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-09-09T09:07:00.000-0500",
+      "updated": "2026-09-14T15:07:00.000-0500",
+      "duedate": "2026-09-11",
+      "statuscategorychangedate": "2026-09-14T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-09-14T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Low"
+      },
+      "customfield_10195": {
+       "value": "HubSpot"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1347",
+     "fields": {
+      "summary": "Segment Ofonumuk Ekez",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Ellery Yardley"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-09-09T15:07:00.000-0500",
+      "updated": "2026-10-08T09:07:00.000-0500",
+      "duedate": "2026-09-25",
+      "statuscategorychangedate": "2026-10-08T09:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-10-08T09:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "High"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "HubSpot"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1363",
+     "fields": {
+      "summary": "Nagojema and tugumu of lojofem pah ipafu onefo $500K jifibehesu",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Larkin Dalton"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-09-14T09:07:00.000-0500",
+      "updated": "2026-10-13T09:07:00.000-0500",
+      "duedate": "2026-09-23",
+      "statuscategorychangedate": "2026-10-13T09:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request a report or data analysis"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-10-13T09:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": {
+       "value": "HubSpot"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1383",
+     "fields": {
+      "summary": "Uhofizu on Ebosi-Uhulid Ecinezavucisor Ekez Bufujoh",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Bodie Delaney"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-09-17T15:07:00.000-0500",
+      "updated": "2026-09-18T09:07:00.000-0500",
+      "duedate": "2026-09-24",
+      "statuscategorychangedate": "2026-09-18T09:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-09-18T09:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Low"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "HubSpot"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1387",
+     "fields": {
+      "summary": "Upebicugeraja on Ojabej asejapika to Ajop ubiniko",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-09-18T15:07:00.000-0500",
+      "updated": "2026-10-05T09:07:00.000-0500",
+      "duedate": "2026-10-09",
+      "statuscategorychangedate": "2026-10-03T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-10-03T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Low"
+      },
+      "customfield_10195": {
+       "value": "HubSpot"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1408",
+     "fields": {
+      "summary": "Tigur Anedihura Ladinof in DanUcip",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-09-25T09:07:00.000-0500",
+      "updated": "2026-09-25T09:07:00.000-0500",
+      "duedate": "2027-02-05",
+      "statuscategorychangedate": "2026-09-25T09:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request an enhancement"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-09-25T09:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "HubSpot"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1427",
+     "fields": {
+      "summary": "Sice for zimuj ore ekatar hekacume to dejisuto",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-10-05T15:07:00.000-0500",
+      "updated": "2026-10-14T09:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-10-05T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Get IT help"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-10-05T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Low"
+      },
+      "customfield_10195": {
+       "value": "Rippling"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1428",
+     "fields": {
+      "summary": "okujofilib dejisuto ego on",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-10-05T15:07:00.000-0500",
+      "updated": "2026-10-20T09:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-10-05T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Get IT help"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-10-05T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Low"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "Rippling"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1435",
+     "fields": {
+      "summary": "Duni to update usajesom uhudadigabe ",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-10-07T15:07:00.000-0500",
+      "updated": "2026-10-07T15:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-10-07T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Get IT help"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-10-07T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Critical"
+      },
+      "customfield_10195": {
+       "value": "Rippling"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1439",
+     "fields": {
+      "summary": "Eza or dime munet gedivazak fojig oke",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-10-08T15:07:00.000-0500",
+      "updated": "2026-10-08T15:07:00.000-0500",
+      "duedate": "2026-10-16",
+      "statuscategorychangedate": "2026-10-08T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-10-08T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "HubSpot"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1440",
+     "fields": {
+      "summary": "Ekez Aric munet haza gofe ecibe is a sapiva",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-10-08T15:07:00.000-0500",
+      "updated": "2026-10-08T15:07:00.000-0500",
+      "duedate": "2026-10-16",
+      "statuscategorychangedate": "2026-10-08T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-10-08T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": {
+       "value": "HubSpot"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1446",
+     "fields": {
+      "summary": "Gutafofop bitura not mudisev jidajepub",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Ellery Yardley"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-10-13T09:07:00.000-0500",
+      "updated": "2026-10-23T15:07:00.000-0500",
+      "duedate": "2026-10-23",
+      "statuscategorychangedate": "2026-10-23T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-10-23T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "High"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "HubSpot"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1449",
+     "fields": {
+      "summary": "Cukisati on Uvirotojum Zoburejupodo Ugutezorikih Lavo - gofe dime misom is iremav",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Ellery Yardley"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-10-13T15:07:00.000-0500",
+      "updated": "2026-10-15T15:07:00.000-0500",
+      "duedate": "2026-10-16",
+      "statuscategorychangedate": "2026-10-15T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request an enhancement"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-10-15T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": {
+       "value": "HubSpot"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1452",
+     "fields": {
+      "summary": "RM Aboz Update Zutatuz",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Ellery Yardley"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-10-13T15:07:00.000-0500",
+      "updated": "2026-10-15T15:07:00.000-0500",
+      "duedate": "2026-10-23",
+      "statuscategorychangedate": "2026-10-15T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request a report or data analysis"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-10-15T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "High"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "HubSpot"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1460",
+     "fields": {
+      "summary": "Vajuko Tipuze",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Bodie Delaney"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-10-15T15:07:00.000-0500",
+      "updated": "2026-10-19T09:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-10-19T09:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Get IT help"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-10-19T09:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": {
+       "value": "Device Issue"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1464",
+     "fields": {
+      "summary": "Danucip not anorasur a inajib for me to rivibe up with tigur",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-10-16T15:07:00.000-0500",
+      "updated": "2026-10-16T15:07:00.000-0500",
+      "duedate": "2026-10-21",
+      "statuscategorychangedate": "2026-10-16T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-10-16T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "HubSpot"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": true,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1465",
+     "fields": {
+      "summary": "Devaf Kevij / Devaf Limedo Kevij",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Ellery Yardley"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-10-16T15:07:00.000-0500",
+      "updated": "2026-10-23T09:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-10-21T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Report a data syncing issue"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-10-21T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": {
+       "value": "HubSpot"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1466",
+     "fields": {
+      "summary": "Zoburejupodo Suborito",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-10-18T15:07:00.000-0500",
+      "updated": "2026-10-18T15:07:00.000-0500",
+      "duedate": "2026-12-31",
+      "statuscategorychangedate": "2026-10-18T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-10-18T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "Give"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1467",
+     "fields": {
+      "summary": "Vajuko Tipuze for ERO",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Bodie Delaney"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-10-19T09:07:00.000-0500",
+      "updated": "2026-10-19T09:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-10-19T09:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request new software"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-10-19T09:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": null,
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1468",
+     "fields": {
+      "summary": "Vajuko Tipuze for PIM",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-10-19T09:07:00.000-0500",
+      "updated": "2026-10-22T09:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-10-19T09:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Emailed request"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-10-19T09:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": null,
+      "customfield_10195": null,
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1471",
+     "fields": {
+      "summary": "jagidela utoke epabug cavudu afeni",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Camden Halloran"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-10-19T15:07:00.000-0500",
+      "updated": "2026-10-21T15:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-10-21T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Get IT help"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-10-21T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "High"
+      },
+      "customfield_10195": {
+       "value": "Microsoft/Office365 Account"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1475",
+     "fields": {
+      "summary": "Do we have an uhuluj to cama gik ihememu LUFI gepulukez ojabej?",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Arden Alden"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-10-20T09:07:00.000-0500",
+      "updated": "2026-10-22T09:07:00.000-0500",
+      "duedate": "2026-10-28",
+      "statuscategorychangedate": "2026-10-20T09:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request support or report a bug"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-10-20T09:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "Give"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1476",
+     "fields": {
+      "summary": "Odihute for Epabug of Gedivazak Efatun that have ukon tafamopem",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Larkin Dalton"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-10-20T15:07:00.000-0500",
+      "updated": "2026-10-20T15:07:00.000-0500",
+      "duedate": "2026-11-06",
+      "statuscategorychangedate": "2026-10-20T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request a report or data analysis"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-10-20T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": {
+       "value": "Give"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1478",
+     "fields": {
+      "summary": "Ahak Nob & Pobasap Management Unokajaroho - Rehudikipipuh",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Treadwell Cassidy"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-10-20T15:07:00.000-0500",
+      "updated": "2026-10-23T15:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-10-23T09:07:00.000-0500",
+      "issuelinks": [
+       {
+        "type": {
+         "name": "Relates"
+        },
+        "outwardIssue": {
+         "key": "TRM-443",
+         "fields": {
+          "status": {
+           "name": "Parking lot",
+           "statusCategory": {
+            "key": "new"
+           }
+          }
+         }
+        }
+       }
+      ],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Get IT help"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-10-23T09:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "Rippling"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1480",
+     "fields": {
+      "summary": "Ovamu Imole iremav",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Larkin Dalton"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-10-21T09:07:00.000-0500",
+      "updated": "2026-10-21T09:07:00.000-0500",
+      "duedate": "2026-11-30",
+      "statuscategorychangedate": "2026-10-21T09:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request a report or data analysis"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-10-21T09:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Low"
+      },
+      "customfield_10195": {
+       "value": "Give"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1482",
+     "fields": {
+      "summary": "Onodiba - AI Hudakikole / Rehudikipipuh",
+      "status": {
+       "name": "Pending",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-10-21T15:07:00.000-0500",
+      "updated": "2026-10-21T15:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-10-21T15:07:00.000-0500",
+      "issuelinks": [
+       {
+        "type": {
+         "name": "Discovery - Connected"
+        },
+        "outwardIssue": {
+         "key": "TT-1416",
+         "fields": {
+          "status": {
+           "name": "To Do",
+           "statusCategory": {
+            "key": "new"
+           }
+          }
+         }
+        }
+       },
+       {
+        "type": {
+         "name": "Blocks"
+        },
+        "outwardIssue": {
+         "key": "TT-1416",
+         "fields": {
+          "status": {
+           "name": "To Do",
+           "statusCategory": {
+            "key": "new"
+           }
+          }
+         }
+        }
+       }
+      ],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Get IT help"
+       },
+       "currentStatus": {
+        "status": "Pending",
+        "statusDate": {
+         "jira": "2026-10-21T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": {
+       "value": "More info required"
+      },
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "Zoom"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": true
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1484",
+     "fields": {
+      "summary": "Liboro in Cen Mavapi Are Lelahepap for Gedivazak Ubiniko",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Arden Alden"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-10-21T15:07:00.000-0500",
+      "updated": "2026-10-21T15:07:00.000-0500",
+      "duedate": "2027-01-29",
+      "statuscategorychangedate": "2026-10-21T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Request an enhancement"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-10-21T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Low"
+      },
+      "customfield_10195": null,
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1485",
+     "fields": {
+      "summary": "Odoru zule is not fupilas",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Camden Halloran"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-10-21T15:07:00.000-0500",
+      "updated": "2026-10-23T15:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-10-23T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Get IT help"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-10-23T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "Adobe"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1486",
+     "fields": {
+      "summary": "Vajuko update ehola",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Bodie Delaney"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-10-22T09:07:00.000-0500",
+      "updated": "2026-10-22T15:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-10-22T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Get IT help"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-10-22T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Low"
+      },
+      "customfield_10195": {
+       "value": "Device Issue"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1490",
+     "fields": {
+      "summary": "1Icebizop agumeki",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Camden Halloran"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-10-22T15:07:00.000-0500",
+      "updated": "2026-10-23T15:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-10-23T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Get IT help"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-10-23T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "1Password"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1491",
+     "fields": {
+      "summary": "PC in Zerike Kibo?",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Camden Halloran"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-10-22T15:07:00.000-0500",
+      "updated": "2026-10-23T15:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-10-23T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Get IT help"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-10-23T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Medium"
+      },
+      "customfield_10195": {
+       "value": "Device Issue"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1495",
+     "fields": {
+      "summary": "Gicehavoje ohusaku unobaseg liboro iremav",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Avery Caldwell"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-10-23T09:07:00.000-0500",
+      "updated": "2026-10-23T09:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-10-23T09:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Get IT help"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-10-23T09:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "High"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "Rippling"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1496",
+     "fields": {
+      "summary": "Avikufip is not fupilas",
+      "status": {
+       "name": "Waiting for customer",
+       "statusCategory": {
+        "key": "indeterminate"
+       }
+      },
+      "assignee": {
+       "displayName": "Bodie Delaney"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-10-23T15:07:00.000-0500",
+      "updated": "2026-10-23T15:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-10-23T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Get IT help"
+       },
+       "currentStatus": {
+        "status": "Waiting for customer",
+        "statusDate": {
+         "jira": "2026-10-23T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "High"
+      },
+      "customfield_10195": {
+       "value": "Device Issue"
+      },
+      "customfield_10196": null,
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": false
+       }
+      }
+     }
+    },
+    {
+     "key": "SUP-1497",
+     "fields": {
+      "summary": "Ego erodat to Guhivizi Dejisuto gufug",
+      "status": {
+       "name": "Waiting for support",
+       "statusCategory": {
+        "key": "new"
+       }
+      },
+      "assignee": {
+       "displayName": "Camden Halloran"
+      },
+      "reporter": {
+       "displayName": "Requester Example"
+      },
+      "created": "2026-10-23T15:07:00.000-0500",
+      "updated": "2026-10-23T15:07:00.000-0500",
+      "duedate": null,
+      "statuscategorychangedate": "2026-10-23T15:07:00.000-0500",
+      "issuelinks": [],
+      "customfield_10022": {
+       "requestType": {
+        "name": "Get IT help"
+       },
+       "currentStatus": {
+        "status": "Waiting for support",
+        "statusDate": {
+         "jira": "2026-10-23T15:07:00.000-0500"
+        }
+       }
+      },
+      "customfield_10099": null,
+      "customfield_10098": {
+       "value": "Critical"
+      },
+      "customfield_10195": null,
+      "customfield_10196": {
+       "value": "Rippling"
+      },
+      "customfield_10105": {
+       "completedCycles": [],
+       "ongoingCycle": {
+        "breached": false,
+        "paused": false
+       }
+      }
+     }
+    }
+   ],
+   "isLast": true
+  }
+ ],
+ "support_qa_comments": [
+  {
+   "issues": {
+    "nodes": [
+     {
+      "key": "SUP-179",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "01",
+          "created": "2025-06-24T10:00:00.000-0500",
+          "author": {
+           "displayName": "Emery Example"
+          }
+         },
+         {
+          "id": "02",
+          "created": "2025-06-27T15:07:00.000-0500",
+          "author": {
+           "displayName": "Emery Example"
+          }
+         },
+         {
+          "id": "03",
+          "created": "2025-12-17T15:07:00.000-0600",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-180",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "11",
+          "created": "2025-06-24T10:00:00.000-0500",
+          "author": {
+           "displayName": "Bodie Delaney"
+          }
+         },
+         {
+          "id": "12",
+          "created": "2025-06-27T15:07:00.000-0500",
+          "author": {
+           "displayName": "Bodie Delaney"
+          }
+         },
+         {
+          "id": "13",
+          "created": "2025-12-17T15:07:00.000-0600",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-188",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "21",
+          "created": "2025-04-19T10:00:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "22",
+          "created": "2025-04-22T15:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "23",
+          "created": "2025-07-22T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-258",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "31",
+          "created": "2025-10-27T10:00:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "32",
+          "created": "2025-10-30T09:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "33",
+          "created": "2026-02-18T15:07:00.000-0600",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-259",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "41",
+          "created": "2025-08-04T10:00:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "42",
+          "created": "2025-08-07T15:07:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "43",
+          "created": "2025-08-08T09:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-353",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "51",
+          "created": "2026-06-15T10:00:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "52",
+          "created": "2026-06-18T15:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "53",
+          "created": "2026-06-18T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-464",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "62",
+          "created": "2025-08-14T15:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "63",
+          "created": "2026-02-19T15:07:00.000-0600",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 2,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-480",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "71",
+          "created": "2026-02-17T10:00:00.000-0500",
+          "author": {
+           "displayName": "Emery Example"
+          }
+         },
+         {
+          "id": "72",
+          "created": "2026-02-20T15:07:00.000-0600",
+          "author": {
+           "displayName": "Emery Example"
+          }
+         },
+         {
+          "id": "73",
+          "created": "2026-02-20T15:07:00.000-0600",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-510",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "81",
+          "created": "2025-11-01T10:00:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "82",
+          "created": "2025-11-04T15:07:00.000-0600",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "83",
+          "created": "2026-05-07T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-602",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "93",
+          "created": "2025-10-20T09:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 1,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-658",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "101",
+          "created": "2026-02-17T10:00:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "102",
+          "created": "2026-02-20T15:07:00.000-0600",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "103",
+          "created": "2026-02-20T15:07:00.000-0600",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-680",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "111",
+          "created": "2026-10-18T10:00:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "112",
+          "created": "2026-10-21T15:07:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "113",
+          "created": "2026-10-21T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-699",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "121",
+          "created": "2026-03-13T10:00:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "122",
+          "created": "2026-03-16T15:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "123",
+          "created": "2026-03-17T09:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-709",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "131",
+          "created": "2026-02-23T10:00:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "132",
+          "created": "2026-02-26T09:07:00.000-0600",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "133",
+          "created": "2026-02-26T09:07:00.000-0600",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-716",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "141",
+          "created": "2026-08-21T10:00:00.000-0500",
+          "author": {
+           "displayName": "Emery Example"
+          }
+         },
+         {
+          "id": "142",
+          "created": "2026-08-24T15:07:00.000-0500",
+          "author": {
+           "displayName": "Emery Example"
+          }
+         },
+         {
+          "id": "143",
+          "created": "2026-08-24T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-723",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "151",
+          "created": "2026-01-11T10:00:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "152",
+          "created": "2026-01-14T15:07:00.000-0600",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "153",
+          "created": "2026-10-08T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-729",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "161",
+          "created": "2026-05-17T10:00:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "162",
+          "created": "2026-05-20T15:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "163",
+          "created": "2026-05-21T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-742",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "172",
+          "created": "2026-01-22T15:07:00.000-0600",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "173",
+          "created": "2026-01-22T15:07:00.000-0600",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 2,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-749",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "182",
+          "created": "2026-01-26T09:07:00.000-0600",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "183",
+          "created": "2026-03-23T09:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 2,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-763",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "191",
+          "created": "2026-06-08T10:00:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "192",
+          "created": "2026-06-11T09:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "193",
+          "created": "2026-08-31T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-773",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "201",
+          "created": "2026-10-04T10:00:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "202",
+          "created": "2026-10-07T09:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "203",
+          "created": "2026-10-07T09:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-782",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "211",
+          "created": "2026-02-09T10:00:00.000-0500",
+          "author": {
+           "displayName": "Emery Example"
+          }
+         },
+         {
+          "id": "212",
+          "created": "2026-02-12T15:07:00.000-0600",
+          "author": {
+           "displayName": "Emery Example"
+          }
+         },
+         {
+          "id": "213",
+          "created": "2026-05-19T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-811",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "221",
+          "created": "2026-06-08T10:00:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "222",
+          "created": "2026-06-11T09:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "223",
+          "created": "2026-06-11T09:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-829",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "231",
+          "created": "2026-02-27T10:00:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "232",
+          "created": "2026-03-02T15:07:00.000-0600",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "233",
+          "created": "2026-06-26T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-838",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "241",
+          "created": "2026-04-17T10:00:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "242",
+          "created": "2026-04-20T15:07:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "243",
+          "created": "2026-04-20T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-852",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "251",
+          "created": "2026-08-08T10:00:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "252",
+          "created": "2026-08-11T09:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "253",
+          "created": "2026-08-13T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-864",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "262",
+          "created": "2026-03-18T15:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "263",
+          "created": "2026-03-18T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 2,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-878",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "271",
+          "created": "2026-04-24T10:00:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "272",
+          "created": "2026-04-27T15:07:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "273",
+          "created": "2026-05-22T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-888",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "282",
+          "created": "2026-04-02T09:07:00.000-0500",
+          "author": {
+           "displayName": "Emery Example"
+          }
+         },
+         {
+          "id": "283",
+          "created": "2026-10-01T09:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 2,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-910",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "291",
+          "created": "2026-04-12T10:00:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "292",
+          "created": "2026-04-15T15:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "293",
+          "created": "2026-09-21T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-930",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "301",
+          "created": "2026-10-17T10:00:00.000-0500",
+          "author": {
+           "displayName": "Treadwell Cassidy"
+          }
+         },
+         {
+          "id": "302",
+          "created": "2026-10-20T09:07:00.000-0500",
+          "author": {
+           "displayName": "Treadwell Cassidy"
+          }
+         },
+         {
+          "id": "303",
+          "created": "2026-10-20T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-937",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "311",
+          "created": "2026-10-12T10:00:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "312",
+          "created": "2026-10-15T15:07:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "313",
+          "created": "2026-10-15T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-941",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "321",
+          "created": "2026-04-26T10:00:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "322",
+          "created": "2026-04-29T09:07:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "323",
+          "created": "2026-04-29T09:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-951",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "332",
+          "created": "2026-04-29T15:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "333",
+          "created": "2026-09-24T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 2,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-952",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "341",
+          "created": "2026-05-01T10:00:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "342",
+          "created": "2026-05-04T15:07:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "343",
+          "created": "2026-05-04T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-958",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "351",
+          "created": "2026-05-01T10:00:00.000-0500",
+          "author": {
+           "displayName": "Emery Example"
+          }
+         },
+         {
+          "id": "352",
+          "created": "2026-05-04T15:07:00.000-0500",
+          "author": {
+           "displayName": "Emery Example"
+          }
+         },
+         {
+          "id": "353",
+          "created": "2026-05-04T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-960",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "361",
+          "created": "2026-06-08T10:00:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "362",
+          "created": "2026-06-11T09:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "363",
+          "created": "2026-09-24T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-963",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "372",
+          "created": "2026-05-06T09:07:00.000-0500",
+          "author": {
+           "displayName": "Imogen Colby"
+          }
+         },
+         {
+          "id": "373",
+          "created": "2026-05-15T09:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 2,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-967",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "381",
+          "created": "2026-06-08T10:00:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "382",
+          "created": "2026-06-11T09:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "383",
+          "created": "2026-07-02T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-969",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "391",
+          "created": "2026-09-28T10:00:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "392",
+          "created": "2026-10-01T09:07:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "393",
+          "created": "2026-10-01T09:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-972",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "403",
+          "created": "2026-05-07T09:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 1,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-983",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "411",
+          "created": "2026-08-11T10:00:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "412",
+          "created": "2026-08-14T09:07:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "413",
+          "created": "2026-08-14T09:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-986",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "422",
+          "created": "2026-05-15T15:07:00.000-0500",
+          "author": {
+           "displayName": "Emery Example"
+          }
+         },
+         {
+          "id": "423",
+          "created": "2026-05-15T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 2,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1023",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "431",
+          "created": "2026-07-20T10:00:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "432",
+          "created": "2026-07-23T15:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "433",
+          "created": "2026-07-23T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1030",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "441",
+          "created": "2026-06-08T10:00:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "442",
+          "created": "2026-06-11T15:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "443",
+          "created": "2026-06-11T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1057",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "451",
+          "created": "2026-07-20T10:00:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "452",
+          "created": "2026-07-23T15:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "453",
+          "created": "2026-07-23T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1097",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "461",
+          "created": "2026-07-03T10:00:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "462",
+          "created": "2026-07-06T15:07:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "463",
+          "created": "2026-07-31T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1099",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "471",
+          "created": "2026-06-29T10:00:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "472",
+          "created": "2026-07-02T15:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "473",
+          "created": "2026-07-02T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1107",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "481",
+          "created": "2026-10-21T10:00:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "482",
+          "created": "2026-10-24T09:07:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "483",
+          "created": "2026-10-24T09:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1119",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "492",
+          "created": "2026-07-01T15:07:00.000-0500",
+          "author": {
+           "displayName": "Emery Example"
+          }
+         },
+         {
+          "id": "493",
+          "created": "2026-07-01T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 2,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1127",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "502",
+          "created": "2026-07-06T15:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "503",
+          "created": "2026-07-06T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 2,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1131",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "511",
+          "created": "2026-07-14T10:00:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "512",
+          "created": "2026-07-17T15:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "513",
+          "created": "2026-08-24T09:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1157",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "521",
+          "created": "2026-08-29T10:00:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "522",
+          "created": "2026-09-01T15:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "523",
+          "created": "2026-10-14T09:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1158",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "533",
+          "created": "2026-07-21T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 1,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1163",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "542",
+          "created": "2026-07-23T15:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "543",
+          "created": "2026-07-23T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 2,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1168",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "551",
+          "created": "2026-09-28T10:00:00.000-0500",
+          "author": {
+           "displayName": "Larkin Dalton"
+          }
+         },
+         {
+          "id": "552",
+          "created": "2026-10-01T09:07:00.000-0500",
+          "author": {
+           "displayName": "Larkin Dalton"
+          }
+         },
+         {
+          "id": "553",
+          "created": "2026-10-01T09:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1171",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "561",
+          "created": "2026-08-24T10:00:00.000-0500",
+          "author": {
+           "displayName": "Emery Example"
+          }
+         },
+         {
+          "id": "562",
+          "created": "2026-08-27T15:07:00.000-0500",
+          "author": {
+           "displayName": "Emery Example"
+          }
+         },
+         {
+          "id": "563",
+          "created": "2026-08-27T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1175",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "571",
+          "created": "2026-08-17T10:00:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "572",
+          "created": "2026-08-20T15:07:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "573",
+          "created": "2026-08-20T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1189",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "583",
+          "created": "2026-08-03T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 1,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1192",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "591",
+          "created": "2026-08-09T10:00:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "592",
+          "created": "2026-08-12T15:07:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "593",
+          "created": "2026-08-12T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1220",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "601",
+          "created": "2026-08-15T10:00:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "602",
+          "created": "2026-08-18T15:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "603",
+          "created": "2026-08-18T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1224",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "612",
+          "created": "2026-08-12T15:07:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "613",
+          "created": "2026-08-20T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 2,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1243",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "621",
+          "created": "2026-10-11T10:00:00.000-0500",
+          "author": {
+           "displayName": "Treadwell Cassidy"
+          }
+         },
+         {
+          "id": "622",
+          "created": "2026-10-14T09:07:00.000-0500",
+          "author": {
+           "displayName": "Treadwell Cassidy"
+          }
+         },
+         {
+          "id": "623",
+          "created": "2026-10-21T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1244",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "632",
+          "created": "2026-08-18T15:07:00.000-0500",
+          "author": {
+           "displayName": "Emery Example"
+          }
+         },
+         {
+          "id": "633",
+          "created": "2026-08-28T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 2,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1247",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "641",
+          "created": "2026-09-07T10:00:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "642",
+          "created": "2026-09-10T15:07:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "643",
+          "created": "2026-09-10T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1248",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "652",
+          "created": "2026-08-20T15:07:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "653",
+          "created": "2026-08-20T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 2,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1249",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "662",
+          "created": "2026-08-19T09:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "663",
+          "created": "2026-08-19T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 2,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1260",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "671",
+          "created": "2026-08-31T10:00:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "672",
+          "created": "2026-09-03T15:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "673",
+          "created": "2026-09-08T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1276",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "681",
+          "created": "2026-09-01T10:00:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "682",
+          "created": "2026-09-04T15:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "683",
+          "created": "2026-09-04T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1294",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "692",
+          "created": "2026-08-28T09:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "693",
+          "created": "2026-09-02T09:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 2,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1299",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "701",
+          "created": "2026-09-08T10:00:00.000-0500",
+          "author": {
+           "displayName": "Emery Example"
+          }
+         },
+         {
+          "id": "702",
+          "created": "2026-09-11T15:07:00.000-0500",
+          "author": {
+           "displayName": "Emery Example"
+          }
+         },
+         {
+          "id": "703",
+          "created": "2026-09-11T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1318",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "711",
+          "created": "2026-10-13T10:00:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "712",
+          "created": "2026-10-16T15:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "713",
+          "created": "2026-10-17T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1328",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "722",
+          "created": "2026-09-03T15:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "723",
+          "created": "2026-09-17T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 2,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1331",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "731",
+          "created": "2026-09-05T10:00:00.000-0500",
+          "author": {
+           "displayName": "Larkin Dalton"
+          }
+         },
+         {
+          "id": "732",
+          "created": "2026-09-08T15:07:00.000-0500",
+          "author": {
+           "displayName": "Larkin Dalton"
+          }
+         },
+         {
+          "id": "733",
+          "created": "2026-09-08T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1344",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "741",
+          "created": "2026-09-11T10:00:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "742",
+          "created": "2026-09-14T15:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "743",
+          "created": "2026-09-14T15:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1347",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "751",
+          "created": "2026-10-05T10:00:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "752",
+          "created": "2026-10-08T09:07:00.000-0500",
+          "author": {
+           "displayName": "Ellery Yardley"
+          }
+         },
+         {
+          "id": "753",
+          "created": "2026-10-08T09:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1363",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "761",
+          "created": "2026-09-14T10:00:00.000-0500",
+          "author": {
+           "displayName": "Larkin Dalton"
+          }
+         },
+         {
+          "id": "762",
+          "created": "2026-09-17T15:07:00.000-0500",
+          "author": {
+           "displayName": "Larkin Dalton"
+          }
+         },
+         {
+          "id": "763",
+          "created": "2026-10-13T09:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1383",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "772",
+          "created": "2026-09-18T09:07:00.000-0500",
+          "author": {
+           "displayName": "Emery Example"
+          }
+         },
+         {
+          "id": "773",
+          "created": "2026-09-18T09:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 2,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     },
+     {
+      "key": "SUP-1387",
+      "fields": {
+       "comment": {
+        "comments": [
+         {
+          "id": "781",
+          "created": "2026-09-29T10:00:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "782",
+          "created": "2026-10-02T15:07:00.000-0500",
+          "author": {
+           "displayName": "Avery Caldwell"
+          }
+         },
+         {
+          "id": "783",
+          "created": "2026-10-05T09:07:00.000-0500",
+          "author": {
+           "displayName": "Requester Example"
+          }
+         }
+        ],
+        "total": 3,
+        "startAt": 0,
+        "maxResults": 20
+       }
+      }
+     }
+    ]
+   },
+   "isLast": true
+  }
+ ]
+}

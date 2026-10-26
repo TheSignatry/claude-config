@@ -31,10 +31,10 @@ come first because the judgment checks below consume their output:
    flags two things no single existing script checks: a skill with
    deferred content but no `skills/deferred_usage.json` entry, and a
    skill whose frontmatter `version`/`release_date` don't match
-   `README.md`'s table. Investigate anything under `BLOCKING` before
-   doing anything else — that mirrors `lint_skills.py`'s own exit code
-   and means an IT15 CRITICAL finding or a schema/changelog-standard
-   ERROR somewhere.
+   `README.md`'s table. It also runs every skill's `tests/` suite.
+   Investigate anything under `BLOCKING` before doing anything else. It
+   means an IT15 CRITICAL finding, a schema/changelog-standard ERROR, or
+   a failing test suite somewhere.
 2. For any skill named in the README-drift warning, or any skill edited
    this session: reread its row in `README.md` and confirm the
    description column still accurately summarizes it — the version/date
@@ -108,6 +108,39 @@ come first because the judgment checks below consume their output:
 - When a fix is scoped to one specific issue, stay scoped to it — don't
   fold in adjacent-but-unrequested cleanup found along the way; call it out
   separately instead and let it be a deliberate decision, not a drive-by.
+
+## Test fixtures
+
+- A skill's `tests/` folder is repo-only: `package_skill.py` excludes it,
+  and nothing in a skill may depend on it at runtime. Never tell the
+  runtime to run the tests from `SKILL.md`; the command lives in the test
+  files' own docstrings.
+- Fixtures built from real connector data (Jira, calendar, mail, Slack)
+  must be pseudonymized with `skills/pseudonymize_fixtures.py` before they
+  are committed. That covers fixture inputs, `_exclude/*_data.json`
+  prototype files, and quoted data in test source. Don't pseudonymize the
+  goldens (`expected_payload.json`); regenerate them from the rewritten
+  inputs. Then prove nothing changed: every number, flag, ordering, and
+  list length must match the pre-rewrite golden, with only names and
+  wording differing. Rerun the suite.
+- When a rule matches on words (a misspelling list, a regex, an agenda
+  header), add those words to the run's preserve lists. Otherwise the
+  rewrite silently changes what the rule sees. A failing equivalence check
+  means a word is missing from the preserve list. Never fix it by editing a
+  golden by hand.
+- The `--map` file is the re-identification key. Keep it under
+  `~/.claude/fixture-maps/`, never in the repo, and reuse it when adding
+  fixtures to the same skill. Back up the raw originals outside the repo
+  before the first rewrite, under `~/.claude/fixture-originals/<date>/<skill>/`.
+  Keep it out of `~/.claude/acos-state-backups/`: that folder belongs to
+  acos-aboutme's `state_backup.py`, and anything else there shows up in its
+  `--list` as a broken snapshot.
+- Real data also leaks through examples in shipped code and docs (a
+  docstring or `SKILL.md` quoting a real ticket). Use synthetic examples
+  there too.
+- `lint_skills.py` warns when a `tests/` or `_exclude/*_data.json` file
+  contains a full name from your acos-aboutme profile. Treat that warning
+  as a stop-and-pseudonymize, not as noise.
 
 ## Data handling
 

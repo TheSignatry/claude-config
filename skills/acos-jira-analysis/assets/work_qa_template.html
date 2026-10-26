@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>__TITLE__</title>
+<style>
+@font-face{font-family:'Lora';font-weight:400;font-style:normal;src:url(data:font/ttf;base64,__LORA__) format('truetype');}
+@font-face{font-family:'Mulish';font-weight:400;src:url(data:font/ttf;base64,__MUL400__) format('truetype');}
+@font-face{font-family:'Mulish';font-weight:600;src:url(data:font/ttf;base64,__MUL600__) format('truetype');}
+@font-face{font-family:'Mulish';font-weight:700;src:url(data:font/ttf;base64,__MUL700__) format('truetype');}
+@font-face{font-family:'Mulish';font-weight:800;src:url(data:font/ttf;base64,__MUL800__) format('truetype');}
+/*__PALETTE__*/
+/*__BASE_CSS__*/
+/*__LEDGER_CSS__*/
+/* work boards report */
+.glyph.good{color:var(--legacy);}
+.who{display:block;font-size:12px;font-weight:400;color:var(--ink-soft);}
+.detail col.c-id{width:88px}.detail col.c-st{width:156px}.detail col.c-as{width:128px}.detail col.c-op{width:100px}.detail col.c-up{width:96px}.detail col.c-du{width:100px}.detail col.c-qa{width:140px}
+.detail td{overflow-wrap:anywhere;}
+.days{font-weight:700;white-space:nowrap;}
+.days.hot{color:var(--risk);}
+.sub{display:block;font-size:12px;color:var(--ink-soft);}
+.lnk{white-space:nowrap;}
+.qa{flex-wrap:nowrap;}
+.boardtag{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:1px;}
+.boards{display:flex;flex-wrap:wrap;gap:0;margin:0 0 22px;border:1px solid var(--hairline);width:max-content;max-width:100%;}
+.boards button{all:unset;cursor:pointer;padding:9px 16px;font-size:13px;font-weight:600;border-left:1px solid var(--hairline);display:inline-flex;align-items:center;gap:6px;}
+.boards button:first-child{border-left:none;}
+.boards button[aria-pressed="true"]{background:var(--ink);color:var(--bg);}
+.boards button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;}
+.boards .ct{font-weight:400;opacity:.75;}
+.ledger .n.notrun{font-size:15px;font-weight:700;color:var(--ink-grey);}
+details.fold > summary{list-style:none;cursor:pointer;}
+details.fold > summary::-webkit-details-marker{display:none;}
+details.fold > summary .section-heading{display:inline;}
+details.fold > summary::after{content:"Show";margin-left:10px;font-size:12px;color:var(--ink-soft);text-decoration:underline;}
+details.fold[open] > summary::after{content:"Hide";}
+.rules td:first-child{width:36px;padding-top:12px;}
+.rules td:nth-child(2){width:240px;font-weight:700;}
+.rules .param{color:var(--ink-soft);font-size:12px;display:block;font-weight:400;}
+.runway .dim{opacity:.12;}
+@media (max-width:760px){.boards button{padding:8px 10px;}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<!--__SPRITE__-->
+</defs></svg>
+
+<header class="band wash"><div class="inner">
+  <p class="eyebrow" id="eyebrow"></p>
+  <h1 class="headline" id="headline"></h1>
+  <p class="subhead" id="subhead"></p>
+  <div class="boards" id="boards" role="group" aria-label="Filter by board"></div>
+  <div class="runway-wrap"><svg class="runway" id="lanes" role="img" aria-label="Open work items by whose move it is and days since last update"></svg></div>
+  <div class="legend" id="legend"></div>
+</div></header>
+
+<section class="band base"><div class="inner">
+  <h2 class="section-heading">QA checks</h2>
+  <p class="section-cap" id="qacap"></p>
+  <div class="ledger" id="ledger"></div>
+  <div class="split"><h2 class="section-heading">By owner</h2><div class="table-wrap"><table class="owners" id="owners"></table></div></div>
+</div></section>
+
+<main class="band base"><div class="inner">
+  <div class="filterbar" id="filterbar"><span id="filtertext"></span><button type="button" id="clearfilter">Clear filters</button></div>
+  <div id="sections"></div>
+</div></main>
+
+<section class="band wash"><div class="inner">
+  <h2 class="section-heading">Rules</h2>
+  <p class="section-cap">Each check is a fixed rule with a tunable threshold in jira_workspaces.work_qa. Who has the next move comes from a per-board status map, so a second vendor is a config change.</p>
+  <div class="table-wrap"><table class="rules" id="rules"></table></div>
+</div></section>
+
+<section class="band base" id="findband"><div class="inner">
+  <h2 class="section-heading">What the data says about the rules</h2>
+  <ol class="list" id="findings"></ol>
+</div></section>
+
+<section class="band wash"><div class="inner">
+  <details><summary>Design notes</summary><dl class="spec" id="spec"></dl></details>
+  <p class="foot" style="margin-top:24px" id="source"></p>
+  <p class="foot" style="margin-top:6px" id="footnote" hidden></p>
+</div></section>
+
+<script>
+const DATA = __DATA__;
+const CHECKS = DATA.checks, LANES = DATA.lanes;
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const glyph=(id,cls='',title='')=>`<svg class="glyph ${cls}" role="img" aria-label="${esc(title)}"><title>${esc(title)}</title><use href="#g-${id}"/></svg>`;
+const roleCls=c=>c.role==='ink'?'':c.role;
+const ALL=DATA.items, byKey=Object.fromEntries(ALL.map(i=>[i.key,i]));
+const BOARDS=DATA.boards.map(b=>b.key), BOARD_NAME=Object.fromEntries(DATA.boards.map(b=>[b.key,b.name]));
+const RISK_ID=(CHECKS.find(c=>c.role==='risk')||{}).id;
+let board=null, filter=null;
+const V=()=>DATA.views[board||''];
+const inBoard=i=>!board||i.board===board;
+
+document.getElementById('source').textContent=DATA.sourceLine;
+if(DATA.footNote){const f=document.getElementById('footnote');f.textContent=DATA.footNote;f.hidden=false;}
+const ex=Object.entries(DATA.excluded||{}).map(([s,n])=>`${n} in ${s}`).join(', ');
+document.getElementById('qacap').textContent=`Select a check or an owner to filter the tables below; the board filter above applies to everything.${ex?` Excluded statuses are left out (${ex}).`:''}`;
+
+function renderBoards(){
+  const btn=(id,label,n,color)=>`<button type="button" aria-pressed="${board===id}" data-b="${esc(id??'')}">${color?`<i class="boardtag" style="background:${color}"></i>`:''}${esc(label)}<span class="ct">${n}</span></button>`;
+  const el=document.getElementById('boards');
+  el.innerHTML=btn(null,'All boards',DATA.views[''].total)+DATA.boards.map(b=>btn(b.key,b.key,b.count,`var(--board-${b.key})`)).join('');
+  el.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{board=b.dataset.b||null;render();}));
+  document.getElementById('legend').innerHTML=DATA.boards.map(b=>`<span><i class="sw" style="background:var(--board-${b.key})"></i>${esc(b.key)}${b.name!==b.key?` (${esc(b.name)})`:''}</span>`).join('');
+}
+function renderHeader(){
+  document.getElementById('eyebrow').textContent=`${DATA.eyebrowBase}${board?` (${board})`:''}, ${DATA.dateText}`;
+  document.getElementById('headline').textContent=V().headline;
+  document.getElementById('subhead').textContent=V().subhead;
+}
+
+/* lanes chart: positions from every item; dots outside the board filter fade in place */
+function renderLanes(){
+  const C=DATA.chart, NB=C.bucketLabels.length;
+  const W=1296, labW=120, colW=(W-labW)/NB, per=24, step=9, r=3.4;
+  let s='', y=24;
+  const xs=labW+colW*(C.staleIndex+1);
+  const tops=[];
+  LANES.forEach(L=>{
+    const cols=C.lanes[L.id];
+    const rows=Math.max(1,...cols.map(g=>Math.ceil(g.length/per)));
+    const base=y+rows*step;
+    tops.push([y,base]);
+    s+=`<text class="lbl-strong" x="0" y="${base}">${esc(L.name)}</text><text x="0" y="${base+14}">${V().laneTotals[L.id]} items</text>`;
+    cols.forEach((g,bi)=>{
+      const x0=labW+bi*colW+(colW-per*step)/2+step/2;
+      g.forEach((k,n)=>{const i=byKey[k], cx=x0+(n%per)*step, cy=base-Math.floor(n/per)*step, on=inBoard(i);
+        s+=`<g class="dot ${on?'':'dim'}" tabindex="${on?0:-1}" role="button" data-key="${esc(k)}" aria-label="${esc(k+' '+i.summary)}"><title>${esc(k)}: ${esc(i.summary)} (${esc(i.status)}, last update ${i.updDays} days ago)</title><circle cx="${cx}" cy="${cy}" r="${r}" fill="var(--board-${i.board})"/></g>`;});
+      const n=V().bucketCounts[L.id][bi];
+      s+=`<text x="${labW+bi*colW+colW/2}" y="${base+16}" text-anchor="middle" class="${n?'lbl-strong':''}">${n}</text>`;
+    });
+    s+=`<line x1="${labW}" x2="${W}" y1="${base+5}" y2="${base+5}" stroke="var(--hairline)" stroke-width="1"/>`;
+    y=base+38;
+  });
+  const top=tops[0][0]-8, bottom=tops[tops.length-1][1]+5;
+  if(xs<W) s=`<rect x="${xs}" y="${top}" width="${W-xs}" height="${bottom-top}" fill="var(--c-over)" opacity=".07"/><line x1="${xs}" x2="${xs}" y1="2" y2="${bottom}" stroke="var(--c-line)" stroke-width="2"/><text class="lbl-strong" x="${xs+6}" y="12">${esc(C.staleLabel)}</text>`+s;
+  C.bucketLabels.forEach((b,bi)=>{s+=`<text x="${labW+bi*colW+colW/2}" y="${y-8}" text-anchor="middle">${esc(b)}</text>`;});
+  const svg=document.getElementById('lanes'); svg.setAttribute('viewBox',`0 0 ${W} ${y}`); svg.innerHTML=s;
+  svg.querySelectorAll('.dot').forEach(g=>{const go=()=>jump(g.dataset.key);g.addEventListener('click',go);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});});
+}
+
+function setFilter(f){filter=(filter&&f&&filter.type===f.type&&filter.value===f.value)?null:f;render();}
+document.getElementById('clearfilter').addEventListener('click',()=>{filter=null;board=null;render();});
+const matches=i=>inBoard(i)&&(!filter||(filter.type==='qa'?i.qa[filter.value]:i.assignee===filter.value));
+
+function renderLedger(){
+  const v=V(), el=document.getElementById('ledger');
+  el.innerHTML=CHECKS.map(c=>{const n=v.checkCounts[c.id],pct=v.total?Math.round(n/v.total*100):0,on=filter&&filter.type==='qa'&&filter.value===c.id;
+    const num=c.notRun?`<span class="n notrun">not run</span>`:`<span class="n">${n}</span><span class="of">of ${v.total}</span>`;
+    return `<button type="button" aria-pressed="${!!on}" data-qa="${esc(c.id)}"${c.notRun?' disabled':''}><span class="top">${glyph(c.id,roleCls(c),c.name)}${num}</span><span class="name">${esc(c.name)}</span><span class="rule">${esc(c.rule)}</span><span class="bar ${c.role==='risk'?'risk':''}"><i style="width:${c.notRun?0:pct}%"></i></span></button>`;}).join('');
+  el.querySelectorAll('button:not([disabled])').forEach(b=>b.addEventListener('click',()=>setFilter({type:'qa',value:b.dataset.qa})));
+}
+function renderOwners(){
+  const cell=(n,cls='')=>`<td class="num ${n?cls:'zero'}">${n}</td>`;
+  document.getElementById('owners').innerHTML=`<thead><tr><th>Owner</th><th class="num">Open</th>${LANES.map(l=>`<th class="num">${esc(l.name)}</th>`).join('')}<th class="num">${esc(DATA.closeTitle)}</th><th class="num">Stalled on us</th></tr></thead><tbody>`+
+    V().owners.map(o=>{const on=filter&&filter.type==='owner'&&filter.value===o.name, tag=DATA.ownerLabels[o.name]||'';
+      return `<tr class="clickable" tabindex="0" aria-pressed="${!!on}" data-owner="${esc(o.name)}"><td><b>${esc(o.name)}</b>${tag?`<span class="who">${esc(tag)}</span>`:''}</td>${cell(o.open)}${cell(o.ours)}${cell(o.vendor)}${cell(o.backlog)}${cell(o.close)}${cell(o.stalled,'riskn')}</tr>`;}).join('')+'</tbody>';
+  document.querySelectorAll('#owners tr.clickable').forEach(tr=>{const go=()=>setFilter({type:'owner',value:tr.dataset.owner});tr.addEventListener('click',go);tr.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});});
+}
+function qaCell(i){
+  const out=CHECKS.filter(c=>i.qa[c.id]).map(c=>glyph(c.id,roleCls(c),i.qaTips[c.id]||c.name));
+  return `<div class="qa">${out.length?out.join(''):'<span class="muted">Clear</span>'}</div>`;
+}
+const link=k=>`<a class="lnk" href="${esc(DATA.site+k)}" target="_blank" rel="noopener">${esc(k)}</a>`;
+function row(i){
+  const meta=[`<i class="boardtag" style="background:var(--board-${i.board})"></i>${esc(i.type)}`];
+  if(i.parent) meta.push(`parent ${link(i.parent.key)} ${esc(i.parent.status)}`);
+  if(i.vendorRef) meta.push(`Give ticket ${esc(i.vendorRef)}`);
+  if(i.release) meta.push(`release ${esc(i.release)}`);
+  const ideas=i.ideas.length?`<span class="meta">Roadmap: ${i.ideas.map(x=>`${link(x.key)} ${esc(x.status)}`).join('; ')}</span>`:'';
+  return `<tr id="row-${esc(i.key)}"><td><a class="key" href="${esc(i.url)}" target="_blank" rel="noopener">${esc(i.key)}</a></td>
+    <td><span class="sum">${esc(i.summary)}</span><span class="meta">${meta.join(', ')}</span>${ideas}</td>
+    <td>${esc(i.status)}<span class="sub">${esc(i.laneLabel)}</span></td>
+    <td>${i.assignee==='Unassigned'?'<span class="muted">Unassigned</span>':esc(i.assignee)}</td>
+    <td><span class="date">${esc(i.createdText)}</span><span class="sub">${i.ageDays} days old</span></td>
+    <td><span class="days ${i.hot?'hot':''}">${i.updDays} days</span><span class="sub">${esc(i.updatedText)}</span></td>
+    <td>${i.due?`<span class="date ${i.qa.od?'over':''}">${esc(i.dueText)}</span>`:'<span class="muted">None</span>'}</td>
+    <td>${qaCell(i)}</td></tr>`;
+}
+function table(arr){return `<div class="table-wrap"><table class="detail"><colgroup><col class="c-id"><col class="c-sum"><col class="c-st"><col class="c-as"><col class="c-op"><col class="c-up"><col class="c-du"><col class="c-qa"></colgroup>
+  <thead><tr><th>ID</th><th>Summary</th><th>Status</th><th>Assignee</th><th>Opened</th><th>Last update</th><th>Due</th><th>QA</th></tr></thead><tbody>${arr.map(row).join('')}</tbody></table></div>`;}
+function renderSections(){
+  const host=document.getElementById('sections'); let shown=0;
+  host.innerHTML=DATA.sections.map(sec=>{const arr=ALL.filter(i=>i.verdict===sec.id&&matches(i)); shown+=arr.length; if(!arr.length) return '';
+    const head=`<h2 class="section-heading">${esc(sec.title)} (${arr.length})</h2>`;
+    if(sec.collapsed&&!filter) return `<div class="section"><details class="fold"><summary>${head}</summary><p class="section-cap" style="margin-top:6px">${esc(sec.cap)}</p>${table(arr)}</details></div>`;
+    return `<div class="section">${head}<p class="section-cap">${esc(sec.cap)}</p>${table(arr)}</div>`;}).join('')||'<p class="section-cap">No items match these filters.</p>';
+  const fb=document.getElementById('filterbar');
+  if(filter||board){const parts=[];if(board)parts.push(`board ${board}`);if(filter)parts.push(filter.type==='qa'?CHECKS.find(c=>c.id===filter.value).name:filter.value);
+    document.getElementById('filtertext').innerHTML=`Showing ${shown} item${shown===1?'':'s'}: <b>${esc(parts.join(', '))}</b>`;fb.classList.add('on');} else fb.classList.remove('on');
+}
+function jump(key){
+  const it=byKey[key];
+  if(!matches(it)){filter=null;if(!inBoard(it))board=null;render();}
+  const tr=document.getElementById('row-'+key); if(!tr) return;
+  const d=tr.closest('details'); if(d) d.open=true;
+  tr.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'});
+  tr.classList.add('flash'); setTimeout(()=>tr.classList.remove('flash'),1600);
+}
+function render(){renderBoards();renderHeader();renderLanes();renderLedger();renderOwners();renderSections();}
+render();
+
+document.getElementById('rules').innerHTML='<tbody>'+CHECKS.map(c=>`<tr><td>${glyph(c.id,roleCls(c),c.name)}</td><td>${esc(c.name)}<span class="param">${esc(c.param)}</span></td><td>${esc(c.rule)}</td></tr>`).join('')+`<tr><td></td><td>Who has the next move<span class="param">vendors per board</span></td><td>${esc(DATA.nextMove)}</td></tr></tbody>`;
+if(DATA.findings.length) document.getElementById('findings').innerHTML=DATA.findings.map(([t,s],k)=>`<li class="item"><span class="item-num">${k+1}</span><div><div class="item-title">${esc(t)}</div><div class="item-sentence">${esc(s)}</div></div></li>`).join('');
+else document.getElementById('findband').hidden=true;
+document.getElementById('spec').innerHTML=DATA.spec.map(([a,b])=>`<dt>${esc(a)}</dt><dd>${esc(b)}</dd>`).join('');
+</script>
+</body>
+</html>

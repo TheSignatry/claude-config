@@ -50,7 +50,7 @@
   },
   "acos-jira-analysis": {
     "classification": "deferred-alternatives",
-    "reason": "The only deferred file is scripts/jira_report.py, executed via Bash and never read into context. Same single-file situation as acos-calendar-analysis."
+    "reason": "Scripts (jira_report.py, qa_common.py, and one module per report) and assets (page templates, qa_base.css) are executed or injected by the script, never read into context. The four references/*_design.md files are alternatives: each is consumed by its own report (the script injects it into that page), and a normal call runs one report, so at most one is ever opened."
   },
   "acos-main": {
     "classification": "deferred-alternatives",

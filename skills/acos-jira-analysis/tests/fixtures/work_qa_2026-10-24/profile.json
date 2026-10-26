@@ -1,0 +1,64 @@
+{
+  "owner": {
+    "first_name": "Treadwell",
+    "full_name": "Treadwell Cassidy",
+    "email": "owner@example.org"
+  },
+  "team": [
+    {
+      "name": "Imogen Colby",
+      "email": "user0@example.org"
+    },
+    {
+      "name": "Avery Caldwell",
+      "email": "user1@example.org"
+    },
+    {
+      "name": "Bodie Delaney",
+      "email": "user2@example.org"
+    },
+    {
+      "name": "Ellery Yardley",
+      "email": "user3@example.org"
+    },
+    {
+      "name": "Larkin Dalton",
+      "email": "user4@example.org"
+    },
+    {
+      "name": "Camden Halloran",
+      "email": "user5@example.org"
+    },
+    {
+      "name": "Arden Alden",
+      "email": "user6@example.org"
+    },
+    {
+      "name": "Barlow Desmond",
+      "email": "user7@example.org"
+    },
+    {
+      "name": "Draper Lowell",
+      "email": "user8@example.org"
+    },
+    {
+      "name": "Emery Percival",
+      "email": "user9@example.org"
+    },
+    {
+      "name": "Jessop Yardley",
+      "email": "user10@example.org"
+    }
+  ],
+  "jira_workspaces": {
+    "product": [],
+    "support": [],
+    "work": [
+      "TT",
+      "GE",
+      "DVR",
+      "HSER",
+      "IL"
+    ]
+  }
+}

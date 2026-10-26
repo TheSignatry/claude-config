@@ -4,25 +4,25 @@
 
 | Skill Section | Lines | Tokens | Notes |
 |---|---|---|---|
-| Description (frontmatter) | 1 | 110 | Always loaded, every skill, every turn (FYI — length/quality governed by lint) |
-| Body (`SKILL.md`) | 36 | 1,848 | Loaded whenever this skill triggers |
-| Deferred (`reference/`, `scripts/`, `assets/`) | 713 | 8,328 | Loaded only if `SKILL.md` points Claude to it (1 file) |
-| **Total** | **750** | **10,286** | Worst case if everything is read |
+| Description (frontmatter) | 1 | 228 | Always loaded, every skill, every turn (FYI — length/quality governed by lint) |
+| Body (`SKILL.md`) | 98 | 4,515 | Loaded whenever this skill triggers |
+| Deferred (`reference/`, `scripts/`, `assets/`) | 4,034 | 50,785 | Loaded only if `SKILL.md` points Claude to it (10 files) |
+| **Total** | **4,133** | **55,528** | Worst case if everything is read |
 
 ## Comparison
 
-**Deferred usage:** `deferred-alternatives` — The only deferred file is scripts/jira_report.py, executed via Bash and never read into context. Same single-file situation as acos-calendar-analysis.
+**Deferred usage:** `deferred-alternatives` — Scripts (jira_report.py, qa_common.py, and one module per report) and assets (page templates, qa_base.css) are executed or injected by the script, never read into context. The four references/*_design.md files are alternatives: each is consumed by its own report (the script injects it into that page), and a normal call runs one report, so at most one is ever opened.
 
-`acos-jira-analysis`'s typical-call footprint is 1.72x the Signatry median (10,286 vs 5,995 tokens across 17 skills).
+`acos-jira-analysis`'s typical-call footprint is 2.83x the Signatry median (16,995 vs 5,995 tokens across 17 skills) **[OUTLIER]**.
 
 | | Skill Typical Call | Skill Worst Case | Signatry Median | Benchmark |
 |---|---|---|---|---|
-| Lines | 750 | 750 | 253 | 501 |
-| Tokens | 10,286 | 10,286 | 5,995 | 8,100 |
+| Lines | 1,104 | 4,133 | 253 | 501 |
+| Tokens | 16,995 | 55,528 | 5,995 | 8,100 |
 
 ## Version Delta
 
-No version change since the last recorded snapshot (v0.5, recorded 2026-09-24).
+No version change since the last recorded snapshot (v0.6, recorded 2026-10-25).
 
 ## Findings
 

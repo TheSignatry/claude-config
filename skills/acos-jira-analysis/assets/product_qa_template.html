@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>__TITLE__</title>
+<style>
+@font-face{font-family:'Lora';font-weight:400;font-style:normal;src:url(data:font/ttf;base64,__LORA__) format('truetype');}
+@font-face{font-family:'Mulish';font-weight:400;src:url(data:font/ttf;base64,__MUL400__) format('truetype');}
+@font-face{font-family:'Mulish';font-weight:600;src:url(data:font/ttf;base64,__MUL600__) format('truetype');}
+@font-face{font-family:'Mulish';font-weight:700;src:url(data:font/ttf;base64,__MUL700__) format('truetype');}
+@font-face{font-family:'Mulish';font-weight:800;src:url(data:font/ttf;base64,__MUL800__) format('truetype');}
+/*__PALETTE__*/
+/*__BASE_CSS__*/
+/* detail columns: Summary takes the remaining width */
+.detail col.c-id{width:84px}.detail col.c-rm{width:78px}.detail col.c-as{width:128px}
+.detail col.c-st{width:108px}.detail col.c-tg{width:150px}.detail col.c-dl{width:96px}.detail col.c-qa{width:150px}
+/*__LEDGER_CSS__*/
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+<!--__SPRITE__-->
+  </defs>
+</svg>
+
+<header class="band wash">
+  <div class="inner">
+    <p class="eyebrow" id="eyebrow"></p>
+    <h1 class="headline" id="headline"></h1>
+    <p class="subhead" id="subhead"></p>
+    <div class="runway-wrap"><svg class="runway" id="runway" role="img"></svg></div>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--c-over)"></i>Overdue</span>
+      <span><i class="sw" style="background:var(--c-flight)"></i><span id="lg-flight">In flight</span></span>
+      <span><i class="sw" style="background:var(--c-wait)"></i><span id="lg-wait">Not started</span></span>
+      <span><i class="sw" style="background:var(--c-done)"></i>Delivered (Roadmap Done)</span>
+      <span><i style="display:inline-block;width:22px;height:6px;background:var(--ink-grey)"></i>Month-range target</span>
+    </div>
+  </div>
+</header>
+
+<section class="band base">
+  <div class="inner">
+    <h2 class="section-heading">QA checks</h2>
+    <p class="section-cap" id="qacap"></p>
+    <div class="ledger" id="ledger"></div>
+    <div class="split">
+      <h2 class="section-heading">By owner</h2>
+      <div class="table-wrap"><table class="owners" id="owners"></table></div>
+    </div>
+  </div>
+</section>
+
+<main class="band base">
+  <div class="inner">
+    <div class="filterbar" id="filterbar"><span id="filtertext"></span><button type="button" id="clearfilter">Clear filter</button></div>
+    <div id="sections"></div>
+  </div>
+</main>
+
+<section class="band wash">
+  <div class="inner">
+    <h2 class="section-heading">Short descriptions</h2>
+    <p class="section-cap">Empty fields fail QA automatically. The rewrite list flags descriptions that exist but trip one of the configured rewrite rules.</p>
+    <div class="two">
+      <div><h3 class="item-title" style="margin-bottom:10px" id="emptyTitle"></h3><div class="chips" id="emptyList"></div></div>
+      <div><h3 class="item-title" style="margin-bottom:10px" id="weakTitle"></h3><ol class="list" id="weakList"></ol></div>
+    </div>
+  </div>
+</section>
+
+<section class="band base" id="fixband" hidden>
+  <div class="inner">
+    <h2 class="section-heading">Agenda corrections</h2>
+    <p class="section-cap">Differences between the agenda list and what Jira actually holds.</p>
+    <ol class="list" id="fixes"></ol>
+  </div>
+</section>
+
+<section class="band wash">
+  <div class="inner">
+    <details>
+      <summary>Design notes for the acos-jira-analysis build</summary>
+      <dl class="spec" id="spec"></dl>
+    </details>
+    <p class="foot" style="margin-top:24px" id="source"></p>
+  </div>
+</section>
+
+<script>
+const DATA = __DATA__;
+const CHECKS = DATA.checks;
+const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const pd = s => { const [y,m,d] = s.split('-').map(Number); return new Date(Date.UTC(y,m-1,d)); };
+const dd = d => String(d.getUTCDate()).padStart(2,'0');
+const fmt = s => { const d = pd(s); return `${dd(d)} ${MON[d.getUTCMonth()]} ${d.getUTCFullYear()}`; };
+const short = s => fmt(s).slice(0,6);
+const esc = s => String(s??'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const glyph = (id, cls='', title='') => `<svg class="glyph ${cls}" role="img" aria-label="${esc(title)}"><title>${esc(title)}</title><use href="#g-${id}"/></svg>`;
+
+const TODAY = DATA.generated, HORIZON = DATA.horizon;
+const items = DATA.items;
+const open = items.filter(i => !i.closed);
+const RISK = new Set(CHECKS.filter(c => c.risk).map(c => c.id));
+
+/* header */
+document.getElementById('eyebrow').textContent = DATA.eyebrow;
+document.getElementById('headline').textContent = DATA.headline;
+document.getElementById('subhead').textContent = DATA.subhead;
+document.getElementById('qacap').textContent = `Select a check or an owner to filter the tables below. ${DATA.excludeText}`;
+document.getElementById('source').textContent = DATA.sourceLine;
+document.getElementById('lg-flight').textContent = DATA.startedStatuses.length ? `In flight (${DATA.startedStatuses.join(', ')})` : 'In flight';
+document.getElementById('lg-wait').textContent = DATA.notStartedStatuses.length ? `Not started (${DATA.notStartedStatuses.join(', ')})` : 'Not started';
+
+/* runway */
+(function(){
+  const svg = document.getElementById('runway');
+  svg.setAttribute('aria-label', `Target dates from ${fmt(DATA.chart.start)} through the ${DATA.horizonDays}-day horizon`);
+  const W = 1056, L = 8, R = 0;
+  const d0 = pd(DATA.chart.start), d1 = pd(DATA.chart.end);
+  const span = (d1-d0)/864e5;
+  const x = s => L + ((pd(s)-d0)/864e5) / span * (W-L-R);
+  const pts = items.filter(i => i.dot);
+  const rangeRows = DATA.chart.ranges;
+  const byDay = {};
+  pts.forEach(i => (byDay[i.tEnd] ||= []).push(i));
+  const maxStack = Math.max(1, ...Object.values(byDay).map(a=>a.length));
+  const step = 13, base = 40 + maxStack*step;
+  const rangeTop = base + 44;
+  const H = rangeTop + rangeRows.length*22 + 28;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  let s = '';
+  // week ticks (Mondays)
+  for(let d = new Date(d0); d <= d1; d = new Date(d.getTime()+864e5)){
+    if(d.getUTCDay()===1){
+      const iso = d.toISOString().slice(0,10), xx = x(iso);
+      s += `<line x1="${xx}" x2="${xx}" y1="14" y2="${H-22}" stroke="var(--hairline)" stroke-width="1"/>`;
+      s += `<text x="${xx+4}" y="${H-8}">${dd(d)} ${MON[d.getUTCMonth()]}</text>`;
+    }
+  }
+  s += `<line x1="0" x2="${W}" y1="${base+8}" y2="${base+8}" stroke="var(--ink-grey)" stroke-width="1.5"/>`;
+  // today + horizon
+  const xt = x(TODAY), xh = x(HORIZON);
+  s += `<rect x="0" y="14" width="${xt}" height="${base-6}" fill="var(--c-over)" opacity=".10"/>`;
+  s += `<line x1="${xt}" x2="${xt}" y1="6" y2="${H-22}" stroke="var(--c-today)" stroke-width="2"/>`;
+  s += `<text class="lbl-strong" x="${xt+6}" y="12">Today, ${short(TODAY)}</text>`;
+  s += `<line x1="${xh}" x2="${xh}" y1="6" y2="${H-22}" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="4 4"/>`;
+  s += `<text class="lbl-strong" x="${xh-6}" y="12" text-anchor="end">${DATA.horizonDays}-day horizon, ${short(HORIZON)}</text>`;
+  // dots
+  Object.entries(byDay).forEach(([day, arr]) => {
+    const rank = i => i.closed ? 0 : i.bucket==='overdue' ? 1 : i.started ? 2 : 3;
+    arr.sort((a,b)=> rank(a)-rank(b));
+    arr.forEach((i,k) => {
+      const fill = i.closed ? 'var(--c-done)' : i.bucket==='overdue' ? 'var(--c-over)' : i.started ? 'var(--c-flight)' : 'var(--c-wait)';
+      const cy = base - k*step;
+      s += `<g class="dot" tabindex="0" role="button" data-key="${esc(i.key)}" aria-label="${esc(i.key+' '+i.summary)}"><title>${esc(i.key)}: ${esc(i.summary)} (${fmt(day)}, ${i.closed ? 'delivered' : esc(i.status)})</title><circle cx="${x(day)}" cy="${cy}" r="5.2" fill="${fill}" stroke="var(--bg)" stroke-width="1.5"/></g>`;
+    });
+    if(arr.length>2) s += `<text x="${x(day)}" y="${base - arr.length*step - 2}" text-anchor="middle" class="lbl-strong">${arr.length}</text>`;
+  });
+  // ranges
+  if(rangeRows.length) s += `<text x="0" y="${rangeTop-12}" class="lbl-strong">Month-range targets</text>`;
+  rangeRows.forEach((r,idx) => {
+    const y = rangeTop + idx*22, xa = Math.max(0,x(r.start)), xb = Math.min(W, x(r.end));
+    s += `<rect x="${xa}" y="${y}" width="${xb-xa}" height="8" fill="var(--ink-grey)" opacity=".55"/>`;
+    s += `<text x="${xa+4}" y="${y+19}" font-size="11"><title>${esc(r.keys.join(', '))}</title>${esc(r.label)}</text>`;
+  });
+  svg.innerHTML = s;
+  svg.querySelectorAll('.dot').forEach(g => {
+    const go = () => jump(g.dataset.key);
+    g.addEventListener('click', go);
+    g.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); }});
+  });
+})();
+
+/* filter state */
+let filter = null; // {type:'qa'|'owner', value}
+function setFilter(f){
+  filter = (filter && f && filter.type===f.type && filter.value===f.value) ? null : f;
+  render();
+}
+document.getElementById('clearfilter').addEventListener('click', ()=>{ filter=null; render(); });
+const matches = i => !filter || (filter.type==='qa' ? (!i.closed && i.qa[filter.value]) : i.assignee===filter.value);
+
+/* ledger */
+function renderLedger(){
+  const el = document.getElementById('ledger');
+  el.innerHTML = CHECKS.map(c => {
+    const n = c.count, pct = open.length ? Math.round(n/open.length*100) : 0;
+    const on = filter && filter.type==='qa' && filter.value===c.id;
+    return `<button type="button" aria-pressed="${!!on}" data-qa="${esc(c.id)}">
+      <span class="top">${glyph(c.id, c.risk?'risk':'', c.name)}<span class="n">${n}</span><span class="of">of ${open.length}</span></span>
+      <span class="name">${esc(c.name)}</span><span class="rule">${esc(c.rule)}</span>
+      <span class="bar ${c.risk?'risk':''}"><i style="width:${pct}%"></i></span></button>`;
+  }).join('');
+  el.querySelectorAll('button').forEach(b => b.addEventListener('click', ()=> setFilter({type:'qa', value:b.dataset.qa})));
+}
+
+/* owners */
+function renderOwners(){
+  const cell = (n, cls='') => `<td class="num ${n? cls : 'zero'}">${n}</td>`;
+  document.getElementById('owners').innerHTML =
+    `<thead><tr><th>Owner</th><th class="num">Open ideas</th><th class="num">Overdue</th><th class="num">Due by ${short(HORIZON)}</th><th class="num">Not started</th><th class="num">QA flags</th></tr></thead><tbody>` +
+    DATA.owners.map(o => {
+      const on = filter && filter.type==='owner' && filter.value===o.name;
+      return `<tr class="clickable" tabindex="0" aria-pressed="${!!on}" data-owner="${esc(o.name)}"><td><b>${esc(o.name)}</b></td>${cell(o.open)}${cell(o.overdue,'riskn')}${cell(o.soon)}${cell(o.notStarted)}${cell(o.flags)}</tr>`;
+    }).join('') + '</tbody>';
+  document.querySelectorAll('#owners tr.clickable').forEach(tr => {
+    const go = () => setFilter({type:'owner', value:tr.dataset.owner});
+    tr.addEventListener('click', go);
+    tr.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); }});
+  });
+}
+
+/* detail sections */
+const SECTIONS = DATA.sections;
+function qaCell(i){
+  const out = CHECKS.filter(c => i.qa[c.id] && i.qaTips[c.id]).map(c => glyph(c.id, c.risk?'risk':'', i.qaTips[c.id]));
+  return out.length ? `<div class="qa">${out.join('')}</div>` : `<div class="qa"><span class="muted">Clear</span></div>`;
+}
+function dlCell(i){
+  if(!i.delivery.length) return '<span class="muted">None</span>';
+  const done = i.delivery.filter(d=>d.done).length, n = i.delivery.length;
+  const tip = i.delivery.map(d=>`${d.key} ${d.status}`).join(', ');
+  return `<span class="dl" title="${esc(tip)}">${esc(i.deliveryText)}<span class="bar"><i style="width:${Math.round(done/n*100)}%"></i></span></span>`;
+}
+function row(i){
+  const meta = [];
+  if(DATA.hasAgenda){
+    if(i.agenda) meta.push(i.featured ? `<b>Featured ${esc(i.agenda)}</b>` : `Agenda: ${esc(i.agenda)}`);
+    else meta.push('Not on the agenda');
+  }
+  if(i.note) meta.push(esc(i.note));
+  return `<tr id="row-${esc(i.key)}">
+    <td><a class="key" href="${esc(i.url)}" target="_blank" rel="noopener">${esc(i.key)}</a></td>
+    <td><span class="sum">${esc(i.summary)}</span>${meta.length ? `<span class="meta">${meta.join('. ')}</span>` : ''}</td>
+    <td>${i.roadmap ? esc(i.roadmap) : '<span class="muted">None</span>'}</td>
+    <td>${i.assignee==='Unassigned' ? '<span class="muted">Unassigned</span>' : esc(i.assignee)}</td>
+    <td>${esc(i.status)}</td>
+    <td><span class="date ${i.bucket==='overdue' ? 'over':''}">${i.targetText ? esc(i.targetText) : '<span class="muted">None</span>'}</span></td>
+    <td>${dlCell(i)}</td>
+    <td>${qaCell(i)}</td></tr>`;
+}
+function renderSections(){
+  const host = document.getElementById('sections');
+  let shown = 0;
+  host.innerHTML = SECTIONS.map(sec => {
+    const arr = items.filter(i => i.bucket===sec.id && matches(i));
+    shown += arr.length;
+    if(!arr.length) return '';
+    return `<div class="section"><h2 class="section-heading">${esc(sec.title)} (${arr.length})</h2><p class="section-cap">${esc(sec.cap)}</p>
+      <div class="table-wrap"><table class="detail">
+      <colgroup><col class="c-id"><col class="c-sum"><col class="c-rm"><col class="c-as"><col class="c-st"><col class="c-tg"><col class="c-dl"><col class="c-qa"></colgroup>
+      <thead><tr><th>ID</th><th>Summary</th><th>Roadmap</th><th>Assignee</th><th>Status</th><th>Target</th><th>Delivery</th><th>QA</th></tr></thead>
+      <tbody>${arr.map(row).join('')}</tbody></table></div></div>`;
+  }).join('') || '<p class="section-cap">No ideas match this filter.</p>';
+  const fb = document.getElementById('filterbar');
+  if(filter){
+    const label = filter.type==='qa' ? CHECKS.find(c=>c.id===filter.value).name : filter.value;
+    document.getElementById('filtertext').innerHTML = `Showing ${shown} idea${shown===1?'':'s'}: <b>${esc(label)}</b>`;
+    fb.classList.add('on');
+  } else fb.classList.remove('on');
+}
+function jump(key){
+  if(filter && !matches(items.find(i=>i.key===key))){ filter=null; render(); }
+  const tr = document.getElementById('row-'+key);
+  if(!tr){ window.open(DATA.site+key,'_blank','noopener'); return; }
+  tr.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'center'});
+  tr.classList.add('flash'); setTimeout(()=>tr.classList.remove('flash'), 1600);
+}
+function render(){ renderLedger(); renderOwners(); renderSections(); }
+render();
+
+/* short descriptions */
+(function(){
+  const empty = open.filter(i => !i.shortDesc);
+  document.getElementById('emptyTitle').textContent = `Empty (${empty.length})`;
+  document.getElementById('emptyList').innerHTML = empty.map(i => `<span><a class="key" href="${esc(i.url)}" target="_blank" rel="noopener">${esc(i.key)}</a> <span class="muted">${esc(i.summary)}</span></span>`).join('');
+  const weak = items.filter(i => i.weak);
+  document.getElementById('weakTitle').textContent = `Needs a rewrite (${weak.length})`;
+  document.getElementById('weakList').innerHTML = weak.map((i,k) => `<li class="item"><span class="item-num">${k+1}</span><div><div class="item-title"><a class="key" href="${esc(i.url)}" target="_blank" rel="noopener">${esc(i.key)}</a> ${esc(i.summary)}</div><div class="item-sentence">${esc(i.weak)}</div></div></li>`).join('');
+})();
+
+/* agenda corrections */
+if(DATA.hasAgenda){
+  document.getElementById('fixband').hidden = false;
+  document.getElementById('fixes').innerHTML = DATA.corrections.length
+    ? DATA.corrections.map((f,k)=>`<li class="item"><span class="item-num">${k+1}</span><div><div class="item-title">${esc(f.title)}</div><div class="item-sentence">${esc(f.text)}</div></div></li>`).join('')
+    : '<li class="item"><div class="item-sentence">The agenda matches Jira.</div></li>';
+}
+
+/* design notes */
+document.getElementById('spec').innerHTML = DATA.spec.map(([a,b])=>`<dt>${esc(a)}</dt><dd>${esc(b)}</dd>`).join('');
+</script>
+</body>
+</html>
