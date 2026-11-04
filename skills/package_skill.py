@@ -23,7 +23,11 @@ from pathlib import Path
 
 from lint_skills import SEVERITY_CRITICAL, SEVERITY_ERROR, lint_skill, parse_frontmatter
 
-EXCLUDE_DIR_NAMES = {"__pycache__", ".git", "_exclude"}
+# tests/ is repo-only regression tooling: never read at runtime, and its
+# fixtures are large. acos-jira-analysis-0.6.zip shipped 1.6 MB of them before
+# this rule. Fixtures must also be pseudonymized (see pseudonymize_fixtures.py),
+# but keeping them out of the zip means a missed name never reaches a user.
+EXCLUDE_DIR_NAMES = {"__pycache__", ".git", "_exclude", "tests"}
 EXCLUDE_FILE_NAMES = {".DS_Store", ".env"}
 EXCLUDE_FILE_PREFIXES = (".env.",)
 EXCLUDE_SUFFIXES = {".zip", ".pyc"}

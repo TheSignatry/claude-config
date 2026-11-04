@@ -2,6 +2,18 @@
 
 All notable changes to this skill are documented here, newest first.
 
+## 0.12 — 2026-10-13
+
+New judgment rule, requested by the owner: a calendar invitation still awaiting his accept/decline — a new meeting invite, an "Updated invitation:" notice, or a vendor email whose substance is a specific upcoming meeting he hasn't responded to — now routes to `3_delegate` so Ashleigh can coordinate the response, instead of being filed to `7_toBeFiled` with no attendance decision ever made. Motivating case from the 2026-10-13 run: four duplicate Info-Tech Service Desk Analytics quarterly-review invites and a WhiteStone series update were all filed as routine mail. Deliberately unchanged: meeting reminders for already-accepted meetings (deterministic `routine_notification`) and others' RSVP artifacts (`Accepted:`/`Declined:`/`Tentative:`). Duplicate resends of one invitation send one copy to `3_delegate` and the rest to `7_toBeFiled`. Judgment-layer only — no `triage.py` or `defaults.json` change. The 2026-10-13 mis-filings were corrected in the live mailbox the same day (one Info-Tech invite to `3_delegate`, three duplicates left filed).
+
+## 0.11 — 2026-10-08
+
+Added the `executive_recruiter_outreach` decline template, for recruiters and search firms asking whether the owner is interested in a position. It sits first in `references/rejection_templates.yaml`, ahead of the vendor templates, because first match wins and a recruiter message for a security leadership role would otherwise match `cybersec_msp_pitch`.
+
+This closes a gap the 2026-10-07 run summary flagged. `staffing_recruiting_pitch` answers agencies selling candidates or services to the organization, so recruiters pitching the owner for a job matched nothing, fell to `undetermined`, and landed in `2_review`. The new copy is the owner's own wording, lightly edited: flattered but committed to the work at The Signatry, not exploring other opportunities, will respond to a specific position, not interested in generic offers. It is marked `provenance: drafted` until a reply has gone out unedited.
+
+Verified against the 180 real Inbox messages from the 2026-10-07 run: exactly the three recruiter messages changed from `undetermined` to `decline`, and no other message changed bucket or template. Three earlier recruiter messages from `2_review` also matched, and a cybersecurity MSP pitch and an internal 1:1 message did not.
+
 ## 0.10 — 2026-09-24
 
 **Fixed a crash that aborted a whole live run.** Found during the first full-volume sort against a real 247-message Inbox: 8 messages came back from Graph with `bodyPreview: null`. `message.get("bodyPreview", "")` does not return the default when the key exists with a null value, so `None` reached `re.search` in `match_decline_template` and raised `TypeError`, killing the entire `classify` step. Not one message was classified. Every message in the batch was lost to a single null field on 3% of them.

@@ -1,0 +1,434 @@
+{
+ "report": "work_qa",
+ "cloud_id": "signatry1.atlassian.net",
+ "site": "https://signatry1.atlassian.net/browse/",
+ "work_keys": [
+  "TT",
+  "GE",
+  "DVR",
+  "HSER",
+  "IL"
+ ],
+ "work_fields": {
+  "give_ticket_id": "customfield_10071",
+  "priority_ranking": "customfield_10070",
+  "ge_type": "customfield_10067",
+  "flagged": "customfield_10024",
+  "start_date": "customfield_10014"
+ },
+ "work_qa": {
+  "_comment": "Work boards QA report config. One report across every key in jira_workspaces.work; board filter is client-side. Checks run in listed order; only failing checks render in a row's QA cell.",
+  "stale_days": 30,
+  "backlog_age_days": 180,
+  "backlog_untouched_days": 90,
+  "exclude_statuses": [
+   "Template"
+  ],
+  "blocked_statuses": [
+   "Blocked",
+   "On Hold"
+  ],
+  "idea_projects": [
+   "TRM"
+  ],
+  "vendors": {
+   "GE": {
+    "name": "Give Interactive",
+    "statuses": [
+     "Signatry Approved",
+     "Approved Proposal",
+     "Active Development",
+     "Future Consideration"
+    ],
+    "ticket_ref_field": "give_ticket_id",
+    "release_label_pattern": "^R(\\d{2})\\.(\\d{2})\\.\\d+$"
+   }
+  },
+  "board_names": {
+   "TT": "Technology Team",
+   "GE": "Give Enhancements",
+   "DVR": "DVR",
+   "HSER": "HSER",
+   "IL": "IL"
+  },
+  "team_roster_sources": [
+   "owner",
+   "staff",
+   "reports",
+   "team"
+  ],
+  "directory_check": {
+   "enabled": true,
+   "source": "slack",
+   "cache_days": 7
+  },
+  "aging_buckets": [
+   [
+    0,
+    30
+   ],
+   [
+    31,
+    90
+   ],
+   [
+    91,
+    180
+   ],
+   [
+    181,
+    365
+   ],
+   [
+    366,
+    null
+   ]
+  ],
+  "checks": [
+   {
+    "id": "cp",
+    "enabled": true,
+    "name": "Child of a closed parent",
+    "rule": "Open task or sub-task whose parent is Done.",
+    "type": "parent_closed",
+    "color_role": "ink",
+    "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"1.8\" y=\"1.8\" width=\"6.4\" height=\"5\" rx=\"1\"/><path d=\"M3.4 4.3l1 1 1.8-1.9\"/><path d=\"M5 6.8v4.4h3\"/><rect x=\"8\" y=\"9.2\" width=\"6.2\" height=\"4.4\" rx=\"1\"/></g>"
+   },
+   {
+    "id": "ic",
+    "enabled": true,
+    "name": "Delivery for a closed idea",
+    "rule": "Linked to a roadmap idea that’s Done or Canceled.",
+    "type": "linked_idea_closed",
+    "color_role": "ink",
+    "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5.8 11.2c0-1.4-2.3-2.6-2.3-5.1a4.5 4.5 0 0 1 9 0c0 2.5-2.3 3.7-2.3 5.1z\"/><path d=\"M6.2 13.4h3.6\"/><path d=\"M6.3 6.3l1.2 1.2 2.2-2.4\"/></g>"
+   },
+   {
+    "id": "ee",
+    "enabled": true,
+    "name": "Empty epic",
+    "rule": "Open epic with no open children.",
+    "type": "empty_epic",
+    "color_role": "ink",
+    "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9.2 1.8 3.6 9h4l-1 5.2L12.4 7h-4z\"/></g>"
+   },
+   {
+    "id": "si",
+    "enabled": true,
+    "name": "Stalled on us",
+    "rule": "Started, our move, no update in 30+ days.",
+    "type": "stale_ours",
+    "color_role": "risk",
+    "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 1.8h8M4 14.2h8\"/><path d=\"M4.8 1.8v2.4c0 1.6 3.2 2.6 3.2 3.8S4.8 10.2 4.8 11.8v2.4M11.2 1.8v2.4c0 1.6-3.2 2.6-3.2 3.8s3.2 2.2 3.2 3.8v2.4\"/><path d=\"M6.4 12.6h3.2\"/></g>"
+   },
+   {
+    "id": "bc",
+    "enabled": true,
+    "name": "Blocker cleared",
+    "rule": "“Is blocked by” an item that’s now Done.",
+    "type": "blocker_done",
+    "color_role": "ink",
+    "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"7.2\" width=\"10\" height=\"7\" rx=\"1.4\"/><path d=\"M5.4 7.2V5a2.6 2.6 0 0 1 5-1\"/><path d=\"M8 10v1.6\"/></g>"
+   },
+   {
+    "id": "ua",
+    "enabled": true,
+    "name": "Started, unassigned",
+    "rule": "Our move or vendor’s move with no assignee.",
+    "type": "unassigned_started",
+    "color_role": "ink",
+    "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"6.4\" cy=\"5.2\" r=\"2.6\"/><path d=\"M1.8 14c0-2.7 2-4.6 4.6-4.6 1 0 1.9.3 2.6.8\"/><path d=\"M11.4 9.6v4.4M9.2 11.8h4.4\"/></g>"
+   },
+   {
+    "id": "od",
+    "enabled": true,
+    "name": "Past due date",
+    "rule": "Due date is before today.",
+    "type": "due_before_today",
+    "color_role": "ink",
+    "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"2\" y=\"3.2\" width=\"12\" height=\"10.8\" rx=\"1.6\"/><path d=\"M2 6.6h12\"/><path d=\"M5.2 1.6v3M10.8 1.6v3\"/><path d=\"M8 8.6v2\"/><path d=\"M8 12.4h.01\" stroke-width=\"2\"/></g>"
+   },
+   {
+    "id": "rp",
+    "enabled": true,
+    "name": "Vendor release passed",
+    "rule": "With the vendor, tagged for a release before this month.",
+    "type": "vendor_release_passed",
+    "color_role": "ink",
+    "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M8 1.8 13.8 4.8v6.4L8 14.2 2.2 11.2V4.8z\"/><path d=\"M2.2 4.8 8 7.8l5.8-3M8 7.8v6.4\"/></g>"
+   },
+   {
+    "id": "vr",
+    "enabled": true,
+    "name": "No vendor ticket ID",
+    "rule": "With the vendor but the vendor ticket ID is empty.",
+    "type": "vendor_ref_missing",
+    "color_role": "ink",
+    "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M8.7 2H14v5.3l-6.6 6.6a1 1 0 0 1-1.4 0L2.1 10a1 1 0 0 1 0-1.4z\"/></g><circle cx=\"11.3\" cy=\"4.7\" r=\"1.1\" fill=\"currentColor\"/>"
+   },
+   {
+    "id": "bh",
+    "enabled": true,
+    "name": "Blocked or on hold",
+    "rule": "Status is Blocked or On Hold.",
+    "type": "blocked_status",
+    "color_role": "ink",
+    "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5.4 1.8h5.2l3.6 3.6v5.2l-3.6 3.6H5.4l-3.6-3.6V5.4z\"/><path d=\"M5.2 8h5.6\"/></g>"
+   },
+   {
+    "id": "fe",
+    "enabled": true,
+    "name": "Assignee not in directory",
+    "rule": "Assigned to someone not found in the Slack directory; likely a former employee.",
+    "type": "assignee_not_in_directory",
+    "color_role": "ink",
+    "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"6.4\" cy=\"5.2\" r=\"2.6\"/><path d=\"M1.8 14c0-2.7 2-4.6 4.6-4.6 1 0 1.9.3 2.6.8\"/><path d=\"M10.2 10.2l3.6 3.6M13.8 10.2l-3.6 3.6\"/></g>"
+   },
+   {
+    "id": "ot",
+    "enabled": true,
+    "name": "Assigned outside Technology",
+    "rule": "Assignee is active but not on the Technology roster.",
+    "type": "assignee_outside_roster",
+    "color_role": "ink",
+    "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"6.4\" cy=\"5.2\" r=\"2.6\"/><path d=\"M1.8 14c0-2.7 2-4.6 4.6-4.6 1 0 1.9.3 2.6.8\"/><path d=\"M10 12h4.2M12.4 10.2l1.8 1.8-1.8 1.8\"/></g>"
+   },
+   {
+    "id": "br",
+    "enabled": true,
+    "name": "Backlog rot",
+    "rule": "To Do, 180+ days old, untouched for 90+ days.",
+    "type": "backlog_rot",
+    "color_role": "ink",
+    "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"1.8\" y=\"2.6\" width=\"12.4\" height=\"3.4\" rx=\"1\"/><path d=\"M2.8 6v6.4a1 1 0 0 0 1 1h8.4a1 1 0 0 0 1-1V6\"/><path d=\"M6.4 8.8h3.2\"/></g>"
+   }
+  ],
+  "verdicts": [
+   {
+    "id": "close",
+    "title": "Close the loop",
+    "when": [
+     "cp",
+     "ic",
+     "ee"
+    ],
+    "cap": "The parent or roadmap idea is already closed, or the epic has nothing open under it. Usually a quick close."
+   },
+   {
+    "id": "vendor_risk",
+    "title": "Vendor commitments at risk",
+    "when": [
+     "rp",
+     "vr"
+    ],
+    "cap": "With the vendor and past the release it was tagged for, or missing the vendor’s ticket ID."
+   },
+   {
+    "id": "reassign",
+    "title": "Reassign",
+    "when": [
+     "fe",
+     "ot"
+    ],
+    "sort": "assignee_then_upd_desc",
+    "cap": "Assigned to someone who has likely left, or to someone outside the Technology team. Confirm the owner, then reassign or close."
+   },
+   {
+    "id": "blocked",
+    "title": "Blocked",
+    "when": [
+     "bh",
+     "bc"
+    ],
+    "cap": "Status is Blocked or On Hold, or the issue it was blocked by is now done."
+   },
+   {
+    "id": "stalled",
+    "title": "Stalled on us",
+    "when": [
+     "si@ours",
+     "ua@ours",
+     "od@ours"
+    ],
+    "cap": "Started, our move, and no update in 30+ days, past due, or unassigned. Oldest update first."
+   },
+   {
+    "id": "groom",
+    "title": "Backlog to groom",
+    "when": [
+     "br@backlog",
+     "od@backlog"
+    ],
+    "collapsed": true,
+    "cap": "To Do items that are 180+ days old and untouched for 90+, or past their due date. Candidates to archive or reschedule."
+   },
+   {
+    "id": "ok",
+    "title": "No issues found",
+    "when": [
+     "*"
+    ],
+    "collapsed": true,
+    "cap": "Moving, or with the vendor and inside its release window."
+   }
+  ],
+  "palette_extra": {
+   "board_TT": [
+    "#2b7a78",
+    "#3aafa9"
+   ],
+   "board_GE": [
+    "#fbb03b",
+    "#fbb03b"
+   ],
+   "board_DVR": [
+    "#17242a",
+    "#def2f1"
+   ],
+   "board_HSER": [
+    "#fd4a5c",
+    "#fd4a5c"
+   ],
+   "board_IL": [
+    "#a2a7aa",
+    "#6f7d82"
+   ],
+   "board_default": [
+    "#747c7f",
+    "#a9b4b7"
+   ],
+   "stale_line": [
+    "#d77900",
+    "#eef5f5"
+   ]
+  }
+ },
+ "palette": {
+  "_comment": "Hex values from signatry-brand-core. Light / dark pairs.",
+  "ink": [
+   "#17242a",
+   "#eef5f5"
+  ],
+  "ink_soft": [
+   "#747c7f",
+   "#a9b4b7"
+  ],
+  "ink_grey": [
+   "#a2a7aa",
+   "#7d8a8e"
+  ],
+  "hairline": [
+   "#d1d3d4",
+   "#2f4148"
+  ],
+  "wash": [
+   "#f4f8f8",
+   "#1d2e35"
+  ],
+  "bg": [
+   "#ffffff",
+   "#17242a"
+  ],
+  "accent": [
+   "#d77900",
+   "#fbb03b"
+  ],
+  "risk": [
+   "#8a1e41",
+   "#fd4a5c"
+  ],
+  "legacy": [
+   "#2b7a78",
+   "#3aafa9"
+  ],
+  "highlight": [
+   "#fef7eb",
+   "#2b3426"
+  ],
+  "runway_overdue": [
+   "#fbb03b",
+   "#fbb03b"
+  ],
+  "runway_in_flight": [
+   "#2b7a78",
+   "#3aafa9"
+  ],
+  "runway_not_started": [
+   "#a2a7aa",
+   "#6f7d82"
+  ],
+  "runway_delivered": [
+   "#17242a",
+   "#def2f1"
+  ],
+  "runway_today": [
+   "#d77900",
+   "#eef5f5"
+  ],
+  "board_TT": [
+   "#2b7a78",
+   "#3aafa9"
+  ],
+  "board_GE": [
+   "#fbb03b",
+   "#fbb03b"
+  ],
+  "board_DVR": [
+   "#17242a",
+   "#def2f1"
+  ],
+  "board_HSER": [
+   "#fd4a5c",
+   "#fd4a5c"
+  ],
+  "board_IL": [
+   "#a2a7aa",
+   "#6f7d82"
+  ],
+  "board_default": [
+   "#747c7f",
+   "#a9b4b7"
+  ],
+  "stale_line": [
+   "#d77900",
+   "#eef5f5"
+  ]
+ },
+ "roster": [
+  "Arden Alden",
+  "Avery Caldwell",
+  "Barlow Desmond",
+  "Bodie Delaney",
+  "Camden Halloran",
+  "Draper Lowell",
+  "Ellery Yardley",
+  "Emery Percival",
+  "Imogen Colby",
+  "Jessop Yardley",
+  "Larkin Dalton",
+  "Treadwell Cassidy"
+ ],
+ "timezone": "America/Chicago",
+ "queries": [
+  {
+   "id": "work_qa",
+   "jql": "project in (TT, GE, DVR, HSER, IL) AND statusCategory != Done ORDER BY project ASC, created ASC",
+   "fields": [
+    "summary",
+    "status",
+    "assignee",
+    "issuetype",
+    "created",
+    "updated",
+    "duedate",
+    "parent",
+    "issuelinks",
+    "labels",
+    "fixVersions",
+    "customfield_10071",
+    "customfield_10070"
+   ],
+   "description": "Every open item on the work boards, team-wide. Excluded statuses are dropped in Python so the report can count them."
+  }
+ ]
+}

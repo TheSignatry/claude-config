@@ -1,0 +1,3909 @@
+{
+ "product_qa": [
+  {
+   "key": "TRM-158",
+   "fields": {
+    "summary": "Lufi - Nurunik Aboz Educu Up",
+    "status": {
+     "name": "In Progress",
+     "statusCategory": {
+      "key": "indeterminate"
+     }
+    },
+    "assignee": {
+     "displayName": "Avery Caldwell"
+    },
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-10-01\", \"end\": \"2026-10-31\"}",
+    "customfield_10148": "{\"start\": \"2025-08-08\", \"end\": \"2025-08-08\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Now"
+    },
+    "customfield_10153": "Jomotuvobu of the afufokose GCP ribalid to ensure upu aboz educu up ribalid have ukon icabifab acale to molefu navalof ahevipivi and ADO cihilepe in Lufi zefafu: GCP-4731, 718, 5845, 6386, 6387",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": null,
+    "customfield_10646": null,
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-284",
+   "fields": {
+    "summary": "FIGESOC: Uhemorapet and Opezapos",
+    "status": {
+     "name": "Parking lot",
+     "statusCategory": {
+      "key": "new"
+     }
+    },
+    "assignee": {
+     "displayName": "Imogen Colby"
+    },
+    "issuelinks": [
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "outwardIssue": {
+       "key": "TT-1349",
+       "fields": {
+        "status": {
+         "name": "To Do",
+         "statusCategory": {
+          "key": "indeterminate"
+         }
+        }
+       }
+      }
+     }
+    ],
+    "customfield_10149": "{\"start\": \"2026-11-17\", \"end\": \"2026-11-17\"}",
+    "customfield_10148": "{\"start\": \"2026-10-01\", \"end\": \"2026-10-31\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Next"
+    },
+    "customfield_10153": "Lese for Uhemorapet and Opezapos sikihi our ihatafa and esilikovugo kovubabi",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": null,
+    "customfield_10646": null,
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-289",
+   "fields": {
+    "summary": "ILISU AbobuCA R1",
+    "status": {
+     "name": "In Progress",
+     "statusCategory": {
+      "key": "indeterminate"
+     }
+    },
+    "assignee": {
+     "displayName": "Imogen Colby"
+    },
+    "issuelinks": [
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "outwardIssue": {
+       "key": "TT-1307",
+       "fields": {
+        "status": {
+         "name": "Done",
+         "statusCategory": {
+          "key": "done"
+         }
+        }
+       }
+      }
+     },
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "outwardIssue": {
+       "key": "TT-1308",
+       "fields": {
+        "status": {
+         "name": "Done",
+         "statusCategory": {
+          "key": "done"
+         }
+        }
+       }
+      }
+     },
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "outwardIssue": {
+       "key": "TT-1309",
+       "fields": {
+        "status": {
+         "name": "Done",
+         "statusCategory": {
+          "key": "done"
+         }
+        }
+       }
+      }
+     },
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "outwardIssue": {
+       "key": "TT-1310",
+       "fields": {
+        "status": {
+         "name": "Done",
+         "statusCategory": {
+          "key": "done"
+         }
+        }
+       }
+      }
+     },
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "outwardIssue": {
+       "key": "TT-1311",
+       "fields": {
+        "status": {
+         "name": "In Progress",
+         "statusCategory": {
+          "key": "indeterminate"
+         }
+        }
+       }
+      }
+     },
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "outwardIssue": {
+       "key": "TT-1312",
+       "fields": {
+        "status": {
+         "name": "Done",
+         "statusCategory": {
+          "key": "done"
+         }
+        }
+       }
+      }
+     },
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "outwardIssue": {
+       "key": "TT-1313",
+       "fields": {
+        "status": {
+         "name": "Done",
+         "statusCategory": {
+          "key": "done"
+         }
+        }
+       }
+      }
+     },
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "outwardIssue": {
+       "key": "TT-1315",
+       "fields": {
+        "status": {
+         "name": "Done",
+         "statusCategory": {
+          "key": "done"
+         }
+        }
+       }
+      }
+     },
+     {
+      "type": {
+       "name": "Relates"
+      },
+      "outwardIssue": {
+       "key": "TT-9999",
+       "fields": {
+        "status": {
+         "name": "To Do",
+         "statusCategory": {
+          "key": "new"
+         }
+        }
+       }
+      }
+     },
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "inwardIssue": {
+       "key": "TRM-366",
+       "fields": {
+        "status": {
+         "name": "In Progress",
+         "statusCategory": {
+          "key": "indeterminate"
+         }
+        }
+       }
+      }
+     }
+    ],
+    "customfield_10149": "{\"start\": \"2026-10-27\", \"end\": \"2026-10-27\"}",
+    "customfield_10148": "{\"start\": \"2026-05-01\", \"end\": \"2026-05-31\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Now"
+    },
+    "customfield_10153": "Create a emegucuh gapekihid for the evugeb to tap ahuz for aboz",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": null,
+    "customfield_10646": null,
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-295",
+   "fields": {
+    "summary": "AI Itubevos - Zomuga OHI Fafuzi",
+    "status": {
+     "name": "In Progress",
+     "statusCategory": {
+      "key": "indeterminate"
+     }
+    },
+    "assignee": {
+     "displayName": "Treadwell Cassidy"
+    },
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-10-01\", \"end\": \"2026-12-31\"}",
+    "customfield_10148": "{\"start\": \"2026-03-01\", \"end\": \"2026-03-31\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Later"
+    },
+    "customfield_10153": "Ofonumuk of a itubevos fafuzi in the uno secu OHI on ice of our new enterprize AI icac - Vajuko. Treadwell to create ezibaco, Avery will create the fafuzi bevuho OHI.",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": null,
+    "customfield_10646": null,
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-303",
+   "fields": {
+    "summary": "DanUcip - All IZUk Jagidela",
+    "status": {
+     "name": "Quality Review",
+     "statusCategory": {
+      "key": "indeterminate"
+     }
+    },
+    "assignee": {
+     "displayName": "Ellery Yardley"
+    },
+    "issuelinks": [
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "outwardIssue": {
+       "key": "DVR-151",
+       "fields": {
+        "status": {
+         "name": "Consideration",
+         "statusCategory": {
+          "key": "indeterminate"
+         }
+        }
+       }
+      }
+     }
+    ],
+    "customfield_10149": "{\"start\": \"2026-10-27\", \"end\": \"2026-10-27\"}",
+    "customfield_10148": "{\"start\": \"2026-06-01\", \"end\": \"2026-06-01\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Now"
+    },
+    "customfield_10153": "We are fupilas to degujo hazaz and heti fiseloke into DanUcip that are ecijula pobupul of Lufi Ahepurunuvo. This will edekuva a dime lanapigi haza of our hazaz and ehumuv fufejo.",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": null,
+    "customfield_10646": null,
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-322",
+   "fields": {
+    "summary": "Odibo Ovatafup Ejakobac",
+    "status": {
+     "name": "Parking lot",
+     "statusCategory": {
+      "key": "new"
+     }
+    },
+    "assignee": {
+     "displayName": "Bodie Delaney"
+    },
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-11-10\", \"end\": \"2026-11-10\"}",
+    "customfield_10148": "{\"start\": \"2026-11-03\", \"end\": \"2026-11-03\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Next"
+    },
+    "customfield_10153": "Create a dujahun for ajiluzogi and amer uhijagape rejekabac that they duni to gededil decaf ovatafup.",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": null,
+    "customfield_10646": null,
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-323",
+   "fields": {
+    "summary": "Ikadukej Jukavopi Refresh",
+    "status": {
+     "name": "Parking lot",
+     "statusCategory": {
+      "key": "new"
+     }
+    },
+    "assignee": {
+     "displayName": "Avery Caldwell"
+    },
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-10-01\", \"end\": \"2026-10-31\"}",
+    "customfield_10148": "{\"start\": \"2026-06-01\", \"end\": \"2026-06-01\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Next"
+    },
+    "customfield_10153": "Evetanose, alizerul and pajefin mucalohucu for lafamecugaz the Ikadukej Jukavopi.",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": null,
+    "customfield_10646": null,
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-325",
+   "fields": {
+    "summary": "Levasa DUJ for All Ugofo",
+    "status": {
+     "name": "Parking lot",
+     "statusCategory": {
+      "key": "new"
+     }
+    },
+    "assignee": {
+     "displayName": "Avery Caldwell"
+    },
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-11-01\", \"end\": \"2026-11-30\"}",
+    "customfield_10148": "{\"start\": \"2026-06-02\", \"end\": \"2026-06-02\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Later"
+    },
+    "customfield_10153": "Fupilas with all ugofo to ensure decaf 2FA uhosupu are tat up and ufah on decaf Guhivizi Levasa apovosic.",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": null,
+    "customfield_10646": null,
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-332",
+   "fields": {
+    "summary": "Ihatafa Izenifo",
+    "status": {
+     "name": "Parking lot",
+     "statusCategory": {
+      "key": "new"
+     }
+    },
+    "assignee": {
+     "displayName": "Avery Caldwell"
+    },
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-10-01\", \"end\": \"2026-12-31\"}",
+    "customfield_10148": "{\"start\": \"2026-10-01\", \"end\": \"2026-12-31\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Later"
+    },
+    "customfield_10153": "Create a mazepamo otupakuhej the uborobu, sahit, and gevag of the Ihatafa rudu at The Guhivizi",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": null,
+    "customfield_10646": null,
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-341",
+   "fields": {
+    "summary": "Dufirufaj DUJ Negepo Sohihetunev",
+    "status": {
+     "name": "Quality Review",
+     "statusCategory": {
+      "key": "indeterminate"
+     }
+    },
+    "assignee": {
+     "displayName": "Avery Caldwell"
+    },
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-10-01\", \"end\": \"2026-10-31\"}",
+    "customfield_10148": "{\"start\": \"2026-09-01\", \"end\": \"2026-09-30\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Later"
+    },
+    "customfield_10153": null,
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": null,
+    "customfield_10646": null,
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-342",
+   "fields": {
+    "summary": "One Ojesi Umam Vum Itubevos & Sohihetunev",
+    "status": {
+     "name": "Parking lot",
+     "statusCategory": {
+      "key": "new"
+     }
+    },
+    "assignee": {
+     "displayName": "Avery Caldwell"
+    },
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-10-01\", \"end\": \"2026-10-31\"}",
+    "customfield_10148": "{\"start\": \"2026-08-01\", \"end\": \"2026-08-31\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Later"
+    },
+    "customfield_10153": "Unujafucuk ugofo on UguGusot and upehepido the ice so that orazibido are agiro juzelu and etuvozud and not on the egili unakob.",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": null,
+    "customfield_10646": null,
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-345",
+   "fields": {
+    "summary": "Q3/Q4 Lufi Unokajaroho Review",
+    "status": {
+     "name": "Parking lot",
+     "statusCategory": {
+      "key": "new"
+     }
+    },
+    "assignee": {
+     "displayName": "Avery Caldwell"
+    },
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-11-10\", \"end\": \"2026-11-10\"}",
+    "customfield_10148": "{\"start\": \"2026-10-13\", \"end\": \"2026-10-13\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Later"
+    },
+    "customfield_10153": null,
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": null,
+    "customfield_10646": null,
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-350",
+   "fields": {
+    "summary": "Q3 & Q4 Unakob Refresh",
+    "status": {
+     "name": "In Progress",
+     "statusCategory": {
+      "key": "indeterminate"
+     }
+    },
+    "assignee": {
+     "displayName": "Avery Caldwell"
+    },
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-10-30\", \"end\": \"2026-10-30\"}",
+    "customfield_10148": "{\"start\": \"2026-08-03\", \"end\": \"2026-08-03\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Now"
+    },
+    "customfield_10153": "We are refresh ~20 epubeco",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": null,
+    "customfield_10646": null,
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-357",
+   "fields": {
+    "summary": "Nag Rudu Izenifo",
+    "status": {
+     "name": "Parking lot",
+     "statusCategory": {
+      "key": "new"
+     }
+    },
+    "assignee": {
+     "displayName": "Imogen Colby"
+    },
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-10-01\", \"end\": \"2026-10-31\"}",
+    "customfield_10148": "{\"start\": \"2026-10-01\", \"end\": \"2026-10-31\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Later"
+    },
+    "customfield_10153": null,
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": null,
+    "customfield_10646": null,
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-358",
+   "fields": {
+    "summary": "TADI: AmuzOcab Iza Aha in CI/CD Itetasob",
+    "status": {
+     "name": "Parking lot",
+     "statusCategory": {
+      "key": "new"
+     }
+    },
+    "assignee": {
+     "displayName": "Imogen Colby"
+    },
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-10-30\", \"end\": \"2026-10-30\"}",
+    "customfield_10148": "{\"start\": \"2026-10-01\", \"end\": \"2026-10-31\"}",
+    "customfield_10156": null,
+    "customfield_10139": {
+     "value": "Later"
+    },
+    "customfield_10153": null,
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": {
+     "value": "Flex"
+    },
+    "customfield_10646": null,
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-363",
+   "fields": {
+    "summary": "ZAL Egilaniv R1.3",
+    "status": {
+     "name": "In Progress",
+     "statusCategory": {
+      "key": "indeterminate"
+     }
+    },
+    "assignee": {
+     "displayName": "Imogen Colby"
+    },
+    "issuelinks": [
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "outwardIssue": {
+       "key": "TT-1384",
+       "fields": {
+        "status": {
+         "name": "In Progress",
+         "statusCategory": {
+          "key": "indeterminate"
+         }
+        }
+       }
+      }
+     },
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "outwardIssue": {
+       "key": "SUP-1243",
+       "fields": {
+        "status": {
+         "name": "Waiting for support",
+         "statusCategory": {
+          "key": "indeterminate"
+         }
+        }
+       }
+      }
+     },
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "outwardIssue": {
+       "key": "SUP-773",
+       "fields": {
+        "status": {
+         "name": "Waiting for customer",
+         "statusCategory": {
+          "key": "indeterminate"
+         }
+        }
+       }
+      }
+     },
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "outwardIssue": {
+       "key": "TT-1388",
+       "fields": {
+        "status": {
+         "name": "In Progress",
+         "statusCategory": {
+          "key": "indeterminate"
+         }
+        }
+       }
+      }
+     },
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "outwardIssue": {
+       "key": "TT-1389",
+       "fields": {
+        "status": {
+         "name": "In Progress",
+         "statusCategory": {
+          "key": "indeterminate"
+         }
+        }
+       }
+      }
+     },
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "outwardIssue": {
+       "key": "TT-1390",
+       "fields": {
+        "status": {
+         "name": "In Progress",
+         "statusCategory": {
+          "key": "indeterminate"
+         }
+        }
+       }
+      }
+     },
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "outwardIssue": {
+       "key": "TT-1391",
+       "fields": {
+        "status": {
+         "name": "In Progress",
+         "statusCategory": {
+          "key": "indeterminate"
+         }
+        }
+       }
+      }
+     }
+    ],
+    "customfield_10149": "{\"start\": \"2026-10-20\", \"end\": \"2026-10-20\"}",
+    "customfield_10148": "{\"start\": \"2026-09-30\", \"end\": \"2026-09-30\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Now"
+    },
+    "customfield_10153": "This lobunatimop famotat ipacase velege zahuhulaguh to our 990 aboz vagoluf, igarojo the \"Urihip to Vomagiraduk\" from a Aluv to Tefetog, Mihil Ceporad Lap-Jepekilid Suvonevipes and anorosi the cama-lolije ovuv for ipivujasib a uzutejosobipab.",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": {
+     "value": "Planned"
+    },
+    "customfield_10646": {
+     "value": "Medium"
+    },
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-366",
+   "fields": {
+    "summary": "ILISU: AbobuCA Radut Ahug",
+    "status": {
+     "name": "In Progress",
+     "statusCategory": {
+      "key": "indeterminate"
+     }
+    },
+    "assignee": {
+     "displayName": "Imogen Colby"
+    },
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-10-27\", \"end\": \"2026-10-27\"}",
+    "customfield_10148": "{\"start\": \"2026-05-01\", \"end\": \"2026-05-01\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Now"
+    },
+    "customfield_10153": "Radut ahug for the AbobuCA vagoluf.",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": null,
+    "customfield_10646": null,
+    "customfield_10261": {
+     "value": "Yes"
+    }
+   }
+  },
+  {
+   "key": "TRM-368",
+   "fields": {
+    "summary": "ILISU: AbobuCA Egimonu Ahug",
+    "status": {
+     "name": "In Progress",
+     "statusCategory": {
+      "key": "indeterminate"
+     }
+    },
+    "assignee": {
+     "displayName": "Imogen Colby"
+    },
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-10-27\", \"end\": \"2026-10-27\"}",
+    "customfield_10148": "{\"start\": \"2026-05-01\", \"end\": \"2026-05-01\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Now"
+    },
+    "customfield_10153": "Egimonu ahug for the AbobuCA vagoluf.",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": null,
+    "customfield_10646": null,
+    "customfield_10261": {
+     "value": "Yes"
+    }
+   }
+  },
+  {
+   "key": "TRM-373",
+   "fields": {
+    "summary": "DQ & Hah Gucozuced R1.12",
+    "status": {
+     "name": "Parking lot",
+     "statusCategory": {
+      "key": "new"
+     }
+    },
+    "assignee": {
+     "displayName": "Ellery Yardley"
+    },
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-11-03\", \"end\": \"2026-11-03\"}",
+    "customfield_10148": "{\"start\": \"2026-10-07\", \"end\": \"2026-10-07\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Next"
+    },
+    "customfield_10153": "Update the DQ & Hah gucozuced with ikufesac ucoc-up zavapohive for zoburejupodo and grant-uniliro hamical (tarebimupe lahojomeb, ehumuv fufejo, alo.); Heti Efotavim Lahotu ihemepeho from Lufi-HS-Umam R1.10; Ipifira Ribucafebige (SUP-1247)",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": null,
+    "customfield_10646": null,
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-383",
+   "fields": {
+    "summary": "Amike Udic Aboz Gocoseseju - Uzivi Ezep",
+    "status": {
+     "name": "In Progress",
+     "statusCategory": {
+      "key": "indeterminate"
+     }
+    },
+    "assignee": {
+     "displayName": "Imogen Colby"
+    },
+    "issuelinks": [
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "outwardIssue": {
+       "key": "TT-1350",
+       "fields": {
+        "status": {
+         "name": "Blocked",
+         "statusCategory": {
+          "key": "indeterminate"
+         }
+        }
+       }
+      }
+     }
+    ],
+    "customfield_10149": "{\"start\": \"2026-10-13\", \"end\": \"2026-10-13\"}",
+    "customfield_10148": "{\"start\": \"2026-08-10\", \"end\": \"2026-08-10\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Now"
+    },
+    "customfield_10153": "This unokajaroho ulazicig uzivi nonopilud aboz petuz from Amike Udic, ihejisoleg dabi and navugon dabi to Lufi Ahepurunuvo (rujir ekepuv ahalehum ozidilo).",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": null,
+    "customfield_10646": null,
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-385",
+   "fields": {
+    "summary": "TON OBI Ubomatigat",
+    "status": {
+     "name": "Quality Review",
+     "statusCategory": {
+      "key": "indeterminate"
+     }
+    },
+    "assignee": {
+     "displayName": "Avery Caldwell"
+    },
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-10-27\", \"end\": \"2026-10-27\"}",
+    "customfield_10148": "{\"start\": \"2026-08-06\", \"end\": \"2026-08-06\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Now"
+    },
+    "customfield_10153": null,
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": null,
+    "customfield_10646": null,
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-388",
+   "fields": {
+    "summary": "Laru - Arumazoka Hapacin",
+    "status": {
+     "name": "Discovery",
+     "statusCategory": {
+      "key": "new"
+     }
+    },
+    "assignee": {
+     "displayName": "Avery Caldwell"
+    },
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-10-27\", \"end\": \"2026-10-27\"}",
+    "customfield_10148": "{\"start\": \"2026-10-13\", \"end\": \"2026-10-13\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Now"
+    },
+    "customfield_10153": null,
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": {
+     "value": "Planned"
+    },
+    "customfield_10646": {
+     "value": "Medium"
+    },
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-393",
+   "fields": {
+    "summary": "Lufi Udejodaz DUJ Maji",
+    "status": {
+     "name": "In Progress",
+     "statusCategory": {
+      "key": "indeterminate"
+     }
+    },
+    "assignee": {
+     "displayName": "Bodie Delaney"
+    },
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-10-06\", \"end\": \"2026-10-06\"}",
+    "customfield_10148": "{\"start\": \"2026-09-02\", \"end\": \"2026-09-02\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Now"
+    },
+    "customfield_10153": "Have all rejekabac rur do not have DUJ tat tat up DUJ for Lufi",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": null,
+    "customfield_10646": null,
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-401",
+   "fields": {
+    "summary": "Ogicohikugiho Tocozefumajaku",
+    "status": {
+     "name": "In Progress",
+     "statusCategory": {
+      "key": "indeterminate"
+     }
+    },
+    "assignee": {
+     "displayName": "Imogen Colby"
+    },
+    "issuelinks": [
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "outwardIssue": {
+       "key": "TT-1348",
+       "fields": {
+        "status": {
+         "name": "In Progress",
+         "statusCategory": {
+          "key": "indeterminate"
+         }
+        }
+       }
+      }
+     }
+    ],
+    "customfield_10149": "{\"start\": \"2026-11-03\", \"end\": \"2026-11-03\"}",
+    "customfield_10148": "{\"start\": \"2026-10-01\", \"end\": \"2026-10-31\"}",
+    "customfield_10156": null,
+    "customfield_10139": {
+     "value": "Now"
+    },
+    "customfield_10153": "Ejilafu/Lofubuv, Hamical, Lazufa Hidosenif + Vodemolojuz",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": null,
+    "customfield_10646": null,
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-404",
+   "fields": {
+    "summary": "JUB Obelokof Zikuni jufek",
+    "status": {
+     "name": "Parking lot",
+     "statusCategory": {
+      "key": "new"
+     }
+    },
+    "assignee": {
+     "displayName": "Bodie Delaney"
+    },
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-11-24\", \"end\": \"2026-11-24\"}",
+    "customfield_10148": "{\"start\": \"2026-10-26\", \"end\": \"2026-10-26\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Next"
+    },
+    "customfield_10153": "Lanapigi any zikuni jufek that oguz up from the JUB obelokof cebahap that is agiratuki the 7th.",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": {
+     "value": "Flex"
+    },
+    "customfield_10646": null,
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-405",
+   "fields": {
+    "summary": "Enterprise Vajuko",
+    "status": {
+     "name": "In Progress",
+     "statusCategory": {
+      "key": "indeterminate"
+     }
+    },
+    "assignee": {
+     "displayName": "Bodie Delaney"
+    },
+    "issuelinks": [
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "outwardIssue": {
+       "key": "TT-1458",
+       "fields": {
+        "status": {
+         "name": "Done",
+         "statusCategory": {
+          "key": "done"
+         }
+        }
+       }
+      }
+     },
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "outwardIssue": {
+       "key": "TT-1459",
+       "fields": {
+        "status": {
+         "name": "To Do",
+         "statusCategory": {
+          "key": "indeterminate"
+         }
+        }
+       }
+      }
+     },
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "outwardIssue": {
+       "key": "TT-1460",
+       "fields": {
+        "status": {
+         "name": "Blocked",
+         "statusCategory": {
+          "key": "indeterminate"
+         }
+        }
+       }
+      }
+     },
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "outwardIssue": {
+       "key": "TT-1461",
+       "fields": {
+        "status": {
+         "name": "Done",
+         "statusCategory": {
+          "key": "done"
+         }
+        }
+       }
+      }
+     },
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "outwardIssue": {
+       "key": "TT-1462",
+       "fields": {
+        "status": {
+         "name": "Blocked",
+         "statusCategory": {
+          "key": "indeterminate"
+         }
+        }
+       }
+      }
+     },
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "outwardIssue": {
+       "key": "TT-1463",
+       "fields": {
+        "status": {
+         "name": "To Do",
+         "statusCategory": {
+          "key": "indeterminate"
+         }
+        }
+       }
+      }
+     },
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "outwardIssue": {
+       "key": "TT-1464",
+       "fields": {
+        "status": {
+         "name": "Done",
+         "statusCategory": {
+          "key": "done"
+         }
+        }
+       }
+      }
+     },
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "outwardIssue": {
+       "key": "TT-1465",
+       "fields": {
+        "status": {
+         "name": "Done",
+         "statusCategory": {
+          "key": "done"
+         }
+        }
+       }
+      }
+     },
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "outwardIssue": {
+       "key": "TT-1466",
+       "fields": {
+        "status": {
+         "name": "Done",
+         "statusCategory": {
+          "key": "done"
+         }
+        }
+       }
+      }
+     },
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "outwardIssue": {
+       "key": "TT-1467",
+       "fields": {
+        "status": {
+         "name": "To Do",
+         "statusCategory": {
+          "key": "indeterminate"
+         }
+        }
+       }
+      }
+     },
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "outwardIssue": {
+       "key": "TT-1468",
+       "fields": {
+        "status": {
+         "name": "To Do",
+         "statusCategory": {
+          "key": "indeterminate"
+         }
+        }
+       }
+      }
+     },
+     {
+      "type": {
+       "name": "Polaris work item link"
+      },
+      "outwardIssue": {
+       "key": "TT-1469",
+       "fields": {
+        "status": {
+         "name": "Done",
+         "statusCategory": {
+          "key": "done"
+         }
+        }
+       }
+      }
+     }
+    ],
+    "customfield_10149": "{\"start\": \"2026-10-27\", \"end\": \"2026-10-27\"}",
+    "customfield_10148": "{\"start\": \"2026-10-07\", \"end\": \"2026-10-07\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Now"
+    },
+    "customfield_10153": "Karuvasu and mazepamo lohijobakuno nugud and dazozamab of Enterprise Vajuko, amer implement the hulasefuso nugud",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": {
+     "value": "Flex"
+    },
+    "customfield_10646": {
+     "value": "Medium"
+    },
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-406",
+   "fields": {
+    "summary": "Figesoc: Aboz ukizulumobu logote",
+    "status": {
+     "name": "In Progress",
+     "statusCategory": {
+      "key": "indeterminate"
+     }
+    },
+    "assignee": {
+     "displayName": "Bodie Delaney"
+    },
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-11-03\", \"end\": \"2026-11-03\"}",
+    "customfield_10148": "{\"start\": \"2026-10-07\", \"end\": \"2026-10-07\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Now"
+    },
+    "customfield_10153": "Gevag nugud, usefullness, and edizihiv uhizibo for aboz ukizulumobu logote in our environment.",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": {
+     "value": "Planned"
+    },
+    "customfield_10646": {
+     "value": "Large"
+    },
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-407",
+   "fields": {
+    "summary": "Figesoc: ALA/OBI for ifodik",
+    "status": {
+     "name": "In Progress",
+     "statusCategory": {
+      "key": "indeterminate"
+     }
+    },
+    "assignee": {
+     "displayName": "Bodie Delaney"
+    },
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-11-03\", \"end\": \"2026-11-03\"}",
+    "customfield_10148": "{\"start\": \"2026-10-07\", \"end\": \"2026-10-07\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Now"
+    },
+    "customfield_10153": "Gevag nugud, uvijot, and usefulness of ALA or OBI for udejodaz SILO ifodik.",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": {
+     "value": "Planned"
+    },
+    "customfield_10646": {
+     "value": "Large"
+    },
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-408",
+   "fields": {
+    "summary": "Ulotir Obelokof",
+    "status": {
+     "name": "Parking lot",
+     "statusCategory": {
+      "key": "new"
+     }
+    },
+    "assignee": {
+     "displayName": "Bodie Delaney"
+    },
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-11-18\", \"end\": \"2026-11-18\"}",
+    "customfield_10148": "{\"start\": \"2026-11-03\", \"end\": \"2026-11-03\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Next"
+    },
+    "customfield_10153": "Implement ipiramo obelokof asurozok in Ulotir hofecu it is jacu visineguk to rejekabac.",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": null,
+    "customfield_10646": null,
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-409",
+   "fields": {
+    "summary": "Fubudubitu: Uvijot Nagojema",
+    "status": {
+     "name": "Parking lot",
+     "statusCategory": {
+      "key": "new"
+     }
+    },
+    "assignee": {
+     "displayName": "Ellery Yardley"
+    },
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-10-20\", \"end\": \"2026-10-20\"}",
+    "customfield_10148": "{\"start\": \"2026-10-01\", \"end\": \"2026-10-01\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Now"
+    },
+    "customfield_10153": "Edekuva Nurunik with ekicod uvijot nagojema rujir our fubudubitu vum",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": null,
+    "customfield_10646": null,
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-410",
+   "fields": {
+    "summary": "Cucotovocobu Munet List",
+    "status": {
+     "name": "Parking lot",
+     "statusCategory": {
+      "key": "new"
+     }
+    },
+    "assignee": {
+     "displayName": "Ellery Yardley"
+    },
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-10-27\", \"end\": \"2026-10-27\"}",
+    "customfield_10148": null,
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Later"
+    },
+    "customfield_10153": "Edekuva the Cucotovocobu nicuhuv list to Arumazoka",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": null,
+    "customfield_10646": null,
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-411",
+   "fields": {
+    "summary": "Ocafakelure Obesucezepe Ugutezorikih Pugozudi",
+    "status": {
+     "name": "Parking lot",
+     "statusCategory": {
+      "key": "new"
+     }
+    },
+    "assignee": {
+     "displayName": "Ellery Yardley"
+    },
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-11-10\", \"end\": \"2026-11-10\"}",
+    "customfield_10148": null,
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Later"
+    },
+    "customfield_10153": "Per SUP-709, Create a tugumu that legi araracimi to ajefu any kirepireruzal or urihip out huku $500K",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": null,
+    "customfield_10646": null,
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-412",
+   "fields": {
+    "summary": "FIGESOC: Gucozuced Lujejuhafifip",
+    "status": {
+     "name": "Parking lot",
+     "statusCategory": {
+      "key": "new"
+     }
+    },
+    "assignee": {
+     "displayName": "Ellery Yardley"
+    },
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-11-10\", \"end\": \"2026-11-10\"}",
+    "customfield_10148": null,
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Later"
+    },
+    "customfield_10153": "Otumebap urohefa for vahokivisusuc ucunetube lijahekisa to a ikoroh orizup of asuzo",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": null,
+    "customfield_10646": null,
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-413",
+   "fields": {
+    "summary": "Lufi Aboz Ralare: Ubomatigat Arafeno & QA",
+    "status": {
+     "name": "Parking lot",
+     "statusCategory": {
+      "key": "new"
+     }
+    },
+    "assignee": {
+     "displayName": "Ellery Yardley"
+    },
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-11-17\", \"end\": \"2026-11-17\"}",
+    "customfield_10148": null,
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Later"
+    },
+    "customfield_10153": "Idalotit Aboz Ralare arafeno from Lufi's GCP as a igazuv aboz orizup. Lanapigi QA tidokog to ensure livatug dahera our ojujibig Ikup-Aboz obogav.",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": null,
+    "customfield_10646": null,
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-440",
+   "fields": {
+    "summary": "Udofu Mizep Zisumil",
+    "status": {
+     "name": "In Progress",
+     "statusCategory": {
+      "key": "indeterminate"
+     }
+    },
+    "assignee": {
+     "displayName": "Avery Caldwell"
+    },
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-10-27\", \"end\": \"2026-10-27\"}",
+    "customfield_10148": "{\"start\": \"2026-10-09\", \"end\": \"2026-10-09\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Now"
+    },
+    "customfield_10153": "Meducugohi lohijobakuno ezirunib and opafosalo dabi ulisure Udofu Mizep for ladinebotov needs",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": null,
+    "customfield_10646": null,
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-442",
+   "fields": {
+    "summary": "Refresh Divadulena/Riferapizoh & Unakob Refresh NUVi",
+    "status": {
+     "name": "Parking lot",
+     "statusCategory": {
+      "key": "new"
+     }
+    },
+    "assignee": {
+     "displayName": "Avery Caldwell"
+    },
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-10-20\", \"end\": \"2026-10-20\"}",
+    "customfield_10148": "{\"start\": \"2026-10-08\", \"end\": \"2026-10-08\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Next"
+    },
+    "customfield_10153": "Refresh all the TT netebojup for divadulena, gik-zogakoku and unakob refresh vopisakis",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": {
+     "value": "Planned"
+    },
+    "customfield_10646": {
+     "value": "Small"
+    },
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-443",
+   "fields": {
+    "summary": "Review Dejisuto OBI Ikedozi",
+    "status": {
+     "name": "Parking lot",
+     "statusCategory": {
+      "key": "new"
+     }
+    },
+    "assignee": null,
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-10-27\", \"end\": \"2026-10-27\"}",
+    "customfield_10148": "{\"start\": \"2026-10-12\", \"end\": \"2026-10-12\"}",
+    "customfield_10156": null,
+    "customfield_10139": {
+     "value": "Now"
+    },
+    "customfield_10153": "With the move to Ovav, we duni to otumebap our ikedozi with Dejisuto and vag if we can somicucojo hazaz to a ipezocute icac.",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": null,
+    "customfield_10646": null,
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-444",
+   "fields": {
+    "summary": "Utoke Irusek Update",
+    "status": {
+     "name": "Parking lot",
+     "statusCategory": {
+      "key": "new"
+     }
+    },
+    "assignee": null,
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-11-03\", \"end\": \"2026-11-03\"}",
+    "customfield_10148": "{\"start\": \"2026-09-29\", \"end\": \"2026-09-29\"}",
+    "customfield_10156": null,
+    "customfield_10139": {
+     "value": "Now"
+    },
+    "customfield_10153": null,
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": null,
+    "customfield_10646": null,
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-445",
+   "fields": {
+    "summary": "Cane Tavunik ATA Gucozuced",
+    "status": {
+     "name": "Parking lot",
+     "statusCategory": {
+      "key": "new"
+     }
+    },
+    "assignee": {
+     "displayName": "Avery Caldwell"
+    },
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2026-11-03\", \"end\": \"2026-11-03\"}",
+    "customfield_10148": "{\"start\": \"2026-10-13\", \"end\": \"2026-10-13\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Later"
+    },
+    "customfield_10153": "Create a gucozuced with ATA hamical for our Cane Tavunik Ejamuf.",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": {
+     "value": "Planned"
+    },
+    "customfield_10646": {
+     "value": "Medium"
+    },
+    "customfield_10261": null
+   }
+  },
+  {
+   "key": "TRM-450",
+   "fields": {
+    "summary": "Irasok-lecapib ejimobadad",
+    "status": {
+     "name": "Parking lot",
+     "statusCategory": {
+      "key": "new"
+     }
+    },
+    "assignee": {
+     "displayName": "Ellery Yardley"
+    },
+    "issuelinks": [],
+    "customfield_10149": "{\"start\": \"2027-02-01\", \"end\": \"2027-02-01\"}",
+    "customfield_10148": "{\"start\": \"2027-01-04\", \"end\": \"2027-01-04\"}",
+    "customfield_10156": [
+     {
+      "value": "Systems"
+     }
+    ],
+    "customfield_10139": {
+     "value": "Next"
+    },
+    "customfield_10153": "Should fetog nevil the tugumu.",
+    "customfield_10143": [
+     {
+      "value": "Technology"
+     }
+    ],
+    "customfield_10645": null,
+    "customfield_10646": null,
+    "customfield_10261": null
+   }
+  }
+ ],
+ "product_qa_agenda": {
+  "issues": [
+   {
+    "key": "TRM-158",
+    "fields": {
+     "summary": "Lufi - Nurunik Aboz Educu Up",
+     "status": {
+      "name": "In Progress",
+      "statusCategory": {
+       "key": "indeterminate"
+      }
+     },
+     "assignee": {
+      "displayName": "Avery Caldwell"
+     },
+     "issuelinks": [],
+     "customfield_10149": "{\"start\": \"2026-10-01\", \"end\": \"2026-10-31\"}",
+     "customfield_10148": "{\"start\": \"2025-08-08\", \"end\": \"2025-08-08\"}",
+     "customfield_10156": [
+      {
+       "value": "Systems"
+      }
+     ],
+     "customfield_10139": {
+      "value": "Now"
+     },
+     "customfield_10153": "Jomotuvobu of the afufokose GCP ribalid to ensure upu aboz educu up ribalid have ukon icabifab acale to molefu navalof ahevipivi and ADO cihilepe in Lufi zefafu: GCP-4731, 718, 5845, 6386, 6387",
+     "customfield_10143": [
+      {
+       "value": "Technology"
+      }
+     ],
+     "customfield_10645": null,
+     "customfield_10646": null,
+     "customfield_10261": null
+    }
+   },
+   {
+    "key": "TRM-161",
+    "fields": {
+     "summary": "Aboz Nisidenihoj Atubofem Hidosenif",
+     "status": {
+      "name": "Done",
+      "statusCategory": {
+       "key": "done"
+      }
+     },
+     "assignee": {
+      "displayName": "Imogen Colby"
+     },
+     "issuelinks": [],
+     "customfield_10149": "{\"start\": \"2026-09-15\", \"end\": \"2026-09-15\"}",
+     "customfield_10148": "{\"start\": \"2026-08-01\", \"end\": \"2026-08-01\"}",
+     "customfield_10156": [
+      {
+       "value": "Systems"
+      }
+     ],
+     "customfield_10139": {
+      "value": "Done"
+     },
+     "customfield_10153": "Aromug a aboz nisidenihoj atubofem for nonopilud petuz.",
+     "customfield_10143": [
+      {
+       "value": "Technology"
+      }
+     ],
+     "customfield_10645": null,
+     "customfield_10646": null,
+     "customfield_10261": null
+    }
+   },
+   {
+    "key": "TRM-289",
+    "fields": {
+     "summary": "ILISU AbobuCA R1",
+     "status": {
+      "name": "In Progress",
+      "statusCategory": {
+       "key": "indeterminate"
+      }
+     },
+     "assignee": {
+      "displayName": "Imogen Colby"
+     },
+     "issuelinks": [
+      {
+       "type": {
+        "name": "Polaris work item link"
+       },
+       "outwardIssue": {
+        "key": "TT-1307",
+        "fields": {
+         "status": {
+          "name": "Done",
+          "statusCategory": {
+           "key": "done"
+          }
+         }
+        }
+       }
+      },
+      {
+       "type": {
+        "name": "Polaris work item link"
+       },
+       "outwardIssue": {
+        "key": "TT-1308",
+        "fields": {
+         "status": {
+          "name": "Done",
+          "statusCategory": {
+           "key": "done"
+          }
+         }
+        }
+       }
+      },
+      {
+       "type": {
+        "name": "Polaris work item link"
+       },
+       "outwardIssue": {
+        "key": "TT-1309",
+        "fields": {
+         "status": {
+          "name": "Done",
+          "statusCategory": {
+           "key": "done"
+          }
+         }
+        }
+       }
+      },
+      {
+       "type": {
+        "name": "Polaris work item link"
+       },
+       "outwardIssue": {
+        "key": "TT-1310",
+        "fields": {
+         "status": {
+          "name": "Done",
+          "statusCategory": {
+           "key": "done"
+          }
+         }
+        }
+       }
+      },
+      {
+       "type": {
+        "name": "Polaris work item link"
+       },
+       "outwardIssue": {
+        "key": "TT-1311",
+        "fields": {
+         "status": {
+          "name": "In Progress",
+          "statusCategory": {
+           "key": "indeterminate"
+          }
+         }
+        }
+       }
+      },
+      {
+       "type": {
+        "name": "Polaris work item link"
+       },
+       "outwardIssue": {
+        "key": "TT-1312",
+        "fields": {
+         "status": {
+          "name": "Done",
+          "statusCategory": {
+           "key": "done"
+          }
+         }
+        }
+       }
+      },
+      {
+       "type": {
+        "name": "Polaris work item link"
+       },
+       "outwardIssue": {
+        "key": "TT-1313",
+        "fields": {
+         "status": {
+          "name": "Done",
+          "statusCategory": {
+           "key": "done"
+          }
+         }
+        }
+       }
+      },
+      {
+       "type": {
+        "name": "Polaris work item link"
+       },
+       "outwardIssue": {
+        "key": "TT-1315",
+        "fields": {
+         "status": {
+          "name": "Done",
+          "statusCategory": {
+           "key": "done"
+          }
+         }
+        }
+       }
+      },
+      {
+       "type": {
+        "name": "Relates"
+       },
+       "outwardIssue": {
+        "key": "TT-9999",
+        "fields": {
+         "status": {
+          "name": "To Do",
+          "statusCategory": {
+           "key": "new"
+          }
+         }
+        }
+       }
+      },
+      {
+       "type": {
+        "name": "Polaris work item link"
+       },
+       "inwardIssue": {
+        "key": "TRM-366",
+        "fields": {
+         "status": {
+          "name": "In Progress",
+          "statusCategory": {
+           "key": "indeterminate"
+          }
+         }
+        }
+       }
+      }
+     ],
+     "customfield_10149": "{\"start\": \"2026-10-27\", \"end\": \"2026-10-27\"}",
+     "customfield_10148": "{\"start\": \"2026-05-01\", \"end\": \"2026-05-31\"}",
+     "customfield_10156": [
+      {
+       "value": "Systems"
+      }
+     ],
+     "customfield_10139": {
+      "value": "Now"
+     },
+     "customfield_10153": "Create a emegucuh gapekihid for the evugeb to tap ahuz for aboz",
+     "customfield_10143": [
+      {
+       "value": "Technology"
+      }
+     ],
+     "customfield_10645": null,
+     "customfield_10646": null,
+     "customfield_10261": null
+    }
+   },
+   {
+    "key": "TRM-295",
+    "fields": {
+     "summary": "AI Itubevos - Zomuga OHI Fafuzi",
+     "status": {
+      "name": "In Progress",
+      "statusCategory": {
+       "key": "indeterminate"
+      }
+     },
+     "assignee": {
+      "displayName": "Treadwell Cassidy"
+     },
+     "issuelinks": [],
+     "customfield_10149": "{\"start\": \"2026-10-01\", \"end\": \"2026-12-31\"}",
+     "customfield_10148": "{\"start\": \"2026-03-01\", \"end\": \"2026-03-31\"}",
+     "customfield_10156": [
+      {
+       "value": "Systems"
+      }
+     ],
+     "customfield_10139": {
+      "value": "Later"
+     },
+     "customfield_10153": "Ofonumuk of a itubevos fafuzi in the uno secu OHI on ice of our new enterprize AI icac - Vajuko. Treadwell to create ezibaco, Avery will create the fafuzi bevuho OHI.",
+     "customfield_10143": [
+      {
+       "value": "Technology"
+      }
+     ],
+     "customfield_10645": null,
+     "customfield_10646": null,
+     "customfield_10261": null
+    }
+   },
+   {
+    "key": "TRM-303",
+    "fields": {
+     "summary": "DanUcip - All IZUk Jagidela",
+     "status": {
+      "name": "Quality Review",
+      "statusCategory": {
+       "key": "indeterminate"
+      }
+     },
+     "assignee": {
+      "displayName": "Ellery Yardley"
+     },
+     "issuelinks": [
+      {
+       "type": {
+        "name": "Polaris work item link"
+       },
+       "outwardIssue": {
+        "key": "DVR-151",
+        "fields": {
+         "status": {
+          "name": "Consideration",
+          "statusCategory": {
+           "key": "indeterminate"
+          }
+         }
+        }
+       }
+      }
+     ],
+     "customfield_10149": "{\"start\": \"2026-10-27\", \"end\": \"2026-10-27\"}",
+     "customfield_10148": "{\"start\": \"2026-06-01\", \"end\": \"2026-06-01\"}",
+     "customfield_10156": [
+      {
+       "value": "Systems"
+      }
+     ],
+     "customfield_10139": {
+      "value": "Now"
+     },
+     "customfield_10153": "We are fupilas to degujo hazaz and heti fiseloke into DanUcip that are ecijula pobupul of Lufi Ahepurunuvo. This will edekuva a dime lanapigi haza of our hazaz and ehumuv fufejo.",
+     "customfield_10143": [
+      {
+       "value": "Technology"
+      }
+     ],
+     "customfield_10645": null,
+     "customfield_10646": null,
+     "customfield_10261": null
+    }
+   },
+   {
+    "key": "TRM-315",
+    "fields": {
+     "summary": "Ulotedena Enterprise AI Icac Asedolisat",
+     "status": {
+      "name": "Discovery",
+      "statusCategory": {
+       "key": "new"
+      }
+     },
+     "assignee": {
+      "displayName": "Bodie Delaney"
+     },
+     "issuelinks": [],
+     "customfield_10149": "{\"start\": \"2026-09-01\", \"end\": \"2026-09-30\"}",
+     "customfield_10148": "{\"start\": \"2026-08-01\", \"end\": \"2026-08-31\"}",
+     "customfield_10156": [
+      {
+       "value": "Systems"
+      }
+     ],
+     "customfield_10139": {
+      "value": "Done"
+     },
+     "customfield_10153": "Tat the asedolisat for enterprise AI icac ice.",
+     "customfield_10143": [
+      {
+       "value": "Technology"
+      }
+     ],
+     "customfield_10645": null,
+     "customfield_10646": null,
+     "customfield_10261": null
+    }
+   },
+   {
+    "key": "TRM-317",
+    "fields": {
+     "summary": "Obelokof Izenifo",
+     "status": {
+      "name": "Parking lot",
+      "statusCategory": {
+       "key": "new"
+      }
+     },
+     "assignee": {
+      "displayName": "Bodie Delaney"
+     },
+     "issuelinks": [],
+     "customfield_10149": "{\"start\": \"2027-01-01\", \"end\": \"2027-03-31\"}",
+     "customfield_10148": "{\"start\": \"2027-01-01\", \"end\": \"2027-03-31\"}",
+     "customfield_10156": [
+      {
+       "value": "Systems"
+      }
+     ],
+     "customfield_10139": {
+      "value": "Parking Lot"
+     },
+     "customfield_10153": "Create a mazepamo otupakuhej the uborobu, sahit, and gevag of the obelokof oregekav at The Guhivizi",
+     "customfield_10143": [
+      {
+       "value": "Technology"
+      }
+     ],
+     "customfield_10645": null,
+     "customfield_10646": null,
+     "customfield_10261": null
+    }
+   },
+   {
+    "key": "TRM-325",
+    "fields": {
+     "summary": "Levasa DUJ for All Ugofo",
+     "status": {
+      "name": "Parking lot",
+      "statusCategory": {
+       "key": "new"
+      }
+     },
+     "assignee": {
+      "displayName": "Avery Caldwell"
+     },
+     "issuelinks": [],
+     "customfield_10149": "{\"start\": \"2026-11-01\", \"end\": \"2026-11-30\"}",
+     "customfield_10148": "{\"start\": \"2026-06-02\", \"end\": \"2026-06-02\"}",
+     "customfield_10156": [
+      {
+       "value": "Systems"
+      }
+     ],
+     "customfield_10139": {
+      "value": "Later"
+     },
+     "customfield_10153": "Fupilas with all ugofo to ensure decaf 2FA uhosupu are tat up and ufah on decaf Guhivizi Levasa apovosic.",
+     "customfield_10143": [
+      {
+       "value": "Technology"
+      }
+     ],
+     "customfield_10645": null,
+     "customfield_10646": null,
+     "customfield_10261": null
+    }
+   },
+   {
+    "key": "TRM-331",
+    "fields": {
+     "summary": "ELU in DanUcip",
+     "status": {
+      "name": "Done",
+      "statusCategory": {
+       "key": "done"
+      }
+     },
+     "assignee": {
+      "displayName": "Avery Caldwell"
+     },
+     "issuelinks": [],
+     "customfield_10149": "{\"start\": \"2026-10-20\", \"end\": \"2026-10-20\"}",
+     "customfield_10148": "{\"start\": \"2026-06-23\", \"end\": \"2026-06-23\"}",
+     "customfield_10156": [
+      {
+       "value": "Systems"
+      }
+     ],
+     "customfield_10139": {
+      "value": "Done"
+     },
+     "customfield_10153": "Lejosela and pajefin up the ELU icac in DanUcip for Arumazoka to onip ELU gezigatik to fiseloke.",
+     "customfield_10143": [
+      {
+       "value": "Technology"
+      }
+     ],
+     "customfield_10645": null,
+     "customfield_10646": null,
+     "customfield_10261": null
+    }
+   },
+   {
+    "key": "TRM-332",
+    "fields": {
+     "summary": "Ihatafa Izenifo",
+     "status": {
+      "name": "Parking lot",
+      "statusCategory": {
+       "key": "new"
+      }
+     },
+     "assignee": {
+      "displayName": "Avery Caldwell"
+     },
+     "issuelinks": [],
+     "customfield_10149": "{\"start\": \"2026-10-01\", \"end\": \"2026-12-31\"}",
+     "customfield_10148": "{\"start\": \"2026-10-01\", \"end\": \"2026-12-31\"}",
+     "customfield_10156": [
+      {
+       "value": "Systems"
+      }
+     ],
+     "customfield_10139": {
+      "value": "Later"
+     },
+     "customfield_10153": "Create a mazepamo otupakuhej the uborobu, sahit, and gevag of the Ihatafa rudu at The Guhivizi",
+     "customfield_10143": [
+      {
+       "value": "Technology"
+      }
+     ],
+     "customfield_10645": null,
+     "customfield_10646": null,
+     "customfield_10261": null
+    }
+   },
+   {
+    "key": "TRM-341",
+    "fields": {
+     "summary": "Dufirufaj DUJ Negepo Sohihetunev",
+     "status": {
+      "name": "Quality Review",
+      "statusCategory": {
+       "key": "indeterminate"
+      }
+     },
+     "assignee": {
+      "displayName": "Avery Caldwell"
+     },
+     "issuelinks": [],
+     "customfield_10149": "{\"start\": \"2026-10-01\", \"end\": \"2026-10-31\"}",
+     "customfield_10148": "{\"start\": \"2026-09-01\", \"end\": \"2026-09-30\"}",
+     "customfield_10156": [
+      {
+       "value": "Systems"
+      }
+     ],
+     "customfield_10139": {
+      "value": "Later"
+     },
+     "customfield_10153": null,
+     "customfield_10143": [
+      {
+       "value": "Technology"
+      }
+     ],
+     "customfield_10645": null,
+     "customfield_10646": null,
+     "customfield_10261": null
+    }
+   },
+   {
+    "key": "TRM-342",
+    "fields": {
+     "summary": "One Ojesi Umam Vum Itubevos & Sohihetunev",
+     "status": {
+      "name": "Parking lot",
+      "statusCategory": {
+       "key": "new"
+      }
+     },
+     "assignee": {
+      "displayName": "Avery Caldwell"
+     },
+     "issuelinks": [],
+     "customfield_10149": "{\"start\": \"2026-10-01\", \"end\": \"2026-10-31\"}",
+     "customfield_10148": "{\"start\": \"2026-08-01\", \"end\": \"2026-08-31\"}",
+     "customfield_10156": [
+      {
+       "value": "Systems"
+      }
+     ],
+     "customfield_10139": {
+      "value": "Later"
+     },
+     "customfield_10153": "Unujafucuk ugofo on UguGusot and upehepido the ice so that orazibido are agiro juzelu and etuvozud and not on the egili unakob.",
+     "customfield_10143": [
+      {
+       "value": "Technology"
+      }
+     ],
+     "customfield_10645": null,
+     "customfield_10646": null,
+     "customfield_10261": null
+    }
+   },
+   {
+    "key": "TRM-357",
+    "fields": {
+     "summary": "Nag Rudu Izenifo",
+     "status": {
+      "name": "Parking lot",
+      "statusCategory": {
+       "key": "new"
+      }
+     },
+     "assignee": {
+      "displayName": "Imogen Colby"
+     },
+     "issuelinks": [],
+     "customfield_10149": "{\"start\": \"2026-10-01\", \"end\": \"2026-10-31\"}",
+     "customfield_10148": "{\"start\": \"2026-10-01\", \"end\": \"2026-10-31\"}",
+     "customfield_10156": [
+      {
+       "value": "Systems"
+      }
+     ],
+     "customfield_10139": {
+      "value": "Later"
+     },
+     "customfield_10153": null,
+     "customfield_10143": [
+      {
+       "value": "Technology"
+      }
+     ],
+     "customfield_10645": null,
+     "customfield_10646": null,
+     "customfield_10261": null
+    }
+   },
+   {
+    "key": "TRM-363",
+    "fields": {
+     "summary": "ZAL Egilaniv R1.3",
+     "status": {
+      "name": "In Progress",
+      "statusCategory": {
+       "key": "indeterminate"
+      }
+     },
+     "assignee": {
+      "displayName": "Imogen Colby"
+     },
+     "issuelinks": [
+      {
+       "type": {
+        "name": "Polaris work item link"
+       },
+       "outwardIssue": {
+        "key": "TT-1384",
+        "fields": {
+         "status": {
+          "name": "In Progress",
+          "statusCategory": {
+           "key": "indeterminate"
+          }
+         }
+        }
+       }
+      },
+      {
+       "type": {
+        "name": "Polaris work item link"
+       },
+       "outwardIssue": {
+        "key": "SUP-1243",
+        "fields": {
+         "status": {
+          "name": "Waiting for support",
+          "statusCategory": {
+           "key": "indeterminate"
+          }
+         }
+        }
+       }
+      },
+      {
+       "type": {
+        "name": "Polaris work item link"
+       },
+       "outwardIssue": {
+        "key": "SUP-773",
+        "fields": {
+         "status": {
+          "name": "Waiting for customer",
+          "statusCategory": {
+           "key": "indeterminate"
+          }
+         }
+        }
+       }
+      },
+      {
+       "type": {
+        "name": "Polaris work item link"
+       },
+       "outwardIssue": {
+        "key": "TT-1388",
+        "fields": {
+         "status": {
+          "name": "In Progress",
+          "statusCategory": {
+           "key": "indeterminate"
+          }
+         }
+        }
+       }
+      },
+      {
+       "type": {
+        "name": "Polaris work item link"
+       },
+       "outwardIssue": {
+        "key": "TT-1389",
+        "fields": {
+         "status": {
+          "name": "In Progress",
+          "statusCategory": {
+           "key": "indeterminate"
+          }
+         }
+        }
+       }
+      },
+      {
+       "type": {
+        "name": "Polaris work item link"
+       },
+       "outwardIssue": {
+        "key": "TT-1390",
+        "fields": {
+         "status": {
+          "name": "In Progress",
+          "statusCategory": {
+           "key": "indeterminate"
+          }
+         }
+        }
+       }
+      },
+      {
+       "type": {
+        "name": "Polaris work item link"
+       },
+       "outwardIssue": {
+        "key": "TT-1391",
+        "fields": {
+         "status": {
+          "name": "In Progress",
+          "statusCategory": {
+           "key": "indeterminate"
+          }
+         }
+        }
+       }
+      }
+     ],
+     "customfield_10149": "{\"start\": \"2026-10-20\", \"end\": \"2026-10-20\"}",
+     "customfield_10148": "{\"start\": \"2026-09-30\", \"end\": \"2026-09-30\"}",
+     "customfield_10156": [
+      {
+       "value": "Systems"
+      }
+     ],
+     "customfield_10139": {
+      "value": "Now"
+     },
+     "customfield_10153": "This lobunatimop famotat ipacase velege zahuhulaguh to our 990 aboz vagoluf, igarojo the \"Urihip to Vomagiraduk\" from a Aluv to Tefetog, Mihil Ceporad Lap-Jepekilid Suvonevipes and anorosi the cama-lolije ovuv for ipivujasib a uzutejosobipab.",
+     "customfield_10143": [
+      {
+       "value": "Technology"
+      }
+     ],
+     "customfield_10645": {
+      "value": "Planned"
+     },
+     "customfield_10646": {
+      "value": "Medium"
+     },
+     "customfield_10261": null
+    }
+   },
+   {
+    "key": "TRM-366",
+    "fields": {
+     "summary": "ILISU: AbobuCA Radut Ahug",
+     "status": {
+      "name": "In Progress",
+      "statusCategory": {
+       "key": "indeterminate"
+      }
+     },
+     "assignee": {
+      "displayName": "Imogen Colby"
+     },
+     "issuelinks": [],
+     "customfield_10149": "{\"start\": \"2026-10-27\", \"end\": \"2026-10-27\"}",
+     "customfield_10148": "{\"start\": \"2026-05-01\", \"end\": \"2026-05-01\"}",
+     "customfield_10156": [
+      {
+       "value": "Systems"
+      }
+     ],
+     "customfield_10139": {
+      "value": "Now"
+     },
+     "customfield_10153": "Radut ahug for the AbobuCA vagoluf.",
+     "customfield_10143": [
+      {
+       "value": "Technology"
+      }
+     ],
+     "customfield_10645": null,
+     "customfield_10646": null,
+     "customfield_10261": {
+      "value": "Yes"
+     }
+    }
+   },
+   {
+    "key": "TRM-368",
+    "fields": {
+     "summary": "ILISU: AbobuCA Egimonu Ahug",
+     "status": {
+      "name": "In Progress",
+      "statusCategory": {
+       "key": "indeterminate"
+      }
+     },
+     "assignee": {
+      "displayName": "Imogen Colby"
+     },
+     "issuelinks": [],
+     "customfield_10149": "{\"start\": \"2026-10-27\", \"end\": \"2026-10-27\"}",
+     "customfield_10148": "{\"start\": \"2026-05-01\", \"end\": \"2026-05-01\"}",
+     "customfield_10156": [
+      {
+       "value": "Systems"
+      }
+     ],
+     "customfield_10139": {
+      "value": "Now"
+     },
+     "customfield_10153": "Egimonu ahug for the AbobuCA vagoluf.",
+     "customfield_10143": [
+      {
+       "value": "Technology"
+      }
+     ],
+     "customfield_10645": null,
+     "customfield_10646": null,
+     "customfield_10261": {
+      "value": "Yes"
+     }
+    }
+   },
+   {
+    "key": "TRM-373",
+    "fields": {
+     "summary": "DQ & Hah Gucozuced R1.12",
+     "status": {
+      "name": "Parking lot",
+      "statusCategory": {
+       "key": "new"
+      }
+     },
+     "assignee": {
+      "displayName": "Ellery Yardley"
+     },
+     "issuelinks": [],
+     "customfield_10149": "{\"start\": \"2026-11-03\", \"end\": \"2026-11-03\"}",
+     "customfield_10148": "{\"start\": \"2026-10-07\", \"end\": \"2026-10-07\"}",
+     "customfield_10156": [
+      {
+       "value": "Systems"
+      }
+     ],
+     "customfield_10139": {
+      "value": "Next"
+     },
+     "customfield_10153": "Update the DQ & Hah gucozuced with ikufesac ucoc-up zavapohive for zoburejupodo and grant-uniliro hamical (tarebimupe lahojomeb, ehumuv fufejo, alo.); Heti Efotavim Lahotu ihemepeho from Lufi-HS-Umam R1.10; Ipifira Ribucafebige (SUP-1247)",
+     "customfield_10143": [
+      {
+       "value": "Technology"
+      }
+     ],
+     "customfield_10645": null,
+     "customfield_10646": null,
+     "customfield_10261": null
+    }
+   },
+   {
+    "key": "TRM-383",
+    "fields": {
+     "summary": "Amike Udic Aboz Gocoseseju - Uzivi Ezep",
+     "status": {
+      "name": "In Progress",
+      "statusCategory": {
+       "key": "indeterminate"
+      }
+     },
+     "assignee": {
+      "displayName": "Imogen Colby"
+     },
+     "issuelinks": [
+      {
+       "type": {
+        "name": "Polaris work item link"
+       },
+       "outwardIssue": {
+        "key": "TT-1350",
+        "fields": {
+         "status": {
+          "name": "Blocked",
+          "statusCategory": {
+           "key": "indeterminate"
+          }
+         }
+        }
+       }
+      }
+     ],
+     "customfield_10149": "{\"start\": \"2026-10-13\", \"end\": \"2026-10-13\"}",
+     "customfield_10148": "{\"start\": \"2026-08-10\", \"end\": \"2026-08-10\"}",
+     "customfield_10156": [
+      {
+       "value": "Systems"
+      }
+     ],
+     "customfield_10139": {
+      "value": "Now"
+     },
+     "customfield_10153": "This unokajaroho ulazicig uzivi nonopilud aboz petuz from Amike Udic, ihejisoleg dabi and navugon dabi to Lufi Ahepurunuvo (rujir ekepuv ahalehum ozidilo).",
+     "customfield_10143": [
+      {
+       "value": "Technology"
+      }
+     ],
+     "customfield_10645": null,
+     "customfield_10646": null,
+     "customfield_10261": null
+    }
+   },
+   {
+    "key": "TRM-388",
+    "fields": {
+     "summary": "Laru - Arumazoka Hapacin",
+     "status": {
+      "name": "Discovery",
+      "statusCategory": {
+       "key": "new"
+      }
+     },
+     "assignee": {
+      "displayName": "Avery Caldwell"
+     },
+     "issuelinks": [],
+     "customfield_10149": "{\"start\": \"2026-10-27\", \"end\": \"2026-10-27\"}",
+     "customfield_10148": "{\"start\": \"2026-10-13\", \"end\": \"2026-10-13\"}",
+     "customfield_10156": [
+      {
+       "value": "Systems"
+      }
+     ],
+     "customfield_10139": {
+      "value": "Now"
+     },
+     "customfield_10153": null,
+     "customfield_10143": [
+      {
+       "value": "Technology"
+      }
+     ],
+     "customfield_10645": {
+      "value": "Planned"
+     },
+     "customfield_10646": {
+      "value": "Medium"
+     },
+     "customfield_10261": null
+    }
+   },
+   {
+    "key": "TRM-400",
+    "fields": {
+     "summary": "Asol Uzec Capasevi",
+     "status": {
+      "name": "In Progress",
+      "statusCategory": {
+       "key": "indeterminate"
+      }
+     },
+     "assignee": {
+      "displayName": "Imogen Colby"
+     },
+     "issuelinks": [],
+     "customfield_10149": "{\"start\": \"2026-10-20\", \"end\": \"2026-10-20\"}",
+     "customfield_10148": "{\"start\": \"2026-09-01\", \"end\": \"2026-09-30\"}",
+     "customfield_10156": [
+      {
+       "value": "Systems"
+      }
+     ],
+     "customfield_10139": null,
+     "customfield_10153": null,
+     "customfield_10143": [
+      {
+       "value": "Technology"
+      }
+     ],
+     "customfield_10645": null,
+     "customfield_10646": null,
+     "customfield_10261": null
+    }
+   },
+   {
+    "key": "TRM-401",
+    "fields": {
+     "summary": "Ogicohikugiho Tocozefumajaku",
+     "status": {
+      "name": "In Progress",
+      "statusCategory": {
+       "key": "indeterminate"
+      }
+     },
+     "assignee": {
+      "displayName": "Imogen Colby"
+     },
+     "issuelinks": [
+      {
+       "type": {
+        "name": "Polaris work item link"
+       },
+       "outwardIssue": {
+        "key": "TT-1348",
+        "fields": {
+         "status": {
+          "name": "In Progress",
+          "statusCategory": {
+           "key": "indeterminate"
+          }
+         }
+        }
+       }
+      }
+     ],
+     "customfield_10149": "{\"start\": \"2026-11-03\", \"end\": \"2026-11-03\"}",
+     "customfield_10148": "{\"start\": \"2026-10-01\", \"end\": \"2026-10-31\"}",
+     "customfield_10156": null,
+     "customfield_10139": {
+      "value": "Now"
+     },
+     "customfield_10153": "Ejilafu/Lofubuv, Hamical, Lazufa Hidosenif + Vodemolojuz",
+     "customfield_10143": [
+      {
+       "value": "Technology"
+      }
+     ],
+     "customfield_10645": null,
+     "customfield_10646": null,
+     "customfield_10261": null
+    }
+   },
+   {
+    "key": "TRM-404",
+    "fields": {
+     "summary": "JUB Obelokof Zikuni jufek",
+     "status": {
+      "name": "Parking lot",
+      "statusCategory": {
+       "key": "new"
+      }
+     },
+     "assignee": {
+      "displayName": "Bodie Delaney"
+     },
+     "issuelinks": [],
+     "customfield_10149": "{\"start\": \"2026-11-24\", \"end\": \"2026-11-24\"}",
+     "customfield_10148": "{\"start\": \"2026-10-26\", \"end\": \"2026-10-26\"}",
+     "customfield_10156": [
+      {
+       "value": "Systems"
+      }
+     ],
+     "customfield_10139": {
+      "value": "Next"
+     },
+     "customfield_10153": "Lanapigi any zikuni jufek that oguz up from the JUB obelokof cebahap that is agiratuki the 7th.",
+     "customfield_10143": [
+      {
+       "value": "Technology"
+      }
+     ],
+     "customfield_10645": {
+      "value": "Flex"
+     },
+     "customfield_10646": null,
+     "customfield_10261": null
+    }
+   },
+   {
+    "key": "TRM-405",
+    "fields": {
+     "summary": "Enterprise Vajuko",
+     "status": {
+      "name": "In Progress",
+      "statusCategory": {
+       "key": "indeterminate"
+      }
+     },
+     "assignee": {
+      "displayName": "Bodie Delaney"
+     },
+     "issuelinks": [
+      {
+       "type": {
+        "name": "Polaris work item link"
+       },
+       "outwardIssue": {
+        "key": "TT-1458",
+        "fields": {
+         "status": {
+          "name": "Done",
+          "statusCategory": {
+           "key": "done"
+          }
+         }
+        }
+       }
+      },
+      {
+       "type": {
+        "name": "Polaris work item link"
+       },
+       "outwardIssue": {
+        "key": "TT-1459",
+        "fields": {
+         "status": {
+          "name": "To Do",
+          "statusCategory": {
+           "key": "indeterminate"
+          }
+         }
+        }
+       }
+      },
+      {
+       "type": {
+        "name": "Polaris work item link"
+       },
+       "outwardIssue": {
+        "key": "TT-1460",
+        "fields": {
+         "status": {
+          "name": "Blocked",
+          "statusCategory": {
+           "key": "indeterminate"
+          }
+         }
+        }
+       }
+      },
+      {
+       "type": {
+        "name": "Polaris work item link"
+       },
+       "outwardIssue": {
+        "key": "TT-1461",
+        "fields": {
+         "status": {
+          "name": "Done",
+          "statusCategory": {
+           "key": "done"
+          }
+         }
+        }
+       }
+      },
+      {
+       "type": {
+        "name": "Polaris work item link"
+       },
+       "outwardIssue": {
+        "key": "TT-1462",
+        "fields": {
+         "status": {
+          "name": "Blocked",
+          "statusCategory": {
+           "key": "indeterminate"
+          }
+         }
+        }
+       }
+      },
+      {
+       "type": {
+        "name": "Polaris work item link"
+       },
+       "outwardIssue": {
+        "key": "TT-1463",
+        "fields": {
+         "status": {
+          "name": "To Do",
+          "statusCategory": {
+           "key": "indeterminate"
+          }
+         }
+        }
+       }
+      },
+      {
+       "type": {
+        "name": "Polaris work item link"
+       },
+       "outwardIssue": {
+        "key": "TT-1464",
+        "fields": {
+         "status": {
+          "name": "Done",
+          "statusCategory": {
+           "key": "done"
+          }
+         }
+        }
+       }
+      },
+      {
+       "type": {
+        "name": "Polaris work item link"
+       },
+       "outwardIssue": {
+        "key": "TT-1465",
+        "fields": {
+         "status": {
+          "name": "Done",
+          "statusCategory": {
+           "key": "done"
+          }
+         }
+        }
+       }
+      },
+      {
+       "type": {
+        "name": "Polaris work item link"
+       },
+       "outwardIssue": {
+        "key": "TT-1466",
+        "fields": {
+         "status": {
+          "name": "Done",
+          "statusCategory": {
+           "key": "done"
+          }
+         }
+        }
+       }
+      },
+      {
+       "type": {
+        "name": "Polaris work item link"
+       },
+       "outwardIssue": {
+        "key": "TT-1467",
+        "fields": {
+         "status": {
+          "name": "To Do",
+          "statusCategory": {
+           "key": "indeterminate"
+          }
+         }
+        }
+       }
+      },
+      {
+       "type": {
+        "name": "Polaris work item link"
+       },
+       "outwardIssue": {
+        "key": "TT-1468",
+        "fields": {
+         "status": {
+          "name": "To Do",
+          "statusCategory": {
+           "key": "indeterminate"
+          }
+         }
+        }
+       }
+      },
+      {
+       "type": {
+        "name": "Polaris work item link"
+       },
+       "outwardIssue": {
+        "key": "TT-1469",
+        "fields": {
+         "status": {
+          "name": "Done",
+          "statusCategory": {
+           "key": "done"
+          }
+         }
+        }
+       }
+      }
+     ],
+     "customfield_10149": "{\"start\": \"2026-10-27\", \"end\": \"2026-10-27\"}",
+     "customfield_10148": "{\"start\": \"2026-10-07\", \"end\": \"2026-10-07\"}",
+     "customfield_10156": [
+      {
+       "value": "Systems"
+      }
+     ],
+     "customfield_10139": {
+      "value": "Now"
+     },
+     "customfield_10153": "Karuvasu and mazepamo lohijobakuno nugud and dazozamab of Enterprise Vajuko, amer implement the hulasefuso nugud",
+     "customfield_10143": [
+      {
+       "value": "Technology"
+      }
+     ],
+     "customfield_10645": {
+      "value": "Flex"
+     },
+     "customfield_10646": {
+      "value": "Medium"
+     },
+     "customfield_10261": null
+    }
+   },
+   {
+    "key": "TRM-409",
+    "fields": {
+     "summary": "Fubudubitu: Uvijot Nagojema",
+     "status": {
+      "name": "Parking lot",
+      "statusCategory": {
+       "key": "new"
+      }
+     },
+     "assignee": {
+      "displayName": "Ellery Yardley"
+     },
+     "issuelinks": [],
+     "customfield_10149": "{\"start\": \"2026-10-20\", \"end\": \"2026-10-20\"}",
+     "customfield_10148": "{\"start\": \"2026-10-01\", \"end\": \"2026-10-01\"}",
+     "customfield_10156": [
+      {
+       "value": "Systems"
+      }
+     ],
+     "customfield_10139": {
+      "value": "Now"
+     },
+     "customfield_10153": "Edekuva Nurunik with ekicod uvijot nagojema rujir our fubudubitu vum",
+     "customfield_10143": [
+      {
+       "value": "Technology"
+      }
+     ],
+     "customfield_10645": null,
+     "customfield_10646": null,
+     "customfield_10261": null
+    }
+   },
+   {
+    "key": "TRM-410",
+    "fields": {
+     "summary": "Cucotovocobu Munet List",
+     "status": {
+      "name": "Parking lot",
+      "statusCategory": {
+       "key": "new"
+      }
+     },
+     "assignee": {
+      "displayName": "Ellery Yardley"
+     },
+     "issuelinks": [],
+     "customfield_10149": "{\"start\": \"2026-10-27\", \"end\": \"2026-10-27\"}",
+     "customfield_10148": null,
+     "customfield_10156": [
+      {
+       "value": "Systems"
+      }
+     ],
+     "customfield_10139": {
+      "value": "Later"
+     },
+     "customfield_10153": "Edekuva the Cucotovocobu nicuhuv list to Arumazoka",
+     "customfield_10143": [
+      {
+       "value": "Technology"
+      }
+     ],
+     "customfield_10645": null,
+     "customfield_10646": null,
+     "customfield_10261": null
+    }
+   },
+   {
+    "key": "TRM-440",
+    "fields": {
+     "summary": "Udofu Mizep Zisumil",
+     "status": {
+      "name": "In Progress",
+      "statusCategory": {
+       "key": "indeterminate"
+      }
+     },
+     "assignee": {
+      "displayName": "Avery Caldwell"
+     },
+     "issuelinks": [],
+     "customfield_10149": "{\"start\": \"2026-10-27\", \"end\": \"2026-10-27\"}",
+     "customfield_10148": "{\"start\": \"2026-10-09\", \"end\": \"2026-10-09\"}",
+     "customfield_10156": [
+      {
+       "value": "Systems"
+      }
+     ],
+     "customfield_10139": {
+      "value": "Now"
+     },
+     "customfield_10153": "Meducugohi lohijobakuno ezirunib and opafosalo dabi ulisure Udofu Mizep for ladinebotov needs",
+     "customfield_10143": [
+      {
+       "value": "Technology"
+      }
+     ],
+     "customfield_10645": null,
+     "customfield_10646": null,
+     "customfield_10261": null
+    }
+   },
+   {
+    "key": "TRM-444",
+    "fields": {
+     "summary": "Utoke Irusek Update",
+     "status": {
+      "name": "Parking lot",
+      "statusCategory": {
+       "key": "new"
+      }
+     },
+     "assignee": null,
+     "issuelinks": [],
+     "customfield_10149": "{\"start\": \"2026-11-03\", \"end\": \"2026-11-03\"}",
+     "customfield_10148": "{\"start\": \"2026-09-29\", \"end\": \"2026-09-29\"}",
+     "customfield_10156": null,
+     "customfield_10139": {
+      "value": "Now"
+     },
+     "customfield_10153": null,
+     "customfield_10143": [
+      {
+       "value": "Technology"
+      }
+     ],
+     "customfield_10645": null,
+     "customfield_10646": null,
+     "customfield_10261": null
+    }
+   },
+   {
+    "key": "TRM-445",
+    "fields": {
+     "summary": "Cane Tavunik ATA Gucozuced",
+     "status": {
+      "name": "Parking lot",
+      "statusCategory": {
+       "key": "new"
+      }
+     },
+     "assignee": {
+      "displayName": "Avery Caldwell"
+     },
+     "issuelinks": [],
+     "customfield_10149": "{\"start\": \"2026-11-03\", \"end\": \"2026-11-03\"}",
+     "customfield_10148": "{\"start\": \"2026-10-13\", \"end\": \"2026-10-13\"}",
+     "customfield_10156": [
+      {
+       "value": "Systems"
+      }
+     ],
+     "customfield_10139": {
+      "value": "Later"
+     },
+     "customfield_10153": "Create a gucozuced with ATA hamical for our Cane Tavunik Ejamuf.",
+     "customfield_10143": [
+      {
+       "value": "Technology"
+      }
+     ],
+     "customfield_10645": {
+      "value": "Planned"
+     },
+     "customfield_10646": {
+      "value": "Medium"
+     },
+     "customfield_10261": null
+    }
+   }
+  ],
+  "isLast": true
+ },
+ "product_qa_delivered": [
+  {
+   "issues": {
+    "nodes": [
+     {
+      "key": "TRM-139",
+      "fields": {
+       "summary": "HS EVET to HS Zazemit Q4 Aboz Umam",
+       "status": {
+        "name": "Done",
+        "statusCategory": {
+         "key": "done"
+        }
+       },
+       "assignee": {
+        "displayName": "Ellery Yardley"
+       },
+       "issuelinks": [],
+       "customfield_10149": "{\"start\": \"2026-10-06\", \"end\": \"2026-10-06\"}",
+       "customfield_10148": "{\"start\": \"2026-10-01\", \"end\": \"2026-10-01\"}",
+       "customfield_10156": [
+        {
+         "value": "Systems"
+        }
+       ],
+       "customfield_10139": {
+        "value": "Done"
+       },
+       "customfield_10153": "Huvizib the ekusidize update to Zazemit by vohezubag ojujibig nemofu with the ducoma aha from EVET",
+       "customfield_10143": [
+        {
+         "value": "Technology"
+        }
+       ],
+       "customfield_10645": null,
+       "customfield_10646": null,
+       "customfield_10261": null
+      }
+     },
+     {
+      "key": "TRM-161",
+      "fields": {
+       "summary": "Aboz Nisidenihoj Atubofem Hidosenif",
+       "status": {
+        "name": "Done",
+        "statusCategory": {
+         "key": "done"
+        }
+       },
+       "assignee": {
+        "displayName": "Imogen Colby"
+       },
+       "issuelinks": [],
+       "customfield_10149": "{\"start\": \"2026-09-15\", \"end\": \"2026-09-15\"}",
+       "customfield_10148": "{\"start\": \"2026-08-01\", \"end\": \"2026-08-01\"}",
+       "customfield_10156": [
+        {
+         "value": "Systems"
+        }
+       ],
+       "customfield_10139": {
+        "value": "Done"
+       },
+       "customfield_10153": "Aromug a aboz nisidenihoj atubofem for nonopilud petuz.",
+       "customfield_10143": [
+        {
+         "value": "Technology"
+        }
+       ],
+       "customfield_10645": null,
+       "customfield_10646": null,
+       "customfield_10261": null
+      }
+     },
+     {
+      "key": "TRM-315",
+      "fields": {
+       "summary": "Ulotedena Enterprise AI Icac Asedolisat",
+       "status": {
+        "name": "Discovery",
+        "statusCategory": {
+         "key": "new"
+        }
+       },
+       "assignee": {
+        "displayName": "Bodie Delaney"
+       },
+       "issuelinks": [],
+       "customfield_10149": "{\"start\": \"2026-09-01\", \"end\": \"2026-09-30\"}",
+       "customfield_10148": "{\"start\": \"2026-08-01\", \"end\": \"2026-08-31\"}",
+       "customfield_10156": [
+        {
+         "value": "Systems"
+        }
+       ],
+       "customfield_10139": {
+        "value": "Done"
+       },
+       "customfield_10153": "Tat the asedolisat for enterprise AI icac ice.",
+       "customfield_10143": [
+        {
+         "value": "Technology"
+        }
+       ],
+       "customfield_10645": null,
+       "customfield_10646": null,
+       "customfield_10261": null
+      }
+     },
+     {
+      "key": "TRM-331",
+      "fields": {
+       "summary": "ELU in DanUcip",
+       "status": {
+        "name": "Done",
+        "statusCategory": {
+         "key": "done"
+        }
+       },
+       "assignee": {
+        "displayName": "Avery Caldwell"
+       },
+       "issuelinks": [],
+       "customfield_10149": "{\"start\": \"2026-10-20\", \"end\": \"2026-10-20\"}",
+       "customfield_10148": "{\"start\": \"2026-06-23\", \"end\": \"2026-06-23\"}",
+       "customfield_10156": [
+        {
+         "value": "Systems"
+        }
+       ],
+       "customfield_10139": {
+        "value": "Done"
+       },
+       "customfield_10153": "Lejosela and pajefin up the ELU icac in DanUcip for Arumazoka to onip ELU gezigatik to fiseloke.",
+       "customfield_10143": [
+        {
+         "value": "Technology"
+        }
+       ],
+       "customfield_10645": null,
+       "customfield_10646": null,
+       "customfield_10261": null
+      }
+     },
+     {
+      "key": "TRM-382",
+      "fields": {
+       "summary": "Usigut KusukOja Odid for Q3",
+       "status": {
+        "name": "Done",
+        "statusCategory": {
+         "key": "done"
+        }
+       },
+       "assignee": {
+        "displayName": "Bodie Delaney"
+       },
+       "issuelinks": [],
+       "customfield_10149": "{\"start\": \"2026-10-13\", \"end\": \"2026-10-13\"}",
+       "customfield_10148": "{\"start\": \"2026-09-14\", \"end\": \"2026-09-14\"}",
+       "customfield_10156": [
+        {
+         "value": "Systems"
+        }
+       ],
+       "customfield_10139": {
+        "value": "Done"
+       },
+       "customfield_10153": "Usigut the Kusukoja Odid for Q3",
+       "customfield_10143": [
+        {
+         "value": "Technology"
+        }
+       ],
+       "customfield_10645": null,
+       "customfield_10646": null,
+       "customfield_10261": null
+      }
+     },
+     {
+      "key": "TRM-394",
+      "fields": {
+       "summary": "Q4 2026 Tijodetiha Tugumu",
+       "status": {
+        "name": "Done",
+        "statusCategory": {
+         "key": "done"
+        }
+       },
+       "assignee": {
+        "displayName": "Ellery Yardley"
+       },
+       "issuelinks": [],
+       "customfield_10149": "{\"start\": \"2026-10-05\", \"end\": \"2026-10-05\"}",
+       "customfield_10148": "{\"start\": \"2026-10-01\", \"end\": \"2026-10-01\"}",
+       "customfield_10156": [
+        {
+         "value": "Systems"
+        }
+       ],
+       "customfield_10139": {
+        "value": "Done"
+       },
+       "customfield_10153": "Edekuva the tezimil ekusidize tijodetiha tugumu to PIM so they can ninikomerup to anomohet rur duni to misekekad heti kalomahe.",
+       "customfield_10143": [
+        {
+         "value": "Technology"
+        }
+       ],
+       "customfield_10645": null,
+       "customfield_10646": null,
+       "customfield_10261": null
+      }
+     },
+     {
+      "key": "TRM-398",
+      "fields": {
+       "summary": "Ipifira-Bukinoko Arekezu for Izubur 26",
+       "status": {
+        "name": "Done",
+        "statusCategory": {
+         "key": "done"
+        }
+       },
+       "assignee": {
+        "displayName": "Treadwell Cassidy"
+       },
+       "issuelinks": [
+        {
+         "type": {
+          "name": "Polaris work item link"
+         },
+         "outwardIssue": {
+          "key": "SUP-1362",
+          "fields": {
+           "status": {
+            "name": "Canceled",
+            "statusCategory": {
+             "key": "done"
+            }
+           }
+          }
+         }
+        },
+        {
+         "type": {
+          "name": "Polaris work item link"
+         },
+         "outwardIssue": {
+          "key": "TT-1358",
+          "fields": {
+           "status": {
+            "name": "Done",
+            "statusCategory": {
+             "key": "done"
+            }
+           }
+          }
+         }
+        },
+        {
+         "type": {
+          "name": "Polaris work item link"
+         },
+         "outwardIssue": {
+          "key": "SUP-1368",
+          "fields": {
+           "status": {
+            "name": "Resolved",
+            "statusCategory": {
+             "key": "done"
+            }
+           }
+          }
+         }
+        },
+        {
+         "type": {
+          "name": "Polaris work item link"
+         },
+         "outwardIssue": {
+          "key": "TT-1359",
+          "fields": {
+           "status": {
+            "name": "Done",
+            "statusCategory": {
+             "key": "done"
+            }
+           }
+          }
+         }
+        }
+       ],
+       "customfield_10149": "{\"start\": \"2026-10-01\", \"end\": \"2026-10-01\"}",
+       "customfield_10148": "{\"start\": \"2026-09-03\", \"end\": \"2026-09-03\"}",
+       "customfield_10156": [
+        {
+         "value": "Systems"
+        }
+       ],
+       "customfield_10139": {
+        "value": "Done"
+       },
+       "customfield_10153": "Bukinoko arekezu for Izubur Dunoret that imeharak Ipifira-Javun javaf etonur of Ipifira Duremasu; and netebojup for nubim odalupo anic into DanUcip.",
+       "customfield_10143": [
+        {
+         "value": "Technology"
+        }
+       ],
+       "customfield_10645": null,
+       "customfield_10646": null,
+       "customfield_10261": null
+      }
+     },
+     {
+      "key": "TRM-399",
+      "fields": {
+       "summary": "Lufi-HS-Umam R1.11",
+       "status": {
+        "name": "Done",
+        "statusCategory": {
+         "key": "done"
+        }
+       },
+       "assignee": {
+        "displayName": "Ellery Yardley"
+       },
+       "issuelinks": [
+        {
+         "type": {
+          "name": "Polaris work item link"
+         },
+         "outwardIssue": {
+          "key": "DVR-150",
+          "fields": {
+           "status": {
+            "name": "Complete",
+            "statusCategory": {
+             "key": "done"
+            }
+           }
+          }
+         }
+        }
+       ],
+       "customfield_10149": "{\"start\": \"2026-10-13\", \"end\": \"2026-10-13\"}",
+       "customfield_10148": "{\"start\": \"2026-09-23\", \"end\": \"2026-09-23\"}",
+       "customfield_10156": [
+        {
+         "value": "Systems"
+        }
+       ],
+       "customfield_10139": {
+        "value": "Done"
+       },
+       "customfield_10153": "Update to the Lufi-HS-Umam to tat \"Opimap Vapuzogu\" Ipifira Anedihura Ugisi",
+       "customfield_10143": [
+        {
+         "value": "Technology"
+        }
+       ],
+       "customfield_10645": null,
+       "customfield_10646": null,
+       "customfield_10261": null
+      }
+     },
+     {
+      "key": "TRM-403",
+      "fields": {
+       "summary": "Ekicod KusukOja Calendar",
+       "status": {
+        "name": "Done",
+        "statusCategory": {
+         "key": "done"
+        }
+       },
+       "assignee": {
+        "displayName": "Bodie Delaney"
+       },
+       "issuelinks": [],
+       "customfield_10149": "{\"start\": \"2026-10-13\", \"end\": \"2026-10-13\"}",
+       "customfield_10148": "{\"start\": \"2026-10-01\", \"end\": \"2026-10-01\"}",
+       "customfield_10156": null,
+       "customfield_10139": {
+        "value": "Done"
+       },
+       "customfield_10153": "Anorasur an Ekicod calendar for Ivuzocenuboka. Should iru out the kuhaleb/ekusidize amubun.",
+       "customfield_10143": [
+        {
+         "value": "Technology"
+        }
+       ],
+       "customfield_10645": null,
+       "customfield_10646": null,
+       "customfield_10261": null
+      }
+     },
+     {
+      "key": "TRM-441",
+      "fields": {
+       "summary": "Lufi R26.08.0",
+       "status": {
+        "name": "Done",
+        "statusCategory": {
+         "key": "done"
+        }
+       },
+       "assignee": {
+        "displayName": "Avery Caldwell"
+       },
+       "issuelinks": [],
+       "customfield_10149": "{\"start\": \"2026-10-15\", \"end\": \"2026-10-15\"}",
+       "customfield_10148": "{\"start\": \"2026-09-29\", \"end\": \"2026-09-29\"}",
+       "customfield_10156": [
+        {
+         "value": "Systems"
+        }
+       ],
+       "customfield_10139": {
+        "value": "Done"
+       },
+       "customfield_10153": "Famotat umoda for the 26.08.0 famotat that edufomeg on Thursday, October 15th. https://example.org/62e11ec729",
+       "customfield_10143": [
+        {
+         "value": "Technology"
+        }
+       ],
+       "customfield_10645": {
+        "value": "Planned"
+       },
+       "customfield_10646": {
+        "value": "Medium"
+       },
+       "customfield_10261": null
+      }
+     }
+    ]
+   },
+   "isLast": true
+  }
+ ]
+}

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>__TITLE__</title>
+<style>
+@font-face{font-family:'Lora';font-weight:400;font-style:normal;src:url(data:font/ttf;base64,__LORA__) format('truetype');}
+@font-face{font-family:'Mulish';font-weight:400;src:url(data:font/ttf;base64,__MUL400__) format('truetype');}
+@font-face{font-family:'Mulish';font-weight:600;src:url(data:font/ttf;base64,__MUL600__) format('truetype');}
+@font-face{font-family:'Mulish';font-weight:700;src:url(data:font/ttf;base64,__MUL700__) format('truetype');}
+@font-face{font-family:'Mulish';font-weight:800;src:url(data:font/ttf;base64,__MUL800__) format('truetype');}
+/*__PALETTE__*/
+/*__BASE_CSS__*/
+/*__LEDGER_CSS__*/
+/* archive report */
+.glyph.good{color:var(--legacy);}
+.detail col.c-id{width:84px}.detail col.c-rm{width:120px}.detail col.c-st{width:150px}.detail col.c-as{width:140px}.detail col.c-tg{width:104px}.detail col.c-up{width:104px}.detail col.c-qa{width:80px}
+.detail td{overflow-wrap:anywhere;}
+.sub{display:block;font-size:12px;color:var(--ink-soft);white-space:nowrap;}
+.open{color:var(--risk);font-weight:700;}
+.qa{flex-wrap:nowrap;}
+details.moving > summary{list-style:none;}
+details.moving > summary::-webkit-details-marker{display:none;}
+details.moving > summary .section-heading{display:inline;}
+details.moving > summary::after{content:"Show";margin-left:10px;font-size:12px;color:var(--ink-soft);text-decoration:underline;}
+details.moving[open] > summary::after{content:"Hide";}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<!--__SPRITE__-->
+</defs></svg>
+
+<header class="band wash"><div class="inner">
+  <p class="eyebrow" id="eyebrow"></p>
+  <h1 class="headline" id="headline"></h1>
+  <p class="subhead" id="subhead"></p>
+  <p class="section-cap" id="concluding" style="margin-bottom:0"></p>
+</div></header>
+
+<section class="band base"><div class="inner">
+  <h2 class="section-heading">QA checks</h2>
+  <p class="section-cap">Select a check or an owner to filter the tables below. Every archived idea is listed, concluded ones included.</p>
+  <div class="ledger" id="ledger"></div>
+  <div class="split"><h2 class="section-heading">By owner</h2><div class="table-wrap"><table class="owners" id="owners"></table></div></div>
+</div></section>
+
+<main class="band base"><div class="inner">
+  <div class="filterbar" id="filterbar"><span id="filtertext"></span><button type="button" id="clearfilter">Clear filter</button></div>
+  <div id="sections"></div>
+</div></main>
+
+<section class="band wash"><div class="inner">
+  <details><summary>Design notes</summary><dl class="spec" id="spec"></dl></details>
+  <p class="foot" style="margin-top:24px" id="source"></p>
+</div></section>
+
+<script>
+const DATA = __DATA__;
+const CHECKS = DATA.checks;
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const glyph=(id,cls='',title='')=>`<svg class="glyph ${cls}" role="img" aria-label="${esc(title)}"><title>${esc(title)}</title><use href="#g-${id}"/></svg>`;
+const roleCls=c=>c.role==='ink'?'':c.role;
+const items=DATA.items;
+
+document.getElementById('eyebrow').textContent=DATA.eyebrow;
+document.getElementById('headline').textContent=DATA.headline;
+document.getElementById('subhead').textContent=DATA.subhead;
+document.getElementById('concluding').textContent=DATA.concludingText;
+document.getElementById('source').textContent=DATA.sourceLine;
+
+let filter=null;
+function setFilter(f){filter=(filter&&f&&filter.type===f.type&&filter.value===f.value)?null:f;render();}
+document.getElementById('clearfilter').addEventListener('click',()=>{filter=null;render();});
+const matches=i=>!filter||(filter.type==='qa'?i.qa[filter.value]:i.assignee===filter.value);
+
+function renderLedger(){
+  const el=document.getElementById('ledger');
+  el.innerHTML=CHECKS.map(c=>{const n=c.count,pct=items.length?Math.round(n/items.length*100):0,on=filter&&filter.type==='qa'&&filter.value===c.id;
+    return `<button type="button" aria-pressed="${!!on}" data-qa="${esc(c.id)}"><span class="top">${glyph(c.id,roleCls(c),c.name)}<span class="n">${n}</span><span class="of">of ${items.length}</span></span><span class="name">${esc(c.name)}</span><span class="rule">${esc(c.rule)}</span><span class="bar ${c.role==='risk'?'risk':''}"><i style="width:${pct}%"></i></span></button>`;}).join('');
+  el.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>setFilter({type:'qa',value:b.dataset.qa})));
+}
+function renderOwners(){
+  const cols=DATA.ownerColumns;
+  const cell=(k,n)=>`<td class="num ${n?(k==='archived'?'':'riskn'):'zero'}">${n}</td>`;
+  document.getElementById('owners').innerHTML=`<thead><tr><th>Owner</th>${cols.map(([k,l])=>`<th class="num">${esc(l)}</th>`).join('')}</tr></thead><tbody>`+
+    DATA.owners.map(o=>{const on=filter&&filter.type==='owner'&&filter.value===o.name;
+      return `<tr class="clickable" tabindex="0" aria-pressed="${!!on}" data-owner="${esc(o.name)}"><td><b>${esc(o.name)}</b></td>${cols.map(([k])=>cell(k,o[k])).join('')}</tr>`;}).join('')+'</tbody>';
+  document.querySelectorAll('#owners tr.clickable').forEach(tr=>{const go=()=>setFilter({type:'owner',value:tr.dataset.owner});tr.addEventListener('click',go);tr.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});});
+}
+function qaCell(i){
+  const out=CHECKS.filter(c=>i.qa[c.id]).map(c=>glyph(c.id,roleCls(c),i.qaTips[c.id]||c.name));
+  return `<div class="qa">${out.length?out.join(''):'<span class="muted">Clear</span>'}</div>`;
+}
+function row(i){
+  return `<tr id="row-${esc(i.key)}"><td><a class="key" href="${esc(i.url)}" target="_blank" rel="noopener">${esc(i.key)}</a></td>
+    <td><span class="sum">${esc(i.summary)}</span></td>
+    <td>${i.roadmap?`<span class="${i.roadmapOpen?'open':''}">${esc(i.roadmap)}</span>`:`<span class="${i.roadmapOpen?'open':'muted'}">Empty</span>`}</td>
+    <td><span class="${i.statusOpen?'open':''}">${esc(i.status)}</span><span class="sub">${esc(i.statusCategory)}</span></td>
+    <td>${i.assignee==='Unassigned'?'<span class="muted">Unassigned</span>':esc(i.assignee)}</td>
+    <td><span class="date">${i.target?esc(i.target):'<span class="muted">None</span>'}</span></td>
+    <td><span class="date">${esc(i.updated)}</span></td>
+    <td>${qaCell(i)}</td></tr>`;
+}
+function table(arr){return `<div class="table-wrap"><table class="detail"><colgroup><col class="c-id"><col class="c-sum"><col class="c-rm"><col class="c-st"><col class="c-as"><col class="c-tg"><col class="c-up"><col class="c-qa"></colgroup>
+  <thead><tr><th>ID</th><th>Summary</th><th>Roadmap</th><th>Status</th><th>Assignee</th><th>Target</th><th>Last update</th><th>QA</th></tr></thead><tbody>${arr.map(row).join('')}</tbody></table></div>`;}
+function renderSections(){
+  const host=document.getElementById('sections'); let shown=0;
+  host.innerHTML=DATA.sections.map(sec=>{const arr=items.filter(i=>i.section===sec.id&&matches(i)); shown+=arr.length; if(!arr.length) return '';
+    const head=`<h2 class="section-heading">${esc(sec.title)} (${arr.length})</h2>`;
+    if(sec.collapsed&&!filter) return `<div class="section"><details class="moving"><summary>${head}</summary><p class="section-cap" style="margin-top:6px">${esc(sec.cap)}</p>${table(arr)}</details></div>`;
+    return `<div class="section">${head}<p class="section-cap">${esc(sec.cap)}</p>${table(arr)}</div>`;}).join('')||'<p class="section-cap">No ideas match this filter.</p>';
+  const fb=document.getElementById('filterbar');
+  if(filter){const label=filter.type==='qa'?CHECKS.find(c=>c.id===filter.value).name:filter.value;document.getElementById('filtertext').innerHTML=`Showing ${shown} idea${shown===1?'':'s'}: <b>${esc(label)}</b>`;fb.classList.add('on');} else fb.classList.remove('on');
+}
+function render(){renderLedger();renderOwners();renderSections();}
+render();
+
+document.getElementById('spec').innerHTML=DATA.spec.map(([a,b])=>`<dt>${esc(a)}</dt><dd>${esc(b)}</dd>`).join('');
+</script>
+</body>
+</html>

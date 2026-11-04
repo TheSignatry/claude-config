@@ -1,0 +1,20 @@
+{
+  "owner": {
+    "first_name": "Example",
+    "full_name": "Example Owner",
+    "email": "owner@example.org"
+  },
+  "team": [
+    {
+      "name": "Emery Example",
+      "email": "emery@example.org"
+    }
+  ],
+  "jira_workspaces": {
+    "product": [
+      "TRM"
+    ],
+    "support": [],
+    "work": []
+  }
+}

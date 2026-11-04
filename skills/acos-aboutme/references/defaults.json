@@ -2,17 +2,1036 @@
   "_comment": "Org-wide acos defaults, shipped with acos-aboutme. Every value here is the same for everyone in the organization, so it lives in one shipped file rather than being copied into each person's state/profile.json. Consuming skills load this first, then overlay the profile: any key the profile sets wins, anything it omits falls back here. That means a profile written before a default existed still gets it, which is the failure this file exists to prevent — functional_area_keyword_patterns moved into the profile schema in acos-aboutme 0.4 and every profile created before that silently lost Functional Area tagging, with no error.",
   "defaults_version": 1,
   "jira_workspaces": {
-    "_comment": "cloud_id is the one Jira Cloud site the whole organization shares. product_fields are Jira Product Discovery custom-field IDs, which are assigned per site, so they are correct for every project on that site and meaningless on another. upcoming_window_days is a starting default a person may override in their own profile.",
+    "_comment": "cloud_id is the one Jira Cloud site the whole organization shares. product_fields are Jira Product Discovery custom-field IDs, which are assigned per site, so they are correct for every project on that site and meaningless on another. upcoming_window_days is a starting default a person may override in their own profile. product_qa configures the Product QA report; a profile may override any key, and a list (such as checks) replaces the shared one wholesale. support_fields are the site's Jira Service Management custom-field IDs; support_qa configures the Support QA report. support_qa.timezone is the org default for day counts; a person's owner.timezone wins. work_fields are custom-field IDs used by the Work Boards QA report; work_qa configures it. focus configures the Personal Focus dashboard (the owner's own items).",
     "cloud_id": "signatry1.atlassian.net",
     "upcoming_window_days": 14,
     "product_fields": {
       "project_target": "customfield_10149",
+      "project_start": "customfield_10148",
       "product_area": "customfield_10156",
       "roadmap": "customfield_10139",
+      "short_description": "customfield_10153",
+      "teams": "customfield_10143",
+      "commitment_level": "customfield_10645",
+      "tshirt_size": "customfield_10646",
+      "idea_archived": "customfield_10261",
       "roadmap_exclude": [
         "Done",
-        "Parking Lot"
+        "Parking Lot",
+        "Merged"
       ]
+    },
+    "support_fields": {
+      "request_type": "customfield_10022",
+      "pending_reason": "customfield_10099",
+      "urgency": "customfield_10098",
+      "software_affected": "customfield_10195",
+      "system_data_source": "customfield_10196",
+      "time_to_resolution": "customfield_10105",
+      "time_to_first_response": "customfield_10106",
+      "timely_updates": "customfield_10360",
+      "date_of_first_response": "customfield_10017"
+    },
+    "work_fields": {
+      "give_ticket_id": "customfield_10071",
+      "priority_ranking": "customfield_10070",
+      "ge_type": "customfield_10067",
+      "flagged": "customfield_10024",
+      "start_date": "customfield_10014"
+    },
+    "product_qa": {
+      "_comment": "Product QA report config. Checks run in listed order; only failing checks render in a row's QA cell. Field keys refer to jira_workspaces.product_fields.",
+      "horizon_days": 30,
+      "chart_lookback_days": 22,
+      "qa_roadmap_exclude": [
+        "Done",
+        "Parking Lot",
+        "Won't do",
+        "Merged"
+      ],
+      "exclude_from_qa": {
+        "archived": true,
+        "roadmap_values": [
+          "Done",
+          "Merged"
+        ],
+        "status_categories": [
+          "done"
+        ]
+      },
+      "started_statuses": [
+        "In Progress",
+        "Quality Review"
+      ],
+      "delivery_link_types": [
+        "Polaris work item link",
+        "Discovery - Connected"
+      ],
+      "date_format": "dd MMM yyyy",
+      "checks": [
+        {
+          "id": "od",
+          "enabled": true,
+          "name": "Overdue",
+          "rule": "Project target end is before today.",
+          "type": "date_before_today",
+          "field": "project_target",
+          "part": "end",
+          "color_role": "risk",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"8\" cy=\"8.6\" r=\"5.9\"/><path d=\"M8 5.6v3.2l2.3 1.4\"/><path d=\"M6.4 1.6h3.2\"/></g>"
+        },
+        {
+          "id": "sd",
+          "enabled": true,
+          "name": "No short description",
+          "rule": "Idea short description is empty.",
+          "type": "empty",
+          "field": "short_description",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"><path d=\"M2.5 4h11\"/><path d=\"M2.5 8h11\"/><path d=\"M2.5 12h4\"/><path d=\"M9.5 12h.01M12 12h.01\" stroke-width=\"2\"/></g>"
+        },
+        {
+          "id": "dt",
+          "enabled": true,
+          "name": "Imprecise dates",
+          "rule": "Project start or target is a range, not one day.",
+          "type": "exact_date",
+          "fields": [
+            "project_start",
+            "project_target"
+          ],
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"2\" y=\"3.2\" width=\"12\" height=\"10.8\" rx=\"1.6\"/><path d=\"M2 6.6h12\"/><path d=\"M5.2 1.6v3M10.8 1.6v3\"/><path d=\"M4.9 10.4c1-.9 2.1-.9 3.1 0s2.1.9 3.1 0\"/></g>"
+        },
+        {
+          "id": "pa",
+          "enabled": true,
+          "name": "No product area",
+          "rule": "Product Area is empty.",
+          "type": "empty",
+          "field": "product_area",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M8.7 2H14v5.3l-6.6 6.6a1 1 0 0 1-1.4 0L2.1 10a1 1 0 0 1 0-1.4z\"/></g><circle cx=\"11.3\" cy=\"4.7\" r=\"1.1\" fill=\"currentColor\"/>"
+        },
+        {
+          "id": "tm",
+          "enabled": true,
+          "name": "No team",
+          "rule": "Teams is empty.",
+          "type": "empty",
+          "field": "teams",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"6\" cy=\"5.4\" r=\"2.4\"/><path d=\"M1.6 14c0-2.6 2-4.4 4.4-4.4s4.4 1.8 4.4 4.4\"/><path d=\"M10.6 3.3a2.2 2.2 0 0 1 0 4.3\"/><path d=\"M12.2 9.9c1.4.5 2.3 2 2.3 3.9\"/></g>"
+        },
+        {
+          "id": "cl",
+          "enabled": true,
+          "name": "No commitment level",
+          "rule": "Commitment Level is empty.",
+          "type": "empty",
+          "field": "commitment_level",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3.5 14.4V2\"/><path d=\"M3.5 2.6h8.8l-1.9 3.2 1.9 3.2H3.5\"/></g>"
+        },
+        {
+          "id": "ts",
+          "enabled": true,
+          "name": "No T-shirt size",
+          "rule": "T-Shirt Size is empty.",
+          "type": "empty",
+          "field": "tshirt_size",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5.6 2.2 1.8 4.4l1.5 3 1.6-.8V14h6.2V6.6l1.6.8 1.5-3-3.8-2.2c-.4 1.2-1.3 1.9-2.4 1.9S6 3.4 5.6 2.2z\"/></g>"
+        },
+        {
+          "id": "dl",
+          "enabled": true,
+          "name": "No delivery tickets",
+          "rule": "No linked delivery work items.",
+          "type": "no_delivery_links",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M7.2 4.6l1.5-1.5a2.8 2.8 0 0 1 4 4l-1.5 1.5\"/><path d=\"M8.8 11.4l-1.5 1.5a2.8 2.8 0 0 1-4-4l1.5-1.5\"/><path d=\"M2.2 4.2l1.6.6M4.2 2.2l.6 1.6M13.8 11.8l-1.6-.6M11.8 13.8l-.6-1.6\"/></g>"
+        }
+      ],
+      "rewrite_rules": {
+        "_comment": "Codified 'Needs a rewrite' rules for short descriptions that exist but won't hold up. Each enabled rule that fires adds one reason.",
+        "min_words": {
+          "enabled": true,
+          "value": 8,
+          "message": "Too short to stand on its own ({n} words)."
+        },
+        "repeated_word": {
+          "enabled": true,
+          "message": "Repeated word: “{match}.”"
+        },
+        "misspellings": {
+          "enabled": true,
+          "message": "Typo: “{word}” should be “{fix}.”",
+          "map": {
+            "usefullness": "usefulness",
+            "enterprize": "enterprise",
+            "recieve": "receive",
+            "seperate": "separate",
+            "occured": "occurred",
+            "accomodate": "accommodate",
+            "definately": "definitely",
+            "managment": "management",
+            "enviroment": "environment",
+            "calender": "calendar"
+          }
+        },
+        "relative_date": {
+          "enabled": true,
+          "message": "Uses a relative date (“{match}”) that goes stale.",
+          "patterns": [
+            "\\bthe \\d{1,2}(st|nd|rd|th)\\b(?! of (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec))",
+            "\\b(next|last|this) (week|month|quarter|monday|tuesday|wednesday|thursday|friday)\\b",
+            "\\b(tomorrow|yesterday|today)\\b"
+          ]
+        },
+        "list_fragment": {
+          "enabled": true,
+          "min_segments": 3,
+          "max_words_per_segment": 4,
+          "message": "Reads as a list of workstreams, not a description of the outcome."
+        },
+        "aux_plus_base_verb": {
+          "enabled": true,
+          "message": "Likely grammar slip: “{match}.”",
+          "pattern": "\\b(we|they|I|you)\\s+(are|is|am|was|were)\\s+(refresh|update|build|create|implement|migrate|deploy|review|replace|move|setup|install)\\b"
+        },
+        "no_outcome_cue": {
+          "enabled": true,
+          "applies_to": "featured_or_overdue",
+          "message": "No outcome or success criterion stated.",
+          "cues": [
+            "so that",
+            "in order to",
+            "to enable",
+            "enable",
+            "reduce",
+            "improve",
+            "increase",
+            "eliminate",
+            "ensure",
+            "allow",
+            "replace",
+            "%",
+            "by "
+          ]
+        },
+        "featured_suffix": " Featured on {agenda}."
+      },
+      "palette": {
+        "_comment": "Hex values from signatry-brand-core. Light / dark pairs.",
+        "ink": [
+          "#17242a",
+          "#eef5f5"
+        ],
+        "ink_soft": [
+          "#747c7f",
+          "#a9b4b7"
+        ],
+        "ink_grey": [
+          "#a2a7aa",
+          "#7d8a8e"
+        ],
+        "hairline": [
+          "#d1d3d4",
+          "#2f4148"
+        ],
+        "wash": [
+          "#f4f8f8",
+          "#1d2e35"
+        ],
+        "bg": [
+          "#ffffff",
+          "#17242a"
+        ],
+        "accent": [
+          "#d77900",
+          "#fbb03b"
+        ],
+        "risk": [
+          "#8a1e41",
+          "#fd4a5c"
+        ],
+        "legacy": [
+          "#2b7a78",
+          "#3aafa9"
+        ],
+        "highlight": [
+          "#fef7eb",
+          "#2b3426"
+        ],
+        "runway_overdue": [
+          "#fbb03b",
+          "#fbb03b"
+        ],
+        "runway_in_flight": [
+          "#2b7a78",
+          "#3aafa9"
+        ],
+        "runway_not_started": [
+          "#a2a7aa",
+          "#6f7d82"
+        ],
+        "runway_delivered": [
+          "#17242a",
+          "#def2f1"
+        ],
+        "runway_today": [
+          "#d77900",
+          "#eef5f5"
+        ]
+      }
+    },
+    "archive_qa": {
+      "_comment": "Archive QA report config. Every archived idea in the product group should rest in a concluding Roadmap value and a concluding status category. {values} in a rule is filled from the matching list. Colors come from product_qa.palette.",
+      "concluding_roadmap": [
+        "Done",
+        "Won't do",
+        "Merged"
+      ],
+      "concluding_status_categories": [
+        "done"
+      ],
+      "checks": [
+        {
+          "id": "rm",
+          "enabled": true,
+          "name": "Roadmap not concluded",
+          "rule": "Roadmap is empty, or not {values}.",
+          "type": "roadmap_not_concluding",
+          "color_role": "risk",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3.5 14.5V1.8\"/><path d=\"M3.5 2.4h8.7l-2.2 3 2.2 3H3.5\"/></g>"
+        },
+        {
+          "id": "so",
+          "enabled": true,
+          "name": "Status still open",
+          "rule": "Status is not in a {values} category.",
+          "type": "status_not_concluding",
+          "color_role": "risk",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M13.2 8A5.2 5.2 0 1 1 8 2.8\"/><path d=\"M8 5.4V8l1.8 1.8\"/></g>"
+        }
+      ]
+    },
+    "support_qa": {
+      "_comment": "Support QA report config. Checks run in listed order; only failing checks render in a row's QA cell. Field keys refer to jira_workspaces.support_fields.",
+      "stale_days": 14,
+      "customer_quiet_days": 14,
+      "customer_update_days": 30,
+      "enhancement_grace_days": 7,
+      "month_untouched_days": 30,
+      "enhancement_request_types": [
+        "Request an enhancement"
+      ],
+      "status_names": {
+        "waiting_on_us": [
+          "Waiting for support"
+        ],
+        "waiting_on_customer": [
+          "Waiting for customer"
+        ],
+        "pending": [
+          "Pending"
+        ]
+      },
+      "customer_update_statuses": [
+        "Waiting for support",
+        "Pending"
+      ],
+      "delivery_link_scope": "any_non_support",
+      "delivery_link_types": [],
+      "team_roster_sources": [
+        "staff",
+        "reports",
+        "team"
+      ],
+      "team_roster_include_assignees": true,
+      "aging_buckets": [
+        [
+          0,
+          7
+        ],
+        [
+          8,
+          14
+        ],
+        [
+          15,
+          30
+        ],
+        [
+          31,
+          60
+        ],
+        [
+          61,
+          90
+        ],
+        [
+          91,
+          180
+        ],
+        [
+          181,
+          null
+        ]
+      ],
+      "checks": [
+        {
+          "id": "st",
+          "enabled": true,
+          "name": "Stalled on us",
+          "rule": "Waiting for support with no update in 14+ days.",
+          "type": "stale_on_us",
+          "color_role": "risk",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 1.8h8M4 14.2h8\"/><path d=\"M4.8 1.8v2.4c0 1.6 3.2 2.6 3.2 3.8S4.8 10.2 4.8 11.8v2.4M11.2 1.8v2.4c0 1.6-3.2 2.6-3.2 3.8s3.2 2.2 3.2 3.8v2.4\"/><path d=\"M6.4 12.6h3.2\"/></g>"
+        },
+        {
+          "id": "cq",
+          "enabled": true,
+          "name": "Customer gone quiet",
+          "rule": "Waiting for customer for 14+ days.",
+          "type": "customer_quiet",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"1.8\" y=\"3.4\" width=\"12.4\" height=\"9.2\" rx=\"1.4\"/><path d=\"M2.2 4.2 8 8.6l5.8-4.4\"/></g>"
+        },
+        {
+          "id": "nu",
+          "enabled": true,
+          "name": "No customer update in 30 days",
+          "rule": "Waiting for support or Pending, and no team comment in 30+ days.",
+          "type": "no_team_comment",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2.2 3.6a1.4 1.4 0 0 1 1.4-1.4h8.8a1.4 1.4 0 0 1 1.4 1.4v6a1.4 1.4 0 0 1-1.4 1.4H7l-3.2 2.8V11h-.2a1.4 1.4 0 0 1-1.4-1.4z\"/><path d=\"M8 4.6v2.4\"/><path d=\"M8 9h.01\" stroke-width=\"2\"/></g>"
+        },
+        {
+          "id": "pl",
+          "enabled": true,
+          "name": "Pending, no link",
+          "rule": "Pending with no linked work on another board.",
+          "type": "pending_no_link",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M7.2 4.6l1.5-1.5a2.8 2.8 0 0 1 4 4l-1.5 1.5\"/><path d=\"M8.8 11.4l-1.5 1.5a2.8 2.8 0 0 1-4-4l1.5-1.5\"/><path d=\"M2.2 4.2l1.6.6M4.2 2.2l.6 1.6M13.8 11.8l-1.6-.6M11.8 13.8l-.6-1.6\"/></g>"
+        },
+        {
+          "id": "pr",
+          "enabled": true,
+          "name": "Pending, no reason",
+          "rule": "Pending with Pending reason empty.",
+          "type": "pending_empty_field",
+          "field": "pending_reason",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"8\" cy=\"8\" r=\"6.2\"/><path d=\"M6.4 5.6v4.8M9.6 5.6v4.8\"/></g>"
+        },
+        {
+          "id": "lu",
+          "enabled": true,
+          "name": "Linked work unscheduled",
+          "rule": "Linked delivery work is still in a To Do category (Parking lot, To Do).",
+          "type": "linked_unscheduled",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"2\" y=\"2\" width=\"12\" height=\"12\" rx=\"2\"/><path d=\"M6.2 11.6V4.6h2.6a2.1 2.1 0 0 1 0 4.2H6.2\"/></g>"
+        },
+        {
+          "id": "en",
+          "enabled": true,
+          "name": "Enhancement not routed",
+          "rule": "“Request an enhancement” 7+ days old that isn’t Pending and linked.",
+          "type": "enhancement_not_routed",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5.8 11.2c0-1.4-2.3-2.6-2.3-5.1a4.5 4.5 0 0 1 9 0c0 2.5-2.3 3.7-2.3 5.1z\"/><path d=\"M6.2 13.4h3.6M6.8 15h2.4\"/></g>"
+        },
+        {
+          "id": "od",
+          "enabled": true,
+          "name": "Past due date",
+          "rule": "Due date is before today.",
+          "type": "due_before_today",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"2\" y=\"3.2\" width=\"12\" height=\"10.8\" rx=\"1.6\"/><path d=\"M2 6.6h12\"/><path d=\"M5.2 1.6v3M10.8 1.6v3\"/><path d=\"M8 8.6v2\"/><path d=\"M8 12.4h.01\" stroke-width=\"2\"/></g>"
+        },
+        {
+          "id": "rr",
+          "enabled": true,
+          "name": "Ready to resolve",
+          "rule": "Every linked delivery item is done.",
+          "type": "linked_all_done",
+          "color_role": "good",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"8\" cy=\"8\" r=\"6.2\"/><path d=\"M5.2 8.2l2 2 3.6-4\"/></g>"
+        }
+      ],
+      "verdicts": [
+        {
+          "id": "resolve",
+          "title": "Ready to resolve",
+          "when": [
+            "rr"
+          ],
+          "sort": "upd_days_desc",
+          "cap": "All linked delivery work is done; close the loop with the requester."
+        },
+        {
+          "id": "stalled",
+          "title": "Stalled on us",
+          "when": [
+            "st",
+            "nu@waiting_on_us"
+          ],
+          "sort": "upd_days_desc",
+          "cap": "Waiting for support with no update in 14+ days, or no team comment in 30+ days. Oldest update first."
+        },
+        {
+          "id": "quiet",
+          "title": "Customer gone quiet",
+          "when": [
+            "cq"
+          ],
+          "sort": "in_status_days_desc",
+          "cap": "Waiting for customer for 14+ days. Nudge once, then resolve per the auto-close policy. Longest wait first."
+        },
+        {
+          "id": "parked",
+          "title": "Pending without a clear path",
+          "when": [
+            "pl",
+            "pr",
+            "lu@pending"
+          ],
+          "sort": "in_status_days_desc",
+          "cap": "Pending, but missing a linked delivery ticket or a Pending reason, or the linked work is still unscheduled."
+        },
+        {
+          "id": "route",
+          "title": "Enhancements not routed",
+          "when": [
+            "en"
+          ],
+          "sort": "age_days_desc",
+          "cap": "Enhancement requests older than 7 days that aren’t yet Pending and linked to a delivery board."
+        },
+        {
+          "id": "ok",
+          "title": "Moving, or pending the right way",
+          "when": [
+            "*"
+          ],
+          "sort": "upd_days_desc",
+          "collapsed": true,
+          "cap": "Recently updated, or Pending with a reason and active linked work."
+        }
+      ],
+      "stuck_verdicts": [
+        "resolve",
+        "stalled",
+        "quiet",
+        "parked",
+        "route"
+      ],
+      "diagnostics": {
+        "sla_saturation_pct": 50,
+        "due_date_saturation_pct": 60,
+        "owner_concentration_pct": 40
+      },
+      "palette_extra": {
+        "_comment": "Aging-chart dot colors, light / dark. Shared tokens come from product_qa.palette.",
+        "dot_waiting_on_us": [
+          "#fbb03b",
+          "#fbb03b"
+        ],
+        "dot_waiting_on_customer": [
+          "#2b7a78",
+          "#3aafa9"
+        ],
+        "dot_pending_linked": [
+          "#a2a7aa",
+          "#6f7d82"
+        ],
+        "dot_pending_unlinked": [
+          "#8a1e41",
+          "#fd4a5c"
+        ],
+        "stale_line": [
+          "#d77900",
+          "#eef5f5"
+        ]
+      },
+      "timezone": "America/Chicago"
+    },
+    "work_qa": {
+      "_comment": "Work boards QA report config. One report across every key in jira_workspaces.work; board filter is client-side. Checks run in listed order; only failing checks render in a row's QA cell.",
+      "stale_days": 30,
+      "backlog_age_days": 180,
+      "backlog_untouched_days": 90,
+      "exclude_statuses": [
+        "Template"
+      ],
+      "blocked_statuses": [
+        "Blocked",
+        "On Hold"
+      ],
+      "idea_projects": [
+        "TRM"
+      ],
+      "vendors": {
+        "GE": {
+          "name": "Give Interactive",
+          "statuses": [
+            "Signatry Approved",
+            "Approved Proposal",
+            "Active Development",
+            "Future Consideration"
+          ],
+          "ticket_ref_field": "give_ticket_id",
+          "release_label_pattern": "^R(\\d{2})\\.(\\d{2})\\.\\d+$"
+        }
+      },
+      "board_names": {
+        "TT": "Technology Team",
+        "GE": "Give Enhancements",
+        "DVR": "DVR",
+        "HSER": "HSER",
+        "IL": "IL"
+      },
+      "team_roster_sources": [
+        "owner",
+        "staff",
+        "reports",
+        "team"
+      ],
+      "directory_check": {
+        "enabled": true,
+        "source": "slack",
+        "cache_days": 7
+      },
+      "aging_buckets": [
+        [
+          0,
+          30
+        ],
+        [
+          31,
+          90
+        ],
+        [
+          91,
+          180
+        ],
+        [
+          181,
+          365
+        ],
+        [
+          366,
+          null
+        ]
+      ],
+      "checks": [
+        {
+          "id": "cp",
+          "enabled": true,
+          "name": "Child of a closed parent",
+          "rule": "Open task or sub-task whose parent is Done.",
+          "type": "parent_closed",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"1.8\" y=\"1.8\" width=\"6.4\" height=\"5\" rx=\"1\"/><path d=\"M3.4 4.3l1 1 1.8-1.9\"/><path d=\"M5 6.8v4.4h3\"/><rect x=\"8\" y=\"9.2\" width=\"6.2\" height=\"4.4\" rx=\"1\"/></g>"
+        },
+        {
+          "id": "ic",
+          "enabled": true,
+          "name": "Delivery for a closed idea",
+          "rule": "Linked to a roadmap idea that’s Done or Canceled.",
+          "type": "linked_idea_closed",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5.8 11.2c0-1.4-2.3-2.6-2.3-5.1a4.5 4.5 0 0 1 9 0c0 2.5-2.3 3.7-2.3 5.1z\"/><path d=\"M6.2 13.4h3.6\"/><path d=\"M6.3 6.3l1.2 1.2 2.2-2.4\"/></g>"
+        },
+        {
+          "id": "ee",
+          "enabled": true,
+          "name": "Empty epic",
+          "rule": "Open epic with no open children.",
+          "type": "empty_epic",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9.2 1.8 3.6 9h4l-1 5.2L12.4 7h-4z\"/></g>"
+        },
+        {
+          "id": "si",
+          "enabled": true,
+          "name": "Stalled on us",
+          "rule": "Started, our move, no update in 30+ days.",
+          "type": "stale_ours",
+          "color_role": "risk",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 1.8h8M4 14.2h8\"/><path d=\"M4.8 1.8v2.4c0 1.6 3.2 2.6 3.2 3.8S4.8 10.2 4.8 11.8v2.4M11.2 1.8v2.4c0 1.6-3.2 2.6-3.2 3.8s3.2 2.2 3.2 3.8v2.4\"/><path d=\"M6.4 12.6h3.2\"/></g>"
+        },
+        {
+          "id": "bc",
+          "enabled": true,
+          "name": "Blocker cleared",
+          "rule": "“Is blocked by” an item that’s now Done.",
+          "type": "blocker_done",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"7.2\" width=\"10\" height=\"7\" rx=\"1.4\"/><path d=\"M5.4 7.2V5a2.6 2.6 0 0 1 5-1\"/><path d=\"M8 10v1.6\"/></g>"
+        },
+        {
+          "id": "ua",
+          "enabled": true,
+          "name": "Started, unassigned",
+          "rule": "Our move or vendor’s move with no assignee.",
+          "type": "unassigned_started",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"6.4\" cy=\"5.2\" r=\"2.6\"/><path d=\"M1.8 14c0-2.7 2-4.6 4.6-4.6 1 0 1.9.3 2.6.8\"/><path d=\"M11.4 9.6v4.4M9.2 11.8h4.4\"/></g>"
+        },
+        {
+          "id": "od",
+          "enabled": true,
+          "name": "Past due date",
+          "rule": "Due date is before today.",
+          "type": "due_before_today",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"2\" y=\"3.2\" width=\"12\" height=\"10.8\" rx=\"1.6\"/><path d=\"M2 6.6h12\"/><path d=\"M5.2 1.6v3M10.8 1.6v3\"/><path d=\"M8 8.6v2\"/><path d=\"M8 12.4h.01\" stroke-width=\"2\"/></g>"
+        },
+        {
+          "id": "rp",
+          "enabled": true,
+          "name": "Vendor release passed",
+          "rule": "With the vendor, tagged for a release before this month.",
+          "type": "vendor_release_passed",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M8 1.8 13.8 4.8v6.4L8 14.2 2.2 11.2V4.8z\"/><path d=\"M2.2 4.8 8 7.8l5.8-3M8 7.8v6.4\"/></g>"
+        },
+        {
+          "id": "vr",
+          "enabled": true,
+          "name": "No vendor ticket ID",
+          "rule": "With the vendor but the vendor ticket ID is empty.",
+          "type": "vendor_ref_missing",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M8.7 2H14v5.3l-6.6 6.6a1 1 0 0 1-1.4 0L2.1 10a1 1 0 0 1 0-1.4z\"/></g><circle cx=\"11.3\" cy=\"4.7\" r=\"1.1\" fill=\"currentColor\"/>"
+        },
+        {
+          "id": "bh",
+          "enabled": true,
+          "name": "Blocked or on hold",
+          "rule": "Status is Blocked or On Hold.",
+          "type": "blocked_status",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5.4 1.8h5.2l3.6 3.6v5.2l-3.6 3.6H5.4l-3.6-3.6V5.4z\"/><path d=\"M5.2 8h5.6\"/></g>"
+        },
+        {
+          "id": "fe",
+          "enabled": true,
+          "name": "Assignee not in directory",
+          "rule": "Assigned to someone not found in the Slack directory; likely a former employee.",
+          "type": "assignee_not_in_directory",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"6.4\" cy=\"5.2\" r=\"2.6\"/><path d=\"M1.8 14c0-2.7 2-4.6 4.6-4.6 1 0 1.9.3 2.6.8\"/><path d=\"M10.2 10.2l3.6 3.6M13.8 10.2l-3.6 3.6\"/></g>"
+        },
+        {
+          "id": "ot",
+          "enabled": true,
+          "name": "Assigned outside Technology",
+          "rule": "Assignee is active but not on the Technology roster.",
+          "type": "assignee_outside_roster",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"6.4\" cy=\"5.2\" r=\"2.6\"/><path d=\"M1.8 14c0-2.7 2-4.6 4.6-4.6 1 0 1.9.3 2.6.8\"/><path d=\"M10 12h4.2M12.4 10.2l1.8 1.8-1.8 1.8\"/></g>"
+        },
+        {
+          "id": "br",
+          "enabled": true,
+          "name": "Backlog rot",
+          "rule": "To Do, 180+ days old, untouched for 90+ days.",
+          "type": "backlog_rot",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"1.8\" y=\"2.6\" width=\"12.4\" height=\"3.4\" rx=\"1\"/><path d=\"M2.8 6v6.4a1 1 0 0 0 1 1h8.4a1 1 0 0 0 1-1V6\"/><path d=\"M6.4 8.8h3.2\"/></g>"
+        }
+      ],
+      "verdicts": [
+        {
+          "id": "close",
+          "title": "Close the loop",
+          "when": [
+            "cp",
+            "ic",
+            "ee"
+          ],
+          "cap": "The parent or roadmap idea is already closed, or the epic has nothing open under it. Usually a quick close."
+        },
+        {
+          "id": "vendor_risk",
+          "title": "Vendor commitments at risk",
+          "when": [
+            "rp",
+            "vr"
+          ],
+          "cap": "With the vendor and past the release it was tagged for, or missing the vendor’s ticket ID."
+        },
+        {
+          "id": "reassign",
+          "title": "Reassign",
+          "when": [
+            "fe",
+            "ot"
+          ],
+          "sort": "assignee_then_upd_desc",
+          "cap": "Assigned to someone who has likely left, or to someone outside the Technology team. Confirm the owner, then reassign or close."
+        },
+        {
+          "id": "blocked",
+          "title": "Blocked",
+          "when": [
+            "bh",
+            "bc"
+          ],
+          "cap": "Status is Blocked or On Hold, or the issue it was blocked by is now done."
+        },
+        {
+          "id": "stalled",
+          "title": "Stalled on us",
+          "when": [
+            "si@ours",
+            "ua@ours",
+            "od@ours"
+          ],
+          "cap": "Started, our move, and no update in 30+ days, past due, or unassigned. Oldest update first."
+        },
+        {
+          "id": "groom",
+          "title": "Backlog to groom",
+          "when": [
+            "br@backlog",
+            "od@backlog"
+          ],
+          "collapsed": true,
+          "cap": "To Do items that are 180+ days old and untouched for 90+, or past their due date. Candidates to archive or reschedule."
+        },
+        {
+          "id": "ok",
+          "title": "No issues found",
+          "when": [
+            "*"
+          ],
+          "collapsed": true,
+          "cap": "Moving, or with the vendor and inside its release window."
+        }
+      ],
+      "palette_extra": {
+        "board_TT": [
+          "#2b7a78",
+          "#3aafa9"
+        ],
+        "board_GE": [
+          "#fbb03b",
+          "#fbb03b"
+        ],
+        "board_DVR": [
+          "#17242a",
+          "#def2f1"
+        ],
+        "board_HSER": [
+          "#fd4a5c",
+          "#fd4a5c"
+        ],
+        "board_IL": [
+          "#a2a7aa",
+          "#6f7d82"
+        ],
+        "board_default": [
+          "#747c7f",
+          "#a9b4b7"
+        ],
+        "stale_line": [
+          "#d77900",
+          "#eef5f5"
+        ]
+      }
+    },
+    "focus": {
+      "_comment": "Personal focus dashboard config. Items assigned to the profile owner across every key in jira_workspaces.product, support, and work.",
+      "next_moves_count": 8,
+      "timeline_months": 3,
+      "timeline_start": "first_of_current_month",
+      "week_days": 7,
+      "soon_days": 14,
+      "no_movement_days": 14,
+      "owner_update_days": 30,
+      "parked_untouched_days": 120,
+      "product_mine_window_days": 45,
+      "work_recent_days": 14,
+      "comment_check_workspaces": [
+        "support"
+      ],
+      "lanes": {
+        "product": {
+          "parked_roadmap": [
+            "Parking Lot",
+            "Won't do"
+          ],
+          "mine_if": [
+            "status_category_indeterminate",
+            "date_within_window"
+          ]
+        },
+        "support": {
+          "mine_statuses": [
+            "Waiting for support"
+          ],
+          "waiting_statuses": [
+            "Waiting for customer",
+            "Pending"
+          ]
+        },
+        "work": {
+          "waiting_from": "work_qa.vendors",
+          "mine_if": [
+            "status_category_indeterminate",
+            "has_due_date",
+            "updated_within_recent"
+          ]
+        }
+      },
+      "contradictions": [
+        {
+          "id": "roadmap_wont_do_open",
+          "workspace": "product",
+          "text": "Roadmap says Won’t do, but the idea is still open"
+        },
+        {
+          "id": "roadmap_now_parking_status",
+          "workspace": "product",
+          "text": "Roadmap says Now, but the status is still Parking lot"
+        },
+        {
+          "id": "pending_reason_not_pending",
+          "workspace": "support",
+          "text": "Pending reason “{reason}” is set, but the status is {status}"
+        }
+      ],
+      "score": {
+        "past_due_base": 50,
+        "past_due_per_day": 0.5,
+        "past_due_cap_days": 60,
+        "week_base": 35,
+        "week_per_day_closer": 2,
+        "soon": 18,
+        "requester_waiting_base": 30,
+        "requester_waiting_per_day": 0.3333,
+        "requester_waiting_cap_days": 60,
+        "owner_update": 12,
+        "no_movement": 10,
+        "high_urgency": 8,
+        "high_urgency_values": [
+          "High",
+          "Critical"
+        ],
+        "contradiction": 8
+      },
+      "checks": [
+        {
+          "id": "od",
+          "enabled": true,
+          "name": "Past its date",
+          "rule": "Due date or roadmap target is before today.",
+          "type": "date_passed",
+          "color_role": "risk",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"2\" y=\"3.2\" width=\"12\" height=\"10.8\" rx=\"1.6\"/><path d=\"M2 6.6h12\"/><path d=\"M5.2 1.6v3M10.8 1.6v3\"/><path d=\"M8 8.6v2\"/><path d=\"M8 12.4h.01\" stroke-width=\"2\"/></g>"
+        },
+        {
+          "id": "wk",
+          "enabled": true,
+          "name": "Due this week",
+          "rule": "Your move, and the date is within seven days.",
+          "type": "date_within",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"8\" cy=\"8.6\" r=\"5.9\"/><path d=\"M8 5.6v3.2l2.3 1.4\"/><path d=\"M6.4 1.6h3.2\"/></g>"
+        },
+        {
+          "id": "yc",
+          "enabled": true,
+          "name": "Someone’s waiting on you",
+          "rule": "The last comment came from the requester, and it’s your move.",
+          "type": "requester_spoke_last",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2.2 3.6a1.4 1.4 0 0 1 1.4-1.4h8.8a1.4 1.4 0 0 1 1.4 1.4v6a1.4 1.4 0 0 1-1.4 1.4H7l-3.2 2.8V11h-.2a1.4 1.4 0 0 1-1.4-1.4z\"/><path d=\"M5.4 6.6h.01M8 6.6h.01M10.6 6.6h.01\" stroke-width=\"2\"/></g>"
+        },
+        {
+          "id": "nu",
+          "enabled": true,
+          "name": "No update in 30 days",
+          "rule": "Support ticket where you haven’t commented in 30+ days.",
+          "type": "no_owner_comment",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2.2 3.6a1.4 1.4 0 0 1 1.4-1.4h8.8a1.4 1.4 0 0 1 1.4 1.4v6a1.4 1.4 0 0 1-1.4 1.4H7l-3.2 2.8V11h-.2a1.4 1.4 0 0 1-1.4-1.4z\"/><path d=\"M8 4.6v2.4\"/><path d=\"M8 9h.01\" stroke-width=\"2\"/></g>"
+        },
+        {
+          "id": "st",
+          "enabled": true,
+          "name": "No movement",
+          "rule": "Your move, untouched for 14+ days.",
+          "type": "no_movement",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 1.8h8M4 14.2h8\"/><path d=\"M4.8 1.8v2.4c0 1.6 3.2 2.6 3.2 3.8S4.8 10.2 4.8 11.8v2.4M11.2 1.8v2.4c0 1.6-3.2 2.6-3.2 3.8s3.2 2.2 3.2 3.8v2.4\"/><path d=\"M6.4 12.6h3.2\"/></g>"
+        },
+        {
+          "id": "pg",
+          "enabled": true,
+          "name": "Roadmap data gaps",
+          "rule": "A committed idea you own is missing required fields.",
+          "type": "product_qa_gaps",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M8.7 2H14v5.3l-6.6 6.6a1 1 0 0 1-1.4 0L2.1 10a1 1 0 0 1 0-1.4z\"/></g><circle cx=\"11.3\" cy=\"4.7\" r=\"1.1\" fill=\"currentColor\"/>"
+        },
+        {
+          "id": "mm",
+          "enabled": true,
+          "name": "Record contradicts itself",
+          "rule": "Roadmap, status, or pending reason disagree.",
+          "type": "contradiction",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2.6 5.8h10.8M2.6 10.2h10.8\"/><path d=\"M10.6 2.4 5.4 13.6\"/></g>"
+        },
+        {
+          "id": "cu",
+          "enabled": true,
+          "name": "Parked and untouched",
+          "rule": "Parked for 120+ days without movement.",
+          "type": "parked_untouched",
+          "color_role": "ink",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"1.8\" y=\"2.6\" width=\"12.4\" height=\"3.4\" rx=\"1\"/><path d=\"M2.8 6v6.4a1 1 0 0 0 1 1h8.4a1 1 0 0 0 1-1V6\"/><path d=\"M6.4 8.8h3.2\"/></g>"
+        }
+      ],
+      "palette_extra": {
+        "lane_mine": [
+          "#d77900",
+          "#fbb03b"
+        ],
+        "lane_waiting": [
+          "#2b7a78",
+          "#3aafa9"
+        ],
+        "lane_parked": [
+          "#a2a7aa",
+          "#6f7d82"
+        ],
+        "ws_product": [
+          "#2b7a78",
+          "#3aafa9"
+        ],
+        "ws_support": [
+          "#fbb03b",
+          "#fbb03b"
+        ],
+        "ws_work": [
+          "#17242a",
+          "#def2f1"
+        ],
+        "today_line": [
+          "#d77900",
+          "#eef5f5"
+        ]
+      }
     }
   },
   "calendar_analysis": {

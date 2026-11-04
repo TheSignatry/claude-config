@@ -35,8 +35,9 @@ Field mapping (confirmed against signatry1.atlassian.net 2026-08-10):
     customfield_10156 "Product Area" — multi-select; rendered as a
       comma-joined list of each entry's `value`.
     customfield_10139 "Roadmap" — single-select ({"value": "Now"/"Next"/
-      "Won't do", ...}, not a list like Product Area) — used both in the
-      product-detail JQL filter (`"Roadmap" NOT IN ("Done", "Parking Lot")`)
+      "Won't do"/"Merged", ...}, not a list like Product Area) — used both
+      in the product-detail JQL filter (`"Roadmap" NOT IN (...)`, the list
+      from product_fields.roadmap_exclude)
       and, added 2026-08-14, rendered directly as product_detail's "Roadmap"
       column in place of workflow status. The two can genuinely disagree —
       an issue's status can read "In Progress" while its Roadmap value is
@@ -102,9 +103,15 @@ PRODUCT_DELIVERED_LOOKBACK_DAYS = 180
 # an existing profile that predates that block keeps working unchanged.
 DEFAULT_PRODUCT_FIELDS = {
     "project_target": "customfield_10149",   # JSON string {"start":..., "end":"YYYY-MM-DD"}
+    "project_start": "customfield_10148",    # same shape as project_target
     "product_area": "customfield_10156",     # multi-select
-    "roadmap": "customfield_10139",          # single-select: Now / Next / Won't do
-    "roadmap_exclude": ["Done", "Parking Lot"],
+    "roadmap": "customfield_10139",          # single-select: Now / Next / Won't do / Merged
+    "short_description": "customfield_10153",  # plain string
+    "teams": "customfield_10143",            # multi-select
+    "commitment_level": "customfield_10645",  # single-select: Planned / Flex
+    "tshirt_size": "customfield_10646",      # single-select: Small / Medium / Large
+    "idea_archived": "customfield_10261",    # option {"value": "Yes"} when archived, else null
+    "roadmap_exclude": ["Done", "Parking Lot", "Merged"],
 }
 
 
@@ -256,6 +263,9 @@ def build_plan(aboutme_path, cloud_id, since=None, until=None):
     # Project keys go into JQL bare (_quote_jql_list just joins them); Roadmap
     # values are strings and must be double-quoted, e.g. "Done", "Parking Lot".
     roadmap_exclude = ", ".join(f'"{v}"' for v in pf["roadmap_exclude"])
+    # Archiving a Product Discovery idea leaves its Roadmap value and status
+    # alone, so JQL can't tell it apart; build_report drops it on this field.
+    archived = [pf["idea_archived"]] if isinstance(pf.get("idea_archived"), str) else []
     date_range = bool(since and until)
 
     queries = []
@@ -267,7 +277,7 @@ def build_plan(aboutme_path, cloud_id, since=None, until=None):
             "group": "product",
             "scope": "assignee",
             "jql": f"assignee = currentUser() AND project in ({keys}) AND statusCategory != Done ORDER BY key ASC",
-            "fields": [pf["project_target"]],
+            "fields": [pf["project_target"]] + archived,
             "used_for": ["summary"],
             "description": "Product group, current user's own assignments — feeds the Summary row's overdue/upcoming counts only.",
         })
@@ -279,7 +289,7 @@ def build_plan(aboutme_path, cloud_id, since=None, until=None):
                 f'project in ({keys}) AND statusCategory != Done '
                 f'AND "Roadmap" NOT IN ({roadmap_exclude}) ORDER BY key ASC'
             ),
-            "fields": ["summary", pf["project_target"], pf["product_area"], pf["roadmap"], "assignee"],
+            "fields": ["summary", pf["project_target"], pf["product_area"], pf["roadmap"], "assignee"] + archived,
             "used_for": ["product_detail"],
             "description": "Product group, whole team (deliberately NOT assignee-scoped) — feeds the Product detail list.",
         })
@@ -293,7 +303,7 @@ def build_plan(aboutme_path, cloud_id, since=None, until=None):
                     f'project in ({keys}) AND "Roadmap" = "Done" '
                     f'AND updated >= "{lookback}" ORDER BY key ASC'
                 ),
-                "fields": ["summary", pf["project_target"], pf["product_area"], "assignee", "status"],
+                "fields": ["summary", pf["project_target"], pf["product_area"], "assignee", "status"] + archived,
                 "used_for": ["delivered_in_range"],
                 "description": (
                     "Product group, Roadmap marked Done — feeds month-retro's delivered-products "
@@ -400,6 +410,15 @@ def _bucket(due_date_str, today, window_end):
     return None
 
 
+def _is_archived(fields, pf):
+    """Jira Product Discovery's archived flag is an option ({"value": "Yes"})
+    when set and null otherwise. A plan without the field ID never filters."""
+    value = fields.get(pf.get("idea_archived") or "")
+    if isinstance(value, dict):
+        value = value.get("value")
+    return bool(value)
+
+
 def _display_name(assignee_field):
     if not assignee_field:
         return "Unassigned"
@@ -453,6 +472,8 @@ def build_report(plan, raw, today=None):
     if groups.get("product"):
         overdue = upcoming = 0
         for issue in raw.get("product", []):
+            if _is_archived(issue.get("fields", {}), pf):
+                continue
             due = _parse_project_target_end(issue.get("fields", {}).get(pf["project_target"]))
             bucket = _bucket(due, today, window_end)
             if bucket == "overdue":
@@ -463,6 +484,8 @@ def build_report(plan, raw, today=None):
 
         for issue in raw.get("product_detail", []):
             fields = issue.get("fields", {})
+            if _is_archived(fields, pf):
+                continue
             due = _parse_project_target_end(fields.get(pf["project_target"]))
             bucket = _bucket(due, today, window_end)
             if bucket is None:
@@ -482,6 +505,8 @@ def build_report(plan, raw, today=None):
         if date_range:
             for issue in raw.get("product_delivered", []):
                 fields = issue.get("fields", {})
+                if _is_archived(fields, pf):
+                    continue
                 target_end = _parse_project_target_end(fields.get(pf["project_target"]))
                 if not target_end or not (since <= target_end <= until):
                     continue
@@ -687,6 +712,336 @@ def cmd_report(args):
         print(render_markdown(report))
 
 
+def _read_text(path):
+    try:
+        return Path(path).read_text(encoding="utf-8")
+    except OSError as e:
+        _fail(f"Could not read {path}: {e.strerror}.")
+
+
+# --- collect: connector pages -> one raw file ---------------------------------
+# A searchJiraIssuesUsingJql page for these reports runs 100-450k characters,
+# past the tool-result limit, so the host saves it to a file instead of
+# returning it. `collect` turns those saved files (or inline pages written to
+# disk) into the {"<query id>": [...issues]} raw file every report reads, so
+# no run has to stitch pages together by hand.
+
+class CollectError(Exception):
+    pass
+
+
+def _page_payload(text, source):
+    """Parse one saved page. Some hosts save the tool result as a list of
+    content blocks ([{"type": "text", "text": "<json>"}]); unwrap that."""
+    try:
+        data = json.loads(text)
+    except ValueError:
+        raise CollectError(f"{source} is not JSON. Pass the saved tool-result file or a page written verbatim.")
+    if isinstance(data, list) and data and all(isinstance(b, dict) and "text" in b for b in data):
+        try:
+            data = json.loads("".join(b["text"] for b in data))
+        except ValueError:
+            raise CollectError(f"{source} holds text blocks that are not JSON.")
+    if not isinstance(data, dict) or "issues" not in data:
+        raise CollectError(f"{source} has no `issues`; is it a searchJiraIssuesUsingJql result?")
+    return data
+
+
+def _page_issues(data):
+    """Return (issues, has_more) for either page shape the connector returns:
+    {"issues": {"nodes": [...], "pageInfo": {"hasNextPage": ...}}} or
+    {"issues": [...], "isLast": ..., "nextPageToken": ...}."""
+    issues = data["issues"]
+    if isinstance(issues, dict):
+        info = issues.get("pageInfo") or {}
+        return issues.get("nodes") or [], bool(info.get("hasNextPage"))
+    has_more = data.get("isLast") is False or (data.get("isLast") is None and bool(data.get("nextPageToken")))
+    return issues or [], has_more
+
+
+def collect_pages(pages, plan=None, base=None):
+    """`pages` is an ordered list of (query_id, text, source). Returns the raw
+    dict: `base` (if any) plus each query id's pages concatenated in order.
+    With `plan`, every plan query must be covered and no other id is allowed."""
+    fresh, last_has_more = {}, {}
+    for qid, text, source in pages:
+        issues, has_more = _page_issues(_page_payload(text, source))
+        fresh.setdefault(qid, []).extend(issues)
+        last_has_more[qid] = has_more
+    for qid, more in last_has_more.items():
+        if more:
+            raise CollectError(f"The last page given for {qid} says more pages follow. "
+                               "Fetch the next page with its nextPageToken and pass it after this one.")
+    raw = {**(base or {}), **fresh}
+    if plan is not None:
+        expected = [q["id"] for q in plan.get("queries", [])]
+        unknown = sorted(set(fresh) - set(expected))
+        if unknown:
+            raise CollectError(f"Pages given for {', '.join(unknown)}, which the plan does not list.")
+        missing = [q for q in expected if q not in raw]
+        if missing:
+            raise CollectError(f"No pages given for {', '.join(missing)}. Pass one --page per fetched page.")
+    return raw
+
+
+def cmd_collect(args):
+    pages = []
+    for spec in args.page:
+        qid, sep, path = spec.partition("=")
+        if not sep or not qid or not path:
+            _fail(f"--page {spec!r} must be <query id>=<path>.")
+        pages.append((qid, _read_text(path), path))
+    plan = json.loads(_read_text(args.plan)) if args.plan else None
+    base = None
+    if args.merge and Path(args.out).exists():
+        base = json.loads(_read_text(args.out))
+    try:
+        raw = collect_pages(pages, plan, base)
+    except CollectError as e:
+        _fail(str(e))
+    try:
+        Path(args.out).parent.mkdir(parents=True, exist_ok=True)
+        Path(args.out).write_text(json.dumps(raw, ensure_ascii=False), encoding="utf-8")
+    except OSError as e:
+        _fail(f"Could not write {args.out}: {e.strerror}.")
+    print(json.dumps({"out": args.out, "issues": {k: len(v) for k, v in raw.items() if isinstance(v, list)}}))
+
+
+def cmd_qa_plan(args):
+    # Imported here so the existing plan/report path never depends on it.
+    import product_qa
+    workspaces = load_jira_workspaces(args.aboutme)
+    cloud_id = args.cloud_id or workspaces.get("cloud_id")
+    if not cloud_id:
+        _fail(f"acos-aboutme profile at {args.aboutme} has no jira_workspaces.cloud_id set; pass --cloud-id for a one-off run.")
+    today = datetime.strptime(args.today, "%Y-%m-%d").date() if args.today else date.today()
+    agenda = _read_text(args.agenda) if args.agenda else None
+    try:
+        plan = product_qa.build_qa_plan(workspaces, resolve_product_fields(workspaces),
+                                        load_acos_profile(args.aboutme), cloud_id, today, agenda)
+    except product_qa.QAError as e:
+        _fail(str(e))
+    print(json.dumps(plan, indent=2, ensure_ascii=False))
+
+
+def cmd_qa_report(args):
+    import product_qa
+    plan = json.loads(_read_text(args.plan))
+    raw = json.loads(_read_text(args.raw))
+    agenda = _read_text(args.agenda) if args.agenda else None
+    today = datetime.strptime(args.today, "%Y-%m-%d").date() if args.today else date.today()
+    try:
+        payload = product_qa.build_qa_report(plan, raw, agenda, today)
+        if args.format == "json":
+            text = json.dumps(payload, indent=2, ensure_ascii=False)
+        elif args.format == "md":
+            text = product_qa.render_markdown(payload)
+        else:
+            text = product_qa.render_html(payload, plan, fonts_dir=args.fonts_dir)
+    except product_qa.QAError as e:
+        _fail(str(e))
+    _write_output(args, text, f"product-qa-{today.isoformat()}.html", payload["counts"])
+
+
+def _write_output(args, text, default_name, counts, warnings=()):
+    """html defaults to /mnt/user-data/outputs/<default_name>; md/json print
+    to stdout unless --out is given."""
+    for w in warnings:
+        print(json.dumps({"warning": w}), file=sys.stderr)
+    out = args.out or (f"/mnt/user-data/outputs/{default_name}" if args.format == "html" else None)
+    if not out:
+        print(text)
+        return
+    try:
+        Path(out).parent.mkdir(parents=True, exist_ok=True)
+        Path(out).write_text(text, encoding="utf-8")
+    except OSError as e:
+        _fail(f"Could not write {out}: {e.strerror}. Pass --out with a writable path.")
+    print(json.dumps({"out": out, "format": args.format, **counts}))
+
+
+def cmd_archive_qa_plan(args):
+    import archive_qa
+    import qa_common
+    workspaces = load_jira_workspaces(args.aboutme)
+    cloud_id = args.cloud_id or workspaces.get("cloud_id")
+    if not cloud_id:
+        _fail(f"acos-aboutme profile at {args.aboutme} has no jira_workspaces.cloud_id set; pass --cloud-id for a one-off run.")
+    try:
+        plan = archive_qa.build_archive_plan(workspaces, resolve_product_fields(workspaces), cloud_id)
+    except qa_common.QAError as e:
+        _fail(str(e))
+    print(json.dumps(plan, indent=2, ensure_ascii=False))
+
+
+def cmd_archive_qa_report(args):
+    import archive_qa
+    import qa_common
+    plan = json.loads(_read_text(args.plan))
+    raw = json.loads(_read_text(args.raw))
+    today = datetime.strptime(args.today, "%Y-%m-%d").date() if args.today else date.today()
+    try:
+        payload = archive_qa.build_archive_report(plan, raw, today)
+        if args.format == "json":
+            text = json.dumps(payload, indent=2, ensure_ascii=False)
+        elif args.format == "md":
+            text = archive_qa.render_markdown(payload)
+        else:
+            text = archive_qa.render_html(payload, plan, fonts_dir=args.fonts_dir)
+    except qa_common.QAError as e:
+        _fail(str(e))
+    _write_output(args, text, f"archive-qa-{today.isoformat()}.html", payload["counts"])
+
+
+def cmd_support_qa_plan(args):
+    import qa_common
+    import support_qa
+    workspaces = load_jira_workspaces(args.aboutme)
+    cloud_id = args.cloud_id or workspaces.get("cloud_id")
+    if not cloud_id:
+        _fail(f"acos-aboutme profile at {args.aboutme} has no jira_workspaces.cloud_id set; pass --cloud-id for a one-off run.")
+    today = datetime.strptime(args.today, "%Y-%m-%d").date() if args.today else date.today()
+    try:
+        plan = support_qa.build_support_plan(workspaces, qa_common.resolve_fields(workspaces.get("support_fields")),
+                                             load_acos_profile(args.aboutme), cloud_id, today)
+    except qa_common.QAError as e:
+        _fail(str(e))
+    print(json.dumps(plan, indent=2, ensure_ascii=False))
+
+
+def cmd_support_qa_report(args):
+    import qa_common
+    import support_qa
+    plan = json.loads(_read_text(args.plan))
+    raw = json.loads(_read_text(args.raw))
+    today = datetime.strptime(args.today, "%Y-%m-%d").date() if args.today else date.today()
+    try:
+        payload = support_qa.build_support_report(plan, raw, today)
+        if args.format == "json":
+            text = json.dumps(payload, indent=2, ensure_ascii=False)
+        elif args.format == "md":
+            text = support_qa.render_markdown(payload)
+        else:
+            text = support_qa.render_html(payload, plan, fonts_dir=args.fonts_dir)
+    except qa_common.QAError as e:
+        _fail(str(e))
+    _write_output(args, text, f"support-qa-{today.isoformat()}.html", payload["counts"], payload["warnings"])
+
+
+DIRECTORY_CACHE_PATH = Path(__file__).resolve().parent.parent / "state" / "directory_cache.json"
+
+
+def _load_cache(path):
+    p = Path(path)
+    if not p.exists():
+        return {}
+    try:
+        return json.loads(p.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+
+
+def cmd_work_qa_plan(args):
+    import qa_common
+    import work_qa
+    workspaces = load_jira_workspaces(args.aboutme)
+    cloud_id = args.cloud_id or workspaces.get("cloud_id")
+    if not cloud_id:
+        _fail(f"acos-aboutme profile at {args.aboutme} has no jira_workspaces.cloud_id set; pass --cloud-id for a one-off run.")
+    today = datetime.strptime(args.today, "%Y-%m-%d").date() if args.today else date.today()
+    try:
+        plan = work_qa.build_work_plan(workspaces, qa_common.resolve_fields(workspaces.get("work_fields")),
+                                       load_acos_profile(args.aboutme), cloud_id, today)
+    except qa_common.QAError as e:
+        _fail(str(e))
+    print(json.dumps(plan, indent=2, ensure_ascii=False))
+
+
+def cmd_work_qa_lookups(args):
+    import work_qa
+    plan = json.loads(_read_text(args.plan))
+    raw = json.loads(_read_text(args.raw))
+    today = datetime.strptime(args.today, "%Y-%m-%d").date() if args.today else date.today()
+    print(json.dumps({"lookups": work_qa.directory_lookups(plan, raw, _load_cache(args.cache), today)}, indent=2, ensure_ascii=False))
+
+
+def cmd_work_qa_report(args):
+    import qa_common
+    import work_qa
+    plan = json.loads(_read_text(args.plan))
+    raw = json.loads(_read_text(args.raw))
+    today = datetime.strptime(args.today, "%Y-%m-%d").date() if args.today else date.today()
+    cache = _load_cache(args.cache)
+    try:
+        payload = work_qa.build_work_report(plan, raw, today, cache)
+        if args.format == "json":
+            text = json.dumps(payload, indent=2, ensure_ascii=False)
+        elif args.format == "md":
+            text = work_qa.render_markdown(payload)
+        else:
+            text = work_qa.render_html(payload, plan, fonts_dir=args.fonts_dir)
+    except qa_common.QAError as e:
+        _fail(str(e))
+    if payload["directoryState"] == "ok" and not args.no_cache_write:
+        try:
+            Path(args.cache).parent.mkdir(parents=True, exist_ok=True)
+            fresh = work_qa.normalize_directory(raw.get("directory"))
+            Path(args.cache).write_text(json.dumps(work_qa.updated_cache(cache, fresh, today), indent=2, ensure_ascii=False))
+        except OSError as e:
+            print(json.dumps({"warning": f"Could not write directory cache {args.cache}: {e.strerror}"}), file=sys.stderr)
+    _write_output(args, text, f"work-qa-{today.isoformat()}.html", payload["counts"], payload["warnings"])
+
+
+def cmd_focus_plan(args):
+    import focus
+    import qa_common
+    workspaces = load_jira_workspaces(args.aboutme)
+    cloud_id = args.cloud_id or workspaces.get("cloud_id")
+    if not cloud_id:
+        _fail(f"acos-aboutme profile at {args.aboutme} has no jira_workspaces.cloud_id set; pass --cloud-id for a one-off run.")
+    today = datetime.strptime(args.today, "%Y-%m-%d").date() if args.today else date.today()
+    try:
+        plan = focus.build_focus_plan(workspaces, resolve_product_fields(workspaces),
+                                      qa_common.resolve_fields(workspaces.get("support_fields")),
+                                      qa_common.resolve_fields(workspaces.get("work_fields")),
+                                      load_acos_profile(args.aboutme), cloud_id, today)
+    except qa_common.QAError as e:
+        _fail(str(e))
+    print(json.dumps(plan, indent=2, ensure_ascii=False))
+
+
+def cmd_focus_comments(args):
+    import focus
+    import qa_common
+    plan = json.loads(_read_text(args.plan))
+    raw = json.loads(_read_text(args.raw))
+    today = datetime.strptime(args.today, "%Y-%m-%d").date() if args.today else date.today()
+    try:
+        q = focus.focus_comments_query(plan, raw, today)
+    except qa_common.QAError as e:
+        _fail(str(e))
+    print(json.dumps({"query": q}, indent=2, ensure_ascii=False))
+
+
+def cmd_focus_report(args):
+    import focus
+    import qa_common
+    plan = json.loads(_read_text(args.plan))
+    raw = json.loads(_read_text(args.raw))
+    today = datetime.strptime(args.today, "%Y-%m-%d").date() if args.today else date.today()
+    try:
+        payload = focus.build_focus_report(plan, raw, today)
+        if args.format == "json":
+            text = json.dumps(payload, indent=2, ensure_ascii=False)
+        elif args.format == "md":
+            text = focus.render_markdown(payload)
+        else:
+            text = focus.render_html(payload, plan, fonts_dir=args.fonts_dir)
+    except qa_common.QAError as e:
+        _fail(str(e))
+    _write_output(args, text, f"focus-{today.isoformat()}.html", payload["counts"])
+
+
 def main():
     parser = argparse.ArgumentParser(description="Deterministic engine for acos-jira-analysis.")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -704,6 +1059,104 @@ def main():
     p_report.add_argument("--today", help="Override today's date, YYYY-MM-DD (for testing only)")
     p_report.add_argument("--format", choices=["markdown", "json"], default="markdown")
     p_report.set_defaults(func=cmd_report)
+
+    p_col = sub.add_parser("collect", help="Join fetched searchJiraIssuesUsingJql pages (saved tool-result files or pages written to disk) into one raw file.")
+    p_col.add_argument("--page", action="append", required=True, help="<query id>=<path>, once per page, in fetch order")
+    p_col.add_argument("--plan", help="Plan JSON; every plan query must then have pages, and no other id is allowed")
+    p_col.add_argument("--out", required=True, help="Raw JSON to write")
+    p_col.add_argument("--merge", action="store_true", help="Add to an existing --out file instead of replacing it (second-stage fetches)")
+    p_col.set_defaults(func=cmd_collect)
+
+    p_qa_plan = sub.add_parser("qa-plan",help="Emit the JQL + fields for the Product QA report.")
+    p_qa_plan.add_argument("--aboutme", default=DEFAULT_ABOUTME_PATH, help="Path to acos-aboutme's state/profile.json")
+    p_qa_plan.add_argument("--cloud-id", default=None, help="Override the Jira Cloud site hostname")
+    p_qa_plan.add_argument("--agenda", help="Agenda text file; adds the product_qa_agenda query for its keys")
+    p_qa_plan.add_argument("--today", help="Override today's date, YYYY-MM-DD (for testing only)")
+    p_qa_plan.set_defaults(func=cmd_qa_plan)
+
+    p_qa = sub.add_parser("qa-report", help="Build and render the Product QA report from fetched issues.")
+    p_qa.add_argument("--plan", required=True, help="Path to the JSON emitted by qa-plan")
+    p_qa.add_argument("--raw", required=True, help="Path to JSON mapping each qa-plan query id to its fetched issues")
+    p_qa.add_argument("--agenda", help="Agenda text file, passed verbatim")
+    p_qa.add_argument("--format", choices=["html", "json", "md"], default="html")
+    p_qa.add_argument("--out", help="Output path; html defaults to /mnt/user-data/outputs/product-qa-<date>.html, md/json print to stdout")
+    p_qa.add_argument("--fonts-dir", help="Override the signatry-brand-core fonts directory")
+    p_qa.add_argument("--today", help="Override today's date, YYYY-MM-DD (for testing only)")
+    p_qa.set_defaults(func=cmd_qa_report)
+
+    p_aqp = sub.add_parser("archive-qa-plan", help="Emit the query for the Archive QA report.")
+    p_aqp.add_argument("--aboutme", default=DEFAULT_ABOUTME_PATH, help="Path to acos-aboutme's state/profile.json")
+    p_aqp.add_argument("--cloud-id", default=None, help="Override the Jira Cloud site hostname")
+    p_aqp.set_defaults(func=cmd_archive_qa_plan)
+
+    p_aq = sub.add_parser("archive-qa-report", help="Build and render the Archive QA report from fetched ideas.")
+    p_aq.add_argument("--plan", required=True, help="Path to the JSON emitted by archive-qa-plan")
+    p_aq.add_argument("--raw", required=True, help="Path to JSON holding the archive_qa issues")
+    p_aq.add_argument("--format", choices=["html", "json", "md"], default="html")
+    p_aq.add_argument("--out", help="Output path; html defaults to /mnt/user-data/outputs/archive-qa-<date>.html, md/json print to stdout")
+    p_aq.add_argument("--fonts-dir", help="Override the signatry-brand-core fonts directory")
+    p_aq.add_argument("--today", help="Override today's date, YYYY-MM-DD (for testing only)")
+    p_aq.set_defaults(func=cmd_archive_qa_report)
+
+    p_sqp = sub.add_parser("support-qa-plan", help="Emit the JQL + fields for the Support QA report.")
+    p_sqp.add_argument("--aboutme", default=DEFAULT_ABOUTME_PATH, help="Path to acos-aboutme's state/profile.json")
+    p_sqp.add_argument("--cloud-id", default=None, help="Override the Jira Cloud site hostname")
+    p_sqp.add_argument("--today", help="Override today's date, YYYY-MM-DD (for testing only)")
+    p_sqp.set_defaults(func=cmd_support_qa_plan)
+
+    p_sq = sub.add_parser("support-qa-report", help="Build and render the Support QA report from fetched tickets.")
+    p_sq.add_argument("--plan", required=True, help="Path to the JSON emitted by support-qa-plan")
+    p_sq.add_argument("--raw", required=True, help="Path to JSON mapping each support-qa-plan query id to its fetched issues")
+    p_sq.add_argument("--format", choices=["html", "json", "md"], default="html")
+    p_sq.add_argument("--out", help="Output path; html defaults to /mnt/user-data/outputs/support-qa-<date>.html, md/json print to stdout")
+    p_sq.add_argument("--fonts-dir", help="Override the signatry-brand-core fonts directory")
+    p_sq.add_argument("--today", help="Override today's date, YYYY-MM-DD (for testing only)")
+    p_sq.set_defaults(func=cmd_support_qa_report)
+
+    p_wqp = sub.add_parser("work-qa-plan", help="Emit the JQL + fields for the Work Boards QA report.")
+    p_wqp.add_argument("--aboutme", default=DEFAULT_ABOUTME_PATH, help="Path to acos-aboutme's state/profile.json")
+    p_wqp.add_argument("--cloud-id", default=None, help="Override the Jira Cloud site hostname")
+    p_wqp.add_argument("--today", help="Override today's date, YYYY-MM-DD (for testing only)")
+    p_wqp.set_defaults(func=cmd_work_qa_plan)
+
+    p_wql = sub.add_parser("work-qa-lookups", help="List the slack_search_users lookups still needed after the Jira fetch.")
+    p_wql.add_argument("--plan", required=True, help="Path to the JSON emitted by work-qa-plan")
+    p_wql.add_argument("--raw", required=True, help="Path to the fetched raw JSON")
+    p_wql.add_argument("--cache", default=str(DIRECTORY_CACHE_PATH), help="Directory cache path")
+    p_wql.add_argument("--today", help="Override today's date, YYYY-MM-DD (for testing only)")
+    p_wql.set_defaults(func=cmd_work_qa_lookups)
+
+    p_wq = sub.add_parser("work-qa-report", help="Build and render the Work Boards QA report.")
+    p_wq.add_argument("--plan", required=True, help="Path to the JSON emitted by work-qa-plan")
+    p_wq.add_argument("--raw", required=True, help="Path to JSON with work_qa issues and the directory results")
+    p_wq.add_argument("--format", choices=["html", "json", "md"], default="html")
+    p_wq.add_argument("--out", help="Output path; html defaults to /mnt/user-data/outputs/work-qa-<date>.html, md/json print to stdout")
+    p_wq.add_argument("--fonts-dir", help="Override the signatry-brand-core fonts directory")
+    p_wq.add_argument("--cache", default=str(DIRECTORY_CACHE_PATH), help="Directory cache path")
+    p_wq.add_argument("--no-cache-write", action="store_true", help="Don't update the directory cache (tests)")
+    p_wq.add_argument("--today", help="Override today's date, YYYY-MM-DD (for testing only)")
+    p_wq.set_defaults(func=cmd_work_qa_report)
+
+    p_fp = sub.add_parser("focus-plan", help="Emit the first-stage query for the Personal Focus dashboard.")
+    p_fp.add_argument("--aboutme", default=DEFAULT_ABOUTME_PATH, help="Path to acos-aboutme's state/profile.json")
+    p_fp.add_argument("--cloud-id", default=None, help="Override the Jira Cloud site hostname")
+    p_fp.add_argument("--today", help="Override today's date, YYYY-MM-DD (for testing only)")
+    p_fp.set_defaults(func=cmd_focus_plan)
+
+    p_fc = sub.add_parser("focus-comments", help="Emit the second-stage comments query from the fetched focus_items.")
+    p_fc.add_argument("--plan", required=True, help="Path to the JSON emitted by focus-plan")
+    p_fc.add_argument("--raw", required=True, help="Path to the raw JSON holding focus_items")
+    p_fc.add_argument("--today", help="Override today's date, YYYY-MM-DD (for testing only)")
+    p_fc.set_defaults(func=cmd_focus_comments)
+
+    p_fr = sub.add_parser("focus-report", help="Build and render the Personal Focus dashboard.")
+    p_fr.add_argument("--plan", required=True, help="Path to the JSON emitted by focus-plan")
+    p_fr.add_argument("--raw", required=True, help="Path to JSON with focus_items and focus_comments")
+    p_fr.add_argument("--format", choices=["html", "json", "md"], default="html")
+    p_fr.add_argument("--out", help="Output path; html defaults to /mnt/user-data/outputs/focus-<date>.html, md/json print to stdout")
+    p_fr.add_argument("--fonts-dir", help="Override the signatry-brand-core fonts directory")
+    p_fr.add_argument("--today", help="Override today's date, YYYY-MM-DD (for testing only)")
+    p_fr.set_defaults(func=cmd_focus_report)
 
     args = parser.parse_args()
     args.func(args)

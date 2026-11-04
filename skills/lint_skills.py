@@ -364,6 +364,74 @@ def check_no_shipped_state(skill_dir):
     )]
 
 
+def check_fixture_names(skill_dir):
+    """No committed test fixture may carry a real person's name.
+
+    Test fixtures built from connector data start out with real staff names
+    and ticket text; skills/pseudonymize_fixtures.py rewrites them before they
+    are committed. This is the backstop for a fixture that skipped that step:
+    every person (a `name` beside an `email`) in the maintainer's own
+    acos-aboutme profile is looked for, as a full name, in tests/ and in
+    _exclude/*_data.json prototype files that git tracks or would add.
+
+    Warning only, and silent when no profile exists: the profile is gitignored
+    per-user state, so this check only has teeth on a machine that has one,
+    and it must never turn lint red elsewhere (see check_no_shipped_state).
+    tests/ never ships either way -- package_skill.py excludes it. Names are
+    counted, not printed."""
+    profile = skill_dir.parent / "acos-aboutme" / "state" / "profile.json"
+    if not profile.is_file():
+        return []
+    try:
+        data = json.loads(profile.read_text())
+    except (OSError, json.JSONDecodeError):
+        return []
+    names = set()
+
+    def people(node):
+        if isinstance(node, dict):
+            if "email" in node:
+                for key in ("name", "full_name"):
+                    if isinstance(node.get(key), str) and len(node[key].split()) >= 2:
+                        names.add(node[key].strip().lower())
+            for v in node.values():
+                people(v)
+        elif isinstance(node, list):
+            for v in node:
+                people(v)
+
+    people(data)
+    if not names:
+        return []
+    try:
+        proc = subprocess.run(
+            ["git", "ls-files", "--cached", "--others", "--exclude-standard", "--", "tests", "_exclude"],
+            cwd=skill_dir, capture_output=True, text=True, timeout=10,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return []
+    files = [skill_dir / f for f in proc.stdout.splitlines()
+             if f.startswith("tests/") or re.match(r"_exclude/[^/]*_data\.json$", f)]
+    hits = []
+    for path in files:
+        try:
+            text = path.read_text(errors="ignore").lower()
+        except OSError:
+            continue
+        found = sum(1 for n in names if re.search(rf"\b{re.escape(n)}\b", text))
+        if found:
+            hits.append(f"{path.relative_to(skill_dir)} ({found})")
+    if not hits:
+        return []
+    listed = ", ".join(hits[:4]) + (f", +{len(hits) - 4} more" if len(hits) > 4 else "")
+    return [(
+        SEVERITY_WARNING,
+        f"{skill_dir}: {len(hits)} test fixture file(s) contain real names from the "
+        f"acos-aboutme profile ({listed}). Pseudonymize them with "
+        f"skills/pseudonymize_fixtures.py before committing.",
+    )]
+
+
 ACOS_OVERLAY_START = "# --- acos shared-defaults overlay "
 ACOS_OVERLAY_END = "# --- end acos shared-defaults overlay "
 
@@ -500,6 +568,7 @@ def lint_skill(skill_dir, schema, allowlist=None):
     issues.extend(allowlist_issues)
     issues.extend(check_changelog_exists(skill_dir))
     issues.extend(check_no_shipped_state(skill_dir))
+    issues.extend(check_fixture_names(skill_dir))
     if skill_dir.name == "acos-aboutme":
         issues.extend(check_acos_overlay_copies(skill_dir.parent))
     if skill_dir.name == "acos-main":

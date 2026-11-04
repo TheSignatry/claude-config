@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>__TITLE__</title>
+<style>
+@font-face{font-family:'Lora';font-weight:400;font-style:normal;src:url(data:font/ttf;base64,__LORA__) format('truetype');}
+@font-face{font-family:'Mulish';font-weight:400;src:url(data:font/ttf;base64,__MUL400__) format('truetype');}
+@font-face{font-family:'Mulish';font-weight:600;src:url(data:font/ttf;base64,__MUL600__) format('truetype');}
+@font-face{font-family:'Mulish';font-weight:700;src:url(data:font/ttf;base64,__MUL700__) format('truetype');}
+@font-face{font-family:'Mulish';font-weight:800;src:url(data:font/ttf;base64,__MUL800__) format('truetype');}
+/*__PALETTE__*/
+/*__BASE_CSS__*/
+/*__LEDGER_CSS__*/
+/* focus dashboard */
+.wstag{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:1px;}
+.boards{display:flex;flex-wrap:wrap;margin:0 0 18px;border:1px solid var(--hairline);width:max-content;max-width:100%;}
+.boards button{all:unset;cursor:pointer;padding:9px 16px;font-size:13px;font-weight:600;border-left:1px solid var(--hairline);display:inline-flex;align-items:center;gap:6px;}
+.boards button:first-child{border-left:none;}
+.boards button[aria-pressed="true"]{background:var(--ink);color:var(--bg);}
+.boards button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;}
+.boards .ct{font-weight:400;opacity:.75;}
+.moves{list-style:none;}
+.move{display:grid;grid-template-columns:44px 1fr 150px;gap:6px 18px;padding:18px 0;border-top:1px solid var(--hairline);align-items:start;}
+.move:first-child{border-top:none;padding-top:4px;}
+.move .rank{font-family:'Lora',Georgia,serif;font-size:30px;line-height:1;color:var(--ink-grey);}
+.move .title{font-size:16px;font-weight:700;margin-bottom:3px;}
+.move .why{color:var(--ink);font-size:14px;max-width:780px;}
+.move .meta{margin-top:4px;}
+.move .side{text-align:right;font-size:12px;color:var(--ink-soft);}
+.move .side .qa{justify-content:flex-end;margin-top:6px;}
+.detail col.c-id{width:88px}.detail col.c-st{width:170px}.detail col.c-dt{width:130px}.detail col.c-up{width:100px}.detail col.c-qa{width:130px}
+.detail td{overflow-wrap:anywhere;}
+.days{font-weight:700;white-space:nowrap;}
+.days.hot{color:var(--risk);}
+.sub{display:block;font-size:12px;color:var(--ink-soft);}
+.date.soon{color:var(--accent);font-weight:700;}
+.detail .date{white-space:normal;}
+.qa{flex-wrap:nowrap;}
+details.fold > summary{list-style:none;cursor:pointer;}
+details.fold > summary::-webkit-details-marker{display:none;}
+details.fold > summary .section-heading{display:inline;}
+details.fold > summary::after{content:"Show";margin-left:10px;font-size:12px;color:var(--ink-soft);text-decoration:underline;}
+details.fold[open] > summary::after{content:"Hide";}
+.tl .klabel{fill:var(--ink);font-size:10.5px;font-weight:600;paint-order:stroke;stroke:var(--wash);stroke-width:3px;stroke-linejoin:round;}
+@media (max-width:760px){.move{grid-template-columns:34px 1fr;} .move .side{grid-column:2;text-align:left;} .move .side .qa{justify-content:flex-start;} .boards button{padding:8px 10px;}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<!--__SPRITE__-->
+</defs></svg>
+
+<header class="band wash"><div class="inner">
+  <p class="eyebrow" id="eyebrow"></p>
+  <h1 class="headline" id="headline"></h1>
+  <p class="subhead" id="subhead"></p>
+  <div class="runway-wrap"><svg class="runway tl" id="timeline" role="img"></svg></div>
+  <div class="legend">
+    <span><i class="sw" style="background:var(--lane-mine)"></i>Your move</span>
+    <span><i class="sw" style="background:var(--lane-waiting)"></i>Waiting on someone else</span>
+    <span><i class="sw" style="background:var(--lane-parked)"></i>Parked</span>
+    <span><i class="sw" style="background:transparent;border:2px solid var(--risk);box-sizing:border-box"></i>Past its date</span>
+    <span><i style="display:inline-block;width:22px;height:6px;background:var(--lane-parked)"></i>Month-range target</span>
+  </div>
+</div></header>
+
+<section class="band base"><div class="inner">
+  <h2 class="section-heading">Your next moves</h2>
+  <p class="section-cap" id="movesCap"></p>
+  <ol class="moves" id="moves"></ol>
+</div></section>
+
+<section class="band wash"><div class="inner">
+  <h2 class="section-heading">Waiting on someone else</h2>
+  <p class="section-cap">Not your move right now. Worth a glance so nothing sits unnoticed.</p>
+  <ol class="list" id="waiting"></ol>
+</div></section>
+
+<section class="band base"><div class="inner">
+  <h2 class="section-heading">Tidy up or hand off</h2>
+  <p class="section-cap">Parked items that haven’t moved in a long time, records that contradict themselves, and roadmap ideas you own that are missing required fields. A few minutes here keeps the team reports accurate.</p>
+  <div class="two">
+    <div><h3 class="item-title" style="margin-bottom:10px" id="cuTitle"></h3><ol class="list" id="cleanup"></ol></div>
+    <div><h3 class="item-title" style="margin-bottom:10px" id="fixTitle"></h3><ol class="list" id="fixes"></ol></div>
+  </div>
+</div></section>
+
+<main class="band base"><div class="inner">
+  <h2 class="section-heading">Everything assigned to you</h2>
+  <p class="section-cap">Filter by workspace or select a check. Items are grouped by whose move it is.</p>
+  <div class="boards" id="boards" role="group" aria-label="Filter by workspace"></div>
+  <div class="ledger" id="ledger"></div>
+  <div class="filterbar" id="filterbar" style="margin-top:22px"><span id="filtertext"></span><button type="button" id="clearfilter">Clear filters</button></div>
+  <div id="sections" style="margin-top:28px"></div>
+</div></main>
+
+<section class="band wash"><div class="inner">
+  <details><summary>How this is built</summary><dl class="spec" id="spec"></dl></details>
+  <p class="foot" style="margin-top:24px" id="source"></p>
+</div></section>
+
+<script>
+const DATA = __DATA__;
+const CHECKS=DATA.checks, LANE=Object.fromEntries(DATA.lanes.map(l=>[l.id,l.name])), WS=Object.fromEntries(DATA.workspaces.map(w=>[w.id,w.name]));
+const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const pd=s=>{const [y,m,d]=s.split('-').map(Number);return new Date(Date.UTC(y,m-1,d));};
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const glyph=(id,cls='',title='')=>`<svg class="glyph ${cls}" role="img" aria-label="${esc(title)}"><title>${esc(title)}</title><use href="#g-${id}"/></svg>`;
+const roleCls=c=>c.role==='ink'?'':c.role;
+const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+const ALL=DATA.items, byKey=Object.fromEntries(ALL.map(i=>[i.key,i]));
+const link=k=>`<a class="key" href="${esc(DATA.site+k)}" target="_blank" rel="noopener">${esc(k)}</a>`;
+
+document.getElementById('eyebrow').textContent=DATA.eyebrow;
+document.getElementById('headline').textContent=DATA.headline;
+document.getElementById('subhead').textContent=DATA.subhead;
+document.getElementById('movesCap').textContent=DATA.movesCaption;
+document.getElementById('source').textContent=DATA.sourceLine;
+
+/* timeline: one row per workspace; greedy rows so labels never overlap */
+(function(){
+  const TL=DATA.timeline, W=1296, labW=96, gut=74, rgut=110, d0=pd(TL.start), d1=pd(TL.end);
+  const span=(d1-d0)/864e5, x0=labW+gut, x1=W-rgut, X=s=>x0+((pd(s)-d0)/864e5)/span*(x1-x0);
+  const svg=document.getElementById('timeline');
+  svg.setAttribute('aria-label',`Your dated items from ${MON[d0.getUTCMonth()]} through ${MON[d1.getUTCMonth()]}, by workspace`);
+  let s='', y=34;
+  for(let m=new Date(d0);m<=d1;m=new Date(Date.UTC(m.getUTCFullYear(),m.getUTCMonth()+1,1))){const iso=m.toISOString().slice(0,10);s+=`<text x="${X(iso)+4}" y="12">${MON[m.getUTCMonth()]} ${m.getUTCFullYear()}</text>`;}
+  const blocks=[];
+  TL.rows.forEach(row=>{
+    const pts=row.points.map(p=>({i:byKey[p.key],x:p.pos==='earlier'?labW+14:p.pos==='later'?x1+14:X(p.pos)})).sort((a,b)=>a.x-b.x||a.i.key.localeCompare(b.i.key));
+    const rowEnd=[]; pts.forEach(p=>{const wl=p.i.key.length*6.4+18;let r=0;while(rowEnd[r]!==undefined&&rowEnd[r]>p.x-7)r++;rowEnd[r]=p.x+wl;p.r=r;});
+    const nrows=Math.max(1,rowEnd.length), top=y, rowH=20;
+    pts.forEach(p=>{const cy=top+p.r*rowH+8,i=p.i,over=i.qa.od;
+      s+=`<g class="dot" tabindex="0" role="button" data-key="${esc(i.key)}" aria-label="${esc(i.key+' '+i.summary)}"><title>${esc(i.key)}: ${esc(i.summary)} (${esc(i.dateKind)} ${esc(i.dateText)}, ${esc(i.laneLabel.toLowerCase())})</title><circle cx="${p.x}" cy="${cy}" r="5.5" fill="var(--lane-${i.lane})" stroke="${over?'var(--risk)':'var(--bg)'}" stroke-width="${over?2.4:1.5}"/><text class="klabel" x="${p.x+9}" y="${cy+3.5}">${esc(i.key)}</text></g>`;});
+    let by=top+nrows*rowH+4;
+    row.bars.forEach(b=>{const i=byKey[b.key],a=Math.max(x0,X(b.start)),bx=Math.min(x1,X(b.end));
+      s+=`<g class="dot" tabindex="0" role="button" data-key="${esc(i.key)}" aria-label="${esc(i.key+' '+i.summary)}"><title>${esc(i.key)}: ${esc(i.summary)} (target ${esc(i.dateText)}, ${esc(i.laneLabel.toLowerCase())})</title><rect x="${a}" y="${by}" width="${Math.max(4,bx-a)}" height="6" fill="var(--lane-${i.lane})" opacity=".6"/><text class="klabel" x="${a+4}" y="${by+17}">${esc(i.key)} <tspan style="font-weight:400;fill:var(--ink-soft)">${esc(b.label.slice(i.key.length+1))}</tspan></text></g>`;by+=24;});
+    const bottom=Math.max(by,top+nrows*rowH)+6;
+    blocks.push([row,top]); y=bottom+14;
+  });
+  const H=y; let bg='';
+  blocks.forEach(([row,t],k)=>{bg+=`<text class="lbl-strong" x="0" y="${t+12}">${esc(row.name)}</text><text x="0" y="${t+26}">${row.count} dated</text>`;if(k)bg+=`<line x1="0" x2="${W}" y1="${t-8}" y2="${t-8}" stroke="var(--hairline)"/>`;});
+  const xt=X(TL.today), x7=X(TL.plusWeek);
+  bg+=`<rect x="${labW}" y="18" width="${xt-labW}" height="${H-26}" fill="var(--risk)" opacity=".04"/>`;
+  bg+=`<rect x="${xt}" y="18" width="${x7-xt}" height="${H-26}" fill="var(--lane-mine)" opacity=".12"/>`;
+  bg+=`<text x="${labW+6}" y="12">Earlier</text><line x1="${x0-4}" x2="${x0-4}" y1="18" y2="${H-8}" stroke="var(--hairline)" stroke-dasharray="3 3"/>`;
+  bg+=`<text x="${x1+8}" y="12">Later</text><line x1="${x1+4}" x2="${x1+4}" y1="18" y2="${H-8}" stroke="var(--hairline)" stroke-dasharray="3 3"/>`;
+  bg+=`<line x1="${xt}" x2="${xt}" y1="16" y2="${H-8}" stroke="var(--today-line)" stroke-width="2"/><text class="lbl-strong" x="${xt+5}" y="27">Today</text><text x="${x7+4}" y="27">+7 days</text>`;
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`); svg.innerHTML=bg+s;
+  svg.querySelectorAll('.dot').forEach(g=>{const go=()=>jump(g.dataset.key);g.addEventListener('click',go);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});});
+})();
+
+function qaCell(i){
+  const out=CHECKS.filter(c=>i.qa[c.id]).map(c=>glyph(c.id,roleCls(c),i.qaTips[c.id]||c.name));
+  return `<div class="qa">${out.length?out.join(''):'<span class="muted">Clear</span>'}</div>`;
+}
+const wsTag=i=>`<i class="wstag" style="background:var(--ws-${i.ws})"></i>${esc(WS[i.ws])}, ${esc(i.board)}`;
+const dateTxt=i=>i.date?`${cap(i.dateKind)} ${i.dateText}`:'No date';
+
+document.getElementById('moves').innerHTML=DATA.nextMoves.map((k,n)=>{const i=byKey[k];
+  return `<li class="move"><span class="rank">${n+1}</span><div><div class="title">${link(i.key)} ${esc(i.summary)}</div><div class="why">${esc(i.why)}</div><span class="meta">${wsTag(i)}, ${esc(i.status)}${i.urgency?`, ${esc(i.urgency)} urgency`:''}${i.parent?`, part of ${esc(i.parent)}`:''}</span></div><div class="side">${esc(dateTxt(i))}${qaCell(i)}</div></li>`;}).join('')||'<li class="item"><div class="item-sentence">Nothing scores today.</div></li>';
+
+const listItem=(i,k,text)=>`<li class="item"><span class="item-num">${k+1}</span><div><div class="item-title">${link(i.key)} ${esc(i.summary)}</div><div class="item-sentence">${esc(text)}</div></div></li>`;
+document.getElementById('waiting').innerHTML=DATA.waiting.map((k,n)=>listItem(byKey[k],n,byKey[k].waitingText)).join('')||'<li class="item"><div class="item-sentence">Nothing is waiting on anyone else.</div></li>';
+document.getElementById('cuTitle').textContent=`Close, reschedule, or hand off (${DATA.tidy.length})`;
+document.getElementById('cleanup').innerHTML=DATA.tidy.map((k,n)=>listItem(byKey[k],n,byKey[k].tidyText)).join('');
+document.getElementById('fixTitle').textContent=`Fix the record (${DATA.fix.length})`;
+document.getElementById('fixes').innerHTML=DATA.fix.map((k,n)=>listItem(byKey[k],n,byKey[k].fixText)).join('');
+
+let ws=null, filter=null;
+const inWs=i=>!ws||i.ws===ws;
+const matches=i=>inWs(i)&&(!filter||i.qa[filter]);
+function renderBoards(){
+  const b=(id,label,count,col)=>`<button type="button" aria-pressed="${ws===id}" data-w="${esc(id??'')}">${col?`<i class="wstag" style="background:${col}"></i>`:''}${esc(label)}<span class="ct">${count}</span></button>`;
+  const el=document.getElementById('boards'); el.innerHTML=b(null,'All',DATA.views[''].total)+DATA.workspaces.map(w=>b(w.id,w.name,w.count,`var(--ws-${w.id})`)).join('');
+  el.querySelectorAll('button').forEach(x=>x.addEventListener('click',()=>{ws=x.dataset.w||null;render();}));
+}
+function renderLedger(){
+  const v=DATA.views[ws||''], el=document.getElementById('ledger');
+  el.innerHTML=CHECKS.map(c=>{const n=v.checkCounts[c.id],pct=v.total?Math.round(n/v.total*100):0;return `<button type="button" aria-pressed="${filter===c.id}" data-qa="${esc(c.id)}"><span class="top">${glyph(c.id,roleCls(c),c.name)}<span class="n">${n}</span><span class="of">of ${v.total}</span></span><span class="name">${esc(c.name)}</span><span class="rule">${esc(c.rule)}</span><span class="bar ${c.role==='risk'?'risk':''}"><i style="width:${pct}%"></i></span></button>`;}).join('');
+  el.querySelectorAll('button').forEach(x=>x.addEventListener('click',()=>{filter=filter===x.dataset.qa?null:x.dataset.qa;render();}));
+}
+function row(i){
+  const meta=[wsTag(i)]; if(i.roadmap)meta.push(`Roadmap ${esc(i.roadmap)}`); if(i.urgency)meta.push(`${esc(i.urgency)} urgency`); if(i.parent)meta.push(`part of ${esc(i.parent)}`);
+  const cls=i.qa.od?'over':i.qa.wk?'soon':'';
+  return `<tr id="row-${esc(i.key)}"><td>${link(i.key)}</td><td><span class="sum">${esc(i.summary)}</span><span class="meta">${meta.join(', ')}</span></td>
+   <td>${esc(i.status)}<span class="sub">${esc(i.laneLabel)}</span></td>
+   <td>${i.date?`<span class="date ${cls}">${esc(i.dateText)}</span><span class="sub">${esc(i.dateKind)}</span>`:'<span class="muted">None</span>'}</td>
+   <td><span class="days ${i.lane==='mine'&&i.qa.st?'hot':''}">${i.updDays} days</span><span class="sub">${esc(i.updatedText)}</span></td><td>${qaCell(i)}</td></tr>`;
+}
+function renderSections(){
+  let shown=0;
+  const html=DATA.lanes.map(l=>{const arr=ALL.filter(i=>i.lane===l.id&&matches(i));shown+=arr.length;if(!arr.length)return'';
+    const t=`<div class="table-wrap"><table class="detail"><colgroup><col class="c-id"><col class="c-sum"><col class="c-st"><col class="c-dt"><col class="c-up"><col class="c-qa"></colgroup><thead><tr><th>ID</th><th>Summary</th><th>Status</th><th>Date</th><th>Last update</th><th>QA</th></tr></thead><tbody>${arr.map(row).join('')}</tbody></table></div>`;
+    const head=`<h2 class="section-heading">${esc(l.name)} (${arr.length})</h2>`;
+    if(l.id==='parked'&&!filter&&!ws) return `<div class="section"><details class="fold"><summary>${head}</summary>${t}</details></div>`;
+    return `<div class="section">${head}${t}</div>`;}).join('');
+  document.getElementById('sections').innerHTML=html||'<p class="section-cap">No items match these filters.</p>';
+  const fb=document.getElementById('filterbar');
+  if(ws||filter){const p=[];if(ws)p.push(WS[ws]);if(filter)p.push(CHECKS.find(x=>x.id===filter).name);document.getElementById('filtertext').innerHTML=`Showing ${shown} item${shown===1?'':'s'}: <b>${esc(p.join(', '))}</b>`;fb.classList.add('on');}else fb.classList.remove('on');
+}
+document.getElementById('clearfilter').addEventListener('click',()=>{ws=null;filter=null;render();});
+function jump(key){const it=byKey[key];if(!matches(it)){ws=null;filter=null;render();}
+  const tr=document.getElementById('row-'+key);if(!tr)return;const d=tr.closest('details');if(d)d.open=true;
+  tr.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'});tr.classList.add('flash');setTimeout(()=>tr.classList.remove('flash'),1600);}
+function render(){renderBoards();renderLedger();renderSections();}
+render();
+document.getElementById('spec').innerHTML=DATA.spec.map(([a,b])=>`<dt>${esc(a)}</dt><dd>${esc(b)}</dd>`).join('');
+</script>
+</body>
+</html>

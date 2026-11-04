@@ -138,6 +138,7 @@ reused here) and should never call `correct` at all -- that judgment call
 not something this script infers on its own.
 """
 import argparse
+import base64
 import json
 import os
 import re
@@ -630,6 +631,18 @@ def build_lookups(profile):
         email = (s.get("email") or "").lower()
         if email:
             staff_by_email[email] = {"name": s.get("name"), "role": s.get("role")}
+    # `staff` is a short legacy list, so most people a 5c event names would
+    # otherwise reach the LLM as a bare address. Fall back to the name the
+    # reports/team/functional-area directories already carry (role stays
+    # null -- none of those lists records one).
+    name_sources = list(profile.get("reports", [])) + list(profile.get("team", []))
+    for people in (profile.get("functional_areas") or {}).values():
+        if isinstance(people, list):
+            name_sources.extend(people)
+    for p in name_sources:
+        email = (p.get("email") or "").lower() if isinstance(p, dict) else ""
+        if email and p.get("name"):
+            staff_by_email.setdefault(email, {"name": p["name"], "role": None})
 
     shepherd_by_email = {}
     shepherd_domains = set()
@@ -649,6 +662,7 @@ def build_lookups(profile):
     functional_area_emails = {}
     for area, people in (profile.get("functional_areas") or {}).items():
         functional_area_emails[area] = {p["email"].lower() for p in (people or []) if p.get("email")}
+    owner_functional_areas = set(owner.get("functional_areas") or [])
 
     cal = profile.get("calendar_analysis") or {}
     known_series = [s for s in cal.get("known_meeting_series", []) if s.get("match_patterns")]
@@ -656,6 +670,7 @@ def build_lookups(profile):
     time_allocation_targets = cal.get("time_allocation_targets") or {}
     time_allocation_target_overrides = cal.get("time_allocation_target_overrides") or {}
     ignored_addresses = {a.lower() for a in cal.get("ignored_addresses", [])}
+    intentional_overlaps = [o for o in cal.get("intentional_overlaps", []) if o.get("match_patterns")]
 
     functional_area_rules = [
         (area, re.compile(pattern, re.IGNORECASE))
@@ -678,11 +693,13 @@ def build_lookups(profile):
         "shepherd_domains": shepherd_domains,
         "partner_by_domain": partner_by_domain,
         "functional_area_emails": functional_area_emails,
+        "owner_functional_areas": owner_functional_areas,
         "known_series": known_series,
         "working_hours": working_hours,
         "time_allocation_targets": time_allocation_targets,
         "time_allocation_target_overrides": time_allocation_target_overrides,
         "ignored_addresses": ignored_addresses,
+        "intentional_overlaps": intentional_overlaps,
         "functional_area_rules": functional_area_rules,
         "functional_area_disambiguation": functional_area_disambiguation,
     }
@@ -732,6 +749,25 @@ def _describe_participant(email, lookups):
         "on_team": email in lookups["team_emails"],
         "functional_areas": [area for area, emails in lookups["functional_area_emails"].items() if email in emails],
     }
+
+
+def _series_occurrence(event):
+    """True for an occurrence of a recurring series, False for a single
+    meeting, None when it can't tell. The O365 connector returns
+    `recurrence: null` for every event, so this reads the Exchange item id
+    instead: its decoded header is 0x0009 followed by 0x01 for an
+    occurrence id (which embeds the occurrence date) or 0x00 for a plain
+    item id. Undocumented -- verified 2026-10-30 against 55 real events
+    (every recurring series an occurrence, every one-off a plain item) --
+    so any other shape returns None and the event falls through to 5c."""
+    eid = event.get("id") or ""
+    try:
+        raw = base64.urlsafe_b64decode(eid + "=" * (-len(eid) % 4))
+    except (ValueError, TypeError):
+        return None
+    if len(raw) < 3 or raw[:2] != b"\x00\x09":
+        return None
+    return {1: True, 0: False}.get(raw[2])
 
 
 def _match_known_series(subject, known_series):
@@ -811,7 +847,17 @@ def classify_primary_category(event, lookups):
     known, seeded series to External ecosystem instead of Strategy and
     transformation every time it recurs. A recurring series is supposed to
     classify "consistently" (the known-series table's whole point) regardless
-    of which random address happens to be cc'd that week."""
+    of which random address happens to be cc'd that week.
+
+    Known-series match is also checked BEFORE Focused production (and
+    People leadership), right after Capacity unavailable. A solo block has no
+    real attendees, so Focused production's generic "no real attendees" rule
+    claimed every one of them first, and a series entry for a recurring solo
+    block (e.g. "Strategy - Protected" meant to count as Strategy and
+    transformation) was written correctly by `correct` but could never match.
+    A series match is an explicit owner decision, so it outranks the generic
+    structural rules that follow it. Capacity unavailable stays first: a PTO
+    or travel block is never overridden by a subject-pattern match."""
     subject = event.get("subject") or ""
     _, participants, others = _participants(event, lookups["owner_email"], lookups["ignored_addresses"])
     ext_domains = sorted(_external_domains(others, lookups["owner_domain"]))
@@ -820,6 +866,12 @@ def classify_primary_category(event, lookups):
     if cap_unavail:
         return {"category": "Capacity unavailable", "reason": cap_reason, "needs_llm": False,
                 "matched_series": None, "series_tags": {}, "external_domains": ext_domains}
+
+    series = _match_known_series(subject, lookups["known_series"])
+    if series:
+        return {"category": series["category"], "reason": f"known-series match: {series['name']}",
+                "needs_llm": False, "matched_series": series["name"], "series_tags": series.get("tags") or {},
+                "external_domains": ext_domains}
 
     focused, focus_reason = _is_focused_production(others, subject)
     if focused:
@@ -830,12 +882,6 @@ def classify_primary_category(event, lookups):
     if pl:
         return {"category": "People leadership", "reason": pl_reason, "needs_llm": False,
                 "matched_series": None, "series_tags": {}, "external_domains": ext_domains}
-
-    series = _match_known_series(subject, lookups["known_series"])
-    if series:
-        return {"category": series["category"], "reason": f"known-series match: {series['name']}",
-                "needs_llm": False, "matched_series": series["name"], "series_tags": series.get("tags") or {},
-                "external_domains": ext_domains}
 
     if ext_domains:
         return {"category": "External ecosystem", "reason": f"external domain(s) present: {ext_domains}",
@@ -852,6 +898,21 @@ def classify_primary_category(event, lookups):
                 "needs_llm": False, "matched_series": None, "series_tags": {}, "external_domains": ext_domains}
 
     areas = _functional_areas_for(others, lookups)
+    other_depts = [a for a in areas if a not in lookups["owner_functional_areas"]]
+    occurrence = _series_occurrence(event)
+    if lookups["owner_functional_areas"] and other_depts and occurrence is not None:
+        # Owner-confirmed rule (2026-10-30): a regular recurring meeting with
+        # other departments is part of running the business; a one-off one
+        # is stakeholder engagement. Only reached by events nothing above
+        # claimed, and off entirely until owner.functional_areas is set.
+        if occurrence:
+            return {"category": "Operating rhythm",
+                    "reason": f"recurring meeting with other department(s): {other_depts}",
+                    "needs_llm": False, "matched_series": None, "series_tags": {}, "external_domains": ext_domains}
+        return {"category": "Stakeholder partnership",
+                "reason": f"one-off meeting with other department(s): {other_depts}",
+                "needs_llm": False, "matched_series": None, "series_tags": {}, "external_domains": ext_domains}
+
     if len(areas) > 1:
         return {"category": "Stakeholder partnership", "reason": f"attendees span multiple functional areas: {areas}",
                 "needs_llm": False, "matched_series": None, "series_tags": {}, "external_domains": ext_domains}
@@ -1020,19 +1081,45 @@ def _is_schedulable(event, category):
     )
 
 
-def detect_conflicts(events_with_category):
+def _intentional_overlap(a, b, intentional_overlaps):
+    """Name of the calendar_analysis.intentional_overlaps entry covering this
+    pair, or None. Both subjects must match one of the entry's patterns
+    (case-insensitive substring, same as known_meeting_series) -- e.g. two
+    team retrospectives the owner booked over each other on purpose and
+    alternates between."""
+    sa, sb = (a.get("subject") or "").lower(), (b.get("subject") or "").lower()
+    for entry in intentional_overlaps:
+        pats = [p.lower() for p in entry.get("match_patterns") or [] if p]
+        if any(p in sa for p in pats) and any(p in sb for p in pats):
+            return entry.get("name") or "(unnamed)"
+    return None
+
+
+def detect_conflicts(events_with_category, intentional_overlaps=()):
     busy = [(e, c) for e, c in events_with_category if _is_schedulable(e, c)]
     busy.sort(key=lambda ec: ec[0]["start"]["dateTime"])
 
     double_bookings = []
     tight_transitions = []
+    acknowledged = []
     for i in range(len(busy) - 1):
         cur, _c1 = busy[i]
         nxt, _c2 = busy[i + 1]
         cur_start, cur_end = _event_times(cur)
         nxt_start, nxt_end = _event_times(nxt)
 
-        if cur_end > nxt_start:
+        if cur_end > nxt_start and (name := _intentional_overlap(cur, nxt, intentional_overlaps)):
+            # Kept out of double_bookings so no report flags it, but still
+            # listed so the suppression is visible rather than silent.
+            acknowledged.append({
+                "series": name,
+                "event_a": {"id": cur["id"], "subject": cur.get("subject", "(No title)"),
+                            "start": cur_start.strftime("%H:%M"), "end": cur_end.strftime("%H:%M")},
+                "event_b": {"id": nxt["id"], "subject": nxt.get("subject", "(No title)"),
+                            "start": nxt_start.strftime("%H:%M"), "end": nxt_end.strftime("%H:%M")},
+                "overlap_minutes": int((cur_end - nxt_start).total_seconds() / 60),
+            })
+        elif cur_end > nxt_start:
             overlap_minutes = int((cur_end - nxt_start).total_seconds() / 60)
             double_bookings.append({
                 "event_a": {"id": cur["id"], "subject": cur.get("subject", "(No title)"),
@@ -1049,7 +1136,8 @@ def detect_conflicts(events_with_category):
                 "gap_minutes": gap_minutes,
             })
 
-    return {"double_bookings": double_bookings, "tight_transitions": tight_transitions}
+    return {"double_bookings": double_bookings, "tight_transitions": tight_transitions,
+            "intentional_overlaps": acknowledged}
 
 
 def _select_blocks(events_with_category, category, allow_all_day):
@@ -1142,9 +1230,33 @@ def flag_meetings_needing_prep(events_with_category, owner_email, owner_domain, 
     return flagged
 
 
-def compute_schedule_health(events_with_category, working_hours):
-    real_meetings = [e for e, c in events_with_category if _is_schedulable(e, c)]
+def find_protected_block_ids(classified, lookups):
+    """Ids of recurring solo blocks the owner has registered as a known series
+    (e.g. "Strategy - Protected"). They carry the series' category for time
+    allocation, but they are still the owner's own protected time: they are
+    deep-work blocks, never meetings. A known series can only claim a solo
+    event ahead of Focused production (see classify_primary_category), so
+    without this a "Protected" block classified as Strategy and transformation
+    would start counting as a meeting -- tight transitions, needs-prep flags,
+    PTO interruptions -- and a real meeting overlapping it would no longer
+    register as a deep-work infringement."""
+    ids = set()
+    for e, r in classified:
+        if not r.get("matched_series") or e.get("isAllDay") or e.get("isCancelled"):
+            continue
+        _, _, others = _participants(e, lookups["owner_email"], lookups["ignored_addresses"])
+        if not others and e.get("id"):
+            ids.add(e["id"])
+    return frozenset(ids)
+
+
+def compute_schedule_health(events_with_category, working_hours, protected_ids=frozenset()):
+    real_meetings = [e for e, c in events_with_category if _is_schedulable(e, c) and e.get("id") not in protected_ids]
     deep_work_blocks = _select_blocks(events_with_category, "Focused production", allow_all_day=False)
+    seen = {b.get("id") for b in deep_work_blocks}
+    deep_work_blocks += [e for e, c in events_with_category
+                         if e.get("id") in protected_ids and e.get("id") not in seen
+                         and not e.get("isCancelled") and _has_concrete_time(e)]
     capacity_blocks = _select_blocks(events_with_category, "Capacity unavailable", allow_all_day=True)
 
     deep_work = _find_block_infringements(deep_work_blocks, real_meetings)
@@ -1625,6 +1737,8 @@ def cmd_report(args):
         classified.append((e, result))
 
     events_with_category = [(e, r["category"]) for e, r in classified]
+    protected_ids = find_protected_block_ids(classified, lookups)
+    meeting_candidates = [(e, c) for e, c in events_with_category if e.get("id") not in protected_ids]
 
     tagged_events = []
     for e, r in classified:
@@ -1703,10 +1817,10 @@ def cmd_report(args):
         "period": period,
         "events": tagged_events,
         "unresolved_events": unresolved_events,
-        "conflicts": detect_conflicts(events_with_category),
-        "schedule_health": compute_schedule_health(events_with_category, lookups["working_hours"]),
+        "conflicts": detect_conflicts(meeting_candidates, lookups["intentional_overlaps"]),
+        "schedule_health": compute_schedule_health(events_with_category, lookups["working_hours"], protected_ids),
         "meetings_needing_prep": flag_meetings_needing_prep(
-            events_with_category, lookups["owner_email"], lookups["owner_domain"], lookups["ignored_addresses"]),
+            meeting_candidates, lookups["owner_email"], lookups["owner_domain"], lookups["ignored_addresses"]),
     }
 
     if unresolved_events:
