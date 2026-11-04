@@ -2,6 +2,28 @@
 
 All notable changes to this skill are documented here, newest first.
 
+## 0.8 — 2026-10-30
+
+**Meetings with other departments are classified by rule instead of falling to 5c.** When acos-aboutme's new `owner.functional_areas` is set, an internal meeting that no earlier rule claimed and that includes someone tagged with a functional area outside the owner's own becomes Operating rhythm if it is an occurrence of a recurring series and Stakeholder partnership if it is a one-off, per the owner's direction that regular cross-department meetings run the business and one-off ones are stakeholder engagement. It runs before the two-or-more-areas rule, so it only changes events that rule would have sent to 5c, and it is off while `owner.functional_areas` is empty.
+
+Prompted by a 5c misjudgment: "SUP-930 Discussion" (a one-off with two Finance staff) was resolved as Operating rhythm because the ticket key in the subject outweighed the attendees. The 5c step in SKILL.md now says to weigh attendees over the subject line.
+
+Recurrence comes from the Exchange item id, because the O365 connector returns `recurrence: null` for every event. `_series_occurrence` decodes the id header: 0x0009 then 0x01 is an occurrence, 0x00 a single item, anything else unknown, which leaves the event for 5c. The format is undocumented. Across 189 real events (October 5 – November 8, 2026) it returned 137 occurrences, 52 single items, and 0 unknown, and every meeting seen more than once read as an occurrence. One exception to watch: "Care-Tech Sync Meeting 2026Q4" is named like a series but is a single item, so it reads as one-off.
+
+Measured against those weeks with the rule off and on: October 5 – November 1 (150 events) went from 3 events in 5c to 1, and two changed category ("Trevor Calls Alan", Revenue, and "Lakeside Close Out Internal Meeting", Operations, both one-off Stakeholder partnership). November 2–8 (39 events) went from 2 to 1, with SUP-930 now classified by rule. No event already classified by a rule changed category; conflicts, schedule health, and prep flags were identical.
+
+**5c gets names.** `_describe_participant` read names and roles only from the 13-person legacy `staff` list, so most 5c attendees arrived as bare addresses. It now falls back to names in `reports`, `team`, and `functional_areas` (role stays null). `staff` still wins when present.
+
+**First test suite** (`tests/test_classification.py`, synthetic data, 13 tests): the id decoder including unknown shapes, the rule firing and not firing (own areas only, setting empty, unknown id), the name fallback, and 0.7's intentional overlaps.
+
+## 0.7 — 2026-10-30
+
+Overlaps the owner has declared deliberate are no longer reported as double-bookings. `detect_conflicts` reads acos-aboutme's new `calendar_analysis.intentional_overlaps`: when two overlapping meetings both match one entry's patterns, the pair moves from `conflicts.double_bookings` to a new `conflicts.intentional_overlaps` list, so the suppression stays visible in the JSON instead of disappearing. Tight transitions are unaffected. Because morning-plan's conflicts and week-plan's `double_bookings` both come from this field, neither report flags the pair any more.
+
+Prompted by the Dev Team and Run Team Retrospectives, booked over each other every Friday on purpose; the owner alternates between them. Checked against the real week of 2 November 2026 (39 events): double-bookings went from 2 to 1 (the retrospectives moved to `intentional_overlaps`, 60 minutes), the Tuesday 7:00 sprint review and Dr. B overlap is still flagged, and every other report field is byte-identical. An event matching only one side, or a profile with no entries, behaves as before.
+
+SKILL.md lists the new field under Config and explains under Corrections that a deliberate overlap is recorded through acos-aboutme, not `correct`.
+
 ## 0.6 — 2026-10-07
 
 A known-series match now outranks the Focused production and People leadership rules, so a series entry for a recurring solo block (no attendees) takes effect. It still comes after Capacity unavailable, so a PTO or travel block is never overridden by a subject pattern.
