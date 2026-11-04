@@ -17,7 +17,8 @@
       "idea_archived": "customfield_10261",
       "roadmap_exclude": [
         "Done",
-        "Parking Lot"
+        "Parking Lot",
+        "Merged"
       ]
     },
     "support_fields": {
@@ -45,12 +46,14 @@
       "qa_roadmap_exclude": [
         "Done",
         "Parking Lot",
-        "Won't do"
+        "Won't do",
+        "Merged"
       ],
       "exclude_from_qa": {
         "archived": true,
         "roadmap_values": [
-          "Done"
+          "Done",
+          "Merged"
         ],
         "status_categories": [
           "done"
@@ -282,6 +285,37 @@
           "#eef5f5"
         ]
       }
+    },
+    "archive_qa": {
+      "_comment": "Archive QA report config. Every archived idea in the product group should rest in a concluding Roadmap value and a concluding status category. {values} in a rule is filled from the matching list. Colors come from product_qa.palette.",
+      "concluding_roadmap": [
+        "Done",
+        "Won't do",
+        "Merged"
+      ],
+      "concluding_status_categories": [
+        "done"
+      ],
+      "checks": [
+        {
+          "id": "rm",
+          "enabled": true,
+          "name": "Roadmap not concluded",
+          "rule": "Roadmap is empty, or not {values}.",
+          "type": "roadmap_not_concluding",
+          "color_role": "risk",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3.5 14.5V1.8\"/><path d=\"M3.5 2.4h8.7l-2.2 3 2.2 3H3.5\"/></g>"
+        },
+        {
+          "id": "so",
+          "enabled": true,
+          "name": "Status still open",
+          "rule": "Status is not in a {values} category.",
+          "type": "status_not_concluding",
+          "color_role": "risk",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M13.2 8A5.2 5.2 0 1 1 8 2.8\"/><path d=\"M8 5.4V8l1.8 1.8\"/></g>"
+        }
+      ]
     },
     "support_qa": {
       "_comment": "Support QA report config. Checks run in listed order; only failing checks render in a row's QA cell. Field keys refer to jira_workspaces.support_fields.",

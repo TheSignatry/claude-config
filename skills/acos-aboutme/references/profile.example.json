@@ -8,7 +8,8 @@
     "signoff": "Example",
     "pronouns": "",
     "staff_position_type": "c_suite_executive",
-    "linkedin_url": ""
+    "linkedin_url": "",
+    "functional_areas": []
   },
   "staff": [
     {
@@ -93,12 +94,14 @@
       "qa_roadmap_exclude": [
         "Done",
         "Parking Lot",
-        "Won't do"
+        "Won't do",
+        "Merged"
       ],
       "exclude_from_qa": {
         "archived": true,
         "roadmap_values": [
-          "Done"
+          "Done",
+          "Merged"
         ],
         "status_categories": [
           "done"
@@ -330,6 +333,37 @@
           "#eef5f5"
         ]
       }
+    },
+    "archive_qa": {
+      "_comment": "Archive QA report config. Every archived idea in the product group should rest in a concluding Roadmap value and a concluding status category. {values} in a rule is filled from the matching list. Colors come from product_qa.palette.",
+      "concluding_roadmap": [
+        "Done",
+        "Won't do",
+        "Merged"
+      ],
+      "concluding_status_categories": [
+        "done"
+      ],
+      "checks": [
+        {
+          "id": "rm",
+          "enabled": true,
+          "name": "Roadmap not concluded",
+          "rule": "Roadmap is empty, or not {values}.",
+          "type": "roadmap_not_concluding",
+          "color_role": "risk",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3.5 14.5V1.8\"/><path d=\"M3.5 2.4h8.7l-2.2 3 2.2 3H3.5\"/></g>"
+        },
+        {
+          "id": "so",
+          "enabled": true,
+          "name": "Status still open",
+          "rule": "Status is not in a {values} category.",
+          "type": "status_not_concluding",
+          "color_role": "risk",
+          "svg": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M13.2 8A5.2 5.2 0 1 1 8 2.8\"/><path d=\"M8 5.4V8l1.8 1.8\"/></g>"
+        }
+      ]
     },
     "support_qa": {
       "_comment": "Support QA report config. Checks run in listed order; only failing checks render in a row's QA cell. Field keys refer to jira_workspaces.support_fields.",
@@ -1054,6 +1088,8 @@
     "_audience_tag_comment": "The Audience tag (direct team / broader internal / peer / Shepherd-executive / board / existing partner / prospective external) is evaluated in this exact priority order, first match wins, over the event's non-organizer attendees: (1) board — any attendee is on vip_senders with a title containing 'Board'; (2) Shepherd/executive — any attendee is on vip_senders otherwise (presence alone counts, same as the Strategy-and-transformation default); (3) existing partner — any external attendee AND every external domain present is a partner_vendors domain; (4) prospective external — any external attendee, not all partner domains; (5) direct team — ALL non-organizer attendees are on `reports`; (6) broader internal — ALL non-organizer attendees are on `team`; (7) peer — internal, none of the above. Board/Shepherd are deliberately 'any attendee' checks (one exec in a big room still changes the read); direct-team/broader-internal are deliberately 'all attendees' checks (they describe the room's overall makeup, not one match in a crowd).",
     "_ignored_addresses_comment": "Personal/family addresses that show up as attendees on a company-wide culture event (a staff member's spouse cc'd on a devotional or celebration call) but aren't a real external attendee or business relationship -- filtered out at the earliest point so category classification, the Audience tag, the Functional Area tag, and prep-flag attendee/external counts all treat these as if they were never on the invite.",
     "ignored_addresses": [],
+    "_intentional_overlaps_comment": "Meetings the owner books over each other on purpose (e.g. two team retrospectives they alternate between). Each entry is {name, match_patterns, notes}; when two overlapping meetings both match one entry's patterns (lowercase substrings, case-insensitive, same as known_meeting_series), acos-calendar-analysis leaves the pair out of double_bookings and lists it under conflicts.intentional_overlaps instead. Empty unless the owner asks.",
+    "intentional_overlaps": [],
     "known_meeting_series": [
       {
         "_comment": "The primary mechanism for classifying recurring meetings consistently. match_patterns are lowercase substrings checked against the event subject (case-insensitive) — list more than one to support simple aliases. category is one of the seven primary categories. tags is optional and may pre-set any of the Step 4 tags. Corrections on a recurring series write back here automatically."

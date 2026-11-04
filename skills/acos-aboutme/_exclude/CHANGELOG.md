@@ -2,6 +2,16 @@
 
 All notable changes to this skill are documented here, newest first.
 
+## 0.11 — 2026-11-01
+
+New optional `owner.functional_areas`: the `functional_areas` keys that are the owner's own department. acos-calendar-analysis 0.8 treats every other key as another department for its recurring-versus-one-off rule, which stays off while this is empty. Documented on the `owner` schema line with an update phrase ("my team spans …"), and shipped empty in `profile.example.json`.
+
+**Archived ideas and the Merged Roadmap value, for acos-jira-analysis 0.7.** TRM's Roadmap field gained a "Merged" option. It is added to `product_fields.roadmap_exclude`, `product_qa.qa_roadmap_exclude`, and `product_qa.exclude_from_qa.roadmap_values` in `defaults.json`, and to the two `product_qa` lists in `profile.example.json`, which has no `roadmap_exclude`. A new `jira_workspaces.archive_qa` block ships in both files. It holds `concluding_roadmap` (Done, Won't do, Merged), `concluding_status_categories` (done), and two checks with glyphs. It is documented in the Schema section, with an update phrase ("treat \<Roadmap value\> as concluded for archived ideas").
+
+## 0.10 — 2026-10-30
+
+New `calendar_analysis.intentional_overlaps`: a list of `{name, match_patterns, notes}` entries for meetings the owner books over each other on purpose. acos-calendar-analysis 0.7 stops flagging a pair as a double-booking when both subjects match one entry. Documented in the Schema section with an update phrase ("these two meetings overlap on purpose"), and shipped empty with a comment in `profile.example.json`. Not added to `references/defaults.json`: it is personal, and a missing key already means no entries.
+
 ## 0.9 — 2026-10-24
 
 **Schema for acos-jira-analysis 0.6's four QA reports.** Each new block ships complete in both `references/defaults.json` and `profile.example.json`, so existing profiles get working reports with no edit. SKILL.md documents every block in the Schema section and adds update phrases for each one. It also explains why a full block must be seeded into a profile before its first edit: check lists are lists, and a profile list replaces the shared one wholesale.
