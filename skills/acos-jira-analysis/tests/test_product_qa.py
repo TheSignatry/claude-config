@@ -306,7 +306,7 @@ class Plan(unittest.TestCase):
         ids = [q["id"] for q in plan["queries"]]
         self.assertEqual(ids, ["product_qa", "product_qa_delivered"])
         self.assertEqual(plan["queries"][0]["jql"],
-                         'project in (TRM) AND statusCategory != Done AND "Roadmap" NOT IN ("Done", "Parking Lot", "Won\'t do") ORDER BY key ASC')
+                         'project in (TRM) AND statusCategory != Done AND "Roadmap" NOT IN ("Done", "Parking Lot", "Won\'t do", "Merged") ORDER BY key ASC')
         self.assertIn('updated >= "2026-09-01"', plan["queries"][1]["jql"])
         self.assertEqual(plan["queries"][0]["fields"][:4], ["summary", "status", "assignee", "issuelinks"])
         with_agenda = pq.build_qa_plan(ws, pf, {}, ws["cloud_id"], TODAY, (FIX / "agenda.txt").read_text())
