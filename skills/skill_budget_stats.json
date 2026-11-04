@@ -1,6 +1,6 @@
 {
   "corpus": {
-    "recorded_at": "2026-10-25",
+    "recorded_at": "2026-11-04",
     "sibling_count": 17,
     "median_typical_lines": 253,
     "median_typical_tokens": 5995
@@ -10,7 +10,7 @@
       {
         "version": "2.2",
         "release_date": "2026-08-06",
-        "recorded_at": "2026-09-24",
+        "recorded_at": "2026-11-04",
         "composition": {
           "description": {
             "lines": 1,
@@ -36,7 +36,7 @@
       {
         "version": "3.4",
         "release_date": "2026-07-31",
-        "recorded_at": "2026-09-24",
+        "recorded_at": "2026-11-04",
         "composition": {
           "description": {
             "lines": 1,
@@ -86,7 +86,7 @@
       {
         "version": "1.2",
         "release_date": "2026-08-06",
-        "recorded_at": "2026-09-24",
+        "recorded_at": "2026-11-04",
         "composition": {
           "description": {
             "lines": 1,
@@ -112,7 +112,7 @@
       {
         "version": "2.1",
         "release_date": "2026-07-31",
-        "recorded_at": "2026-09-24",
+        "recorded_at": "2026-11-04",
         "composition": {
           "description": {
             "lines": 1,
@@ -138,7 +138,7 @@
       {
         "version": "1.6",
         "release_date": "2026-08-07",
-        "recorded_at": "2026-09-24",
+        "recorded_at": "2026-11-04",
         "composition": {
           "description": {
             "lines": 1,
@@ -188,7 +188,7 @@
       {
         "version": "1.4",
         "release_date": "2026-09-16",
-        "recorded_at": "2026-09-24",
+        "recorded_at": "2026-11-04",
         "composition": {
           "description": {
             "lines": 1,
@@ -214,7 +214,7 @@
       {
         "version": "1.3",
         "release_date": "2026-08-06",
-        "recorded_at": "2026-09-24",
+        "recorded_at": "2026-11-04",
         "composition": {
           "description": {
             "lines": 1,
@@ -240,7 +240,7 @@
       {
         "version": "2.1",
         "release_date": "2026-08-06",
-        "recorded_at": "2026-09-24",
+        "recorded_at": "2026-11-04",
         "composition": {
           "description": {
             "lines": 1,
@@ -290,7 +290,7 @@
       {
         "version": "2.5",
         "release_date": "2026-08-14",
-        "recorded_at": "2026-09-24",
+        "recorded_at": "2026-11-04",
         "composition": {
           "description": {
             "lines": 1,
@@ -316,7 +316,7 @@
       {
         "version": "1.0.1",
         "release_date": "2026-08-06",
-        "recorded_at": "2026-09-24",
+        "recorded_at": "2026-11-04",
         "composition": {
           "description": {
             "lines": 1,
@@ -390,7 +390,7 @@
       {
         "version": "0.7",
         "release_date": "2026-09-16",
-        "recorded_at": "2026-09-24",
+        "recorded_at": "2026-11-04",
         "composition": {
           "description": {
             "lines": 1,
@@ -560,7 +560,7 @@
       {
         "version": "1.0",
         "release_date": "2026-09-23",
-        "recorded_at": "2026-09-24",
+        "recorded_at": "2026-11-04",
         "composition": {
           "description": {
             "lines": 1,
@@ -750,6 +750,54 @@
             "tokens": 33692
           }
         }
+      },
+      {
+        "version": "0.10",
+        "release_date": "2026-10-30",
+        "recorded_at": "2026-10-30",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 253
+          },
+          "body": {
+            "lines": 175,
+            "tokens": 7939
+          },
+          "deferred": {
+            "lines": 2605,
+            "tokens": 25816,
+            "file_count": 3
+          },
+          "total": {
+            "lines": 2781,
+            "tokens": 34008
+          }
+        }
+      },
+      {
+        "version": "0.11",
+        "release_date": "2026-11-01",
+        "recorded_at": "2026-11-04",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 253
+          },
+          "body": {
+            "lines": 178,
+            "tokens": 8202
+          },
+          "deferred": {
+            "lines": 2673,
+            "tokens": 26529,
+            "file_count": 3
+          },
+          "total": {
+            "lines": 2852,
+            "tokens": 34984
+          }
+        }
       }
     ],
     "acos-calendar-analysis": [
@@ -872,6 +920,54 @@
             "tokens": 26291
           }
         }
+      },
+      {
+        "version": "0.7",
+        "release_date": "2026-10-30",
+        "recorded_at": "2026-10-30",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 250
+          },
+          "body": {
+            "lines": 54,
+            "tokens": 2498
+          },
+          "deferred": {
+            "lines": 1922,
+            "tokens": 24099,
+            "file_count": 1
+          },
+          "total": {
+            "lines": 1977,
+            "tokens": 26847
+          }
+        }
+      },
+      {
+        "version": "0.8",
+        "release_date": "2026-10-30",
+        "recorded_at": "2026-11-04",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 250
+          },
+          "body": {
+            "lines": 55,
+            "tokens": 2736
+          },
+          "deferred": {
+            "lines": 1971,
+            "tokens": 24797,
+            "file_count": 1
+          },
+          "total": {
+            "lines": 2027,
+            "tokens": 27783
+          }
+        }
       }
     ],
     "acos-jira-analysis": [
@@ -992,6 +1088,30 @@
           "total": {
             "lines": 4133,
             "tokens": 55528
+          }
+        }
+      },
+      {
+        "version": "0.7",
+        "release_date": "2026-11-01",
+        "recorded_at": "2026-11-04",
+        "composition": {
+          "description": {
+            "lines": 1,
+            "tokens": 254
+          },
+          "body": {
+            "lines": 112,
+            "tokens": 5073
+          },
+          "deferred": {
+            "lines": 4454,
+            "tokens": 56292,
+            "file_count": 12
+          },
+          "total": {
+            "lines": 4567,
+            "tokens": 61619
           }
         }
       }
@@ -1216,7 +1336,7 @@
       {
         "version": "0.12",
         "release_date": "2026-10-13",
-        "recorded_at": "2026-10-13",
+        "recorded_at": "2026-11-04",
         "composition": {
           "description": {
             "lines": 1,
@@ -1290,7 +1410,7 @@
       {
         "version": "0.4",
         "release_date": "2026-09-24",
-        "recorded_at": "2026-09-24",
+        "recorded_at": "2026-11-04",
         "composition": {
           "description": {
             "lines": 1,
